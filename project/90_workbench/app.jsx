@@ -538,7 +538,7 @@ function App() {
             ))}
           </DCSection>
         ))}
-        {view === 'explorations' && <ExplorationsScaffoldSection/>}
+        {view === 'explorations' && <ThemeRepaintSection/>}
       </DesignCanvas>
     </>
   );

@@ -74,7 +74,9 @@ project/
 │   └── components-showcase.jsx    視覺化展示
 ├── 30_screens/screens.jsx         所有正式畫面（impl 對齊）
 ├── 50_explorations/
-│   ├── scaffold.jsx               空架構 + SOP（目前無主題）
+│   ├── theme_repaint/             主題重塗素描（5 個 anthropic theme-factory 主題）
+│   │   ├── README.md
+│   │   └── variants.jsx
 │   └── <topic_slug>/...           各主題（按需新增）
 ├── 90_workbench/
 │   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame
