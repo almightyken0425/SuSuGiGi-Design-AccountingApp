@@ -443,20 +443,37 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
   );
 }
 
-// ─── Top view tabs ───────────────────────────────────────────
+// ─── Side TOC nav ────────────────────────────────────────────
+// 兩層 nav：top-level views 與 sub-items（Screens groups / Explorations topics）。
+// 選擇 screens 或 explorations 子項時，canvas 只 render 該子項，避免 canvas 過大。
 const VIEW_TABS = [
   { id: 'intro',        label: 'Intro' },
   { id: 'foundations',  label: 'Foundations' },
   { id: 'components',   label: 'Components' },
-  { id: 'screens',      label: 'Screens' },
-  { id: 'explorations', label: 'Explorations' },
+  { id: 'screens',      label: 'Screens',      hasSubs: true },
+  { id: 'explorations', label: 'Explorations', hasSubs: true },
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
+const EXPLORATION_TOPICS = [
+  { id: 'theme-repaint', label: 'Theme Repaint', render: () => <ThemeRepaintSection/> },
+];
+
+const subsFor = (view) => {
+  if (view === 'screens')      return SCREEN_GROUPS.map(g => ({ id: g.id, label: g.title }));
+  if (view === 'explorations') return EXPLORATION_TOPICS.map(t => ({ id: t.id, label: t.label }));
+  return null;
+};
+
+const defaultSubFor = (view) => {
+  const subs = subsFor(view);
+  return subs && subs[0] ? subs[0].id : null;
+};
+
 // 舊 hash 別名（向後相容）
 const LEGACY_HASH_ALIASES = {
-  'overview':   { view: 'screens' },   // Overview tab 已併入 Screens
-  'flows':      { view: 'screens' },   // Flows tab 已移除
+  'overview':   { view: 'screens' },
+  'flows':      { view: 'screens' },
   'all':        { view: 'screens' },
   'filter':     { view: 'screens' },
   'tx-list':    { view: 'screens' },
@@ -464,33 +481,105 @@ const LEGACY_HASH_ALIASES = {
   'row-height': { view: 'screens' },
 };
 
-function ViewTabs({ view, setView }) {
+function parseRoute() {
+  const h = window.location.hash.replace('#', '');
+  if (!h) return { view: 'intro', sub: null };
+  if (LEGACY_HASH_ALIASES[h]) {
+    const v = LEGACY_HASH_ALIASES[h].view;
+    return { view: v, sub: defaultSubFor(v) };
+  }
+  const [view, sub] = h.split('/');
+  if (!VALID_VIEWS.includes(view)) return { view: 'intro', sub: null };
+  const subs = subsFor(view);
+  if (!subs) return { view, sub: null };
+  const validSub = subs.find(s => s.id === sub);
+  return { view, sub: validSub ? validSub.id : defaultSubFor(view) };
+}
+
+function buildHash(view, sub) {
+  return sub ? `${view}/${sub}` : view;
+}
+
+function TocRow({ label, active, hasChildren, expanded, level, onClick }) {
+  const isTop = level === 0;
+  return (
+    <button onClick={onClick} style={{
+      display: 'flex', alignItems: 'center', gap: 6,
+      width: '100%', textAlign: 'left',
+      border: 'none', cursor: 'pointer',
+      padding: isTop ? '8px 12px' : '6px 10px 6px 26px',
+      borderRadius: 7,
+      background: active ? (isTop ? TOKENS.p500 : 'rgba(67,35,160,0.10)') : 'transparent',
+      color: active ? (isTop ? '#fff' : TOKENS.p600) : '#3a3a3a',
+      fontSize: isTop ? 13.5 : 12,
+      fontWeight: active ? 600 : 500,
+      fontFamily: 'inherit',
+      transition: 'background 140ms, color 140ms',
+      marginBottom: 2,
+      lineHeight: 1.3,
+    }}>
+      {hasChildren && (
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{ opacity: active ? 1 : 0.55, flexShrink: 0 }}>
+          <path d={expanded ? 'M1.5 3l3 3 3-3' : 'M3 1.5l3 3-3 3'}/>
+        </svg>
+      )}
+      <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {label}
+      </span>
+    </button>
+  );
+}
+
+function SideTOC({ view, sub, onNavigate }) {
   return (
     <div style={{
-      position: 'fixed', top: 16, left: '50%', transform: 'translateX(-50%)',
-      display: 'flex', gap: 4, padding: 4,
-      background: 'rgba(255,255,255,0.92)',
-      backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
-      borderRadius: 999,
-      boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-      border: '1px solid rgba(0,0,0,0.06)',
+      position: 'fixed', top: 0, left: 0, bottom: 0,
+      width: 220, padding: '18px 12px 24px',
+      background: 'rgba(255,255,255,0.94)',
+      backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+      borderRight: '1px solid rgba(0,0,0,0.06)',
+      boxShadow: '1px 0 6px rgba(0,0,0,0.04)',
       zIndex: 100,
+      overflowY: 'auto',
       fontFamily: '-apple-system, "SF Pro", "PingFang TC", "Noto Sans TC", system-ui, sans-serif',
     }}>
+      <div style={{
+        fontSize: 16, fontWeight: 700, color: '#212121',
+        padding: '0 8px 4px', letterSpacing: -0.2,
+      }}>
+        SuSuGiGi
+      </div>
+      <div style={{
+        fontSize: 11, color: '#9aa3ad', padding: '0 8px 18px',
+        letterSpacing: 0.3, fontWeight: 500,
+      }}>
+        Design Canvas
+      </div>
       {VIEW_TABS.map(t => {
         const active = view === t.id;
+        const subs = t.hasSubs ? subsFor(t.id) : null;
         return (
-          <button key={t.id} onClick={() => setView(t.id)} style={{
-            border: 'none', borderRadius: 999,
-            padding: '8px 14px', cursor: 'pointer',
-            fontSize: 13.5, fontWeight: 500,
-            color: active ? '#fff' : '#212121',
-            background: active ? TOKENS.p500 : 'transparent',
-            transition: 'background 180ms, color 180ms',
-            fontFamily: 'inherit',
-          }}>
-            {t.label}
-          </button>
+          <div key={t.id}>
+            <TocRow
+              label={t.label}
+              active={active}
+              hasChildren={!!subs}
+              expanded={active}
+              level={0}
+              onClick={() => onNavigate(t.id, null)}
+            />
+            {active && subs && subs.map(s => (
+              <TocRow
+                key={s.id}
+                label={s.label}
+                active={sub === s.id}
+                level={1}
+                onClick={() => onNavigate(t.id, s.id)}
+              />
+            ))}
+          </div>
         );
       })}
     </div>
@@ -498,19 +587,21 @@ function ViewTabs({ view, setView }) {
 }
 
 function App() {
-  const parseHash = () => {
-    const h = window.location.hash.replace('#', '');
-    if (LEGACY_HASH_ALIASES[h]) return LEGACY_HASH_ALIASES[h];
-    if (VALID_VIEWS.includes(h)) return { view: h };
-    return { view: 'intro' };
-  };
-  const [view, setView] = React.useState(() => parseHash().view);
+  const [route, setRoute] = React.useState(() => parseRoute());
   React.useEffect(() => {
-    const onHashChange = () => setView(parseHash().view);
+    const onHashChange = () => setRoute(parseRoute());
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
-  const updateView = (v) => { if (v !== view) window.location.hash = v; };
+
+  const navigate = (view, sub) => {
+    const finalSub = sub || defaultSubFor(view);
+    const next = buildHash(view, finalSub);
+    const current = buildHash(route.view, route.sub);
+    if (next !== current) window.location.hash = next;
+  };
+
+  const { view, sub } = route;
 
   const [sharedFilter, setSharedFilter] = React.useState({
     timeGranularity: 'month',
@@ -522,12 +613,12 @@ function App() {
 
   return (
     <>
-      <ViewTabs view={view} setView={updateView}/>
+      <SideTOC view={view} sub={sub} onNavigate={navigate}/>
       <DesignCanvas>
         {view === 'intro'        && <IntroSection/>}
         {view === 'foundations'  && <FoundationsSection/>}
         {view === 'components'   && <ComponentsShowcaseSection/>}
-        {view === 'screens' && SCREEN_GROUPS.map(group => (
+        {view === 'screens' && SCREEN_GROUPS.filter(g => g.id === sub).map(group => (
           <DCSection key={group.id} id={`screens-${group.id}`} title={group.title} subtitle={group.subtitle}>
             {group.screens.map(s => (
               <DCArtboard key={s.id} id={s.id} label={s.label} width={W} height={H}>
@@ -538,12 +629,14 @@ function App() {
             ))}
           </DCSection>
         ))}
-        {view === 'explorations' && <ThemeRepaintSection/>}
+        {view === 'explorations' && EXPLORATION_TOPICS.filter(t => t.id === sub).map(t => (
+          <React.Fragment key={t.id}>{t.render()}</React.Fragment>
+        ))}
       </DesignCanvas>
     </>
   );
 }
 
-Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame });
+Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, EXPLORATION_TOPICS });
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);

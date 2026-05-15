@@ -317,7 +317,7 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
           willChange: 'transform',
           width: 'max-content', minWidth: '100%',
           minHeight: '100%',
-          padding: '60px 0 80px',
+          padding: '60px 60px 80px 260px',
         }}
       >
         <div style={{ position: 'absolute', inset: -6000, backgroundImage: gridSvg, backgroundSize: '120px 120px', pointerEvents: 'none', zIndex: -1 }} />
