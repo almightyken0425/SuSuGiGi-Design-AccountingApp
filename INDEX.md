@@ -74,10 +74,10 @@ project/
 │   └── components-showcase.jsx    視覺化展示
 ├── 30_screens/screens.jsx         所有正式畫面（impl 對齊）
 ├── 50_explorations/
-│   ├── theme_repaint/             主題重塗素描（5 個 anthropic theme-factory 主題）
-│   │   ├── README.md
-│   │   └── variants.jsx
-│   └── <topic_slug>/...           各主題（按需新增）
+│   ├── axis_color_and_mood/                Axis 1 · 配色與情緒（3 個 HomeScreen 並陳）
+│   ├── axis_surface_material/              Axis 2 · 質感與材質（3 個 HomeScreen 並陳）
+│   ├── axis_iconography_embellishment/     Axis 3 · Icon 風格與裝飾（3 個 HomeScreen 並陳）
+│   └── axis_personality_packaged/          Axis 4 · 整體性格 packaged（3 個 HomeScreen 並陳）
 ├── 90_workbench/
 │   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame
 │   ├── design-canvas.jsx          DesignCanvas / DCSection / DCArtboard

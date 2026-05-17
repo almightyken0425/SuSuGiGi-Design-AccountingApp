@@ -455,8 +455,12 @@ const VIEW_TABS = [
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
+// Explorations topics — 每個 entry 對應 50_explorations/<dir>/variants.jsx 註冊的 Section component
 const EXPLORATION_TOPICS = [
-  { id: 'theme-repaint', label: 'Theme Repaint', render: () => <ThemeRepaintSection/> },
+  { id: 'color-and-mood',    label: 'Axis 1 · Color & Mood',              render: () => <ColorAndMoodSection/> },
+  { id: 'surface-material',  label: 'Axis 2 · Surface & Material',        render: () => <SurfaceMaterialSection/> },
+  { id: 'iconography',       label: 'Axis 3 · Iconography & Embellishment', render: () => <IconographySection/> },
+  { id: 'personality',       label: 'Axis 4 · Personality (packaged)',    render: () => <PersonalityPackagedSection/> },
 ];
 
 const subsFor = (view) => {
