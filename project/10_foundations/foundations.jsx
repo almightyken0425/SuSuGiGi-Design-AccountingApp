@@ -1,83 +1,152 @@
 // ─────────────────────────────────────────────────────────────
 // Foundations · 設計基礎視覺化（對齊 impl src/constants/theme.ts）
-// 改 data.jsx 的 token 值 → 此 tab 自動更新。
+//
+// 5 個 sub-item 沿用 claude.ai/design Design System tab 的結構：
+//   Type / Colors / Spacing / Components / Brand
+// （Components 在 components-showcase.jsx 由 FoundationsComponentsSection 串成）
+//
+// 每個 sub-item 內，HTML 卡片（cards/ 底下，從 bundle 帶來的 2026-05-18 快照）
+// 在前，可縮放 JSX artboard（讀 data.jsx 即時繪製）在後。整體用
+// direction="column" — 卡片由上往下垂直堆，一頁文件式閱讀。
+// 改 data.jsx 的 token 值 → JSX artboard 自動更新；
+// HTML 卡片是當時的快照，要更新需回 claude.ai/design 重新匯出。
 // ─────────────────────────────────────────────────────────────
 
-function FoundationsSection() {
+function HtmlCard({ src }) {
   return (
-    <>
-      <DCSection id="found-color" title="Color · 主題與調色盤" subtitle="對齊 src/constants/theme.ts。預設 Theme 1 = 經典紫，可在 偏好設定 → 主題 切換到 Theme 2 海洋藍。">
-        <DCArtboard id="palette-theme1" label="Theme 1 · 經典紫" width={420} height={520}>
-          <PaletteCard theme={THEME_1}/>
-        </DCArtboard>
-        <DCArtboard id="palette-theme2" label="Theme 2 · 海洋藍" width={420} height={520}>
-          <PaletteCard theme={THEME_2}/>
-        </DCArtboard>
-        <DCArtboard id="palette-neutrals" label="Neutrals · PALETTE.neutral" width={420} height={580}>
-          <NeutralsCard/>
-        </DCArtboard>
-        <DCArtboard id="palette-semantic" label="Semantic · Status / Surfaces / Text" width={420} height={680}>
-          <SemanticCard theme={THEME_1}/>
-        </DCArtboard>
-      </DCSection>
+    <iframe
+      src={src}
+      title={src}
+      loading="lazy"
+      style={{ width: '100%', height: '100%', border: 'none', background: '#fff', display: 'block' }}
+    />
+  );
+}
 
-      <DCSection id="found-type" title="Typography · 字級 / 字重" subtitle="3-weight aesthetic：light 300（安靜文字）/ regular 400 / medium 500（最高權重，header / amount / button）。系統字體：iOS = SF Pro, Android = Roboto。">
-        <DCArtboard id="type-scale" label="TYPOGRAPHY.size · xs → 3xl" width={520} height={680}>
-          <TypeScaleCard/>
-        </DCArtboard>
-        <DCArtboard id="type-weights" label="TYPOGRAPHY.weight · 3-weight system" width={520} height={520}>
-          <WeightsCard/>
-        </DCArtboard>
-      </DCSection>
+function FoundationsTypeSection() {
+  return (
+    <DCSection id="found-type" title="Type" subtitle="3-weight aesthetic：light 300 / regular 400 / medium 500（最高權重）。HTML 卡片為 2026-05-18 快照；JSX artboard 即時讀 TYPOGRAPHY。" direction="column">
+      <DCArtboard id="type-tabular-numerals" label="Tabular numerals" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/type/tabular-numerals.html"/>
+      </DCArtboard>
+      <DCArtboard id="type-roles" label="Type roles" width={700} height={320}>
+        <HtmlCard src="10_foundations/cards/type/type-roles.html"/>
+      </DCArtboard>
+      <DCArtboard id="type-scale-html" label="Type scale (snapshot)" width={700} height={320}>
+        <HtmlCard src="10_foundations/cards/type/type-scale.html"/>
+      </DCArtboard>
+      <DCArtboard id="type-weights-html" label="Type weights (snapshot)" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/type/type-weights.html"/>
+      </DCArtboard>
+      <DCArtboard id="type-scale-live" label="TYPOGRAPHY.size · xs → 3xl (live)" width={520} height={680}>
+        <TypeScaleCard/>
+      </DCArtboard>
+      <DCArtboard id="type-weights-live" label="TYPOGRAPHY.weight · 3-weight system (live)" width={520} height={520}>
+        <WeightsCard/>
+      </DCArtboard>
+    </DCSection>
+  );
+}
 
-      <DCSection id="found-space" title="Spacing / Radius" subtitle="SPACING = 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 px。RADIUS = sm 4 / md 8 / lg 12 / full 9999。">
-        <DCArtboard id="spacing" label="SPACING · 4-multiple baseline" width={520} height={520}>
-          <SpacingCard/>
-        </DCArtboard>
-        <DCArtboard id="radius" label="RADIUS" width={520} height={420}>
-          <RadiusCard/>
-        </DCArtboard>
-      </DCSection>
+function FoundationsColorsSection() {
+  return (
+    <DCSection id="found-colors" title="Colors" subtitle="Classic Purple（預設）+ Ocean Teal（opt-in），共用 neutral 與 status 色階。HTML 卡片為 2026-05-18 快照；JSX artboard 即時讀 PALETTE / THEMES。" direction="column">
+      <DCArtboard id="colors-chart-series" label="Chart series" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/colors/chart-series.html"/>
+      </DCArtboard>
+      <DCArtboard id="colors-neutrals-html" label="Neutrals (snapshot)" width={700} height={320}>
+        <HtmlCard src="10_foundations/cards/colors/neutrals.html"/>
+      </DCArtboard>
+      <DCArtboard id="colors-primary-purple" label="Primary · Classic Purple" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/colors/primary-classic-purple.html"/>
+      </DCArtboard>
+      <DCArtboard id="colors-primary-teal" label="Primary · Ocean Teal" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/colors/primary-ocean-teal.html"/>
+      </DCArtboard>
+      <DCArtboard id="colors-surfaces-status" label="Surfaces & status" width={700} height={360}>
+        <HtmlCard src="10_foundations/cards/colors/surfaces-status.html"/>
+      </DCArtboard>
+      <DCArtboard id="colors-text-ink" label="Text ink scale" width={700} height={320}>
+        <HtmlCard src="10_foundations/cards/colors/text-ink-scale.html"/>
+      </DCArtboard>
+      <DCArtboard id="palette-theme1" label="Theme 1 · 經典紫 (live)" width={420} height={520}>
+        <PaletteCard theme={THEME_1}/>
+      </DCArtboard>
+      <DCArtboard id="palette-theme2" label="Theme 2 · 海洋藍 (live)" width={420} height={520}>
+        <PaletteCard theme={THEME_2}/>
+      </DCArtboard>
+      <DCArtboard id="palette-neutrals" label="Neutrals · PALETTE.neutral (live)" width={420} height={580}>
+        <NeutralsCard/>
+      </DCArtboard>
+      <DCArtboard id="palette-semantic" label="Semantic · Status / Surfaces / Text (live)" width={420} height={680}>
+        <SemanticCard theme={THEME_1}/>
+      </DCArtboard>
+    </DCSection>
+  );
+}
 
-      <DCSection id="found-list-tokens" title="LIST_TOKENS · 列表 token 速查" subtitle="iOS 風格 grouped list 的視覺值，影響 ListItem / GroupCard / SelectionListItem / ListSection。">
-        <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={680}>
-          <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS"/>
-        </DCArtboard>
-        <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList 專用" width={520} height={620}>
-          <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS"/>
-        </DCArtboard>
-        <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={420}>
-          <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS"/>
-        </DCArtboard>
-      </DCSection>
+function FoundationsSpacingSection() {
+  return (
+    <DCSection id="found-spacing" title="Spacing" subtitle="SPACING = 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64。RADIUS = sm 4 / md 8 / lg 12 / full 9999。底下含 LIST_TOKENS、TX_LIST_TOKENS、SEARCH_BAR_TOKENS、Motion 等 grouped list 與動畫 token 速查表。" direction="column">
+      <DCArtboard id="spacing-elevation" label="Elevation" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/spacing/elevation.html"/>
+      </DCArtboard>
+      <DCArtboard id="spacing-radius-html" label="Radius (snapshot)" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/spacing/radius.html"/>
+      </DCArtboard>
+      <DCArtboard id="spacing-scale-html" label="Spacing scale (snapshot)" width={700} height={320}>
+        <HtmlCard src="10_foundations/cards/spacing/spacing-scale.html"/>
+      </DCArtboard>
+      <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
+        <SpacingCard/>
+      </DCArtboard>
+      <DCArtboard id="radius-live" label="RADIUS (live)" width={520} height={420}>
+        <RadiusCard/>
+      </DCArtboard>
+      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={680}>
+        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS"/>
+      </DCArtboard>
+      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList 專用" width={520} height={620}>
+        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS"/>
+      </DCArtboard>
+      <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={420}>
+        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS"/>
+      </DCArtboard>
+      <DCArtboard id="motion-list-empty" label="LIST_EMPTY_TRANSITION (motion)" width={520} height={120}>
+        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION"/>
+      </DCArtboard>
+    </DCSection>
+  );
+}
 
-      <DCSection id="found-icon" title="Icons · IconDefinition.json" subtitle={`完整 ${ICON_LIBRARY.length} 個 icon（impl 使用 MaterialCommunityIcons + AntDesign）。canvas 用自製 SVG 對應；命名直接使用 impl 真名（uniqueName）。`}>
-        <DCArtboard id="icon-account" label="account tag" width={520} height={580}>
-          <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('account'))}/>
-        </DCArtboard>
-        <DCArtboard id="icon-category" label="category tag" width={520} height={760}>
-          <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('category'))}/>
-        </DCArtboard>
-        <DCArtboard id="icon-ui" label="UI 元素（MCI / FontAwesome / SF Symbols）" width={520} height={680}>
-          <UIGlyphWallCard/>
-        </DCArtboard>
-        <DCArtboard id="action-icon-map" label="ACTION_ICON_MAP · header 動作 → SF Symbol" width={520} height={460}>
-          <ActionIconMapCard/>
-        </DCArtboard>
-      </DCSection>
-
-      <DCSection id="found-motion" title="Motion · 動畫 token 速查" subtitle="集中管理跨元件的動畫時長與曲線。對應 ListEmptyTransition、TxList morph、其他 crossfade 動畫。">
-        <DCArtboard id="motion-list-empty" label="LIST_EMPTY_TRANSITION" width={520} height={120}>
-          <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION"/>
-        </DCArtboard>
-      </DCSection>
-
-      <DCSection id="found-glass" title="Glass / Effects" subtitle="GlassView 對齊 src/components/GlassView.tsx。iOS 用 BlurView blurAmount 28 blurType light，canvas 用 CSS backdrop-filter 模擬。">
-        <DCArtboard id="glass-card" label="GlassView · pill / rounded" width={520} height={420}>
-          <GlassDemoCard/>
-        </DCArtboard>
-      </DCSection>
-    </>
+function FoundationsBrandSection() {
+  return (
+    <DCSection id="found-brand" title="Brand" subtitle="品牌資產：logo / 文字 lockup、貨幣格式、icon set、語氣樣本。底下接 IconDefinition.json 的完整 icon wall（account / category / UI / ACTION_ICON_MAP）。" direction="column">
+      <DCArtboard id="brand-mark" label="Brand mark" width={700} height={280}>
+        <HtmlCard src="10_foundations/cards/brand/brand-mark.html"/>
+      </DCArtboard>
+      <DCArtboard id="brand-currency" label="Currency formatting" width={700} height={320}>
+        <HtmlCard src="10_foundations/cards/brand/currency-formatting.html"/>
+      </DCArtboard>
+      <DCArtboard id="brand-icon-set" label="Icon set (snapshot)" width={700} height={360}>
+        <HtmlCard src="10_foundations/cards/brand/icon-set.html"/>
+      </DCArtboard>
+      <DCArtboard id="brand-voice" label="Voice samples" width={700} height={360}>
+        <HtmlCard src="10_foundations/cards/brand/voice-samples.html"/>
+      </DCArtboard>
+      <DCArtboard id="icon-account" label="IconDefinition · account tag (live)" width={520} height={580}>
+        <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('account'))}/>
+      </DCArtboard>
+      <DCArtboard id="icon-category" label="IconDefinition · category tag (live)" width={520} height={760}>
+        <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('category'))}/>
+      </DCArtboard>
+      <DCArtboard id="icon-ui" label="UI 元素 · MCI / FontAwesome / SF Symbols (live)" width={520} height={680}>
+        <UIGlyphWallCard/>
+      </DCArtboard>
+      <DCArtboard id="action-icon-map" label="ACTION_ICON_MAP · header 動作 → SF Symbol (live)" width={520} height={460}>
+        <ActionIconMapCard/>
+      </DCArtboard>
+    </DCSection>
   );
 }
 
@@ -392,4 +461,11 @@ function FoundLabel({ children, style }) {
   );
 }
 
-Object.assign(window, { FoundationsSection });
+Object.assign(window, {
+  HtmlCard,
+  FoundationsTypeSection,
+  FoundationsColorsSection,
+  FoundationsSpacingSection,
+  FoundationsBrandSection,
+  GlassDemoCard,
+});

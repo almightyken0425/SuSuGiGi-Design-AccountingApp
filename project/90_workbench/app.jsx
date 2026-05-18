@@ -1,8 +1,11 @@
 // ─────────────────────────────────────────────────────────────
 // App shell · 設計工作台 router
 //
-// 頂部 5 個 tab：
-//   #intro / #foundations / #components / #screens / #explorations
+// 頂部 4 個 tab：
+//   #intro / #foundations / #screens / #explorations
+//
+// Foundations 內含 5 個 sub-item（Type / Colors / Spacing / Components / Brand），
+// 對齊 claude.ai/design Design System tab 的結構。
 //
 // SCREEN_META 中央定義每個 screen 的：
 //   - title           NavBar 標題
@@ -448,12 +451,22 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
 // 選擇 screens 或 explorations 子項時，canvas 只 render 該子項，避免 canvas 過大。
 const VIEW_TABS = [
   { id: 'intro',        label: 'Intro' },
-  { id: 'foundations',  label: 'Foundations' },
-  { id: 'components',   label: 'Components' },
+  { id: 'foundations',  label: 'Foundations',  hasSubs: true },
   { id: 'screens',      label: 'Screens',      hasSubs: true },
   { id: 'explorations', label: 'Explorations', hasSubs: true },
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
+
+// Foundations topics — 5 個 sub-item，跟 claude.ai/design Design System tab 對齊。
+// 每個 sub-item 對應 foundations.jsx / components-showcase.jsx 註冊的 Section component；
+// 內部 DCSection 用 direction="column"，卡片由上往下垂直堆。
+const FOUNDATIONS_TOPICS = [
+  { id: 'type',       label: 'Type',       render: () => <FoundationsTypeSection/> },
+  { id: 'colors',     label: 'Colors',     render: () => <FoundationsColorsSection/> },
+  { id: 'spacing',    label: 'Spacing',    render: () => <FoundationsSpacingSection/> },
+  { id: 'components', label: 'Components', render: () => <FoundationsComponentsSection/> },
+  { id: 'brand',      label: 'Brand',      render: () => <FoundationsBrandSection/> },
+];
 
 // Explorations topics — 每個 entry 對應 50_explorations/<dir>/variants.jsx 註冊的 Section component
 const EXPLORATION_TOPICS = [
@@ -461,9 +474,11 @@ const EXPLORATION_TOPICS = [
   { id: 'surface-material',  label: 'Axis 2 · Surface & Material',        render: () => <SurfaceMaterialSection/> },
   { id: 'iconography',       label: 'Axis 3 · Iconography & Embellishment', render: () => <IconographySection/> },
   { id: 'personality',       label: 'Axis 4 · Personality (packaged)',    render: () => <PersonalityPackagedSection/> },
+  { id: 'transaction-editor', label: 'Transaction Editor',                render: () => <TransactionEditorSection/> },
 ];
 
 const subsFor = (view) => {
+  if (view === 'foundations')  return FOUNDATIONS_TOPICS.map(t => ({ id: t.id, label: t.label }));
   if (view === 'screens')      return SCREEN_GROUPS.map(g => ({ id: g.id, label: g.title }));
   if (view === 'explorations') return EXPLORATION_TOPICS.map(t => ({ id: t.id, label: t.label }));
   return null;
@@ -474,23 +489,25 @@ const defaultSubFor = (view) => {
   return subs && subs[0] ? subs[0].id : null;
 };
 
-// 舊 hash 別名（向後相容）
+// 舊 hash 別名（向後相容）— entry 可以選擇性帶 sub，沒帶就走 defaultSubFor。
 const LEGACY_HASH_ALIASES = {
-  'overview':   { view: 'screens' },
-  'flows':      { view: 'screens' },
-  'all':        { view: 'screens' },
-  'filter':     { view: 'screens' },
-  'tx-list':    { view: 'screens' },
-  'recurring':  { view: 'screens' },
-  'row-height': { view: 'screens' },
+  'overview':       { view: 'screens' },
+  'flows':          { view: 'screens' },
+  'all':            { view: 'screens' },
+  'filter':         { view: 'screens' },
+  'tx-list':        { view: 'screens' },
+  'recurring':      { view: 'screens' },
+  'row-height':     { view: 'screens' },
+  'design_system':  { view: 'foundations' },
+  'components':     { view: 'foundations', sub: 'components' },
 };
 
 function parseRoute() {
   const h = window.location.hash.replace('#', '');
   if (!h) return { view: 'intro', sub: null };
   if (LEGACY_HASH_ALIASES[h]) {
-    const v = LEGACY_HASH_ALIASES[h].view;
-    return { view: v, sub: defaultSubFor(v) };
+    const alias = LEGACY_HASH_ALIASES[h];
+    return { view: alias.view, sub: alias.sub ?? defaultSubFor(alias.view) };
   }
   const [view, sub] = h.split('/');
   if (!VALID_VIEWS.includes(view)) return { view: 'intro', sub: null };
@@ -620,8 +637,9 @@ function App() {
       <SideTOC view={view} sub={sub} onNavigate={navigate}/>
       <DesignCanvas>
         {view === 'intro'        && <IntroSection/>}
-        {view === 'foundations'  && <FoundationsSection/>}
-        {view === 'components'   && <ComponentsShowcaseSection/>}
+        {view === 'foundations' && FOUNDATIONS_TOPICS.filter(t => t.id === sub).map(t => (
+          <React.Fragment key={t.id}>{t.render()}</React.Fragment>
+        ))}
         {view === 'screens' && SCREEN_GROUPS.filter(g => g.id === sub).map(group => (
           <DCSection key={group.id} id={`screens-${group.id}`} title={group.title} subtitle={group.subtitle}>
             {group.screens.map(s => (
@@ -641,6 +659,6 @@ function App() {
   );
 }
 
-Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, EXPLORATION_TOPICS });
+Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, FOUNDATIONS_TOPICS, EXPLORATION_TOPICS });
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);

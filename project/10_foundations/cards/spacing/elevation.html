@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../_chrome.css"/>
+<style>
+  html,body{height:100%;margin:0;}
+  body{padding:24px;background:var(--surface);overflow:hidden;font-family:var(--font-sans);color:var(--ink);}
+  .num{font-variant-numeric:tabular-nums;}
+  .mono{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);}
+  .row{display:flex;gap:12px;align-items:center;}
+  .col{display:flex;flex-direction:column;gap:8px;}
+</style></head><body>
+  <div class="col" style="gap:14px">
+    <div class="t-label">Elevation · the system has almost no shadows</div>
+    <div class="row" style="gap:16px;flex-wrap:wrap">
+      <div class="col" style="gap:8px;align-items:center;flex:1">
+        <div style="width:100%;height:90px;background:#fff;border:1px solid rgba(60,60,67,.10);border-radius:14px"></div>
+        <div class="mono"><div style="color:var(--ink);font-weight:500">card</div><div>1px hairline · no shadow</div></div>
+      </div>
+      <div class="col" style="gap:8px;align-items:center;flex:1">
+        <div style="width:100%;height:90px;background:#fff;border:1.5px solid var(--p-500);border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,0.08)"></div>
+        <div class="mono"><div style="color:var(--ink);font-weight:500">active FocusCard</div><div>1.5px primary · 0 1 2 .08</div></div>
+      </div>
+      <div class="col" style="gap:8px;align-items:center;flex:1">
+        <div style="width:100%;height:90px;background:rgba(255,255,255,.55);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.85);border-radius:9999px;box-shadow:0 4px 12px rgba(0,0,0,.10);background-image:linear-gradient(135deg,#4323a0,#c0b6df);"></div>
+        <div class="mono"><div style="color:var(--ink);font-weight:500">glass pill</div><div>blur(28) · 0 4 12 .10</div></div>
+      </div>
+    </div>
+  </div>
+</body></html>

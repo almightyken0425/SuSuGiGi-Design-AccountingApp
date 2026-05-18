@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../_chrome.css"/>
+<style>
+  html,body{height:100%;margin:0;}
+  body{padding:24px;background:var(--surface);overflow:hidden;font-family:var(--font-sans);color:var(--ink);}
+  .num{font-variant-numeric:tabular-nums;}
+  .mono{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);}
+  .row{display:flex;gap:12px;align-items:center;}
+  .col{display:flex;flex-direction:column;gap:8px;}
+</style></head><body>
+  <div class="col" style="gap:8px">
+    <div class="t-label">Text ink scale</div>
+    <div class="card" style="background:var(--surface);border:1px solid var(--hairline);border-radius:14px;padding:18px 20px">
+      <div style="font-size:17px;font-weight:300;color:var(--ink);letter-spacing:-0.43px">ink — primary text · 飲食 / 交通 / 購物</div>
+      <div style="font-size:13px;color:var(--ink-2);margin-top:6px">ink-2 — secondary text · 玉山活儲</div>
+      <div style="font-size:12px;color:var(--ink-3);margin-top:6px">ink-3 — disabled / placeholder · 尚無交易紀錄</div>
+      <div style="height:0.5px;background:var(--hairline);margin:12px 0"></div>
+      <div class="mono">ink #212121 (n900) · ink-2 #757575 (n600) · ink-3 #BDBDBD (n400) · divider #E0E0E0 (n300) · hairline rgba(60,60,67,.10)</div>
+    </div>
+  </div>
+</body></html>

@@ -328,9 +328,14 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// DCSection — editable title + h-row of artboards in persisted order
+// DCSection — editable title + artboards in persisted order
+//
+// direction="row"（預設）：artboards 水平擺，grip 可拖拉重排（X 軸）。
+//   Screens / Explorations tab 用這個 — 同主題不同 variants 並陳對比。
+// direction="column"：artboards 垂直堆，grip 停用（順序固定）。
+//   Foundations tab 用這個 — 一頁文件式由上往下閱讀。
 // ─────────────────────────────────────────────────────────────
-function DCSection({ id, title, subtitle, children, gap = 48 }) {
+function DCSection({ id, title, subtitle, children, gap = 48, direction = 'row' }) {
   const ctx = React.useContext(DCCtx);
   const sid = id ?? title;
   const all = React.Children.toArray(children);
@@ -345,6 +350,7 @@ function DCSection({ id, title, subtitle, children, gap = 48 }) {
   }, [sec.order, srcOrder.join('|')]);
 
   const byId = Object.fromEntries(artboards.map((a) => [a.props.id ?? a.props.label, a]));
+  const isCol = direction === 'column';
 
   return (
     <div data-dc-section={sid} style={{ marginBottom: 80, position: 'relative' }}>
@@ -354,10 +360,17 @@ function DCSection({ id, title, subtitle, children, gap = 48 }) {
           style={{ fontSize: 28, fontWeight: 600, color: DC.title, letterSpacing: -0.4, marginBottom: 6, display: 'inline-block' }} />
         {subtitle && <div style={{ fontSize: 16, color: DC.subtitle }}>{subtitle}</div>}
       </div>
-      <div style={{ display: 'flex', gap, padding: '0 60px', alignItems: 'flex-start', width: 'max-content' }}>
+      <div style={{
+        display: 'flex',
+        flexDirection: isCol ? 'column' : 'row',
+        gap, padding: '0 60px',
+        alignItems: 'flex-start',
+        width: isCol ? 'fit-content' : 'max-content',
+      }}>
         {order.map((k) => (
           <DCArtboardFrame key={k} sectionId={sid} artboard={byId[k]} order={order}
             label={(sec.labels || {})[k] ?? byId[k].props.label}
+            draggable={!isCol}
             onRename={(v) => ctx && ctx.patchSection(sid, (x) => ({ labels: { ...x.labels, [k]: v } }))}
             onReorder={(next) => ctx && ctx.patchSection(sid, { order: next })}
             onFocus={() => ctx && ctx.setFocus(`${sid}/${k}`)} />
@@ -371,7 +384,7 @@ function DCSection({ id, title, subtitle, children, gap = 48 }) {
 // DCArtboard — marker; rendered by DCArtboardFrame via DCSection.
 function DCArtboard() { return null; }
 
-function DCArtboardFrame({ sectionId, artboard, label, order, onRename, onReorder, onFocus }) {
+function DCArtboardFrame({ sectionId, artboard, label, order, draggable = true, onRename, onReorder, onFocus }) {
   const { id: rawId, label: rawLabel, width = 260, height = 480, children, style = {} } = artboard.props;
   const id = rawId ?? rawLabel;
   const ref = React.useRef(null);
@@ -441,9 +454,11 @@ function DCArtboardFrame({ sectionId, artboard, label, order, onRename, onReorde
   return (
     <div ref={ref} data-dc-slot={id} style={{ position: 'relative', flexShrink: 0 }}>
       <div className="dc-labelrow" style={{ position: 'absolute', bottom: '100%', left: -4, marginBottom: 4, color: DC.label }}>
-        <div className="dc-grip" onPointerDown={onGripDown} title="Drag to reorder">
-          <svg width="9" height="13" viewBox="0 0 9 13" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="7" cy="2" r="1.1"/><circle cx="2" cy="6.5" r="1.1"/><circle cx="7" cy="6.5" r="1.1"/><circle cx="2" cy="11" r="1.1"/><circle cx="7" cy="11" r="1.1"/></svg>
-        </div>
+        {draggable && (
+          <div className="dc-grip" onPointerDown={onGripDown} title="Drag to reorder">
+            <svg width="9" height="13" viewBox="0 0 9 13" fill="currentColor"><circle cx="2" cy="2" r="1.1"/><circle cx="7" cy="2" r="1.1"/><circle cx="2" cy="6.5" r="1.1"/><circle cx="7" cy="6.5" r="1.1"/><circle cx="2" cy="11" r="1.1"/><circle cx="7" cy="11" r="1.1"/></svg>
+          </div>
+        )}
         <div className="dc-labeltext" onClick={onFocus} title="Click to focus">
           <DCEditable value={label} onChange={onRename} onClick={(e) => e.stopPropagation()}
             style={{ fontSize: 15, fontWeight: 500, color: DC.label, lineHeight: 1 }} />

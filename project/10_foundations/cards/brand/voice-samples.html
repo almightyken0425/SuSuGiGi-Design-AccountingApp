@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../_chrome.css"/>
+<style>
+  html,body{height:100%;margin:0;}
+  body{padding:24px;background:var(--bg);overflow:hidden;font-family:var(--font-sans);color:var(--ink);}
+  .vcard{padding:14px 16px;background:var(--surface);border:1px solid var(--hairline);border-radius:14px;display:flex;flex-direction:column;gap:10px;}
+  .row{display:flex;align-items:flex-start;gap:8px;}
+  .badge{font-size:11px;line-height:1;padding:3px 5px;border-radius:4px;font-weight:500;flex-shrink:0;margin-top:2px;font-family:var(--font-mono);}
+  .ok{background:#E8F5E9;color:#2E7D32;}
+  .bad{background:#FFEBEE;color:#C62828;}
+  .copy{font-size:15px;color:var(--ink);line-height:1.4;}
+  .copy-bad{color:var(--ink-2);text-decoration:line-through;text-decoration-color:rgba(198,40,40,0.4);text-decoration-thickness:1px;}
+  .ctx{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.8px;}
+</style></head><body>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div class="t-label">Voice samples · ✓ on-brand vs ✗ off-brand copy</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="vcard">
+        <div class="ctx">empty state</div>
+        <div class="row"><span class="badge ok">✓</span><span class="copy">尚無交易紀錄</span></div>
+        <div class="row"><span class="badge bad">✗</span><span class="copy copy-bad">還沒有任何記錄喔！快來新增第一筆吧 🎉</span></div>
+      </div>
+      <div class="vcard">
+        <div class="ctx">undo toast</div>
+        <div class="row"><span class="badge ok">✓</span><span class="copy">已刪除</span></div>
+        <div class="row"><span class="badge bad">✗</span><span class="copy copy-bad">成功刪除一筆交易！</span></div>
+      </div>
+      <div class="vcard">
+        <div class="ctx">loading</div>
+        <div class="row"><span class="badge ok">✓</span><span class="copy">載入中...</span></div>
+        <div class="row"><span class="badge bad">✗</span><span class="copy copy-bad">正在為您載入資料，請稍候</span></div>
+      </div>
+      <div class="vcard">
+        <div class="ctx">row fallback</div>
+        <div class="row"><span class="badge ok">✓</span><span class="copy">無備註</span></div>
+        <div class="row"><span class="badge bad">✗</span><span class="copy copy-bad">（這筆交易沒有備註）</span></div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--ink-2);line-height:1.55">
+      Quiet &amp; operational. The product is a tool, not a companion.
+      <b>Off-brand patterns</b> to avoid: exclamations, emoji, "您" / "你的", nudges to act, parenthetical narration, congratulatory framing.
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../_chrome.css"/>
+<style>
+  html,body{height:100%;margin:0;}
+  body{padding:24px;background:var(--surface);overflow:hidden;font-family:var(--font-sans);color:var(--ink);}
+  .num{font-variant-numeric:tabular-nums;}
+  .mono{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);}
+  .row{display:flex;gap:12px;align-items:center;}
+  .col{display:flex;flex-direction:column;gap:8px;}
+</style></head><body>
+  <div class="col" style="gap:14px">
+    <div class="t-label">Radius</div>
+    <div class="row" style="gap:24px;align-items:flex-end">
+      
+        <div class="col" style="gap:8px;align-items:center">
+          <div style="width:80px;height:80px;background:var(--p-100);border:1.5px solid var(--p-500);border-radius:4px"></div>
+          <div class="mono"><div style="color:var(--ink);font-weight:500">sm</div><div>4px</div></div>
+        </div>
+        <div class="col" style="gap:8px;align-items:center">
+          <div style="width:80px;height:80px;background:var(--p-100);border:1.5px solid var(--p-500);border-radius:8px"></div>
+          <div class="mono"><div style="color:var(--ink);font-weight:500">md</div><div>8px</div></div>
+        </div>
+        <div class="col" style="gap:8px;align-items:center">
+          <div style="width:80px;height:80px;background:var(--p-100);border:1.5px solid var(--p-500);border-radius:12px"></div>
+          <div class="mono"><div style="color:var(--ink);font-weight:500">lg</div><div>12px</div></div>
+        </div>
+        <div class="col" style="gap:8px;align-items:center">
+          <div style="width:80px;height:80px;background:var(--p-100);border:1.5px solid var(--p-500);border-radius:14px"></div>
+          <div class="mono"><div style="color:var(--ink);font-weight:500">card</div><div>14px</div><div style="color:var(--ink-3);font-size:9px">GROUP_CARD_RADIUS</div></div>
+        </div>
+        <div class="col" style="gap:8px;align-items:center">
+          <div style="width:80px;height:80px;background:var(--p-100);border:1.5px solid var(--p-500);border-radius:9999px"></div>
+          <div class="mono"><div style="color:var(--ink);font-weight:500">full</div><div>full</div></div>
+        </div>
+    </div>
+  </div>
+</body></html>

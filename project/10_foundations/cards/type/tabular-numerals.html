@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../_chrome.css"/>
+<style>
+  html,body{height:100%;margin:0;}
+  body{padding:24px;background:var(--surface);overflow:hidden;font-family:var(--font-sans);color:var(--ink);}
+  .num{font-variant-numeric:tabular-nums;}
+  .mono{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);}
+  .row{display:flex;gap:12px;align-items:center;}
+  .col{display:flex;flex-direction:column;gap:8px;}
+</style></head><body>
+  <div class="col" style="gap:16px">
+    <div class="mono">font-variant-numeric: tabular-nums — used on every amount, balance, percentage, date.</div>
+    <table style="border-collapse:collapse;font-size:16px;font-weight:500">
+      <tr style="border-bottom:0.5px solid var(--hairline)"><td style="padding:8px 16px 8px 0;color:var(--ink-2);font-weight:400;font-size:13px">balance</td><td class="num" style="text-align:right;padding:8px 0">NT$128,450</td></tr>
+      <tr style="border-bottom:0.5px solid var(--hairline)"><td style="padding:8px 16px 8px 0;color:var(--ink-2);font-weight:400;font-size:13px">expense</td><td class="num" style="text-align:right;padding:8px 0;color:var(--ink)">-NT$1,480</td></tr>
+      <tr style="border-bottom:0.5px solid var(--hairline)"><td style="padding:8px 16px 8px 0;color:var(--ink-2);font-weight:400;font-size:13px">income</td><td class="num" style="text-align:right;padding:8px 0">NT$68,000</td></tr>
+      <tr><td style="padding:8px 16px 8px 0;color:var(--ink-2);font-weight:400;font-size:13px">converted</td><td class="num" style="text-align:right;padding:8px 0;color:var(--ink-2);font-size:12px;font-weight:400">≈ NT$480</td></tr>
+    </table>
+    <div style="font-size:11px;color:var(--ink-3)">Currency symbol prefixes the amount: NT$ · US$ · ¥ · €. Negative sign as <code>-</code>, never parentheses.</div>
+  </div>
+</body></html>

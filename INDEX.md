@@ -2,21 +2,20 @@
 
 這份 bundle 是 **演進中的設計庫**，不是歷史快照。設計會持續換口味、加新主題、淘汰舊方案，這份結構就是為了承載這種演進。
 
-> 入口：在瀏覽器開 `project/SuSuGiGi.html`，頂部 5 個 tab 切換各分頁。
+> 入口：在瀏覽器開 `project/SuSuGiGi.html`，頂部 4 個 tab 切換各分頁。
 >
 > 第一次打開請從 **Intro** 開始。本 repo 角色說明見 `CLAUDE.md` 與 `README.md`。
 
 ---
 
-## 為什麼分 5 個 tab
+## 為什麼分 4 個 tab
 
-設計檔案需要承載多種不同問題的視角，硬塞在同一頁會混亂。所以拆 5 個 tab，**每個 tab 回答一種問題**：
+設計檔案需要承載多種不同問題的視角，硬塞在同一頁會混亂。所以拆 4 個 tab，**每個 tab 回答一種問題**：
 
 | Tab | 它回答什麼問題 | 目錄 |
 |---|---|---|
 | Intro        | 「這份檔案是什麼？怎麼用？」 | `project/00_intro/` |
-| Foundations  | 「顏色、字體、間距、圓角的標準值？」 | `project/10_foundations/` |
-| Components   | 「按鈕、列、卡片元件樣本」 | `project/20_components/` |
+| Foundations  | 「品牌零件——字、顏色、間距、元件、品牌資產」。5 個 sub-item：Type / Colors / Spacing / Components / Brand，全部用垂直 layout 一路往下讀。Components sub-item 內又自然分成 List / Navigation / Chart / Input 四個 family 區塊垂直堆。 | `project/10_foundations/` + `project/20_components/components-showcase.jsx` |
 | Screens      | 「每個畫面長什麼樣？空 / 載入 / 錯誤狀態？想鳥瞰用畫布縮放。」 | `project/30_screens/` |
 | Explorations | 「這個設計問題我想了好幾種做法」（並陳） | `project/50_explorations/` |
 
@@ -68,20 +67,31 @@ project/
 ├── 00_intro/intro.jsx             Intro 分頁
 ├── 10_foundations/
 │   ├── data.jsx                   TOKENS / SPACING / TYPOGRAPHY / ICON_LIBRARY
-│   └── foundations.jsx            視覺化展示
+│   ├── foundations.jsx            4 個 Section（Type / Colors / Spacing / Brand，皆 direction="column"）
+│   └── cards/                     2026-05-18 claude.ai/design 匯出的快照卡片
+│       ├── _chrome.css            卡片共用視覺底盤（**非** data.jsx 的 token mirror）
+│       ├── type/                  Tabular numerals / Type roles / Type scale / Type weights
+│       ├── colors/                Chart series / Neutrals / Primary purple / Primary teal / Surfaces & status / Text ink scale
+│       ├── spacing/               Elevation / Radius / Spacing scale
+│       ├── components/            Buttons / CalculatorKeypad / DonutChart / Empty state / FocusCard pair / Glass pill / ListItem (+ press state) / SelectionListItem / Switch / Transaction row
+│       └── brand/                 Brand mark / Currency formatting / Icon set / Voice samples
 ├── 20_components/
-│   ├── components.jsx             元件實作
-│   └── components-showcase.jsx    視覺化展示
+│   ├── components.jsx             元件實作（被 showcase 與 screens 共用）
+│   └── components-showcase.jsx    4 個家族 showcase（List / Navigation / Chart / Input），由 `FoundationsComponentsSection` 串在 Foundations > Components 子項內
 ├── 30_screens/screens.jsx         所有正式畫面（impl 對齊）
 ├── 50_explorations/
 │   ├── axis_color_and_mood/                Axis 1 · 配色與情緒（3 個 HomeScreen 並陳）
 │   ├── axis_surface_material/              Axis 2 · 質感與材質（3 個 HomeScreen 並陳）
 │   ├── axis_iconography_embellishment/     Axis 3 · Icon 風格與裝飾（3 個 HomeScreen 並陳）
-│   └── axis_personality_packaged/          Axis 4 · 整體性格 packaged（3 個 HomeScreen 並陳）
+│   ├── axis_personality_packaged/          Axis 4 · 整體性格 packaged（3 個 HomeScreen 並陳）
+│   └── transaction_editor/                 Editor 提案探索（observations / proposals / merged，仍屬探索層）
 ├── 90_workbench/
 │   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame
 │   ├── design-canvas.jsx          DesignCanvas / DCSection / DCArtboard
 │   └── ios-frame.jsx              IOSDevice 邊框
+├── assets/
+│   ├── logo.svg                   品牌 monogram（claude.ai/design 2026-05-18 產出）
+│   └── wordmark.svg               logo + 文字 lockup
 └── 99_deprecated/                 已淘汰
 ```
 
@@ -127,7 +137,6 @@ project/
 |---|---|
 | `#intro` | Intro |
 | `#foundations` | Foundations |
-| `#components` | Components |
 | `#screens` | Screens |
 | `#explorations` | Explorations |
 
@@ -137,3 +146,5 @@ project/
 - `#flows` → `#screens`（Flows tab 已移除）
 - `#all` → `#screens`
 - `#filter` / `#tx-list` / `#recurring` / `#row-height` → `#screens`
+- `#design_system` → `#foundations`（Design System tab 已併入 Foundations）
+- `#components` → `#foundations/components`（Components tab 已併入 Foundations 的 Components 子項）

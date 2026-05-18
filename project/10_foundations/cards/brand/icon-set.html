@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="../_chrome.css"/>
+<style>
+  html,body{height:100%;margin:0;}
+  body{padding:24px;background:var(--surface);overflow:hidden;font-family:var(--font-sans);color:var(--ink);}
+  .group-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:6px;}
+  .icon-tile{display:flex;flex-direction:column;gap:4px;align-items:center;padding:8px 4px;background:var(--surface-2);border-radius:8px;}
+  .icon-label{font-family:var(--font-mono);font-size:8.5px;text-align:center;color:var(--ink-2);word-break:break-all;}
+</style></head><body>
+  <div style="display:flex;flex-direction:column;gap:18px">
+    <div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
+        <div class="t-label" style="margin:0">UI / system glyphs</div>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-3)">used in chrome — navbar, modals, FAB, search, calculator</span>
+      </div>
+      <div class="group-grid" style="color:var(--ink)">
+        <div class="icon-tile"><img src="../assets/icons/chevron-left.svg" width="22" height="22"/><span class="icon-label">chevron-left</span></div>
+        <div class="icon-tile"><img src="../assets/icons/chevron-right.svg" width="22" height="22"/><span class="icon-label">chevron-right</span></div>
+        <div class="icon-tile"><img src="../assets/icons/chevron-up.svg" width="22" height="22"/><span class="icon-label">chevron-up</span></div>
+        <div class="icon-tile"><img src="../assets/icons/chevron-down.svg" width="22" height="22"/><span class="icon-label">chevron-down</span></div>
+        <div class="icon-tile"><img src="../assets/icons/check.svg" width="22" height="22"/><span class="icon-label">check</span></div>
+        <div class="icon-tile"><img src="../assets/icons/x.svg" width="22" height="22"/><span class="icon-label">x · close</span></div>
+        <div class="icon-tile"><img src="../assets/icons/plus.svg" width="22" height="22"/><span class="icon-label">plus</span></div>
+        <div class="icon-tile"><img src="../assets/icons/minus.svg" width="22" height="22"/><span class="icon-label">minus</span></div>
+        <div class="icon-tile"><img src="../assets/icons/exchange.svg" width="22" height="22"/><span class="icon-label">exchange</span></div>
+        <div class="icon-tile"><img src="../assets/icons/search.svg" width="22" height="22"/><span class="icon-label">search</span></div>
+        <div class="icon-tile"><img src="../assets/icons/filter.svg" width="22" height="22"/><span class="icon-label">filter</span></div>
+        <div class="icon-tile"><img src="../assets/icons/gear.svg" width="22" height="22"/><span class="icon-label">gear</span></div>
+        <div class="icon-tile"><img src="../assets/icons/calendar.svg" width="22" height="22"/><span class="icon-label">calendar</span></div>
+        <div class="icon-tile"><img src="../assets/icons/tag.svg" width="22" height="22"/><span class="icon-label">tag</span></div>
+        <div class="icon-tile"><img src="../assets/icons/repeat.svg" width="22" height="22"/><span class="icon-label">repeat</span></div>
+        <div class="icon-tile"><img src="../assets/icons/tab-home.svg" width="22" height="22"/><span class="icon-label">tab-home</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
+        <div class="t-label" style="margin:0">Category / account glyphs</div>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-3)">labeled by uniqueName · 43 total in IconDefinition.json; 13 of the most-used shown</span>
+      </div>
+      <div class="group-grid" style="color:var(--ink)">
+        <div class="icon-tile"><img src="../assets/icons/food.svg" width="22" height="22"/><span class="icon-label">food</span></div>
+        <div class="icon-tile"><img src="../assets/icons/bus.svg" width="22" height="22"/><span class="icon-label">bus</span></div>
+        <div class="icon-tile"><img src="../assets/icons/cart.svg" width="22" height="22"/><span class="icon-label">cart</span></div>
+        <div class="icon-tile"><img src="../assets/icons/movie.svg" width="22" height="22"/><span class="icon-label">movie</span></div>
+        <div class="icon-tile"><img src="../assets/icons/house.svg" width="22" height="22"/><span class="icon-label">house</span></div>
+        <div class="icon-tile"><img src="../assets/icons/hospital.svg" width="22" height="22"/><span class="icon-label">hospital</span></div>
+        <div class="icon-tile"><img src="../assets/icons/school.svg" width="22" height="22"/><span class="icon-label">school</span></div>
+        <div class="icon-tile"><img src="../assets/icons/star.svg" width="22" height="22"/><span class="icon-label">star · gift</span></div>
+        <div class="icon-tile"><img src="../assets/icons/cash.svg" width="22" height="22"/><span class="icon-label">cash · salary</span></div>
+        <div class="icon-tile"><img src="../assets/icons/chart.svg" width="22" height="22"/><span class="icon-label">chart · invest</span></div>
+        <div class="icon-tile"><img src="../assets/icons/bank.svg" width="22" height="22"/><span class="icon-label">bank</span></div>
+        <div class="icon-tile"><img src="../assets/icons/card.svg" width="22" height="22"/><span class="icon-label">card</span></div>
+        <div class="icon-tile"><img src="../assets/icons/wallet.svg" width="22" height="22"/><span class="icon-label">wallet</span></div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--ink-2);line-height:1.5">
+      All glyphs: 16×16 viewBox · <code>currentColor</code> stroke · default <code>stroke-width: 2</code> · rounded caps + joins.
+      In production these come from MaterialCommunityIcons + AntDesign + SF Symbols + FontAwesome; the DS ships hand-rolled SVG copies in <code>assets/icons/</code> for HTML use.
+    </div>
+  </div>
+</body></html>
