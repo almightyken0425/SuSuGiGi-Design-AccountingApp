@@ -184,6 +184,30 @@ const SEARCH_TOKENS = SEARCH_BAR_TOKENS;
 const BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BAR_TOKENS.PADDING_VERTICAL * 2;
 
 // ─────────────────────────────────────────────────────────────
+// ACTION_ICON_MAP — header 動作 → SF Symbol 對應
+// （與 ICON_LIBRARY 並列；ICON_LIBRARY 是自製/MaterialCommunity 圖示，
+//  header action 使用系統 SF Symbol 達成 iOS 原生外觀）
+// ─────────────────────────────────────────────────────────────
+const ACTION_ICON_MAP = {
+  back:    { source: 'native', symbol: null,                           note: '原生 chevron，不自訂' },
+  close:   { source: 'sf',     symbol: 'xmark',                        note: 'Modal 關閉動作' },
+  done:    { source: 'sf',     symbol: 'checkmark',                    note: 'Modal 完成動作' },
+  add:     { source: 'sf',     symbol: 'plus',                         note: '新增動作' },
+  merge:   { source: 'sf',     symbol: 'arrow.triangle.merge',         note: '合併動作' },
+  settings:{ source: 'sf',     symbol: 'gearshape',                    note: '設定入口' },
+  search:  { source: 'sf',     symbol: 'magnifyingglass',              note: '搜尋入口' },
+  filter:  { source: 'sf',     symbol: 'line.3.horizontal.decrease',   note: '篩選入口' },
+};
+
+// ─────────────────────────────────────────────────────────────
+// LIST_EMPTY_TRANSITION — 列表空狀態切換動畫
+// （ListEmptyTransition crossfade 兩態互換）
+// ─────────────────────────────────────────────────────────────
+const LIST_EMPTY_TRANSITION = {
+  DURATION_MS: 220,
+};
+
+// ─────────────────────────────────────────────────────────────
 // IconDefinition.json — 完整 43 個 icon（對齊 impl）
 // ─────────────────────────────────────────────────────────────
 const ICON_LIBRARY = [
@@ -348,6 +372,7 @@ Object.assign(window, {
   SPACING, RADIUS,
   LIST_TOKENS, TX_LIST_TOKENS, TX_TOKENS,
   SEARCH_BAR_TOKENS, SEARCH_TOKENS, BOTTOM_SEARCH_BAR_TOTAL_HEIGHT,
+  ACTION_ICON_MAP, LIST_EMPTY_TRANSITION,
   ICON_LIBRARY, ICON_BY_ID,
   CATEGORIES, CAT_BY_ID, ACCOUNTS, ACC_BY_ID, TX,
   baseAmount, periodTotals, groupByDate, groupByCategory, pieData, fmt,

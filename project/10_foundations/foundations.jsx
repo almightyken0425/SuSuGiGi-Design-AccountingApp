@@ -61,6 +61,15 @@ function FoundationsSection() {
         <DCArtboard id="icon-ui" label="UI 元素（MCI / FontAwesome / SF Symbols）" width={520} height={680}>
           <UIGlyphWallCard/>
         </DCArtboard>
+        <DCArtboard id="action-icon-map" label="ACTION_ICON_MAP · header 動作 → SF Symbol" width={520} height={460}>
+          <ActionIconMapCard/>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="found-motion" title="Motion · 動畫 token 速查" subtitle="集中管理跨元件的動畫時長與曲線。對應 ListEmptyTransition、TxList morph、其他 crossfade 動畫。">
+        <DCArtboard id="motion-list-empty" label="LIST_EMPTY_TRANSITION" width={520} height={120}>
+          <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION"/>
+        </DCArtboard>
       </DCSection>
 
       <DCSection id="found-glass" title="Glass / Effects" subtitle="GlassView 對齊 src/components/GlassView.tsx。iOS 用 BlurView blurAmount 28 blurType light，canvas 用 CSS backdrop-filter 模擬。">
@@ -220,6 +229,26 @@ function RadiusCard() {
 }
 
 // ─── TokenTableCard ───────────────────────────────────────
+function ActionIconMapCard() {
+  const entries = Object.entries(ACTION_ICON_MAP);
+  return (
+    <FoundCard>
+      <FoundLabel>ACTION_ICON_MAP · header 動作 → SF Symbol</FoundLabel>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(72px, auto) minmax(140px, auto) 1fr', columnGap: 12, rowGap: 6, paddingTop: 4 }}>
+        {entries.map(([action, def]) => (
+          <React.Fragment key={action}>
+            <code style={{ fontSize: 12, color: TOKENS.ink, lineHeight: 1.6 }}>{action}</code>
+            <code style={{ fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6 }}>
+              {def.source === 'native' ? 'native chevron' : `SF · ${def.symbol}`}
+            </code>
+            <span style={{ fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6 }}>{def.note}</span>
+          </React.Fragment>
+        ))}
+      </div>
+    </FoundCard>
+  );
+}
+
 function TokenTableCard({ tokens, title }) {
   const entries = Object.entries(tokens);
   return (
