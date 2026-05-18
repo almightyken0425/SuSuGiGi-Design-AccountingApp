@@ -7,6 +7,36 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <script>
+    // Scroll / zoom 互斥：開始一種手勢後 250ms 內，另一種手勢被忽略，避免 trackpad 兩指 scroll 誤觸 pinch zoom。
+    (function () {
+      var WINDOW_MS = 500;
+      var lastScrollAt = -Infinity;
+      var lastZoomAt = -Infinity;
+      var now = function () { return performance.now(); };
+
+      window.addEventListener('wheel', function (e) {
+        var t = now();
+        if (e.ctrlKey) {
+          if (t - lastScrollAt < WINDOW_MS) { e.preventDefault(); e.stopPropagation(); return; }
+          lastZoomAt = t;
+        } else {
+          if (t - lastZoomAt < WINDOW_MS) { e.preventDefault(); e.stopPropagation(); return; }
+          lastScrollAt = t;
+        }
+      }, { passive: false, capture: true });
+
+      ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (name) {
+        window.addEventListener(name, function (e) {
+          var t = now();
+          if (t - lastScrollAt < WINDOW_MS) { e.preventDefault(); e.stopPropagation(); return; }
+          lastZoomAt = t;
+        }, { passive: false, capture: true });
+      });
+    })();
+  </script>
+
   <style>
     html, body { margin: 0; padding: 0; }
     body {
