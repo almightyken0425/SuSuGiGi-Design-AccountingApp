@@ -166,8 +166,20 @@ const LETTER_SPACING = { tight: -0.4, normal: 0, wide: 0.3 };
 // Spacing / Radius / Shadow / Motion
 // ─────────────────────────────────────────────────────────────
 
-// HIG 4-multiple baseline。鍵名等同實際 pt 倍數（1 = 4pt）。
-const SPACING = { 1: 4, 2: 8, 3: 12, 4: 16, 6: 24, 8: 32, 10: 40, 12: 48, 16: 64 };
+// HIG 4-multiple baseline。語意命名階梯（Tailwind 風）。
+// 最小階 2xs=2 專供「主標題下副標題行內補位」使用，不視為元件間留白。
+const SPACING = {
+  '2xs': 2,
+  xs:    4,
+  sm:    8,
+  md:    12,
+  lg:    16,
+  xl:    24,
+  '2xl': 32,
+  '3xl': 40,
+  '4xl': 48,
+  '5xl': 64,
+};
 
 // HIG continuous corner radius 階梯。不收 14（HIG 標準階梯之外的孤兒值）。
 const RADIUS = {
@@ -218,16 +230,16 @@ const LIST_EMPTY_TRANSITION = {
 const LIST_TOKENS = {
   ITEM_MIN_HEIGHT:           58,
   ITEM_PADDING_VERTICAL:     TYPE_STYLES.body.size,         // 17
-  ITEM_PADDING_HORIZONTAL:   SPACING[4],
-  ITEM_GAP_HORIZONTAL:       SPACING[3],
+  ITEM_PADDING_HORIZONTAL:   SPACING.lg,
+  ITEM_GAP_HORIZONTAL:       SPACING.md,
   ITEM_TITLE_SIZE:           TYPE_STYLES.body.size,         // body 17
   ITEM_TITLE_WEIGHT:         TYPOGRAPHY.weight.light,
   ICON_SIZE_SMALL:           20,
   ICON_SIZE_MEDIUM:          24,
   ICON_SIZE_LARGE:           40,
   DIVIDER_COLOR_LIGHT:       'rgba(60,60,67,0.10)',
-  DIVIDER_INSET_WITH_ICON:   SPACING[4] + 20 + SPACING[3],
-  DIVIDER_INSET_WITHOUT_ICON: SPACING[4],
+  DIVIDER_INSET_WITH_ICON:   SPACING.lg + 20 + SPACING.md,
+  DIVIDER_INSET_WITHOUT_ICON: SPACING.lg,
   GROUP_CARD_RADIUS:         RADIUS.lg,                     // 12（HIG 不收 14，改採 lg）
   GROUP_CARD_MARGIN_BOTTOM:  35,
   GROUP_CARD_BORDER_WIDTH:   1,
@@ -235,33 +247,33 @@ const LIST_TOKENS = {
   SECTION_TITLE_SIZE:        TYPE_STYLES.footnote.size,     // footnote 13
   SECTION_TITLE_WEIGHT:      TYPOGRAPHY.weight.regular,
   SECTION_TITLE_LETTER_SPACING: 0.5,
-  SECTION_TITLE_PADDING_TOP: SPACING[3],
-  SECTION_TITLE_PADDING_BOTTOM: SPACING[1] + 2,
-  SECTION_TITLE_PADDING_HORIZONTAL: SPACING[4],
+  SECTION_TITLE_PADDING_TOP: SPACING.md,
+  SECTION_TITLE_PADDING_BOTTOM: SPACING.xs + SPACING['2xs'],   // 6
+  SECTION_TITLE_PADDING_HORIZONTAL: SPACING.lg,
   SELECTION_ITEM_RADIUS:     RADIUS.md,
-  SELECTION_ITEM_MARGIN_BOTTOM: SPACING[2],
+  SELECTION_ITEM_MARGIN_BOTTOM: SPACING.sm,
   SELECTION_CHECKMARK_SIZE:  16,
   TRAILING_CHEVRON_SIZE:     TYPE_STYLES.footnote.size,     // 13
   TRAILING_CHEVRON_WEIGHT:   'semibold',
   TRAILING_VALUE_SIZE:       TYPE_STYLES.body.size,         // 17
   PRESS_BG_HIGHLIGHT_OPACITY: 0.5,
   GRID_COLUMNS:              2,
-  GRID_GAP:                  SPACING[3],
+  GRID_GAP:                  SPACING.md,
   EMPTY_STATE_ICON_SIZE:     48,
   EMPTY_STATE_TITLE_SIZE:    TYPE_STYLES.body.size,         // 17
   EMPTY_STATE_DESCRIPTION_SIZE: TYPOGRAPHY.size.sm,         // 14
-  EMPTY_STATE_ICON_GAP:      SPACING[3],
-  EMPTY_STATE_TEXT_GAP:      SPACING[2],
-  EMPTY_STATE_PADDING_HORIZONTAL: SPACING[6],
+  EMPTY_STATE_ICON_GAP:      SPACING.md,
+  EMPTY_STATE_TEXT_GAP:      SPACING.sm,
+  EMPTY_STATE_PADDING_HORIZONTAL: SPACING.xl,
 };
 
 const TX_LIST_TOKENS = {
   SECTION_CARD_RADIUS:                  RADIUS.lg,                     // 12（HIG 不收 14）
-  SECTION_CARD_MARGIN_BOTTOM:           SPACING[3] + 2,                // 14
-  SECTION_CARD_HORIZONTAL_PADDING:      SPACING[4],
-  SECTION_HEADER_PADDING_V_COLLAPSED:   SPACING[3],
-  SECTION_HEADER_PADDING_V_EXPANDED:    SPACING[2] + 2,
-  SECTION_HEADER_PADDING_H:             SPACING[4],
+  SECTION_CARD_MARGIN_BOTTOM:           SPACING.md + SPACING['2xs'],   // 14
+  SECTION_CARD_HORIZONTAL_PADDING:      SPACING.lg,
+  SECTION_HEADER_PADDING_V_COLLAPSED:   SPACING.md,
+  SECTION_HEADER_PADDING_V_EXPANDED:    SPACING.sm + SPACING['2xs'],   // 10
+  SECTION_HEADER_PADDING_H:             SPACING.lg,
   SECTION_HEADER_TITLE_SIZE_COLLAPSED:  TYPE_STYLES.body.size,         // 17
   SECTION_HEADER_TITLE_SIZE_EXPANDED:   TYPOGRAPHY.size.sm,            // 14
   SECTION_HEADER_TOTAL_SIZE_COLLAPSED:  TYPE_STYLES.subheadline.size,  // 15
@@ -283,10 +295,10 @@ const TX_TOKENS = TX_LIST_TOKENS;
 
 const SEARCH_BAR_TOKENS = {
   PILL_HEIGHT:               44,
-  PADDING_HORIZONTAL:        SPACING[4],
-  PADDING_VERTICAL:          SPACING[3],
-  PILL_PADDING_HORIZONTAL:   SPACING[3],
-  ICON_GAP:                  SPACING[2],
+  PADDING_HORIZONTAL:        SPACING.lg,
+  PADDING_VERTICAL:          SPACING.md,
+  PILL_PADDING_HORIZONTAL:   SPACING.md,
+  ICON_GAP:                  SPACING.sm,
   ICON_SIZE:                 20,
   INPUT_FONT_SIZE:           TYPOGRAPHY.size.base,
 };

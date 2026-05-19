@@ -644,9 +644,9 @@ function FocusCard({ kind, amount, active, onPress, formatAmount }) {
   const iconName = kind === 'expense' ? 'minus' : 'plus';
   return (
     <button onClick={onPress} disabled={active} style={{
-      flex: 1, display: 'flex', alignItems: 'center', gap: SPACING[2],
-      paddingTop: SPACING[3], paddingBottom: SPACING[3],
-      paddingLeft: SPACING[3], paddingRight: SPACING[3],
+      flex: 1, display: 'flex', alignItems: 'center', gap: SPACING.sm,
+      paddingTop: SPACING.md, paddingBottom: SPACING.md,
+      paddingLeft: SPACING.md, paddingRight: SPACING.md,
       borderRadius: RADIUS.lg,
       borderWidth: 1.5, borderStyle: 'solid',
       borderColor: active ? TOKENS.p500 : 'transparent',
@@ -672,8 +672,8 @@ function FocusCard({ kind, amount, active, onPress, formatAmount }) {
 }
 
 // ─── FloatingActionBar ─── 對齊 src/components/FloatingActionBar.tsx
-// 208×72 glass pill, bottom SPACING[6]=24
-// actions: 3 buttons 56×56 with paddingHorizontal SPACING[2]=8
+// 208×72 glass pill, bottom SPACING.xl=24
+// actions: 3 buttons 56×56 with paddingHorizontal SPACING.sm=8
 // undo: timer circle 32×32 rgba(0,0,0,0.06) + 14px medium primary text;
 //       undo text base 16 medium centered;
 //       X icon FontAwesome "times" 24px primary.main
@@ -681,7 +681,7 @@ function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, o
   return (
     <div style={{
       position: 'absolute',
-      bottom: SPACING[6], left: 0, right: 0,
+      bottom: SPACING.xl, left: 0, right: 0,
       display: 'flex', justifyContent: 'center',
       zIndex: 10, pointerEvents: 'none',
       opacity: visible ? 1 : 0, transform: `translateY(${visible ? 0 : 150}px)`,
@@ -695,7 +695,7 @@ function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, o
           width: '100%', height: '100%',
           display: 'flex', alignItems: 'center',
           justifyContent: 'space-between',
-          paddingLeft: SPACING[2], paddingRight: SPACING[2],
+          paddingLeft: SPACING.sm, paddingRight: SPACING.sm,
         }}>
           {mode === 'actions' ? (
             <>
@@ -774,8 +774,8 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
 // ─── CalculatorKeypad ─── 對齊 src/components/CalculatorKeypad.tsx
 // 4×4 grid: 1 2 3 + / 4 5 6 - / 7 8 9 * / . 0 = /
 // 字元用 ASCII 不用 Unicode（impl 用 +, -, *, /）
-// container: padding SPACING[2], bg surface, borderTop 1px border.base
-// row marginBottom SPACING[2], key flex 1 height 60 marginHorizontal SPACING[1]
+// container: padding SPACING.sm, bg surface, borderTop 1px border.base
+// row marginBottom SPACING.sm, key flex 1 height 60 marginHorizontal SPACING.xs
 // operator keys: GlassView with primary[100]*0.5 tint
 function CalculatorKeypad({ onPress }) {
   const KEYS = [
@@ -787,7 +787,7 @@ function CalculatorKeypad({ onPress }) {
   const OPERATORS = new Set(['+', '-', '*', '/', '=']);
   return (
     <div style={{
-      padding: SPACING[2],
+      padding: SPACING.sm,
       background: TOKENS.surface,
       borderTop: `1px solid ${TOKENS.border}`,
     }}>
@@ -795,14 +795,14 @@ function CalculatorKeypad({ onPress }) {
         <div key={ri} style={{
           display: 'flex', flexDirection: 'row',
           justifyContent: 'space-between',
-          marginBottom: ri === KEYS.length - 1 ? 0 : SPACING[2],
+          marginBottom: ri === KEYS.length - 1 ? 0 : SPACING.sm,
         }}>
           {row.map(k => {
             const isOp = OPERATORS.has(k);
             return (
               <button key={k} onClick={() => onPress && onPress(k)} style={{
                 flex: 1, height: 60,
-                marginLeft: SPACING[1], marginRight: SPACING[1],
+                marginLeft: SPACING.xs, marginRight: SPACING.xs,
                 border: 'none',
                 position: 'relative', overflow: 'hidden',
                 borderRadius: RADIUS.md,

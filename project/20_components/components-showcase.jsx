@@ -18,7 +18,7 @@ function ComponentsListSection() {
       <DCArtboard id="comp-listitem" label="ListItem · 變體 (live)" width={402} height={620}>
         <CompFrame>
           <CompLabel>ListItem 不同組合</CompLabel>
-          <div style={{ padding: SPACING[4] }}>
+          <div style={{ padding: SPACING.lg }}>
             <ListGroupCard>
               <ListItem leftIcon={<Glyph name="tag-outline" size={20} color={TOKENS.ink} stroke={1.8}/>}
                 title="只有 title"/>
@@ -41,7 +41,7 @@ function ComponentsListSection() {
       <DCArtboard id="comp-selection-list" label="SelectionListItem · 選擇列 (live)" width={402} height={500}>
         <CompFrame>
           <CompLabel>用於 ThemeSettings / Language / Timezone</CompLabel>
-          <div style={{ padding: SPACING[4] }}>
+          <div style={{ padding: SPACING.lg }}>
             <ListGroupCard>
               <SelectionListItem title="繁體中文" selected/>
               <SelectionListItem title="English"/>
@@ -54,7 +54,7 @@ function ComponentsListSection() {
       <DCArtboard id="comp-reorderable" label="ReorderableListItem · 60px 拖拉列 (live)" width={402} height={500}>
         <CompFrame>
           <CompLabel>用於 AccountList / CategoryList — 無 drag handle（整列可拖）</CompLabel>
-          <div style={{ padding: SPACING[4] }}>
+          <div style={{ padding: SPACING.lg }}>
             <ListGroupCard>
               {ACCOUNTS.map(a => (
                 <ReorderableListItem key={a.id}
@@ -70,7 +70,7 @@ function ComponentsListSection() {
       <DCArtboard id="comp-grid" label="SelectionGridItem · 卡片風格 (live)" width={402} height={500}>
         <CompFrame>
           <CompLabel>用於 ThemeSettings — preview 區（aspectRatio 1.4）+ title + check-circle 右上角</CompLabel>
-          <div style={{ padding: SPACING[4], display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ padding: SPACING.lg, display: 'flex', flexWrap: 'wrap', gap: 12 }}>
             <div style={{ width: '47%' }}>
               <SelectionGridItem title="經典紫 (Classic Purple)" selected onPress={()=>{}}>
                 <div style={{ flex: 1, background: THEME_1.primary[500] }}/>
@@ -92,7 +92,7 @@ function ComponentsListSection() {
       <DCArtboard id="comp-section-title" label="ListSection · 標題 (live)" width={402} height={400}>
         <CompFrame>
           <CompLabel>ListSectionTitle 是可選的 — impl 大多 ListSection 都沒 title</CompLabel>
-          <div style={{ padding: SPACING[4] }}>
+          <div style={{ padding: SPACING.lg }}>
             <ListSectionTitle>資料管理</ListSectionTitle>
             <ListGroupCard>
               <ListItem title="管理類別" showChevron/>

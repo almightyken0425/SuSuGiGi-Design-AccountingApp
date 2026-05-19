@@ -3,7 +3,7 @@
 // 每個 screen 都標註 impl 對應檔案；視覺值取自 LIST_TOKENS / TX_LIST_TOKENS。
 // ─────────────────────────────────────────────────────────────
 
-const SCREEN_PAD = SPACING[4];
+const SCREEN_PAD = SPACING.lg;
 
 // Spinner — 模擬 RN ActivityIndicator，CSS spin animation
 // 注入一次性 keyframe（id 防重複）
@@ -82,9 +82,9 @@ function PP_TxRow({ left, primary, secondary, right }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center',
-      gap: SPACING[3],
-      paddingLeft: SPACING[4], paddingRight: SPACING[4],
-      paddingTop: SPACING[3], paddingBottom: SPACING[3],
+      gap: SPACING.md,
+      paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
+      paddingTop: SPACING.md, paddingBottom: SPACING.md,
     }}>
       {left}
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -115,7 +115,7 @@ function PP_SectionHeader({ collapsed, onClick, iconId, title, total }) {
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       transition: _HS_MORPH,
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING[2], flex: 1, minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.sm, flex: 1, minWidth: 0 }}>
         <div style={{ width: 14, display: 'flex', alignItems: 'center', justifyContent: 'center',
           transform: `rotate(${c ? 0 : 90}deg)`, transition: _HS_MORPH }}>
           <Glyph name="chevron-right" size={12} color={TOKENS.ink2} stroke={2.5}/>
@@ -204,13 +204,13 @@ function HomeScreen({ filterState, variant = 'default' }) {
       {/* Period switcher */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        gap: SPACING[2],
-        paddingTop: SPACING[3], paddingBottom: SPACING[1],
+        gap: SPACING.sm,
+        paddingTop: SPACING.md, paddingBottom: SPACING.xs,
       }}>
         <div style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Glyph name="chevron-left" size={14} color={TOKENS.ink3} stroke={2.5}/>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: SPACING[1] }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.xs }}>
           <div style={{ marginRight: 2, display: 'flex', alignItems: 'center' }}>
             <Glyph name="calendar" size={13} color={TOKENS.ink2} stroke={2}/>
           </div>
@@ -224,7 +224,7 @@ function HomeScreen({ filterState, variant = 'default' }) {
         </div>
       </div>
       {/* Donut — 空狀態時內部文字改成「尚無交易紀錄」 */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: SPACING[3] }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: SPACING.md }}>
         <DonutChart data={pData.map(d => ({ key: d.id, value: d.value, color: d.color }))}>
           <div style={{ textAlign: 'center', width: 100 }}>
             {isEmpty ? (
@@ -233,7 +233,7 @@ function HomeScreen({ filterState, variant = 'default' }) {
               <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>載入中...</div>
             ) : (
               <>
-                <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginBottom: SPACING[1] }}>餘額</div>
+                <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginBottom: SPACING.xs }}>餘額</div>
                 <div style={{
                   fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
                   color: TOKENS.ink, fontVariantNumeric: 'tabular-nums', textAlign: 'center',
@@ -245,9 +245,9 @@ function HomeScreen({ filterState, variant = 'default' }) {
       </div>
       {/* Focus Row */}
       <div style={{
-        display: 'flex', flexDirection: 'row', gap: SPACING[3],
-        paddingLeft: SPACING[4], paddingRight: SPACING[4],
-        paddingTop: SPACING[1], paddingBottom: SPACING[3],
+        display: 'flex', flexDirection: 'row', gap: SPACING.md,
+        paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
+        paddingTop: SPACING.xs, paddingBottom: SPACING.md,
       }}>
         <FocusCard kind="expense" amount={totals.expense} active={chartMode === 'expense'} onPress={() => setChartMode('expense')}/>
         <FocusCard kind="income"  amount={totals.income}  active={chartMode === 'income'}  onPress={() => setChartMode('income')}/>
@@ -287,11 +287,11 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
     }
     return ordered;
   }, [noAccounts]);
-  const cardWidth = (402 - SPACING[4] * 2 - SPACING[2]) / 2;
+  const cardWidth = (402 - SPACING.lg * 2 - SPACING.sm) / 2;
 
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, minHeight: '100%' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING[2], marginBottom: 40 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, minHeight: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.sm, marginBottom: 40 }}>
         <button onClick={() => setFilterState(s => ({ ...s, timeGranularity: cycle(TIME_VALUES, timeGranularity) }))} style={filterTile}>
           <Glyph name="calendar-blank-outline" size={16} color={TOKENS.ink2} stroke={2}/>
           <span style={filterTileText}>{TIME_LABELS[timeGranularity]}</span>
@@ -308,7 +308,7 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
       )}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {groups.map(g => (
-          <div key={g.currency} style={{ display: 'flex', flexWrap: 'wrap', gap: SPACING[2] }}>
+          <div key={g.currency} style={{ display: 'flex', flexWrap: 'wrap', gap: SPACING.sm }}>
             {g.accounts.map(a => {
               const selected = selectedAccountIds.includes(a.id);
               const last = selected && selectedAccountIds.length === 1;
@@ -318,9 +318,9 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
               return (
                 <button key={a.id} onClick={() => !last && toggleAcc(a.id)} disabled={last} style={{
                   width: cardWidth, display: 'flex', alignItems: 'center',
-                  gap: SPACING[2] + 2,
+                  gap: SPACING.sm + 2,
                   paddingTop: 14, paddingBottom: 14,
-                  paddingLeft: SPACING[3], paddingRight: SPACING[3],
+                  paddingLeft: SPACING.md, paddingRight: SPACING.md,
                   borderRadius: RADIUS.lg,
                   borderWidth: selected ? 1.5 : 1, borderStyle: 'solid',
                   borderColor: selected ? TOKENS.p500 : LIST_TOKENS.DIVIDER_COLOR_LIGHT,
@@ -355,9 +355,9 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
   );
 }
 const filterTile = {
-  flex: 1, display: 'flex', alignItems: 'center', gap: SPACING[2],
-  paddingTop: SPACING[4], paddingBottom: SPACING[4],
-  paddingLeft: SPACING[3], paddingRight: SPACING[3],
+  flex: 1, display: 'flex', alignItems: 'center', gap: SPACING.sm,
+  paddingTop: SPACING.lg, paddingBottom: SPACING.lg,
+  paddingLeft: SPACING.md, paddingRight: SPACING.md,
   borderRadius: LIST_TOKENS.GROUP_CARD_RADIUS,
   background: TOKENS.surface, border: 'none',
   boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
@@ -390,7 +390,7 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
   return (
     <div style={{ position: 'relative', minHeight: '100%', background: TOKENS.bg }}>
       {isLoading ? (
-        <div style={{ paddingTop: 100, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', gap: SPACING[3] }}>
+        <div style={{ paddingTop: 100, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', gap: SPACING.md }}>
           <Spinner size={32}/>
           <span style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>搜尋中...</span>
         </div>
@@ -409,10 +409,10 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
             return (
               <div key={tx.id} style={{
                 display: 'flex', alignItems: 'center',
-                padding: SPACING[4],
+                padding: SPACING.lg,
                 borderBottom: `1px solid ${TOKENS.surface}`,
               }}>
-                <div style={{ marginRight: SPACING[4], width: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ marginRight: SPACING.lg, width: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <DynamicIconById iconId={cat.iconId} size={24} color={color}/>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -469,7 +469,7 @@ function SettingsScreen({ onAccounts, onCategories, onPreference, onPaywall, onD
   const renderIcon = (name, color = TOKENS.ink) =>
     <Glyph name={name} size={LIST_TOKENS.ICON_SIZE_SMALL} color={color} stroke={1.8}/>;
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100 }}>
       <ListSection>
         <ListGroupCard>
           <ListItem leftIcon={renderIcon('tag-outline')} title="管理類別" showChevron onPress={onCategories}/>
@@ -496,7 +496,7 @@ function SettingsScreen({ onAccounts, onCategories, onPreference, onPaywall, onD
         </ListGroupCard>
       </ListSection>
       <div style={{
-        marginTop: SPACING[8], marginBottom: SPACING[8],
+        marginTop: SPACING['2xl'], marginBottom: SPACING['2xl'],
         textAlign: 'center', color: TOKENS.ink3, fontSize: TYPOGRAPHY.size.xs,
       }}>Version 0.1.0-alpha</div>
     </div>
@@ -509,7 +509,7 @@ function SettingsScreen({ onAccounts, onCategories, onPreference, onPaywall, onD
 // ═════════════════════════════════════════════════════════════
 function PreferenceScreen({ onTheme, onLaunch, onCurrency, onCurrencyList, onRateList, onLanguage, onTimezone }) {
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100 }}>
       <ListSection>
         <ListGroupCard>
           <ListItem title="主題" value="經典紫 (Classic Purple)" showChevron onPress={onTheme}/>
@@ -545,7 +545,7 @@ function PreferenceScreen({ onTheme, onLaunch, onCurrency, onCurrencyList, onRat
 function AccountListScreen({ onAdd, onEdit, variant = 'default' }) {
   const accs = variant === 'empty' ? [] : ACCOUNTS;
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100 }}>
       {accs.length > 0 ? (
       <ListGroupCard>
         {accs.map(a => (
@@ -580,7 +580,7 @@ function CategoryListScreen({ onAddExpense, onAddIncome }) {
     </ListGroupCard>
   );
   return (
-    <div style={{ paddingLeft: SPACING[4], paddingRight: SPACING[4], background: TOKENS.bg, paddingTop: SPACING[3], paddingBottom: 100 }}>
+    <div style={{ paddingLeft: SPACING.lg, paddingRight: SPACING.lg, background: TOKENS.bg, paddingTop: SPACING.md, paddingBottom: 100 }}>
       <CategorySectionTitle>支出</CategorySectionTitle>
       <ListGroupCard>
         {expense.map(c => (
@@ -605,8 +605,8 @@ function CategoryListScreen({ onAddExpense, onAddIncome }) {
 function CategorySectionTitle({ children }) {
   return (
     <div style={{
-      paddingLeft: SPACING[4], paddingRight: SPACING[4],
-      paddingTop: SPACING[3], paddingBottom: SPACING[1] + 2,
+      paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
+      paddingTop: SPACING.md, paddingBottom: SPACING.xs + 2,
       fontSize: LIST_TOKENS.SECTION_TITLE_SIZE,
       fontWeight: LIST_TOKENS.SECTION_TITLE_WEIGHT,
       color: TOKENS.ink2, textTransform: 'uppercase',
@@ -632,15 +632,15 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: TOKENS.bg }}>
-      <div style={{ flex: 1, overflowY: 'auto', padding: SPACING[4] }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: SPACING.lg }}>
         {/* validation error banner — 對應 impl Alert.alert 但畫成 inline banner 方便視覺對齊 */}
         {isError && (
           <div style={{
             background: `${TOKENS.error}15`,
             borderLeftWidth: 4, borderLeftStyle: 'solid', borderLeftColor: TOKENS.error,
-            padding: SPACING[3], borderRadius: 8,
-            marginBottom: SPACING[4],
-            display: 'flex', alignItems: 'flex-start', gap: SPACING[2],
+            padding: SPACING.md, borderRadius: 8,
+            marginBottom: SPACING.lg,
+            display: 'flex', alignItems: 'flex-start', gap: SPACING.sm,
           }}>
             <Glyph name="warning" size={18} color={TOKENS.error}/>
             <div style={{ flex: 1 }}>
@@ -652,15 +652,15 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
         {/* dateContainer */}
         <div style={{
           display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-          marginBottom: SPACING[6],
+          marginBottom: SPACING.xl,
         }}>
           <div style={{
             display: 'flex', alignItems: 'center',
             background: TOKENS.surface,
-            paddingTop: SPACING[2], paddingBottom: SPACING[2],
-            paddingLeft: SPACING[4], paddingRight: SPACING[4],
+            paddingTop: SPACING.sm, paddingBottom: SPACING.sm,
+            paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
             borderRadius: 20, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
-            marginLeft: SPACING[4], marginRight: SPACING[4],
+            marginLeft: SPACING.lg, marginRight: SPACING.lg,
           }}>
             <span style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, fontWeight: TYPOGRAPHY.weight.medium }}>
               2026/05/14  14:30
@@ -680,18 +680,18 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
         {/* RecurringOptions panel — impl 在 showRecurringOptions=true 時於 dateContainer 下方顯示 */}
         {recurring && <RecurringOptionsPanel/>}
         {/* amountContainer */}
-        <div style={{ marginBottom: SPACING[6] }}>
+        <div style={{ marginBottom: SPACING.xl }}>
           <div onClick={() => setAmountFocused(true)} style={{
             display: 'flex', alignItems: 'center',
             background: amountFocused ? TOKENS.bg : TOKENS.surface,
-            padding: SPACING[4],
+            padding: SPACING.lg,
             borderRadius: RADIUS.md, borderWidth: 1, borderStyle: 'solid',
             borderColor: amountFocused ? TOKENS.p500 : TOKENS.border,
             cursor: 'pointer',
           }}>
             <span style={{
               fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
-              color: TOKENS.ink, marginRight: SPACING[2],
+              color: TOKENS.ink, marginRight: SPACING.sm,
             }}>{symbol}</span>
             <span style={{
               flex: 1,
@@ -699,35 +699,35 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
               color: amount ? TOKENS.ink : TOKENS.ink3,
               fontVariantNumeric: 'tabular-nums',
             }}>{amount || '0.00'}</span>
-            <div style={{ padding: SPACING[2] }}>
+            <div style={{ padding: SPACING.sm }}>
               <Glyph name="backspace-outline" size={24} color={TOKENS.ink2} stroke={1.6}/>
             </div>
           </div>
         </div>
         {/* pickerRow */}
-        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: SPACING[6] }}>
+        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: SPACING.xl }}>
           <StaticWheelPicker label={ACC_BY_ID[accountId].name} subLabel={ACC_BY_ID[accountId].currency}/>
-          <div style={{ width: SPACING[4] }}/>
+          <div style={{ width: SPACING.lg }}/>
           <StaticWheelPicker label={CAT_BY_ID[categoryId].name} subLabel={CAT_BY_ID[categoryId].type === 'expense' ? '支出' : '收入'} accent={CAT_BY_ID[categoryId].type === 'expense' ? TOKENS.error : TOKENS.success}/>
         </div>
         {/* note */}
-        <div style={{ marginBottom: SPACING[6] }}>
+        <div style={{ marginBottom: SPACING.xl }}>
           <input value={note} onChange={(e) => { setNote(e.target.value); setAmountFocused(false); }}
             placeholder="新增備註"
             onFocus={() => setAmountFocused(false)}
             style={{
               width: '100%', boxSizing: 'border-box',
               background: TOKENS.surface,
-              padding: SPACING[4],
+              padding: SPACING.lg,
               borderRadius: RADIUS.md, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
               fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink,
               fontFamily: 'inherit', outline: 'none',
             }}/>
         </div>
         {isEdit && (
-          <div style={{ marginTop: SPACING[4], display: 'flex', justifyContent: 'center' }}>
+          <div style={{ marginTop: SPACING.lg, display: 'flex', justifyContent: 'center' }}>
             <button style={{
-              padding: SPACING[2], background: 'transparent',
+              padding: SPACING.sm, background: 'transparent',
               border: 'none', cursor: 'pointer', fontFamily: 'inherit',
               color: TOKENS.error, fontSize: TYPOGRAPHY.size.base,
             }}>刪除交易</button>
@@ -740,7 +740,7 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
           position: 'absolute', bottom: 0, left: 0, right: 0,
           background: TOKENS.surface,
           borderTop: `1px solid ${TOKENS.border}`,
-          paddingBottom: SPACING[6],
+          paddingBottom: SPACING.xl,
         }}>
           <CalculatorKeypad onPress={(k) => {
             if (k === '=') return;
@@ -755,7 +755,7 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
 }
 
 // RecurringOptionsPanel — 對齊 src/components/RecurringOptions.tsx
-// container bg surface radius 12 padding SPACING[4] marginTop SPACING[2] marginBottom SPACING[4] border 1px border.base
+// container bg surface radius 12 padding SPACING.lg marginTop SPACING.sm marginBottom SPACING.lg border 1px border.base
 // headerRow: title "定期設定" primary medium + Switch
 // 內容（isEnabled=true 時）：頻率 4 button / 每隔 input + unit / 結束於 2 button
 function RecurringOptionsPanel() {
@@ -771,12 +771,12 @@ function RecurringOptionsPanel() {
   const unitText = { DAILY: '天', WEEKLY: '週', MONTHLY: '月', YEARLY: '年' }[frequency];
   const optionBtn = (label, selected, onClick) => (
     <button onClick={onClick} style={{
-      paddingTop: SPACING[2], paddingBottom: SPACING[2],
-      paddingLeft: SPACING[3], paddingRight: SPACING[3],
+      paddingTop: SPACING.sm, paddingBottom: SPACING.sm,
+      paddingLeft: SPACING.md, paddingRight: SPACING.md,
       borderRadius: 16,
       borderWidth: 1, borderStyle: 'solid',
       borderColor: selected ? TOKENS.p500 : TOKENS.border,
-      marginRight: SPACING[2], marginBottom: SPACING[2],
+      marginRight: SPACING.sm, marginBottom: SPACING.sm,
       background: selected ? TOKENS.p500 : TOKENS.bg,
       cursor: 'pointer', fontFamily: 'inherit',
       color: selected ? '#fff' : TOKENS.ink,
@@ -787,30 +787,30 @@ function RecurringOptionsPanel() {
   return (
     <div style={{
       background: TOKENS.surface,
-      borderRadius: 12, padding: SPACING[4],
-      marginTop: SPACING[2], marginBottom: SPACING[4],
+      borderRadius: 12, padding: SPACING.lg,
+      marginTop: SPACING.sm, marginBottom: SPACING.lg,
       borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
     }}>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING[4] }}>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING.lg }}>
         <span style={{ fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.p500 }}>定期設定</span>
         <Switch value={enabled} onChange={setEnabled} trackColorOn={TOKENS.p500}/>
       </div>
       <div style={{ opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
-        <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginTop: SPACING[2], marginBottom: SPACING[2] }}>頻率</div>
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginBottom: SPACING[2] }}>
+        <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginTop: SPACING.sm, marginBottom: SPACING.sm }}>頻率</div>
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginBottom: SPACING.sm }}>
           {freqs.map(f => optionBtn(f.label, frequency === f.v, () => setFrequency(f.v)))}
         </div>
-        <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginTop: SPACING[2], marginBottom: SPACING[2] }}>每隔</div>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: SPACING[2] }}>
+        <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginTop: SPACING.sm, marginBottom: SPACING.sm }}>每隔</div>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.sm }}>
           <input defaultValue="1" style={{
-            background: TOKENS.bg, padding: SPACING[2],
+            background: TOKENS.bg, padding: SPACING.sm,
             borderRadius: 8, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
             fontSize: TYPOGRAPHY.size.lg, width: 60, textAlign: 'center',
-            marginRight: SPACING[3], color: TOKENS.ink, fontFamily: 'inherit', outline: 'none',
+            marginRight: SPACING.md, color: TOKENS.ink, fontFamily: 'inherit', outline: 'none',
           }}/>
           <span style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink }}>{unitText}</span>
         </div>
-        <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginTop: SPACING[2], marginBottom: SPACING[2] }}>結束於</div>
+        <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginTop: SPACING.sm, marginBottom: SPACING.sm }}>結束於</div>
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           {optionBtn('永不',       endCondition === 'NEVER',   () => setEndCondition('NEVER'))}
           {optionBtn('特定日期',   endCondition === 'ON_DATE', () => setEndCondition('ON_DATE'))}
@@ -828,7 +828,7 @@ function StaticWheelPicker({ label, subLabel, accent }) {
       background: TOKENS.surface,
       borderRadius: RADIUS.md, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
       overflow: 'hidden', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', padding: SPACING[2],
+      alignItems: 'center', justifyContent: 'center', padding: SPACING.sm,
     }}>
       <div style={{
         fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink3, opacity: 0.6,
@@ -857,14 +857,14 @@ function TransferEditorScreen({ isEdit = false }) {
   const isCrossCurrency = fromAcc.currency !== toAcc.currency;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: TOKENS.bg }}>
-      <div style={{ flex: 1, overflowY: 'auto', padding: SPACING[4] }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: SPACING.lg }}>
         {/* date row */}
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: SPACING[6] }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: SPACING.xl }}>
           <div style={{
-            background: TOKENS.surface, paddingTop: SPACING[2], paddingBottom: SPACING[2],
-            paddingLeft: SPACING[4], paddingRight: SPACING[4],
+            background: TOKENS.surface, paddingTop: SPACING.sm, paddingBottom: SPACING.sm,
+            paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
             borderRadius: 20, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
-            marginLeft: SPACING[4], marginRight: SPACING[4],
+            marginLeft: SPACING.lg, marginRight: SPACING.lg,
           }}>
             <span style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, fontWeight: TYPOGRAPHY.weight.medium }}>
               2026/05/14  14:30
@@ -881,7 +881,7 @@ function TransferEditorScreen({ isEdit = false }) {
         </div>
         {recurring && <RecurringOptionsPanel/>}
         {/* amounts row */}
-        <div style={{ marginBottom: SPACING[6] }}>
+        <div style={{ marginBottom: SPACING.xl }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ flex: 1 }}>
               <AmountField active={activeField === 'from'} value="15,000" currency={fromAcc.currency}
@@ -898,9 +898,9 @@ function TransferEditorScreen({ isEdit = false }) {
           </div>
         </div>
         {/* picker row */}
-        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: SPACING[6], alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: SPACING.xl, alignItems: 'flex-start' }}>
           <StaticWheelPicker label={fromAcc.name} subLabel={fromAcc.currency}/>
-          <div style={{ width: SPACING[4], display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: SPACING.lg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ marginTop: 30 }}>
               <Glyph name="arrow-right" size={24} color={TOKENS.ink2}/>
             </div>
@@ -908,20 +908,20 @@ function TransferEditorScreen({ isEdit = false }) {
           <StaticWheelPicker label={toAcc.name} subLabel={toAcc.currency}/>
         </div>
         {/* note */}
-        <div style={{ marginBottom: SPACING[6] }}>
+        <div style={{ marginBottom: SPACING.xl }}>
           <input placeholder="新增備註" style={{
             width: '100%', boxSizing: 'border-box',
             background: TOKENS.surface,
-            padding: SPACING[4],
+            padding: SPACING.lg,
             borderRadius: RADIUS.md, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
             fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink,
             fontFamily: 'inherit', outline: 'none',
           }}/>
         </div>
         {isEdit && (
-          <div style={{ marginTop: SPACING[4], display: 'flex', justifyContent: 'center' }}>
+          <div style={{ marginTop: SPACING.lg, display: 'flex', justifyContent: 'center' }}>
             <button style={{
-              padding: SPACING[2], background: 'transparent',
+              padding: SPACING.sm, background: 'transparent',
               border: 'none', cursor: 'pointer', fontFamily: 'inherit',
               color: TOKENS.error, fontSize: TYPOGRAPHY.size.base,
             }}>刪除</button>
@@ -933,7 +933,7 @@ function TransferEditorScreen({ isEdit = false }) {
         position: 'absolute', bottom: 0, left: 0, right: 0,
         background: TOKENS.surface,
         borderTop: `1px solid ${TOKENS.border}`,
-        paddingBottom: SPACING[6],
+        paddingBottom: SPACING.xl,
       }}>
         <CalculatorKeypad/>
       </div>
@@ -948,7 +948,7 @@ function AmountField({ active, value, currency, disabled, onPress }) {
       position: 'relative',
       display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
       background: disabled ? TOKENS.bg : (active ? TOKENS.bg : TOKENS.surface),
-      padding: SPACING[3],
+      padding: SPACING.md,
       borderRadius: RADIUS.md,
       borderWidth: active ? 1 : (disabled ? 0 : 1), borderStyle: 'solid',
       borderColor: active ? TOKENS.p500 : TOKENS.border,
@@ -964,14 +964,14 @@ function AmountField({ active, value, currency, disabled, onPress }) {
         {currency && (
           <span style={{
             fontSize: TYPOGRAPHY.size.xs, color: TOKENS.ink2,
-            textAlign: 'center', marginTop: SPACING[1],
+            textAlign: 'center', marginTop: SPACING.xs,
           }}>{currency}</span>
         )}
       </div>
       {active && !disabled && (
         <div style={{
           position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
-          padding: SPACING[2],
+          padding: SPACING.sm,
         }}>
           <Glyph name="backspace-outline" size={24} color={TOKENS.ink2} stroke={1.6}/>
         </div>
@@ -989,7 +989,7 @@ function AccountEditorScreen({ isNew = true }) {
   const [enabled, setEnabled] = React.useState(true);
   const [expanded, setExpanded] = React.useState(null);  // 'currency' | 'type' | 'icon' | null
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100, minHeight: '100%' }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100, minHeight: '100%' }}>
       <FormGroup label="帳戶名稱 *">
         <input value={name} onChange={(e) => setName(e.target.value)} placeholder="例如：現金"
           style={formInput}/>
@@ -1033,7 +1033,7 @@ function AccountEditorScreen({ isNew = true }) {
           }
           onToggle={() => setExpanded(expanded === 'icon' ? null : 'icon')}
         >
-          <div style={{ display: 'flex', flexWrap: 'wrap', padding: SPACING[2], maxHeight: 150, overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', padding: SPACING.sm, maxHeight: 150, overflowY: 'auto' }}>
             {ICON_LIBRARY.filter(i => i.tags.includes('account')).map((i, idx) => {
               const selected = idx === 1;  // ant-wallet for demo
               return (
@@ -1055,15 +1055,15 @@ function AccountEditorScreen({ isNew = true }) {
         <>
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            background: TOKENS.surface, padding: SPACING[4],
-            borderRadius: RADIUS.md, marginBottom: SPACING[6],
+            background: TOKENS.surface, padding: SPACING.lg,
+            borderRadius: RADIUS.md, marginBottom: SPACING.xl,
           }}>
             <span style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink }}>啟用帳戶</span>
             <Switch value={enabled} onChange={setEnabled}/>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button style={{
-              padding: SPACING[4], background: 'transparent',
+              padding: SPACING.lg, background: 'transparent',
               border: 'none', cursor: 'pointer', fontFamily: 'inherit',
               color: TOKENS.error, fontSize: TYPOGRAPHY.size.base,
             }}>刪除帳戶</button>
@@ -1076,11 +1076,11 @@ function AccountEditorScreen({ isNew = true }) {
 
 function FormGroup({ label, children }) {
   return (
-    <div style={{ marginBottom: SPACING[6] }}>
+    <div style={{ marginBottom: SPACING.xl }}>
       {label && (
         <div style={{
           fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,
-          marginBottom: SPACING[2],
+          marginBottom: SPACING.sm,
         }}>{label}</div>
       )}
       {children}
@@ -1089,7 +1089,7 @@ function FormGroup({ label, children }) {
 }
 const formInput = {
   width: '100%', boxSizing: 'border-box',
-  background: TOKENS.surface, padding: SPACING[3],
+  background: TOKENS.surface, padding: SPACING.md,
   borderRadius: RADIUS.md, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
   fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink,
   fontFamily: 'inherit', outline: 'none',
@@ -1100,7 +1100,7 @@ function CollapsiblePicker({ isExpanded, collapsedValue, onToggle, children, dis
     return (
       <div onClick={disabled ? undefined : onToggle} style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        background: TOKENS.surface, padding: SPACING[3],
+        background: TOKENS.surface, padding: SPACING.md,
         borderRadius: RADIUS.md, borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}>
@@ -1117,7 +1117,7 @@ function CollapsiblePicker({ isExpanded, collapsedValue, onToggle, children, dis
     }}>
       <div onClick={onToggle} style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: SPACING[3],
+        padding: SPACING.md,
         borderBottom: `1px solid ${TOKENS.border}`,
         cursor: 'pointer',
       }}>
@@ -1137,7 +1137,7 @@ function CategoryEditorScreen({ isNew = true, type = 'expense' }) {
   const [expanded, setExpanded] = React.useState(null);
   const [enabled, setEnabled] = React.useState(true);
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100, minHeight: '100%' }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100, minHeight: '100%' }}>
       <FormGroup label="名稱 *">
         <input value={name} onChange={(e) => setName(e.target.value)} placeholder="類別名稱"
           style={formInput}/>
@@ -1172,7 +1172,7 @@ function CategoryEditorScreen({ isNew = true, type = 'expense' }) {
           }
           onToggle={() => setExpanded(expanded === 'icon' ? null : 'icon')}
         >
-          <div style={{ display: 'flex', flexWrap: 'wrap', padding: SPACING[2], maxHeight: 200, overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', padding: SPACING.sm, maxHeight: 200, overflowY: 'auto' }}>
             {ICON_LIBRARY.filter(i => i.tags.includes('category')).slice(0, 24).map((i, idx) => {
               const selected = idx === 0;
               return (
@@ -1194,15 +1194,15 @@ function CategoryEditorScreen({ isNew = true, type = 'expense' }) {
         <>
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            background: TOKENS.surface, padding: SPACING[4],
-            borderRadius: RADIUS.md, marginBottom: SPACING[6],
+            background: TOKENS.surface, padding: SPACING.lg,
+            borderRadius: RADIUS.md, marginBottom: SPACING.xl,
           }}>
             <span style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink }}>啟用類別</span>
             <Switch value={enabled} onChange={setEnabled}/>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button style={{
-              padding: SPACING[4], background: 'transparent',
+              padding: SPACING.lg, background: 'transparent',
               border: 'none', cursor: 'pointer', fontFamily: 'inherit',
               color: TOKENS.error, fontSize: TYPOGRAPHY.size.base,
             }}>刪除類別</button>
@@ -1226,7 +1226,7 @@ function PaywallScreen({ variant = 'default' }) {
   if (variant === 'loading') {
     return (
       <div style={{
-        padding: SPACING[6], background: TOKENS.bg, minHeight: '100%',
+        padding: SPACING.xl, background: TOKENS.bg, minHeight: '100%',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       }}>
         <Spinner size={48}/>
@@ -1235,33 +1235,33 @@ function PaywallScreen({ variant = 'default' }) {
   }
   return (
     <div style={{
-      padding: SPACING[6], background: TOKENS.bg, minHeight: '100%',
+      padding: SPACING.xl, background: TOKENS.bg, minHeight: '100%',
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       justifyContent: 'center', paddingBottom: 80,
     }}>
       <div style={{
         fontSize: TYPOGRAPHY.size['3xl'], fontWeight: TYPOGRAPHY.weight.medium,
-        marginBottom: SPACING[8], color: TOKENS.ink, textAlign: 'center',
+        marginBottom: SPACING['2xl'], color: TOKENS.ink, textAlign: 'center',
       }}>解鎖 Premium</div>
-      <div style={{ alignSelf: 'flex-start', marginBottom: SPACING[6], marginLeft: SPACING[4] }}>
+      <div style={{ alignSelf: 'flex-start', marginBottom: SPACING.xl, marginLeft: SPACING.lg }}>
         {['無限帳戶', '無限類別', '雲端同步', '多幣別支援'].map(b => (
           <div key={b} style={{
             fontSize: TYPOGRAPHY.size.lg,
-            marginBottom: SPACING[4], color: TOKENS.ink2,
+            marginBottom: SPACING.lg, color: TOKENS.ink2,
           }}>• {b}</div>
         ))}
       </div>
-      <div style={{ width: '100%', marginBottom: SPACING[6] }}>
+      <div style={{ width: '100%', marginBottom: SPACING.xl }}>
         {products.map(p => {
           const isSel = selected === p.id;
           return (
             <button key={p.id} onClick={() => setSelected(p.id)} style={{
               width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: SPACING[4], borderRadius: 12,
+              padding: SPACING.lg, borderRadius: 12,
               borderWidth: 1, borderStyle: 'solid',
               borderColor: isSel ? TOKENS.p500 : TOKENS.border,
               background: isSel ? `${TOKENS.p100}33` : TOKENS.surface,
-              marginBottom: SPACING[3], cursor: 'pointer', fontFamily: 'inherit',
+              marginBottom: SPACING.md, cursor: 'pointer', fontFamily: 'inherit',
             }}>
               <div style={{ flex: 1, textAlign: 'left' }}>
                 <div style={{
@@ -1284,18 +1284,18 @@ function PaywallScreen({ variant = 'default' }) {
         })}
       </div>
       <button style={{
-        width: '90%', padding: SPACING[4],
+        width: '90%', padding: SPACING.lg,
         background: TOKENS.p500, color: '#fff', borderRadius: 24, border: 'none',
         fontSize: TYPOGRAPHY.size.lg, fontWeight: TYPOGRAPHY.weight.medium,
-        cursor: 'pointer', fontFamily: 'inherit', marginBottom: SPACING[4],
+        cursor: 'pointer', fontFamily: 'inherit', marginBottom: SPACING.lg,
       }}>訂閱</button>
       <button style={{
-        padding: SPACING[2], background: 'transparent', border: 'none',
+        padding: SPACING.sm, background: 'transparent', border: 'none',
         color: TOKENS.ink2, textDecorationLine: 'underline',
         fontSize: TYPOGRAPHY.size.base, cursor: 'pointer', fontFamily: 'inherit',
       }}>恢復購買</button>
       <button style={{
-        marginTop: SPACING[2], padding: SPACING[2],
+        marginTop: SPACING.sm, padding: SPACING.sm,
         background: 'transparent', border: 'none',
         color: TOKENS.ink2, fontSize: TYPOGRAPHY.size.base,
         cursor: 'pointer', fontFamily: 'inherit',
@@ -1317,11 +1317,11 @@ function LoginScreen({ variant = 'default' }) {
       <div style={{
         flex: 2, display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center',
-        paddingTop: SPACING[12],
+        paddingTop: SPACING['4xl'],
       }}>
         <div style={{
           fontSize: 48, fontWeight: TYPOGRAPHY.weight.medium,
-          color: TOKENS.p500, marginBottom: SPACING[3],
+          color: TOKENS.p500, marginBottom: SPACING.md,
         }}>SuSuGiGi</div>
         <div style={{
           fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink2,
@@ -1331,13 +1331,13 @@ function LoginScreen({ variant = 'default' }) {
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center',
-        paddingLeft: SPACING[8], paddingRight: SPACING[8],
+        paddingLeft: SPACING['2xl'], paddingRight: SPACING['2xl'],
       }}>
         <button style={{
           display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
           background: TOKENS.p500,
-          paddingTop: SPACING[4], paddingBottom: SPACING[4],
-          paddingLeft: SPACING[6], paddingRight: SPACING[6],
+          paddingTop: SPACING.lg, paddingBottom: SPACING.lg,
+          paddingLeft: SPACING.xl, paddingRight: SPACING.xl,
           borderRadius: 8, width: '100%', maxWidth: 320,
           border: 'none', cursor: isLoading ? 'default' : 'pointer', fontFamily: 'inherit',
           boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
@@ -1351,7 +1351,7 @@ function LoginScreen({ variant = 'default' }) {
                 width: 24, height: 24, borderRadius: 12,
                 background: '#fff',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                marginRight: SPACING[3],
+                marginRight: SPACING.md,
               }}>
                 <span style={{ fontSize: 16, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.p500 }}>G</span>
               </div>
@@ -1362,11 +1362,11 @@ function LoginScreen({ variant = 'default' }) {
           )}
         </button>
         <div style={{
-          marginTop: SPACING[6], fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,
-          textAlign: 'center', paddingLeft: SPACING[4], paddingRight: SPACING[4],
+          marginTop: SPACING.xl, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,
+          textAlign: 'center', paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
         }}>登入即表示您同意我們的服務條款與隱私政策</div>
       </div>
-      <div style={{ paddingBottom: SPACING[8], display: 'flex', justifyContent: 'center' }}>
+      <div style={{ paddingBottom: SPACING['2xl'], display: 'flex', justifyContent: 'center' }}>
         <span style={{ fontSize: TYPOGRAPHY.size.xs, color: TOKENS.ink2 }}>© 2026 SuSuGiGi. All rights reserved.</span>
       </div>
     </div>
@@ -1381,7 +1381,7 @@ function ThemeSettingsScreen() {
   const [selected, setSelected] = React.useState('theme1');
   const themesList = [THEME_1, THEME_2];
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, minHeight: '100%', paddingBottom: 100 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, minHeight: '100%', paddingBottom: 100 }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: LIST_TOKENS.GRID_GAP }}>
         {themesList.map(t => (
           <div key={t.id} style={{ width: '47%' }}>
@@ -1409,7 +1409,7 @@ function LaunchModeSettingScreen() {
     { value: 'transfer', label: '直接轉帳' },
   ];
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, minHeight: '100%', paddingBottom: SPACING[6] }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, minHeight: '100%', paddingBottom: SPACING.xl }}>
       <ListGroupCard>
         {options.map(o => (
           <SelectionListItem key={o.value} title={o.label} selected={selected === o.value} onPress={() => setSelected(o.value)}/>
@@ -1429,7 +1429,7 @@ function LanguageSettingScreen() {
     { value: 'en', label: 'English' },
   ];
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, minHeight: '100%', paddingBottom: SPACING[6] }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, minHeight: '100%', paddingBottom: SPACING.xl }}>
       <ListGroupCard>
         {options.map(o => (
           <SelectionListItem key={o.value} title={o.label} selected={selected === o.value} onPress={() => setSelected(o.value)}/>
@@ -1460,7 +1460,7 @@ function TimeZoneSettingScreen() {
   return (
     <div style={{ position: 'relative', height: '100%', background: TOKENS.bg }}>
       <div style={{
-        paddingLeft: SPACING[4], paddingRight: SPACING[4],
+        paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
         paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16,
       }}>
         <ListGroupCard>
@@ -1493,7 +1493,7 @@ function BaseCurrencySettingScreen() {
   const filtered = q ? currencies.filter(c => c.code.toLowerCase().includes(q.toLowerCase()) || c.name.toLowerCase().includes(q.toLowerCase())) : currencies;
   return (
     <div style={{ position: 'relative', height: '100%', background: TOKENS.bg }}>
-      <div style={{ paddingLeft: SPACING[4], paddingRight: SPACING[4], paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16 }}>
+      <div style={{ paddingLeft: SPACING.lg, paddingRight: SPACING.lg, paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16 }}>
         <ListGroupCard style={{ marginBottom: 0 }}>
           {filtered.map(c => (
             <SelectionListItem key={c.code} title={`${c.code} - ${c.name}`} selected={selected === c.code} onPress={() => setSelected(c.code)}/>
@@ -1520,7 +1520,7 @@ function CurrencyListScreen() {
   const filtered = q ? currencies.filter(c => c.code.toLowerCase().includes(q.toLowerCase()) || c.name.toLowerCase().includes(q.toLowerCase())) : currencies;
   return (
     <div style={{ position: 'relative', height: '100%', background: TOKENS.bg }}>
-      <div style={{ paddingLeft: SPACING[4], paddingRight: SPACING[4], paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16 }}>
+      <div style={{ paddingLeft: SPACING.lg, paddingRight: SPACING.lg, paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16 }}>
         <ListGroupCard style={{ marginBottom: 0 }}>
           {filtered.map(c => (
             <ListItem key={c.code} title={c.code} subtitle={c.name} showChevron/>
@@ -1546,7 +1546,7 @@ function CurrencyRateListScreen({ variant = 'default' }) {
   const isEmpty = filtered.length === 0;
   return (
     <div style={{ position: 'relative', height: '100%', background: TOKENS.bg }}>
-      <div style={{ paddingLeft: SPACING[4], paddingRight: SPACING[4], paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16 }}>
+      <div style={{ paddingLeft: SPACING.lg, paddingRight: SPACING.lg, paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + 16 }}>
         {isEmpty ? (
           <div style={{ paddingTop: 80 }}>
             <ListEmptyState
@@ -1575,7 +1575,7 @@ function DataManagementScreen() {
   const renderIcon = (name, color = TOKENS.ink) =>
     <Glyph name={name} size={LIST_TOKENS.ICON_SIZE_SMALL} color={color} stroke={1.8}/>;
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100 }}>
       <ListSection>
         <ListGroupCard>
           <ListItem leftIcon={renderIcon('archive-arrow-up-outline')} title="完整備份匯出" showChevron/>
@@ -1615,13 +1615,13 @@ function DebugInfoScreen() {
     active: { expense: TX.filter(t => t.acc === a.id && t.amount < 0).length, income: TX.filter(t => t.acc === a.id && t.amount > 0).length },
   }));
   return (
-    <div style={{ padding: SPACING[4], background: TOKENS.bg, paddingBottom: 100 }}>
+    <div style={{ padding: SPACING.lg, background: TOKENS.bg, paddingBottom: 100 }}>
       {/* Info box */}
-      <div style={{ marginBottom: SPACING[4] }}>
+      <div style={{ marginBottom: SPACING.lg }}>
         <div style={{
           background: TOKENS.p100,
           borderLeftWidth: 4, borderLeftStyle: 'solid', borderLeftColor: TOKENS.p500,
-          padding: SPACING[3], borderRadius: 8,
+          padding: SPACING.md, borderRadius: 8,
         }}>
           <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink, lineHeight: 1.4 }}>
             💡 HomeScreen 只顯示 Active 資料（未刪除的交易和轉帳）。Debug Info 中的 Active 數字應與 HomeScreen 一致。
@@ -1629,12 +1629,12 @@ function DebugInfoScreen() {
         </div>
       </div>
       {/* Global Statistics */}
-      <div style={{ marginBottom: SPACING[6] }}>
+      <div style={{ marginBottom: SPACING.xl }}>
         <div style={{
           fontSize: TYPOGRAPHY.size.sm, fontWeight: TYPOGRAPHY.weight.medium,
-          color: TOKENS.ink2, marginBottom: SPACING[2], marginLeft: SPACING[2],
+          color: TOKENS.ink2, marginBottom: SPACING.sm, marginLeft: SPACING.sm,
         }}>Global Statistics</div>
-        <div style={{ background: TOKENS.surface, borderRadius: 12, padding: SPACING[4] }}>
+        <div style={{ background: TOKENS.surface, borderRadius: 12, padding: SPACING.lg }}>
           <DebugBlock title="✓ Active (顯示於 HomeScreen)" active>
             <div>Accounts: {ACCOUNTS.length}</div>
             <div>Transactions: {TX.length}</div>
@@ -1656,12 +1656,12 @@ function DebugInfoScreen() {
       </div>
       {/* Per-account */}
       {accounts.slice(0, 2).map(a => (
-        <div key={a.id} style={{ marginBottom: SPACING[6] }}>
+        <div key={a.id} style={{ marginBottom: SPACING.xl }}>
           <div style={{
             fontSize: TYPOGRAPHY.size.sm, fontWeight: TYPOGRAPHY.weight.medium,
-            color: TOKENS.ink2, marginBottom: SPACING[2], marginLeft: SPACING[2],
+            color: TOKENS.ink2, marginBottom: SPACING.sm, marginLeft: SPACING.sm,
           }}>{a.name} ({a.currency})</div>
-          <div style={{ background: TOKENS.surface, borderRadius: 12, padding: SPACING[4] }}>
+          <div style={{ background: TOKENS.surface, borderRadius: 12, padding: SPACING.lg }}>
             <DebugBlock title="✓ Active" active>
               <div>Expense: {a.active.expense} txs</div>
               <div>Income: {a.active.income} txs</div>
@@ -1675,14 +1675,14 @@ function DebugInfoScreen() {
 function DebugBlock({ title, active, children }) {
   return (
     <div style={{
-      paddingTop: SPACING[2], paddingBottom: SPACING[2],
+      paddingTop: SPACING.sm, paddingBottom: SPACING.sm,
       background: active ? TOKENS.p100 : 'transparent',
-      padding: active ? SPACING[2] : 0,
+      padding: active ? SPACING.sm : 0,
       borderRadius: active ? 8 : 0,
     }}>
       <div style={{
         fontSize: TYPOGRAPHY.size.sm, fontWeight: TYPOGRAPHY.weight.medium,
-        color: active ? TOKENS.p600 : TOKENS.ink, marginBottom: SPACING[2],
+        color: active ? TOKENS.p600 : TOKENS.ink, marginBottom: SPACING.sm,
       }}>{title}</div>
       <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, lineHeight: 1.7 }}>{children}</div>
     </div>
@@ -1690,7 +1690,7 @@ function DebugBlock({ title, active, children }) {
 }
 const debugDivider = {
   height: 1, background: TOKENS.divider, opacity: 0.2,
-  marginTop: SPACING[3], marginBottom: SPACING[3],
+  marginTop: SPACING.md, marginBottom: SPACING.md,
 };
 
 Object.assign(window, {
