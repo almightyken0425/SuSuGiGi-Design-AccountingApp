@@ -270,6 +270,8 @@ function ListSection({ title, children, style = {} }) {
   );
 }
 
+// ListSectionTitle 為 ListSection 的內部 helper，不對外 export。
+// impl 端 ListSection 將 title 內嵌為 prop、無單獨 export，Design 與其對齊。
 function ListSectionTitle({ children }) {
   return (
     <div style={{
@@ -283,6 +285,20 @@ function ListSectionTitle({ children }) {
       paddingBottom: LIST_TOKENS.SECTION_TITLE_PADDING_BOTTOM,
       textTransform: 'uppercase',
     }}>{children}</div>
+  );
+}
+
+// ─── ListSeparator ─── 對齊 src/components/list/ListSeparator.tsx
+// 1px hairline，insetLeft 控制左邊縮排
+// （含 leftIcon 的 ListItem 之間用 LIST_TOKENS.DIVIDER_INSET_WITH_ICON，無 icon 用 0 或 DIVIDER_INSET_WITHOUT_ICON）
+function ListSeparator({ insetLeft = 0, style = {} }) {
+  return (
+    <div style={{
+      height: 1,
+      marginLeft: insetLeft,
+      background: LIST_TOKENS.DIVIDER_COLOR_LIGHT,
+      ...style,
+    }}/>
   );
 }
 
@@ -478,6 +494,44 @@ function ListEmptyState({ iconName = 'magnify', title, description }) {
   );
 }
 const EmptyState = ListEmptyState;
+
+// ─── ListEmptyTransition ─── 對齊 src/components/list/ListEmptyTransition.tsx
+// 列表內容與空狀態的 crossfade 容器。duration 預設取 LIST_EMPTY_TRANSITION.DURATION_MS。
+// 兩層 absolute 疊放，依 isEmpty 切換 opacity，達到淡入淡出效果。
+function ListEmptyTransition({
+  isEmpty,
+  emptyState,
+  children,
+  topInset = 0,
+  bottomInset = 0,
+  duration = LIST_EMPTY_TRANSITION.DURATION_MS,
+}) {
+  const layerStyle = {
+    position: 'absolute',
+    top: topInset, bottom: bottomInset,
+    left: 0, right: 0,
+    transition: `opacity ${duration}ms ${LIST_EMPTY_TRANSITION.EASING}`,
+  };
+  return (
+    <div style={{ position: 'relative', flex: 1, minHeight: 200 }}>
+      <div style={{
+        ...layerStyle,
+        opacity: isEmpty ? 0 : 1,
+        pointerEvents: isEmpty ? 'none' : 'auto',
+      }}>
+        {children}
+      </div>
+      <div style={{
+        ...layerStyle,
+        opacity: isEmpty ? 1 : 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        pointerEvents: isEmpty ? 'auto' : 'none',
+      }}>
+        {emptyState}
+      </div>
+    </div>
+  );
+}
 
 // ─── NavHeader ─── push 模式 navigation header
 // impl 是透明 background，title 17px medium，back 用 SF "chevron.left" minimal display
@@ -861,9 +915,9 @@ const iconBtn = {
 
 Object.assign(window, {
   Glyph, DynamicIconById, IconOutline,
-  ListGroupCard, GroupCard, ListSection, ListSectionTitle,
+  ListGroupCard, GroupCard, ListSection, ListSeparator,
   ListItem, SelectionListItem, ReorderableListItem, SelectionGridItem,
-  ListEmptyState, EmptyState,
+  ListEmptyState, EmptyState, ListEmptyTransition,
   NavHeader, ModalHeader, ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton,
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,

@@ -89,15 +89,43 @@ function ComponentsListSection() {
         </CompFrame>
       </DCArtboard>
 
-      <DCArtboard id="comp-section-title" label="ListSection · 標題 (live)" width={402} height={400}>
+      <DCArtboard id="comp-list-section" label="ListSection · 有/無 title 兩變體 (live)" width={402} height={520}>
         <CompFrame>
-          <CompLabel>ListSectionTitle 是可選的 — impl 大多 ListSection 都沒 title</CompLabel>
+          <CompLabel>title 是 optional prop — impl 全部 caller 都沒帶 title（單純用作分組外殼）</CompLabel>
           <div style={{ padding: SPACING.lg }}>
-            <ListSectionTitle>資料管理</ListSectionTitle>
-            <ListGroupCard>
-              <ListItem title="管理類別" showChevron/>
-              <ListItem title="管理帳戶" showChevron/>
-            </ListGroupCard>
+            <ListSection style={{ marginBottom: SPACING.xl }}>
+              <ListGroupCard>
+                <ListItem title="無 title 變體 · 純容器" showChevron/>
+                <ListItem title="Settings 全部 ListSection 都這樣用" showChevron/>
+              </ListGroupCard>
+            </ListSection>
+            <ListSection title="資料管理">
+              <ListGroupCard>
+                <ListItem title="有 title 變體 · 帶區塊標題" showChevron/>
+                <ListItem title="管理類別" showChevron/>
+                <ListItem title="管理帳戶" showChevron/>
+              </ListGroupCard>
+            </ListSection>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="comp-list-separator" label="ListSeparator · insetLeft 變體 (live)" width={402} height={280}>
+        <CompFrame>
+          <CompLabel>1px hairline，insetLeft 控制縮排起點</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <div style={{ marginBottom: SPACING.md, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>
+              insetLeft = 0（滿版）
+            </div>
+            <ListSeparator/>
+            <div style={{ marginTop: SPACING.lg, marginBottom: SPACING.md, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>
+              insetLeft = LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON（{LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON}）
+            </div>
+            <ListSeparator insetLeft={LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON}/>
+            <div style={{ marginTop: SPACING.lg, marginBottom: SPACING.md, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>
+              insetLeft = LIST_TOKENS.DIVIDER_INSET_WITH_ICON（{LIST_TOKENS.DIVIDER_INSET_WITH_ICON}）
+            </div>
+            <ListSeparator insetLeft={LIST_TOKENS.DIVIDER_INSET_WITH_ICON}/>
           </div>
         </CompFrame>
       </DCArtboard>
@@ -109,7 +137,45 @@ function ComponentsListSection() {
           </div>
         </CompFrame>
       </DCArtboard>
+
+      <DCArtboard id="comp-list-empty-transition" label="ListEmptyTransition · 列表與空狀態 crossfade (live)" width={402} height={500}>
+        <CompFrame>
+          <CompLabel>按按鈕切換 isEmpty，{LIST_EMPTY_TRANSITION.DURATION_MS}ms standard easing crossfade</CompLabel>
+          <ListEmptyTransitionDemo/>
+        </CompFrame>
+      </DCArtboard>
     </DCSection>
+  );
+}
+
+function ListEmptyTransitionDemo() {
+  const [isEmpty, setIsEmpty] = React.useState(false);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ padding: SPACING.lg, borderBottom: `1px solid ${TOKENS.hairline2}` }}>
+        <button onClick={() => setIsEmpty(v => !v)} style={{
+          padding: '8px 16px', borderRadius: RADIUS.md,
+          border: `1px solid ${TOKENS.border}`, background: TOKENS.surface,
+          color: TOKENS.ink, fontSize: TYPOGRAPHY.size.sm, cursor: 'pointer',
+        }}>
+          切換 isEmpty（目前 {isEmpty ? 'true' : 'false'}）
+        </button>
+      </div>
+      <div style={{ position: 'relative', flex: 1 }}>
+        <ListEmptyTransition
+          isEmpty={isEmpty}
+          emptyState={<ListEmptyState iconName="magnify" title="找不到結果" description="「USD」"/>}
+        >
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem title="交易 1" value="NT$1,200"/>
+              <ListItem title="交易 2" value="NT$3,400"/>
+              <ListItem title="交易 3" value="NT$560"/>
+            </ListGroupCard>
+          </div>
+        </ListEmptyTransition>
+      </div>
+    </div>
   );
 }
 
