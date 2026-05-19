@@ -385,11 +385,12 @@ const BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BA
 // （與 ICON_LIBRARY 並列；ICON_LIBRARY 是 phosphor svg 集合，
 //  header action 使用系統 SF Symbol 達成 iOS 原生外觀）
 // ─────────────────────────────────────────────────────────────
+// add 動作不放此表。實作端 add 透過 FloatingActionBar (FontAwesome plus)
+// 與列項 leftIcon (MCI plus) 呈現，非 header SF Symbol；本表角色限於 header 動作對應。
 const ACTION_ICON_MAP = {
   back:    { source: 'native', symbol: null,                           note: '原生 chevron，不自訂' },
   close:   { source: 'sf',     symbol: 'xmark',                        note: 'Modal 關閉動作' },
   done:    { source: 'sf',     symbol: 'checkmark',                    note: 'Modal 完成動作' },
-  add:     { source: 'sf',     symbol: 'plus',                         note: '新增動作' },
   merge:   { source: 'sf',     symbol: 'arrow.triangle.merge',         note: '合併動作' },
   settings:{ source: 'sf',     symbol: 'gearshape',                    note: '設定入口' },
   search:  { source: 'sf',     symbol: 'magnifyingglass',              note: '搜尋入口' },
