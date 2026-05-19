@@ -21,9 +21,9 @@ function PP_PrivateBank() {
   const serif = '"Didot", "Bodoni 72", "Cochin", serif';
 
   const cats = [
-    { id: 'food',  title: '飲食 Dining',    iconId: 1, total: '−$1,425', expanded: true },
-    { id: 'shop',  title: '購物 Shopping',  iconId: 3, total: '−$1,290', expanded: false },
-    { id: 'trans', title: '交通 Transport', iconId: 2, total: '−$60',    expanded: false },
+    { id: 'food',  title: '飲食 Dining',    iconId: 13, total: '−$1,425', expanded: true },
+    { id: 'shop',  title: '購物 Shopping',  iconId: 28, total: '−$1,290', expanded: false },
+    { id: 'trans', title: '交通 Transport', iconId: 23, total: '−$60',    expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: 'Louisa Coffee',          acc: 'Cathay Credit', amount: '−185' },
@@ -192,9 +192,9 @@ function PP_NightStudio() {
   const mono = '"JetBrains Mono", "SF Mono", "Menlo", monospace';
 
   const cats = [
-    { id: 'food',  title: '飲食',  iconId: 1, total: '-1,425', expanded: true },
-    { id: 'shop',  title: '購物',  iconId: 3, total: '-1,290', expanded: false },
-    { id: 'trans', title: '交通',  iconId: 2, total: '-60',    expanded: false },
+    { id: 'food',  title: '飲食',  iconId: 13, total: '-1,425', expanded: true },
+    { id: 'shop',  title: '購物',  iconId: 28, total: '-1,290', expanded: false },
+    { id: 'trans', title: '交通',  iconId: 23, total: '-60',    expanded: false },
   ];
   const items_food = [
     { date: '05/02', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '-185' },
@@ -370,9 +370,9 @@ function PP_MidCentury() {
   const serif = '"Cooper Hewitt", "Recoleta", "Georgia", serif';
 
   const cats = [
-    { id: 'food',  title: '飲食 / Food',     iconId: 1, total: '−NT$1,425', expanded: true,  shape: 'circle' },
-    { id: 'shop',  title: '購物 / Shopping', iconId: 3, total: '−NT$1,290', expanded: false, shape: 'square' },
-    { id: 'trans', title: '交通 / Transit',  iconId: 2, total: '−NT$60',    expanded: false, shape: 'triangle' },
+    { id: 'food',  title: '飲食 / Food',     iconId: 13, total: '−NT$1,425', expanded: true,  shape: 'circle' },
+    { id: 'shop',  title: '購物 / Shopping', iconId: 28, total: '−NT$1,290', expanded: false, shape: 'square' },
+    { id: 'trans', title: '交通 / Transit',  iconId: 23, total: '−NT$60',    expanded: false, shape: 'triangle' },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -567,9 +567,9 @@ function PP_Risograph() {
   const sans = '"Helvetica Neue", "Avenir Next", -apple-system, sans-serif';
 
   const cats = [
-    { id: 'food',  title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true  },
-    { id: 'shop',  title: '購物', iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60',    expanded: false },
+    { id: 'food',  title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true  },
+    { id: 'shop',  title: '購物', iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60',    expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -745,9 +745,9 @@ function PP_Blueprint() {
   const sans = '"Helvetica Neue", "Arial", sans-serif';
 
   const cats = [
-    { id: 'food',  title: 'DINING',    chinese: '飲食', iconId: 1, total: '−1,425.00', expanded: true,  tag: 'A-01' },
-    { id: 'shop',  title: 'RETAIL',    chinese: '購物', iconId: 3, total: '−1,290.00', expanded: false, tag: 'A-02' },
-    { id: 'trans', title: 'TRANSPORT', chinese: '交通', iconId: 2, total: '−60.00',    expanded: false, tag: 'A-03' },
+    { id: 'food',  title: 'DINING',    chinese: '飲食', iconId: 13, total: '−1,425.00', expanded: true,  tag: 'A-01' },
+    { id: 'shop',  title: 'RETAIL',    chinese: '購物', iconId: 28, total: '−1,290.00', expanded: false, tag: 'A-02' },
+    { id: 'trans', title: 'TRANSPORT', chinese: '交通', iconId: 23, total: '−60.00',    expanded: false, tag: 'A-03' },
   ];
   const items_food = [
     { date: '05/02', note: '路易莎咖啡',  acc: 'CTBC', amount: '−185.00' },
@@ -927,9 +927,9 @@ function PP_Brutalist() {
   const sans = '"Helvetica Neue", "Arial Black", sans-serif';
 
   const cats = [
-    { id: 'food',  title: 'FOOD',    iconId: 1, total: '−NT$1,425', expanded: true  },
-    { id: 'shop',  title: 'SHOP',    iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: 'TRANSIT', iconId: 2, total: '−NT$60',    expanded: false },
+    { id: 'food',  title: 'FOOD',    iconId: 13, total: '−NT$1,425', expanded: true  },
+    { id: 'shop',  title: 'SHOP',    iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: 'TRANSIT', iconId: 23, total: '−NT$60',    expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -1105,9 +1105,9 @@ function PP_Origami() {
   const fold = 'linear-gradient(135deg, #FFFFFF 0%, #FAF6EE 48%, #ECE5D6 100%)';
 
   const cats = [
-    { id: 'food',  title: '飲食', kana: 'いんしょく', iconId: 1, total: '−NT$1,425', expanded: true  },
-    { id: 'shop',  title: '購物', kana: 'かいもの',   iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', kana: 'こうつう',   iconId: 2, total: '−NT$60',    expanded: false },
+    { id: 'food',  title: '飲食', kana: 'いんしょく', iconId: 13, total: '−NT$1,425', expanded: true  },
+    { id: 'shop',  title: '購物', kana: 'かいもの',   iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', kana: 'こうつう',   iconId: 23, total: '−NT$60',    expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -1295,9 +1295,9 @@ function PP_Tropical() {
   const serif = '"Cochin", "Playfair Display", "Georgia", serif';
 
   const cats = [
-    { id: 'food',  title: '飲食 · Bites',     iconId: 1, total: '−NT$1,425', expanded: true  },
-    { id: 'shop',  title: '購物 · Goodies',   iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通 · Trips',     iconId: 2, total: '−NT$60',    expanded: false },
+    { id: 'food',  title: '飲食 · Bites',     iconId: 13, total: '−NT$1,425', expanded: true  },
+    { id: 'shop',  title: '購物 · Goodies',   iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通 · Trips',     iconId: 23, total: '−NT$60',    expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -1499,9 +1499,9 @@ function PP_Manga() {
   const hand = '"Bradley Hand", "Caveat", "Comic Sans MS", cursive';
 
   const cats = [
-    { id: 'food',  title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true,  fx: 'WHAM!' },
-    { id: 'shop',  title: '購物', iconId: 3, total: '−NT$1,290', expanded: false, fx: 'POP!'  },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60',    expanded: false, fx: 'ZIP!'  },
+    { id: 'food',  title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true,  fx: 'WHAM!' },
+    { id: 'shop',  title: '購物', iconId: 28, total: '−NT$1,290', expanded: false, fx: 'POP!'  },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60',    expanded: false, fx: 'ZIP!'  },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -1702,9 +1702,9 @@ function PP_Marble() {
   const serif = '"Cormorant Garamond", "Cinzel", "Playfair Display", "Trajan Pro", serif';
 
   const cats = [
-    { id: 'food',  title: 'DINING',    iconId: 1, total: '−NT$1,425', expanded: true,  num: 'I'   },
-    { id: 'shop',  title: 'SHOPPING',  iconId: 3, total: '−NT$1,290', expanded: false, num: 'II'  },
-    { id: 'trans', title: 'TRANSPORT', iconId: 2, total: '−NT$60',    expanded: false, num: 'III' },
+    { id: 'food',  title: 'DINING',    iconId: 13, total: '−NT$1,425', expanded: true,  num: 'I'   },
+    { id: 'shop',  title: 'SHOPPING',  iconId: 28, total: '−NT$1,290', expanded: false, num: 'II'  },
+    { id: 'trans', title: 'TRANSPORT', iconId: 23, total: '−NT$60',    expanded: false, num: 'III' },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: 'CTBC Credit', amount: '−NT$185' },
@@ -1890,9 +1890,9 @@ function PP_Vaporwave() {
   const sans = '"Helvetica Neue", -apple-system, sans-serif';
 
   const cats = [
-    { id: 'food', title: 'DINING', kana: '飲食', iconId: 1, total: '-NT$1,425', expanded: true },
-    { id: 'shop', title: 'RETAIL', kana: '購物', iconId: 3, total: '-NT$1,290', expanded: false },
-    { id: 'trans', title: 'TRANSIT', kana: '交通', iconId: 2, total: '-NT$60', expanded: false },
+    { id: 'food', title: 'DINING', kana: '飲食', iconId: 13, total: '-NT$1,425', expanded: true },
+    { id: 'shop', title: 'RETAIL', kana: '購物', iconId: 28, total: '-NT$1,290', expanded: false },
+    { id: 'trans', title: 'TRANSIT', kana: '交通', iconId: 23, total: '-NT$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: 'CTBC', amount: '-NT$185' },
@@ -2041,9 +2041,9 @@ function PP_Cyberpunk() {
   const sans = '"Helvetica Neue", sans-serif';
 
   const cats = [
-    { id: 'food', title: 'FOOD.exe', iconId: 1, total: '-1,425.00', expanded: true },
-    { id: 'shop', title: 'BUY.app', iconId: 3, total: '-1,290.00', expanded: false },
-    { id: 'trans', title: 'MOVE.sys', iconId: 2, total: '-60.00', expanded: false },
+    { id: 'food', title: 'FOOD.exe', iconId: 13, total: '-1,425.00', expanded: true },
+    { id: 'shop', title: 'BUY.app', iconId: 28, total: '-1,290.00', expanded: false },
+    { id: 'trans', title: 'MOVE.sys', iconId: 23, total: '-60.00', expanded: false },
   ];
   const items_food = [
     { date: '05.02', note: '路易莎咖啡', acc: 'CTBC', amount: '-185.00' },
@@ -2182,9 +2182,9 @@ function PP_Pixel() {
   const mono = '"Press Start 2P", "VT323", "Courier New", monospace';
 
   const cats = [
-    { id: 'food', title: 'FOOD', iconId: 1, total: '-1425', expanded: true, hp: '20/30' },
-    { id: 'shop', title: 'SHOP', iconId: 3, total: '-1290', expanded: false, hp: '14/30' },
-    { id: 'trans', title: 'MOVE', iconId: 2, total: '-60', expanded: false, hp: '29/30' },
+    { id: 'food', title: 'FOOD', iconId: 13, total: '-1425', expanded: true, hp: '20/30' },
+    { id: 'shop', title: 'SHOP', iconId: 28, total: '-1290', expanded: false, hp: '14/30' },
+    { id: 'trans', title: 'MOVE', iconId: 23, total: '-60', expanded: false, hp: '29/30' },
   ];
   const items_food = [
     { date: '05/02', note: 'LOUISA', acc: 'CTBC', amount: '-185' },
@@ -2315,9 +2315,9 @@ function PP_Memphis() {
   const sans = '"Helvetica Neue", "Avenir Next", sans-serif';
 
   const cats = [
-    { id: 'food', title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true, shape: 'squiggle' },
-    { id: 'shop', title: '購物', iconId: 3, total: '−NT$1,290', expanded: false, shape: 'dots' },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60', expanded: false, shape: 'cross' },
+    { id: 'food', title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true, shape: 'squiggle' },
+    { id: 'shop', title: '購物', iconId: 28, total: '−NT$1,290', expanded: false, shape: 'dots' },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60', expanded: false, shape: 'cross' },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -2474,9 +2474,9 @@ function PP_Bauhaus() {
   const sans = '"Futura", "Avenir Next", "Helvetica Neue", sans-serif';
 
   const cats = [
-    { id: 'food', title: '飲食 DINING', iconId: 1, total: '−NT$1,425', expanded: true, shape: 'circle', color: red },
-    { id: 'shop', title: '購物 SHOPPING', iconId: 3, total: '−NT$1,290', expanded: false, shape: 'square', color: yellow },
-    { id: 'trans', title: '交通 TRANSIT', iconId: 2, total: '−NT$60', expanded: false, shape: 'triangle', color: blue },
+    { id: 'food', title: '飲食 DINING', iconId: 13, total: '−NT$1,425', expanded: true, shape: 'circle', color: red },
+    { id: 'shop', title: '購物 SHOPPING', iconId: 28, total: '−NT$1,290', expanded: false, shape: 'square', color: yellow },
+    { id: 'trans', title: '交通 TRANSIT', iconId: 23, total: '−NT$60', expanded: false, shape: 'triangle', color: blue },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -2621,9 +2621,9 @@ function PP_ArtDeco() {
   const serif = '"Didot", "Cochin", "Playfair Display", serif';
 
   const cats = [
-    { id: 'food', title: 'DINING', sub: '飲食', iconId: 1, total: '−$1,425', expanded: true, num: 'I' },
-    { id: 'shop', title: 'RETAIL', sub: '購物', iconId: 3, total: '−$1,290', expanded: false, num: 'II' },
-    { id: 'trans', title: 'TRANSIT', sub: '交通', iconId: 2, total: '−$60', expanded: false, num: 'III' },
+    { id: 'food', title: 'DINING', sub: '飲食', iconId: 13, total: '−$1,425', expanded: true, num: 'I' },
+    { id: 'shop', title: 'RETAIL', sub: '購物', iconId: 28, total: '−$1,290', expanded: false, num: 'II' },
+    { id: 'trans', title: 'TRANSIT', sub: '交通', iconId: 23, total: '−$60', expanded: false, num: 'III' },
   ];
   const items_food = [
     { date: '5/2', note: 'Louisa Coffee', acc: 'CTBC', amount: '−$185' },
@@ -2780,9 +2780,9 @@ function PP_VintageMap() {
   const mono = '"Courier New", "American Typewriter", monospace';
 
   const cats = [
-    { id: 'food', title: '飲食', tag: 'N 25.04°', iconId: 1, total: '−$1,425', expanded: true },
-    { id: 'shop', title: '購物', tag: 'N 25.05°', iconId: 3, total: '−$1,290', expanded: false },
-    { id: 'trans', title: '交通', tag: 'E 121.55°', iconId: 2, total: '−$60', expanded: false },
+    { id: 'food', title: '飲食', tag: 'N 25.04°', iconId: 13, total: '−$1,425', expanded: true },
+    { id: 'shop', title: '購物', tag: 'N 25.05°', iconId: 28, total: '−$1,290', expanded: false },
+    { id: 'trans', title: '交通', tag: 'E 121.55°', iconId: 23, total: '−$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: 'CTBC', amount: '−$185' },
@@ -2944,9 +2944,9 @@ function PP_WabiSabi() {
   const serif = '"Yu Mincho", "Songti TC", "Cochin", serif';
 
   const cats = [
-    { id: 'food', title: '飲食', kana: 'いただき', iconId: 1, total: '−1,425', expanded: true },
-    { id: 'shop', title: '購物', kana: 'もの', iconId: 3, total: '−1,290', expanded: false },
-    { id: 'trans', title: '交通', kana: 'みち', iconId: 2, total: '−60', expanded: false },
+    { id: 'food', title: '飲食', kana: 'いただき', iconId: 13, total: '−1,425', expanded: true },
+    { id: 'shop', title: '購物', kana: 'もの', iconId: 28, total: '−1,290', expanded: false },
+    { id: 'trans', title: '交通', kana: 'みち', iconId: 23, total: '−60', expanded: false },
   ];
   const items_food = [
     { date: '五日', note: '路易莎', acc: '信用卡', amount: '−185' },
@@ -3090,9 +3090,9 @@ function PP_CinemaMarquee() {
   const serif = '"Cochin", "Georgia", serif';
 
   const cats = [
-    { id: 'food', title: 'DINING', sub: '飲食', iconId: 1, total: '−$1,425', expanded: true },
-    { id: 'shop', title: 'SHOPS', sub: '購物', iconId: 3, total: '−$1,290', expanded: false },
-    { id: 'trans', title: 'TRANSIT', sub: '交通', iconId: 2, total: '−$60', expanded: false },
+    { id: 'food', title: 'DINING', sub: '飲食', iconId: 13, total: '−$1,425', expanded: true },
+    { id: 'shop', title: 'SHOPS', sub: '購物', iconId: 28, total: '−$1,290', expanded: false },
+    { id: 'trans', title: 'TRANSIT', sub: '交通', iconId: 23, total: '−$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: 'LOUISA COFFEE', acc: 'CTBC', amount: '−$185' },
@@ -3241,9 +3241,9 @@ function PP_ReceiptStack() {
   const mono = '"Courier New", "American Typewriter", "Menlo", monospace';
 
   const cats = [
-    { id: 'food', title: 'DINING', iconId: 1, total: '-1,425.00', expanded: true, no: '#01' },
-    { id: 'shop', title: 'SHOPPING', iconId: 3, total: '-1,290.00', expanded: false, no: '#02' },
-    { id: 'trans', title: 'TRANSPORT', iconId: 2, total: '-60.00', expanded: false, no: '#03' },
+    { id: 'food', title: 'DINING', iconId: 13, total: '-1,425.00', expanded: true, no: '#01' },
+    { id: 'shop', title: 'SHOPPING', iconId: 28, total: '-1,290.00', expanded: false, no: '#02' },
+    { id: 'trans', title: 'TRANSPORT', iconId: 23, total: '-60.00', expanded: false, no: '#03' },
   ];
   const items_food = [
     { date: '05/02', note: '路易莎咖啡', acc: 'CTBC', amount: '-185.00' },
@@ -3411,9 +3411,9 @@ function PP_Claymorphism() {
   const clayInset = 'inset 2px 2px 5px rgba(80,55,40,0.10), inset -2px -2px 5px rgba(255,255,255,0.85)';
 
   const cats = [
-    { id: 'food', title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true },
-    { id: 'shop', title: '購物', iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60', expanded: false },
+    { id: 'food', title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true },
+    { id: 'shop', title: '購物', iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -3555,9 +3555,9 @@ function PP_Aurora() {
   const sans = '"SF Pro Rounded", "Avenir Next Rounded", -apple-system, sans-serif';
 
   const cats = [
-    { id: 'food', title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true },
-    { id: 'shop', title: '購物', iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60', expanded: false },
+    { id: 'food', title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true },
+    { id: 'shop', title: '購物', iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -3731,9 +3731,9 @@ function PP_Pebble() {
   const stoneShadow = '0 8px 16px rgba(45,42,36,0.10), 0 1px 2px rgba(45,42,36,0.06)';
 
   const cats = [
-    { id: 'food', title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true },
-    { id: 'shop', title: '購物', iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60', expanded: false },
+    { id: 'food', title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true },
+    { id: 'shop', title: '購物', iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華', amount: '−NT$185' },
@@ -3897,9 +3897,9 @@ function PP_CottonCandy() {
   const cardShadow = '0 8px 24px rgba(74,44,92,0.10)';
 
   const cats = [
-    { id: 'food', title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true },
-    { id: 'shop', title: '購物', iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60', expanded: false },
+    { id: 'food', title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true },
+    { id: 'shop', title: '購物', iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },
@@ -4060,9 +4060,9 @@ function PP_SoapBubble() {
   const sans = '"SF Pro Rounded", "Avenir Next Rounded", -apple-system, sans-serif';
 
   const cats = [
-    { id: 'food', title: '飲食', iconId: 1, total: '−NT$1,425', expanded: true },
-    { id: 'shop', title: '購物', iconId: 3, total: '−NT$1,290', expanded: false },
-    { id: 'trans', title: '交通', iconId: 2, total: '−NT$60', expanded: false },
+    { id: 'food', title: '飲食', iconId: 13, total: '−NT$1,425', expanded: true },
+    { id: 'shop', title: '購物', iconId: 28, total: '−NT$1,290', expanded: false },
+    { id: 'trans', title: '交通', iconId: 23, total: '−NT$60', expanded: false },
   ];
   const items_food = [
     { date: '5/2', note: '路易莎咖啡', acc: '國泰世華 信用卡', amount: '−NT$185' },

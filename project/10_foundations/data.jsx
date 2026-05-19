@@ -382,7 +382,7 @@ const BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BA
 
 // ─────────────────────────────────────────────────────────────
 // ACTION_ICON_MAP — header 動作 → SF Symbol 對應
-// （與 ICON_LIBRARY 並列；ICON_LIBRARY 是自製/MaterialCommunity 圖示，
+// （與 ICON_LIBRARY 並列；ICON_LIBRARY 是 phosphor svg 集合，
 //  header action 使用系統 SF Symbol 達成 iOS 原生外觀）
 // ─────────────────────────────────────────────────────────────
 const ACTION_ICON_MAP = {
@@ -397,52 +397,109 @@ const ACTION_ICON_MAP = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// IconDefinition.json — 完整 43 個 icon
+// IconDefinition.json — 完整 97 個 icon
+// 與 impl assets/definitions/IconDefinition.json 同步；library 全為 phosphor svg。
+// SVG 檔位於 project/assets/icons/phosphor/<glyph>.svg（design git 自包副本）。
+// id 1-11 為 account tag；id 12-97 為 category tag。
 // ─────────────────────────────────────────────────────────────
 const ICON_LIBRARY = [
-  { id: 1,  uniqueName: 'mci-food',             library: 'MaterialCommunityIcons', glyph: 'food',                 tags: ['category'] },
-  { id: 2,  uniqueName: 'mci-bus',              library: 'MaterialCommunityIcons', glyph: 'bus',                  tags: ['category'] },
-  { id: 3,  uniqueName: 'mci-cart',             library: 'MaterialCommunityIcons', glyph: 'cart',                 tags: ['category'] },
-  { id: 4,  uniqueName: 'mci-movie',            library: 'MaterialCommunityIcons', glyph: 'movie',                tags: ['category'] },
-  { id: 5,  uniqueName: 'mci-home',             library: 'MaterialCommunityIcons', glyph: 'home',                 tags: ['category','account'] },
-  { id: 6,  uniqueName: 'mci-water',            library: 'MaterialCommunityIcons', glyph: 'water',                tags: ['category'] },
-  { id: 7,  uniqueName: 'mci-hospital',         library: 'MaterialCommunityIcons', glyph: 'hospital-box',         tags: ['category'] },
-  { id: 8,  uniqueName: 'mci-school',           library: 'MaterialCommunityIcons', glyph: 'school',               tags: ['category'] },
-  { id: 9,  uniqueName: 'mci-dots-horizontal',  library: 'MaterialCommunityIcons', glyph: 'dots-horizontal',      tags: ['category','account'] },
-  { id: 10, uniqueName: 'mci-cash-multiple',    library: 'MaterialCommunityIcons', glyph: 'cash-multiple',        tags: ['category','account'] },
-  { id: 11, uniqueName: 'ant-star',             library: 'AntDesign',              glyph: 'star',                 tags: ['category'] },
-  { id: 12, uniqueName: 'mci-chart-line',       library: 'MaterialCommunityIcons', glyph: 'chart-line',           tags: ['category'] },
-  { id: 13, uniqueName: 'mci-bank',             library: 'MaterialCommunityIcons', glyph: 'bank',                 tags: ['account'] },
-  { id: 14, uniqueName: 'ant-creditcard',       library: 'AntDesign',              glyph: 'creditcard',           tags: ['account'] },
-  { id: 15, uniqueName: 'ant-wallet',           library: 'AntDesign',              glyph: 'wallet',               tags: ['account'] },
-  { id: 16, uniqueName: 'ant-amazon',           library: 'AntDesign',              glyph: 'amazon',               tags: ['category'] },
-  { id: 17, uniqueName: 'ant-book',             library: 'AntDesign',              glyph: 'book',                 tags: ['category'] },
-  { id: 18, uniqueName: 'mci-lightbulb-on-outline', library: 'MaterialCommunityIcons', glyph: 'lightbulb-on-outline', tags: ['category'] },
-  { id: 19, uniqueName: 'ant-camera',           library: 'AntDesign',              glyph: 'camera',               tags: ['category'] },
-  { id: 20, uniqueName: 'ant-clear',            library: 'AntDesign',              glyph: 'clear',                tags: ['category'] },
-  { id: 21, uniqueName: 'ant-coffee',           library: 'AntDesign',              glyph: 'coffee',               tags: ['category'] },
-  { id: 22, uniqueName: 'ant-customerservice',  library: 'AntDesign',              glyph: 'customerservice',      tags: ['category'] },
-  { id: 23, uniqueName: 'mci-currency-usd',     library: 'MaterialCommunityIcons', glyph: 'currency-usd',         tags: ['category','account'] },
-  { id: 24, uniqueName: 'ant-dribbble',         library: 'AntDesign',              glyph: 'dribbble',             tags: ['category'] },
-  { id: 25, uniqueName: 'mci-currency-eur',     library: 'MaterialCommunityIcons', glyph: 'currency-eur',         tags: ['category','account'] },
-  { id: 26, uniqueName: 'ant-experiment',       library: 'AntDesign',              glyph: 'experiment',           tags: ['category'] },
-  { id: 27, uniqueName: 'ant-fire',             library: 'AntDesign',              glyph: 'fire',                 tags: ['category'] },
-  { id: 28, uniqueName: 'mci-earth',            library: 'MaterialCommunityIcons', glyph: 'earth',                tags: ['category'] },
-  { id: 29, uniqueName: 'ant-laptop',           library: 'AntDesign',              glyph: 'laptop',               tags: ['category'] },
-  { id: 30, uniqueName: 'ant-notification',     library: 'AntDesign',              glyph: 'notification',         tags: ['category'] },
-  { id: 31, uniqueName: 'ant-pay-circle1',      library: 'AntDesign',              glyph: 'pay-circle1',          tags: ['category','account'] },
-  { id: 32, uniqueName: 'mci-currency-gbp',     library: 'MaterialCommunityIcons', glyph: 'currency-gbp',         tags: ['category','account'] },
-  { id: 33, uniqueName: 'ant-read',             library: 'AntDesign',              glyph: 'read',                 tags: ['category'] },
-  { id: 34, uniqueName: 'ant-rocket1',          library: 'AntDesign',              glyph: 'rocket1',              tags: ['category'] },
-  { id: 35, uniqueName: 'ant-ruby',             library: 'AntDesign',              glyph: 'ruby',                 tags: ['category'] },
-  { id: 36, uniqueName: 'ant-scissor',          library: 'AntDesign',              glyph: 'scissor',              tags: ['category'] },
-  { id: 37, uniqueName: 'ant-shoppingcart',     library: 'AntDesign',              glyph: 'shoppingcart',         tags: ['category'] },
-  { id: 38, uniqueName: 'ant-sliders',          library: 'AntDesign',              glyph: 'sliders',              tags: ['category'] },
-  { id: 39, uniqueName: 'ant-team',             library: 'AntDesign',              glyph: 'team',                 tags: ['category'] },
-  { id: 40, uniqueName: 'ant-tool',             library: 'AntDesign',              glyph: 'tool',                 tags: ['category'] },
-  { id: 41, uniqueName: 'ant-truck',            library: 'AntDesign',              glyph: 'truck',                tags: ['category'] },
-  { id: 42, uniqueName: 'ant-unlock',           library: 'AntDesign',              glyph: 'unlock',               tags: ['category','account'] },
-  { id: 43, uniqueName: 'ant-warning',          library: 'AntDesign',              glyph: 'warning',              tags: ['category'] },
+  { id:  1, uniqueName: 'ph-money'                  , library: 'svg', glyph: 'money'                  , tags: ['account'] },
+  { id:  2, uniqueName: 'ph-coins'                  , library: 'svg', glyph: 'coins'                  , tags: ['account'] },
+  { id:  3, uniqueName: 'ph-wallet'                 , library: 'svg', glyph: 'wallet'                 , tags: ['account'] },
+  { id:  4, uniqueName: 'ph-piggy-bank'             , library: 'svg', glyph: 'piggy-bank'             , tags: ['account'] },
+  { id:  5, uniqueName: 'ph-jar'                    , library: 'svg', glyph: 'jar'                    , tags: ['account'] },
+  { id:  6, uniqueName: 'ph-gift'                   , library: 'svg', glyph: 'gift'                   , tags: ['account'] },
+  { id:  7, uniqueName: 'ph-credit-card'            , library: 'svg', glyph: 'credit-card'            , tags: ['account'] },
+  { id:  8, uniqueName: 'ph-contactless-payment'    , library: 'svg', glyph: 'contactless-payment'    , tags: ['account'] },
+  { id:  9, uniqueName: 'ph-paypal-logo'            , library: 'svg', glyph: 'paypal-logo'            , tags: ['account'] },
+  { id: 10, uniqueName: 'ph-archive'                , library: 'svg', glyph: 'archive'                , tags: ['account'] },
+  { id: 11, uniqueName: 'ph-building'               , library: 'svg', glyph: 'building'               , tags: ['account'] },
+  { id: 12, uniqueName: 'ph-bread'                  , library: 'svg', glyph: 'bread'                  , tags: ['category'] },
+  { id: 13, uniqueName: 'ph-coffee'                 , library: 'svg', glyph: 'coffee'                 , tags: ['category'] },
+  { id: 14, uniqueName: 'ph-acorn'                  , library: 'svg', glyph: 'acorn'                  , tags: ['category'] },
+  { id: 15, uniqueName: 'ph-ice-cream'              , library: 'svg', glyph: 'ice-cream'              , tags: ['category'] },
+  { id: 16, uniqueName: 'ph-martini'                , library: 'svg', glyph: 'martini'                , tags: ['category'] },
+  { id: 17, uniqueName: 'ph-cake'                   , library: 'svg', glyph: 'cake'                   , tags: ['category'] },
+  { id: 18, uniqueName: 'ph-person-simple-bike'     , library: 'svg', glyph: 'person-simple-bike'     , tags: ['category'] },
+  { id: 19, uniqueName: 'ph-bicycle'                , library: 'svg', glyph: 'bicycle'                , tags: ['category'] },
+  { id: 20, uniqueName: 'ph-moped'                  , library: 'svg', glyph: 'moped'                  , tags: ['category'] },
+  { id: 21, uniqueName: 'ph-motorcycle'             , library: 'svg', glyph: 'motorcycle'             , tags: ['category'] },
+  { id: 22, uniqueName: 'ph-car'                    , library: 'svg', glyph: 'car'                    , tags: ['category'] },
+  { id: 23, uniqueName: 'ph-bus'                    , library: 'svg', glyph: 'bus'                    , tags: ['category'] },
+  { id: 24, uniqueName: 'ph-train-simple'           , library: 'svg', glyph: 'train-simple'           , tags: ['category'] },
+  { id: 25, uniqueName: 'ph-taxi'                   , library: 'svg', glyph: 'taxi'                   , tags: ['category'] },
+  { id: 26, uniqueName: 'ph-anchor'                 , library: 'svg', glyph: 'anchor'                 , tags: ['category'] },
+  { id: 27, uniqueName: 'ph-airplane-takeoff'       , library: 'svg', glyph: 'airplane-takeoff'       , tags: ['category'] },
+  { id: 28, uniqueName: 'ph-shopping-cart'          , library: 'svg', glyph: 'shopping-cart'          , tags: ['category'] },
+  { id: 29, uniqueName: 'ph-storefront'             , library: 'svg', glyph: 'storefront'             , tags: ['category'] },
+  { id: 30, uniqueName: 'ph-dress'                  , library: 'svg', glyph: 'dress'                  , tags: ['category'] },
+  { id: 31, uniqueName: 'ph-t-shirt'                , library: 'svg', glyph: 't-shirt'                , tags: ['category'] },
+  { id: 32, uniqueName: 'ph-high-heel'              , library: 'svg', glyph: 'high-heel'              , tags: ['category'] },
+  { id: 33, uniqueName: 'ph-watch'                  , library: 'svg', glyph: 'watch'                  , tags: ['category'] },
+  { id: 34, uniqueName: 'ph-backpack'               , library: 'svg', glyph: 'backpack'               , tags: ['category'] },
+  { id: 35, uniqueName: 'ph-pencil-simple'          , library: 'svg', glyph: 'pencil-simple'          , tags: ['category'] },
+  { id: 36, uniqueName: 'ph-ruler'                  , library: 'svg', glyph: 'ruler'                  , tags: ['category'] },
+  { id: 37, uniqueName: 'ph-phone'                  , library: 'svg', glyph: 'phone'                  , tags: ['category'] },
+  { id: 38, uniqueName: 'ph-lightbulb'              , library: 'svg', glyph: 'lightbulb'              , tags: ['category'] },
+  { id: 39, uniqueName: 'ph-plugs'                  , library: 'svg', glyph: 'plugs'                  , tags: ['category'] },
+  { id: 40, uniqueName: 'ph-alarm'                  , library: 'svg', glyph: 'alarm'                  , tags: ['category'] },
+  { id: 41, uniqueName: 'ph-umbrella-simple'        , library: 'svg', glyph: 'umbrella-simple'        , tags: ['category'] },
+  { id: 42, uniqueName: 'ph-book'                   , library: 'svg', glyph: 'book'                   , tags: ['category'] },
+  { id: 43, uniqueName: 'ph-projector-screen'       , library: 'svg', glyph: 'projector-screen'       , tags: ['category'] },
+  { id: 44, uniqueName: 'ph-broom'                  , library: 'svg', glyph: 'broom'                  , tags: ['category'] },
+  { id: 45, uniqueName: 'ph-wrench'                 , library: 'svg', glyph: 'wrench'                 , tags: ['category'] },
+  { id: 46, uniqueName: 'ph-axe'                    , library: 'svg', glyph: 'axe'                    , tags: ['category'] },
+  { id: 47, uniqueName: 'ph-car-battery'            , library: 'svg', glyph: 'car-battery'            , tags: ['category'] },
+  { id: 48, uniqueName: 'ph-engine'                 , library: 'svg', glyph: 'engine'                 , tags: ['category'] },
+  { id: 49, uniqueName: 'ph-toilet'                 , library: 'svg', glyph: 'toilet'                 , tags: ['category'] },
+  { id: 50, uniqueName: 'ph-devices'                , library: 'svg', glyph: 'devices'                , tags: ['category'] },
+  { id: 51, uniqueName: 'ph-baby-carriage'          , library: 'svg', glyph: 'baby-carriage'          , tags: ['category'] },
+  { id: 52, uniqueName: 'ph-armchair'               , library: 'svg', glyph: 'armchair'               , tags: ['category'] },
+  { id: 53, uniqueName: 'ph-house'                  , library: 'svg', glyph: 'house'                  , tags: ['category'] },
+  { id: 54, uniqueName: 'ph-music-notes-simple'     , library: 'svg', glyph: 'music-notes-simple'     , tags: ['category'] },
+  { id: 55, uniqueName: 'ph-palette'                , library: 'svg', glyph: 'palette'                , tags: ['category'] },
+  { id: 56, uniqueName: 'ph-camera'                 , library: 'svg', glyph: 'camera'                 , tags: ['category'] },
+  { id: 57, uniqueName: 'ph-video-camera'           , library: 'svg', glyph: 'video-camera'           , tags: ['category'] },
+  { id: 58, uniqueName: 'ph-ghost'                  , library: 'svg', glyph: 'ghost'                  , tags: ['category'] },
+  { id: 59, uniqueName: 'ph-lego'                   , library: 'svg', glyph: 'lego'                   , tags: ['category'] },
+  { id: 60, uniqueName: 'ph-game-controller'        , library: 'svg', glyph: 'game-controller'        , tags: ['category'] },
+  { id: 61, uniqueName: 'ph-rocket-launch'          , library: 'svg', glyph: 'rocket-launch'          , tags: ['category'] },
+  { id: 62, uniqueName: 'ph-barbell'                , library: 'svg', glyph: 'barbell'                , tags: ['category'] },
+  { id: 63, uniqueName: 'ph-tennis-ball'            , library: 'svg', glyph: 'tennis-ball'            , tags: ['category'] },
+  { id: 64, uniqueName: 'ph-basketball'             , library: 'svg', glyph: 'basketball'             , tags: ['category'] },
+  { id: 65, uniqueName: 'ph-volleyball'             , library: 'svg', glyph: 'volleyball'             , tags: ['category'] },
+  { id: 66, uniqueName: 'ph-baseball'               , library: 'svg', glyph: 'baseball'               , tags: ['category'] },
+  { id: 67, uniqueName: 'ph-beach-ball'             , library: 'svg', glyph: 'beach-ball'             , tags: ['category'] },
+  { id: 68, uniqueName: 'ph-ping-pong'              , library: 'svg', glyph: 'ping-pong'              , tags: ['category'] },
+  { id: 69, uniqueName: 'ph-boxing-glove'           , library: 'svg', glyph: 'boxing-glove'           , tags: ['category'] },
+  { id: 70, uniqueName: 'ph-football'               , library: 'svg', glyph: 'football'               , tags: ['category'] },
+  { id: 71, uniqueName: 'ph-hockey'                 , library: 'svg', glyph: 'hockey'                 , tags: ['category'] },
+  { id: 72, uniqueName: 'ph-person-simple-snowboard', library: 'svg', glyph: 'person-simple-snowboard', tags: ['category'] },
+  { id: 73, uniqueName: 'ph-handshake'              , library: 'svg', glyph: 'handshake'              , tags: ['category'] },
+  { id: 74, uniqueName: 'ph-hands-praying'          , library: 'svg', glyph: 'hands-praying'          , tags: ['category'] },
+  { id: 75, uniqueName: 'ph-heart'                  , library: 'svg', glyph: 'heart'                  , tags: ['category'] },
+  { id: 76, uniqueName: 'ph-pill'                   , library: 'svg', glyph: 'pill'                   , tags: ['category'] },
+  { id: 77, uniqueName: 'ph-fire'                   , library: 'svg', glyph: 'fire'                   , tags: ['category'] },
+  { id: 78, uniqueName: 'ph-fire-extinguisher'      , library: 'svg', glyph: 'fire-extinguisher'      , tags: ['category'] },
+  { id: 79, uniqueName: 'ph-ambulance'              , library: 'svg', glyph: 'ambulance'              , tags: ['category'] },
+  { id: 80, uniqueName: 'ph-clover'                 , library: 'svg', glyph: 'clover'                 , tags: ['category'] },
+  { id: 81, uniqueName: 'ph-cactus'                 , library: 'svg', glyph: 'cactus'                 , tags: ['category'] },
+  { id: 82, uniqueName: 'ph-tree'                   , library: 'svg', glyph: 'tree'                   , tags: ['category'] },
+  { id: 83, uniqueName: 'ph-bird'                   , library: 'svg', glyph: 'bird'                   , tags: ['category'] },
+  { id: 84, uniqueName: 'ph-cat'                    , library: 'svg', glyph: 'cat'                    , tags: ['category'] },
+  { id: 85, uniqueName: 'ph-dog'                    , library: 'svg', glyph: 'dog'                    , tags: ['category'] },
+  { id: 86, uniqueName: 'ph-bone'                   , library: 'svg', glyph: 'bone'                   , tags: ['category'] },
+  { id: 87, uniqueName: 'ph-chart-line'             , library: 'svg', glyph: 'chart-line'             , tags: ['category'] },
+  { id: 88, uniqueName: 'ph-bank'                   , library: 'svg', glyph: 'bank'                   , tags: ['category'] },
+  { id: 89, uniqueName: 'ph-scales'                 , library: 'svg', glyph: 'scales'                 , tags: ['category'] },
+  { id: 90, uniqueName: 'ph-pi'                     , library: 'svg', glyph: 'pi'                     , tags: ['category'] },
+  { id: 91, uniqueName: 'ph-crown-simple'           , library: 'svg', glyph: 'crown-simple'           , tags: ['category'] },
+  { id: 92, uniqueName: 'ph-planet'                 , library: 'svg', glyph: 'planet'                 , tags: ['category'] },
+  { id: 93, uniqueName: 'ph-flying-saucer'          , library: 'svg', glyph: 'flying-saucer'          , tags: ['category'] },
+  { id: 94, uniqueName: 'ph-rainbow'                , library: 'svg', glyph: 'rainbow'                , tags: ['category'] },
+  { id: 95, uniqueName: 'ph-cigarette'              , library: 'svg', glyph: 'cigarette'              , tags: ['category'] },
+  { id: 96, uniqueName: 'ph-biohazard'              , library: 'svg', glyph: 'biohazard'              , tags: ['category'] },
+  { id: 97, uniqueName: 'ph-trash-simple'           , library: 'svg', glyph: 'trash-simple'           , tags: ['category'] },
 ];
 const ICON_BY_ID = Object.fromEntries(ICON_LIBRARY.map(i => [i.id, i]));
 
@@ -450,25 +507,25 @@ const ICON_BY_ID = Object.fromEntries(ICON_LIBRARY.map(i => [i.id, i]));
 // Mock data — 設計稿視覺化用 seed
 // ─────────────────────────────────────────────────────────────
 const CATEGORIES = [
-  { id: 'food',    name: '飲食',  type: 'expense', iconId: 1  },
-  { id: 'trans',   name: '交通',  type: 'expense', iconId: 2  },
-  { id: 'shop',    name: '購物',  type: 'expense', iconId: 3  },
-  { id: 'ent',     name: '娛樂',  type: 'expense', iconId: 4  },
-  { id: 'home',    name: '居家',  type: 'expense', iconId: 5  },
-  { id: 'health',  name: '醫療',  type: 'expense', iconId: 7  },
-  { id: 'edu',     name: '教育',  type: 'expense', iconId: 8  },
-  { id: 'gift',    name: '禮物',  type: 'expense', iconId: 11 },
-  { id: 'salary',  name: '薪資',  type: 'income',  iconId: 10 },
-  { id: 'invest',  name: '投資',  type: 'income',  iconId: 12 },
+  { id: 'food',    name: '飲食',  type: 'expense', iconId: 13 },  // ph-coffee
+  { id: 'trans',   name: '交通',  type: 'expense', iconId: 23 },  // ph-bus
+  { id: 'shop',    name: '購物',  type: 'expense', iconId: 28 },  // ph-shopping-cart
+  { id: 'ent',     name: '娛樂',  type: 'expense', iconId: 60 },  // ph-game-controller
+  { id: 'home',    name: '居家',  type: 'expense', iconId: 53 },  // ph-house
+  { id: 'health',  name: '醫療',  type: 'expense', iconId: 76 },  // ph-pill
+  { id: 'edu',     name: '教育',  type: 'expense', iconId: 42 },  // ph-book
+  { id: 'gift',    name: '禮物',  type: 'expense', iconId:  6 },  // ph-gift
+  { id: 'salary',  name: '薪資',  type: 'income',  iconId:  1 },  // ph-money
+  { id: 'invest',  name: '投資',  type: 'income',  iconId: 87 },  // ph-chart-line
 ];
 const CAT_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
 const ACCOUNTS = [
-  { id: 'cash',     name: '現金',           balance: 3240,    iconId: 15, typeId: 1, currency: 'TWD' },
-  { id: 'bank',     name: '玉山活儲',        balance: 128450,  iconId: 13, typeId: 2, currency: 'TWD' },
-  { id: 'credit',   name: '國泰世華 信用卡', balance: -8420,   iconId: 14, typeId: 3, currency: 'TWD' },
-  { id: 'invest',   name: '富邦證券',        balance: 462100,  iconId: 12, typeId: 4, currency: 'TWD' },
-  { id: 'usd_cash', name: 'USD 旅費',        balance: 320,     iconId: 23, typeId: 1, currency: 'USD' },
+  { id: 'cash',     name: '現金',           balance: 3240,    iconId:  1, typeId: 1, currency: 'TWD' },  // ph-money
+  { id: 'bank',     name: '玉山活儲',        balance: 128450,  iconId: 11, typeId: 2, currency: 'TWD' },  // ph-building
+  { id: 'credit',   name: '國泰世華 信用卡', balance: -8420,   iconId:  7, typeId: 3, currency: 'TWD' },  // ph-credit-card
+  { id: 'invest',   name: '富邦證券',        balance: 462100,  iconId: 87, typeId: 4, currency: 'TWD' },  // ph-chart-line
+  { id: 'usd_cash', name: 'USD 旅費',        balance: 320,     iconId:  5, typeId: 1, currency: 'USD' },  // ph-jar
 ];
 const ACC_BY_ID = Object.fromEntries(ACCOUNTS.map(a => [a.id, a]));
 

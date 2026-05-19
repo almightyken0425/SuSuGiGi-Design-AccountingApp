@@ -1027,15 +1027,15 @@ function AccountEditorScreen({ isNew = true }) {
           isExpanded={expanded === 'icon'}
           collapsedValue={
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <DynamicIconById iconId={15} size={24} color={TOKENS.ink}/>
-              <span style={{ marginLeft: 8 }}>ant-wallet</span>
+              <DynamicIconById iconId={3} size={24} color={TOKENS.ink}/>
+              <span style={{ marginLeft: 8 }}>ph-wallet</span>
             </div>
           }
           onToggle={() => setExpanded(expanded === 'icon' ? null : 'icon')}
         >
           <div style={{ display: 'flex', flexWrap: 'wrap', padding: SPACING.sm, maxHeight: 150, overflowY: 'auto' }}>
             {ICON_LIBRARY.filter(i => i.tags.includes('account')).map((i, idx) => {
-              const selected = idx === 1;  // ant-wallet for demo
+              const selected = idx === 2;  // ph-wallet for demo
               return (
                 <div key={i.id} style={{
                   width: '25%', aspectRatio: 1,
@@ -1166,8 +1166,8 @@ function CategoryEditorScreen({ isNew = true, type = 'expense' }) {
           isExpanded={expanded === 'icon'}
           collapsedValue={
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <DynamicIconById iconId={1} size={24} color={TOKENS.ink}/>
-              <span style={{ marginLeft: 8 }}>mci-food</span>
+              <DynamicIconById iconId={13} size={24} color={TOKENS.ink}/>
+              <span style={{ marginLeft: 8 }}>ph-coffee</span>
             </div>
           }
           onToggle={() => setExpanded(expanded === 'icon' ? null : 'icon')}

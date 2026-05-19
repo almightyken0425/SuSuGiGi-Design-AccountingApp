@@ -194,15 +194,28 @@ function Glyph({ name, size = 16, color = TOKENS.ink, stroke = 2 }) {
 }
 
 // ─── DynamicIconById ─── 對齊 impl src/components/DynamicIcon.tsx
-// 用 IconDefinition.json 的 numeric id 找到 uniqueName，再交給 Glyph 畫
+// ICON_LIBRARY 全部為 phosphor svg；用 numeric id 找到 glyph，
+// 再透過 CSS mask 載入 project/assets/icons/phosphor/<glyph>.svg。
+// CSS mask 把單色 svg 視為 mask，backgroundColor 套色，等效於 impl
+// react-native-svg 的 fill 行為。
 function DynamicIconById({ iconId, size = 24, color = TOKENS.ink }) {
   const def = ICON_BY_ID[iconId];
-  if (!def) return <Glyph name="alert-circle" size={size} color={color}/>;
-  // 把 uniqueName 拆成 library 前綴後的真實 glyph name
-  // mci-food → food（會 fall through 到 Glyph alias）
-  // ant-creditcard → creditcard
-  const glyphName = def.glyph;
-  return <Glyph name={glyphName} size={size} color={color}/>;
+  if (!def) return <Glyph name="help" size={size} color={color}/>;
+  return <PhosphorIcon glyph={def.glyph} size={size} color={color}/>;
+}
+
+function PhosphorIcon({ glyph, size = 24, color = TOKENS.ink }) {
+  const url = `assets/icons/phosphor/${glyph}.svg`;
+  return (
+    <div style={{
+      width: size, height: size, flexShrink: 0,
+      WebkitMaskImage: `url(${url})`, maskImage: `url(${url})`,
+      WebkitMaskSize: 'contain',     maskSize: 'contain',
+      WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat',
+      WebkitMaskPosition: 'center',  maskPosition: 'center',
+      backgroundColor: color,
+    }}/>
+  );
 }
 
 // ─── IconOutline ─── PeriodPage 的 section icon 容器

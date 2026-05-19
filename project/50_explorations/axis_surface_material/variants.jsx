@@ -258,9 +258,9 @@ function Home_SM_Subtle() {
           </div>
         </div>
         <SM_FocusRow chartMode={chartMode} onMode={setChartMode} cardStyle={focusInactive} activeStyle={focusActive}/>
-        <SM_SectionCard cardStyle={card} title="飲食" iconId={1} total="-NT$1,425" expanded items={items_food}/>
-        <SM_SectionCard cardStyle={card} title="購物" iconId={3} total="-NT$1,290" expanded={false} items={items_shop}/>
-        <SM_SectionCard cardStyle={card} title="交通" iconId={2} total="-NT$60"    expanded={false} items={[]}/>
+        <SM_SectionCard cardStyle={card} title="飲食" iconId={13} total="-NT$1,425" expanded items={items_food}/>
+        <SM_SectionCard cardStyle={card} title="購物" iconId={28} total="-NT$1,290" expanded={false} items={items_shop}/>
+        <SM_SectionCard cardStyle={card} title="交通" iconId={23} total="-NT$60"    expanded={false} items={[]}/>
       </div>
       <SM_FAB blur={28} opacity={0.55}/>
     </div>
@@ -296,9 +296,9 @@ function Home_SM_MoodTint() {
           </div>
         </div>
         <SM_FocusRow chartMode={chartMode} onMode={setChartMode} cardStyle={focusInactive} activeStyle={focusActive}/>
-        <SM_SectionCard cardStyle={card} title="飲食" iconId={1} total="-NT$1,425" expanded items={items_food}/>
-        <SM_SectionCard cardStyle={card} title="購物" iconId={3} total="-NT$1,290" expanded={false} items={[]}/>
-        <SM_SectionCard cardStyle={card} title="交通" iconId={2} total="-NT$60"    expanded={false} items={[]}/>
+        <SM_SectionCard cardStyle={card} title="飲食" iconId={13} total="-NT$1,425" expanded items={items_food}/>
+        <SM_SectionCard cardStyle={card} title="購物" iconId={28} total="-NT$1,290" expanded={false} items={[]}/>
+        <SM_SectionCard cardStyle={card} title="交通" iconId={23} total="-NT$60"    expanded={false} items={[]}/>
       </div>
       <SM_FAB blur={28} opacity={0.55}/>
     </div>
@@ -340,9 +340,9 @@ function Home_SM_DepthLayers() {
           </div>
         </div>
         <SM_FocusRow chartMode={chartMode} onMode={setChartMode} cardStyle={focusInactive} activeStyle={focusActive}/>
-        <SM_SectionCard cardStyle={card} title="飲食" iconId={1} total="-NT$1,425" expanded items={items_food}/>
-        <SM_SectionCard cardStyle={card} title="購物" iconId={3} total="-NT$1,290" expanded={false} items={[]}/>
-        <SM_SectionCard cardStyle={card} title="交通" iconId={2} total="-NT$60"    expanded={false} items={[]}/>
+        <SM_SectionCard cardStyle={card} title="飲食" iconId={13} total="-NT$1,425" expanded items={items_food}/>
+        <SM_SectionCard cardStyle={card} title="購物" iconId={28} total="-NT$1,290" expanded={false} items={[]}/>
+        <SM_SectionCard cardStyle={card} title="交通" iconId={23} total="-NT$60"    expanded={false} items={[]}/>
       </div>
       {/* 前層 — FAB 最強 blur + 強對比 + 較不透明 */}
       <SM_FAB blur={48} opacity={0.78}/>
@@ -405,9 +405,9 @@ function Home_SM_Aurora() {
           </div>
         </div>
         <SM_FocusRow chartMode={chartMode} onMode={setChartMode} cardStyle={focusInactive} activeStyle={focusActive} withAurora/>
-        <SM_SectionCard cardStyle={card} title="飲食" iconId={1} total="-NT$1,425" expanded items={items_food} withAurora/>
-        <SM_SectionCard cardStyle={card} title="購物" iconId={3} total="-NT$1,290" expanded={false} items={[]} withAurora/>
-        <SM_SectionCard cardStyle={card} title="交通" iconId={2} total="-NT$60"    expanded={false} items={[]} withAurora/>
+        <SM_SectionCard cardStyle={card} title="飲食" iconId={13} total="-NT$1,425" expanded items={items_food} withAurora/>
+        <SM_SectionCard cardStyle={card} title="購物" iconId={28} total="-NT$1,290" expanded={false} items={[]} withAurora/>
+        <SM_SectionCard cardStyle={card} title="交通" iconId={23} total="-NT$60"    expanded={false} items={[]} withAurora/>
       </div>
       <SM_FAB blur={32} opacity={0.55} withAurora/>
     </div>

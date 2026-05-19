@@ -118,7 +118,7 @@ function IE_ActionWrap({ variant, size = 32, children, dim = false }) {
 
 // Category icon (出現在 section header / 單筆紀錄的類別槽)
 function IE_CategoryIcon({ variant, catId, size = 36 }) {
-  const iconId = CAT_BY_ID[catId]?.iconId || 9;
+  const iconId = CAT_BY_ID[catId]?.iconId || 1;
   const color = IE_iconColor(variant);
   const inner = <DynamicIconById iconId={iconId} size={Math.round(size * 0.55)} color={color}/>;
   return <IE_ActionWrap variant={variant} size={size}>{inner}</IE_ActionWrap>;

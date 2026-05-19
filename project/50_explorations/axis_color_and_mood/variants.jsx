@@ -501,10 +501,10 @@ function Home_CM({ palette }) {
         <CM_PeriodSwitcher pal={pal}/>
         <CM_Donut pal={pal}/>
         <CM_FocusRow pal={pal} mode={mode} onMode={setMode}/>
-        <CM_SectionCard pal={pal} title="飲食"  iconId={1} total="-NT$1,425" expanded items={items_food}/>
-        <CM_SectionCard pal={pal} title="購物"  iconId={3} total="-NT$1,290" expanded={false} items={items_shop}/>
-        <CM_SectionCard pal={pal} title="交通"  iconId={2} total="-NT$60"    expanded={false} items={[]}/>
-        <CM_SectionCard pal={pal} title="居家"  iconId={5} total="-NT$1,480" expanded={false} items={[]}/>
+        <CM_SectionCard pal={pal} title="飲食"  iconId={13} total="-NT$1,425" expanded items={items_food}/>
+        <CM_SectionCard pal={pal} title="購物"  iconId={28} total="-NT$1,290" expanded={false} items={items_shop}/>
+        <CM_SectionCard pal={pal} title="交通"  iconId={23} total="-NT$60"    expanded={false} items={[]}/>
+        <CM_SectionCard pal={pal} title="居家"  iconId={53} total="-NT$1,480" expanded={false} items={[]}/>
       </div>
       <CM_FAB pal={pal}/>
     </div>
