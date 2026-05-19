@@ -546,8 +546,10 @@ function ListEmptyTransition({
   );
 }
 
-// ─── NavHeader ─── push 模式 navigation header
-// impl 是透明 background，title 17px medium，back 用 SF "chevron.left" minimal display
+// ─── NavHeader ─── 視覺參考，不對外 export
+// impl 採 React Navigation 原生 createNativeStackNavigator，本函式不再被 showcase
+// 或 screens 引用。視覺規格已搬遷到 Components · Navigation 的「Native Header
+// Configuration」政策卡片。保留函式本體僅為歷史視覺參考，未來可移除。
 function NavHeader({ title, leadingText, leadingAction, trailing }) {
   return (
     <div style={{
@@ -580,7 +582,10 @@ function NavHeader({ title, leadingText, leadingAction, trailing }) {
   );
 }
 
-// ─── ModalHeader ─── fullScreenModal 用，左 ModalCloseButton、右 HeaderCheckmarkButton
+// ─── ModalHeader ─── 視覺參考，不對外 export
+// impl 用 React Navigation presentation: 'fullScreenModal' + headerLeft = ModalCloseButton
+// （Editor Modal 加 headerRight = HeaderCheckmarkButton）。視覺規格搬遷到 Components ·
+// Navigation 的「Native Header Configuration」政策卡片。
 function ModalHeader({ title, onClose, onSave, saveDisabled }) {
   return (
     <div style={{
@@ -931,7 +936,7 @@ Object.assign(window, {
   ListGroupCard, GroupCard, ListSection, ListSeparator,
   ListItem, SelectionListItem, ReorderableListItem, SelectionGridItem,
   ListEmptyState, EmptyState, ListEmptyTransition,
-  NavHeader, ModalHeader, ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton,
+  ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton,
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
   iconBtn,

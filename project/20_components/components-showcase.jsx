@@ -181,28 +181,58 @@ function ListEmptyTransitionDemo() {
 
 function ComponentsNavigationSection() {
   return (
-    <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 透明背景對齊 iOS headerTransparent: true。" direction="column">
-      <DCArtboard id="comp-navheader" label="NavHeader · push 模式 (live)" width={402} height={120}>
-        <CompFrame>
-          <NavHeader title="設定" leadingText=""
-            trailing={<HeaderIconButton symbol="arrow.triangle.merge" color={TOKENS.p500} onPress={() => {}}/>}/>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-navheader-home" label="NavHeader · Home (live)" width={402} height={120}>
-        <CompFrame>
-          <NavHeader title="SuSuGiGi"
-            trailing={
-              <div style={{ display: 'flex', gap: 4 }}>
-                <HeaderIconButton symbol="line.3.horizontal.decrease" onPress={() => {}}/>
-                <HeaderIconButton symbol="magnifyingglass" onPress={() => {}}/>
-                <HeaderIconButton symbol="gearshape" onPress={() => {}}/>
-              </div>
-            }/>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-modalheader" label="ModalHeader · fullScreenModal (live)" width={402} height={120}>
-        <CompFrame>
-          <ModalHeader title="新增支出" onClose={()=>{}} onSave={()=>{}}/>
+    <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 採 React Navigation 原生 createNativeStackNavigator；NavHeader / ModalHeader 已廢除，配置由下方政策說明界定。" direction="column">
+      <DCArtboard id="comp-native-header-policy" label="Native Header Configuration · 政策" width={560} height={620}>
+        <CompFrame style={{ padding: SPACING.lg, overflow: 'auto' }}>
+          <div style={{
+            fontSize: TYPE_STYLES.title3.size,
+            fontWeight: TYPOGRAPHY.weight.medium,
+            color: TOKENS.ink,
+            marginBottom: SPACING.md,
+          }}>
+            Native Header Configuration
+          </div>
+          <div style={{
+            fontSize: TYPE_STYLES.body.size,
+            lineHeight: 1.45,
+            color: TOKENS.ink2,
+            marginBottom: SPACING.lg,
+          }}>
+            SuSuGiGi 不自繪 navigation header。所有 push / modal screen 的 header
+            由 React Navigation 的 createNativeStackNavigator 渲染，對齊 iOS 26
+            Liquid Glass 與 HIG 預設行為（含 minimal back button、原生 blur 等）。
+            Design 端 NavHeader / ModalHeader 函式保留作視覺參考但不對外 export，
+            screens.jsx 也不再使用。
+          </div>
+
+          <PolicyHeading>Push screen 共通 screenOptions</PolicyHeading>
+          <PolicyRow token="TYPE_STYLES.body.size" target="headerTitleStyle.fontSize" note="17pt medium，對齊 HIG body"/>
+          <PolicyRow token="theme.primary.main" target="headerTintColor" note="back / trailing 顏色"/>
+          <PolicyRow token="true" target="headerTransparent" note="無底色，背景內容延伸到 header 後"/>
+          <PolicyRow token="'minimal'" target="headerBackButtonDisplayMode" note="iOS 16+ 預設：只圖示不帶文字"/>
+          <PolicyRow token="false" target="headerShadowVisible" note="無底邊陰影線"/>
+
+          <PolicyHeading>Trailing / Leading 元件組合</PolicyHeading>
+          <PolicyRow token="Home 模式" target="headerLeft = HeaderIconButton('line.3.horizontal.decrease')；headerRight = [HeaderIconButton('magnifyingglass'), HeaderIconButton('gearshape')]"/>
+          <PolicyRow token="Push 模式" target="headerRight = HeaderIconButton(action)；leading 由原生 back button 處理"/>
+
+          <PolicyHeading>Modal screen 配置（presentation: 'fullScreenModal'）</PolicyHeading>
+          <PolicyRow token="共同基底" target="headerLeft = ModalCloseButton（SF symbol 'xmark'）"/>
+          <PolicyRow token="Info Modal" target="無 headerRight。例：Filter / Paywall / Search"/>
+          <PolicyRow token="Editor Modal" target="headerRight = HeaderCheckmarkButton（含 disabled 狀態）。例：AccountEditor / CategoryEditor"/>
+
+          <div style={{
+            marginTop: SPACING.lg,
+            paddingTop: SPACING.md,
+            borderTop: `1px solid ${TOKENS.hairline2}`,
+            fontSize: TYPE_STYLES.footnote.size,
+            color: TOKENS.ink3,
+            lineHeight: 1.5,
+          }}>
+            Impl 原型參照：<code>src/navigation/AppNavigator.tsx</code> 的 screenOptions
+            與各 screen 透過 useLayoutEffect + navigation.setOptions 設定的 headerLeft /
+            headerRight。
+          </div>
         </CompFrame>
       </DCArtboard>
       <DCArtboard id="comp-fab-actions" label="FloatingActionBar · actions (live)" width={402} height={160}>
@@ -322,6 +352,51 @@ function CompLabel({ children }) {
       fontSize: 11, fontWeight: 600, letterSpacing: 1, color: TOKENS.ink3,
       textTransform: 'uppercase',
     }}>{children}</div>
+  );
+}
+
+// PolicyHeading / PolicyRow — Native Header Configuration 等政策段落用的 text 元件，
+// 不對外 export，僅供 showcase 內政策卡片組合使用。
+function PolicyHeading({ children }) {
+  return (
+    <div style={{
+      fontSize: TYPE_STYLES.headline.size,
+      fontWeight: TYPOGRAPHY.weight.medium,
+      color: TOKENS.ink,
+      marginTop: SPACING.lg,
+      marginBottom: SPACING.sm,
+    }}>{children}</div>
+  );
+}
+function PolicyRow({ token, target, note }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'flex-start',
+      paddingTop: SPACING.xs, paddingBottom: SPACING.xs,
+      borderBottom: `1px solid ${TOKENS.hairline2}`,
+    }}>
+      <div style={{
+        flex: '0 0 38%',
+        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+        fontSize: TYPE_STYLES.footnote.size,
+        color: TOKENS.p700,
+        wordBreak: 'break-all',
+      }}>{token}</div>
+      <div style={{ flex: 1, paddingLeft: SPACING.sm }}>
+        <div style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          fontSize: TYPE_STYLES.footnote.size,
+          color: TOKENS.ink,
+        }}>{target}</div>
+        {note && (
+          <div style={{
+            fontSize: TYPE_STYLES.caption1.size,
+            color: TOKENS.ink3,
+            marginTop: 2,
+          }}>{note}</div>
+        )}
+      </div>
+    </div>
   );
 }
 
