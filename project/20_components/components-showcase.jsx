@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// Components Showcase · 元件視覺化（對齊 impl src/components/*）
+// Components Showcase · 元件視覺化
 //
 // 4 個家族 section，由 `FoundationsComponentsSection` 串成 Foundations
 // > Components 子項的內容（4 個 DCSection 自然垂直 stack）：
@@ -8,32 +8,13 @@
 //   - ComponentsChartSection
 //   - ComponentsInputSection
 //
-// 每個 section 內部用 direction="column"：HTML 快照卡（2026-05-18
-// claude.ai/design bundle）在前、JSX live artboard（讀 components.jsx
-// 即時 render）在後，全部由上往下垂直堆。
-// 改 components.jsx 中的元件 → JSX artboard 自動更新；
-// HTML 卡片是當時快照，要更新需回 claude.ai/design 重新匯出。
+// 所有卡片皆為 live JSX：讀 components.jsx 的元件即時 render。
+// 元件改 → 視覺自動更新；無 HTML snapshot 雙來源。
 // ─────────────────────────────────────────────────────────────
 
 function ComponentsListSection() {
   return (
-    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list 元件，是整個 app 最常用的構件。HTML 卡片為 2026-05-18 快照；JSX artboard 即時 render。" direction="column">
-      <DCArtboard id="comp-list-item-html" label="ListItem (snapshot)" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/components/list-item.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-list-item-press-html" label="ListItem press state (snapshot)" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/components/list-item-press-state.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-selection-list-html" label="SelectionListItem (snapshot)" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/components/selection-list-item.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-tx-row-html" label="Transaction row (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/components/transaction-row.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-empty-html" label="Empty state (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/components/empty-state.html"/>
-      </DCArtboard>
-
+    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list 元件，是整個 app 最常用的構件。所有卡片為 live JSX。" direction="column">
       <DCArtboard id="comp-listitem" label="ListItem · 變體 (live)" width={402} height={620}>
         <CompFrame>
           <CompLabel>ListItem 不同組合</CompLabel>
@@ -134,11 +115,7 @@ function ComponentsListSection() {
 
 function ComponentsNavigationSection() {
   return (
-    <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 透明背景對齊 impl headerTransparent: true。" direction="column">
-      <DCArtboard id="comp-buttons-html" label="Buttons (snapshot)" width={700} height={360}>
-        <HtmlCard src="10_foundations/cards/components/buttons.html"/>
-      </DCArtboard>
-
+    <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 透明背景對齊 iOS headerTransparent: true。" direction="column">
       <DCArtboard id="comp-navheader" label="NavHeader · push 模式 (live)" width={402} height={120}>
         <CompFrame>
           <NavHeader title="設定" leadingText=""
@@ -203,13 +180,6 @@ function ComponentsNavigationSection() {
 function ComponentsChartSection() {
   return (
     <DCSection id="comp-chart" title="Components · Chart" subtitle="DonutChart 是 Home 中央視覺核心。SIZE 260, OUTER 100, INNER 76, CORNER 6, PAD_ANGLE 1deg。FocusCard 切換 expense / income 模式。" direction="column">
-      <DCArtboard id="comp-donut-html" label="DonutChart (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/components/donut-chart.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-focus-card-pair-html" label="FocusCard pair (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/components/focus-card-pair.html"/>
-      </DCArtboard>
-
       <DCArtboard id="comp-donut" label="DonutChart (live)" width={402} height={360}>
         <CompFrame style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 32 }}>
           <DonutChart data={pieData(TX).map(d => ({ key: d.id, value: d.value, color: d.color }))}>
@@ -238,16 +208,6 @@ function ComponentsChartSection() {
 function ComponentsInputSection() {
   return (
     <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色。最後一張 live GlassView demo（從 Foundations 搬來）。" direction="column">
-      <DCArtboard id="comp-switch-html" label="Switch (snapshot)" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/components/switch.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-keypad-html" label="CalculatorKeypad (snapshot)" width={700} height={420}>
-        <HtmlCard src="10_foundations/cards/components/calculator-keypad.html"/>
-      </DCArtboard>
-      <DCArtboard id="comp-glass-pill-html" label="Glass pill · search + FAB (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/components/glass-pill.html"/>
-      </DCArtboard>
-
       <DCArtboard id="comp-switch" label="Switch · iOS 樣式 (live)" width={402} height={140}>
         <CompFrame style={{ padding: 32, display: 'flex', alignItems: 'center', gap: 24 }}>
           <SwitchDemo defaultValue={true}/>

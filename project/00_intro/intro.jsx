@@ -1,14 +1,21 @@
 // ─────────────────────────────────────────────────────────────
 // Intro · 設計工作台使用說明
-// 這個 tab 不是設計稿，是這份檔案的「目錄 + SOP」。
+// 這個 tab 不是設計稿，是這份檔案的「目錄 + 操作手冊」。
+//
 // 預期讀者：第一次打開這份檔案的設計師 / 工程師 / PM。
+//
+// 本檔承載的核心模型：
+//   Design git 是設計標準的「仲裁端」。
+//   任一端（impl 開發 / Design 探索 / Spec 邏輯）都可以觸發變動，
+//   但 token / 元件 / 畫面的最終決議寫進這份 Design git，
+//   再由 spec 與 impl 跟隨。觸發雙向，決議上游。
 // ─────────────────────────────────────────────────────────────
 
 function IntroSection() {
   return (
     <DCSection id="intro" title="SuSuGiGi · 設計工作台" subtitle="一份會持續迭代的設計檔案。本分頁是它的使用說明書。">
-      {/* Artboards 是這個分頁的「卡片」，每張卡片回答一個問題。
-          DCSection 預設用 horizontal flex 排 artboards，卡片寬度走每張的 width prop。 */}
+
+      {/* 1. 這份檔案在幹嘛 ─────────────────────────────────────── */}
       <DCArtboard id="purpose" label="這份檔案在幹嘛" width={520} height={680}>
         <IntroCard>
           <IntroTag>用途</IntroTag>
@@ -16,50 +23,108 @@ function IntroSection() {
           <IntroBody>
             <p>這是一份「<b>會持續迭代</b>」的設計檔案，不是某個版本的快照。它在三件事上替你保留現場：</p>
             <ol>
-              <li><b>正式設計稿</b> — 對齊實際 impl 的所有畫面樣貌</li>
-              <li><b>設計基礎</b> — token、icon、element 等可重用樣本</li>
+              <li><b>正式設計稿</b> — 對齊 spec / impl 的所有畫面樣貌</li>
+              <li><b>設計基礎</b> — token、icon、element 等可重用樣本（以 Apple HIG / iOS Dynamic Type 為錨點）</li>
               <li><b>探索素材</b> — 多版本提案的並陳空間（不刪歷史）</li>
             </ol>
-            <p>這份檔案位於 SuSuGiGi 產品的 <code>no3_product_designs/no2_accounting_app/</code>，是該 module 的 <b>Module Design git</b>。與 Module Spec git、Module Impl git 並列為三件套，承載視覺探索與設計工件。</p>
+            <p>這份檔案位於 SuSuGiGi 產品的 <code>no3_product_designs/no2_accounting_app/</code>，是該 module 的 <b>Module Design git</b>。它與 Module Spec git、Module Impl git 並列為三件套，並擔任 <b>設計標準的仲裁端</b>：所有 token / 元件 / 畫面的決議寫在這裡，spec 與 impl 跟著對齊。</p>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
 
-      <DCArtboard id="tabs" label="每個分頁要幹嘛" width={520} height={680}>
+      {/* 2. 4 個頂層分頁的地圖 ─────────────────────────────────── */}
+      <DCArtboard id="tabs" label="4 個頂層分頁的地圖" width={520} height={680}>
         <IntroCard>
           <IntroTag>分頁地圖</IntroTag>
-          <IntroTitle>5 個分頁、每個回答一個問題</IntroTitle>
+          <IntroTitle>4 個頂層分頁、每個回答一個問題</IntroTitle>
           <IntroBody>
             <TabRow no="00" name="Intro" q="這份檔案是什麼？怎麼用？" dir="00_intro/"/>
-            <TabRow no="10" name="Foundations" q="顏色、字體、間距、圓角的標準值是什麼？" dir="10_foundations/"/>
-            <TabRow no="20" name="Components" q="按鈕、列、卡片元件長什麼樣？" dir="20_components/"/>
-            <TabRow no="30" name="Screens" q="每個畫面長什麼樣？空 / 載入 / 錯誤狀態？想鳥瞰用畫布縮放。" dir="30_screens/"/>
+            <TabRow no="10" name="Foundations" q="顏色、字體、間距、圓角、陰影、動畫的標準值是什麼？" dir="10_foundations/"/>
+            <TabRow no="30" name="Screens" q="每個畫面長什麼樣？空 / 載入 / 錯誤狀態？" dir="30_screens/"/>
             <TabRow no="50" name="Explorations" q="這個設計問題我想了好幾種做法。" dir="50_explorations/"/>
+            <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginTop: 16 }}>
+              注意：<b>Components 不是頂層分頁</b>，已併入 Foundations 作為其中一個 sub-item（與 claude.ai/design Design System tab 的結構對齊）。<code>20_components/</code> 目錄仍存在，承載元件實作與 showcase，由 Foundations · Components sub-item 引用。
+            </p>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
 
-      <DCArtboard id="how-to-iterate" label="怎麼迭代" width={520} height={680}>
+      {/* 3. 各分頁的內部結構 ───────────────────────────────────── */}
+      <DCArtboard id="page-anatomy" label="各分頁的內部結構" width={520} height={760}>
+        <IntroCard>
+          <IntroTag>分頁解剖</IntroTag>
+          <IntroTitle>每個分頁底下還有什麼</IntroTitle>
+          <IntroBody>
+            <SectionLabel>Foundations · 5 個 sub-item</SectionLabel>
+            <AnatomyRow name="Type" desc="TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY.size / TYPOGRAPHY.weight / LINE_HEIGHT / LETTER_SPACING"/>
+            <AnatomyRow name="Colors" desc="PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status / Text ink"/>
+            <AnatomyRow name="Spacing" desc="SPACING / RADIUS / SHADOW / MOTION / LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS"/>
+            <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示"/>
+            <AnatomyRow name="Brand" desc="品牌標識、商標相關工件"/>
+
+            <SectionLabel>Screens · 22 個畫面群組</SectionLabel>
+            <AnatomyRow name="Home / Filter / Search" desc="主畫面 + 篩選 modal + 搜尋（4 狀態）"/>
+            <AnatomyRow name="Transaction / Transfer" desc="記支出 / 收入 / 轉帳編輯器（含驗證錯誤狀態）"/>
+            <AnatomyRow name="Login / Paywall" desc="登入（2 狀態）/ 訂閱頁（2 狀態）"/>
+            <AnatomyRow name="Settings / Preference" desc="設定總頁 + 偏好設定總頁"/>
+            <AnatomyRow name="Accounts / Categories" desc="列表 + 編輯器（新增 / 編輯模式）"/>
+            <AnatomyRow name="Theme / Language / TimeZone / LaunchMode" desc="偏好設定子頁"/>
+            <AnatomyRow name="Base Currency / Currency List / Rate List" desc="貨幣與匯率管理"/>
+            <AnatomyRow name="Data Management / Debug" desc="資料管理 + 除錯資訊"/>
+
+            <SectionLabel>Explorations · 5 主題的當前狀態</SectionLabel>
+            <AnatomyRow name="Axis 1 · Color & Mood" desc="V1-V6 mono+accent 方向。Open question · 2026-05-16"/>
+            <AnatomyRow name="Axis 2 · Surface & Material" desc="Liquid Glass 為 current direction，4 個變體比較。Open question (variant) · 2026-05-15"/>
+            <AnatomyRow name="Axis 3 · Iconography & Embellishment" desc="7 種 icon 表達形式。Open question · 2026-05-16"/>
+            <AnatomyRow name="Axis 4 · Personality (packaged)" desc="10 種 packaged style。Open question · 2026-05-16"/>
+            <AnatomyRow name="Transaction Editor" desc="P1/P2/P7/P8/P9 標 [Current] · 2026-05-18；P10 Explored；P3-P6 已拒留作素材"/>
+          </IntroBody>
+        </IntroCard>
+      </DCArtboard>
+
+      {/* 4. 何時要動哪個分頁 ───────────────────────────────────── */}
+      <DCArtboard id="how-to-iterate" label="何時要動哪個分頁的 SOP" width={520} height={760}>
         <IntroCard>
           <IntroTag>迭代 SOP</IntroTag>
-          <IntroTitle>發生什麼事的時候去動哪個分頁</IntroTitle>
+          <IntroTitle>來源 → Design 仲裁 → 跟進</IntroTitle>
           <IntroBody>
-            <SOPRow when="impl 改了 token 或新增 icon"
-              what="改 10_foundations/data.jsx 的 TOKENS / SPACING / TYPE_SCALE / ICON_LIBRARY；Foundations 分頁自動跟著更新。"/>
-            <SOPRow when="impl 改了既有畫面的版型"
-              what="改 30_screens/screens.jsx 對應 Screen function；Screens 分頁自動更新。"/>
-            <SOPRow when="impl 新增一個畫面"
-              what={`(1) 30_screens/screens.jsx 加新 ScreenComponent；(2) 90_workbench/app.jsx 的 SCREEN_META 加 meta、SCREEN_LIST 加一筆。`}/>
-            <SOPRow when="新增可重用元件"
-              what="加進 20_components/components.jsx，並在 20_components/components-showcase.jsx 加 artboard 展示。"/>
-            <SOPRow when="某個設計問題我想了好幾種做法"
-              what="在 50_explorations/ 開新主題目錄、放 README.md 與 variant jsx，再到 90_workbench/app.jsx 接 router。template 在 50_explorations/scaffold.jsx。"/>
-            <SOPRow when="某個提案要被淘汰"
-              what="不刪歷史，改該 artboard 的 label：移除 [Current] 改成 Superseded by X · YYYY-MM-DD，新提案標上 [Current]。"/>
+            <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginBottom: 16 }}>
+              變動的觸發可來自任一端：impl 開發中發現問題、Design 探索新方向、Spec 邏輯需要新狀態。但無論觸發源在哪，<b>token / 元件 / 畫面的最終決議寫進這份 Design git</b>，再由 spec 與 impl 跟隨。
+            </p>
+
+            <FlowRow
+              source="觸發：impl 開發時某個字太小、圓角不對、動畫太快"
+              arbitrate="Design 仲裁：改 10_foundations/data.jsx 的 TYPE_STYLES / RADIUS / MOTION"
+              follow="跟進：impl 同步改 src/constants/theme.ts；spec 通常不影響"/>
+            <FlowRow
+              source="觸發：Design 探索想換配色 / 換字級 / 換 icon 風格"
+              arbitrate="Design 仲裁：先在 50_explorations/ 開主題比較，[Current] 確認後改 10_foundations/data.jsx"
+              follow="跟進：impl 同步 src/constants/theme.ts；元件視覺 src/components/**"/>
+            <FlowRow
+              source="觸發：Spec 邏輯需要新狀態（例如新增 loading 變體）"
+              arbitrate="Design 仲裁：在 30_screens/screens.jsx 對應 ScreenComponent 加新 variant，並於 90_workbench/app.jsx 的 SCREEN_META + SCREEN_GROUPS 補入口"
+              follow="跟進：spec 在 no4_product_specs/.../no2_screens/ 對應 md 補狀態；impl 跟著加 variant 實作"/>
+            <FlowRow
+              source="觸發：impl 新增整個畫面"
+              arbitrate="Design 仲裁：30_screens/screens.jsx 加 ScreenComponent、SCREEN_META 加 meta、SCREEN_GROUPS 加群組"
+              follow="跟進：spec 新增 noN_<name>_screen.md；impl 完成 src/screens/<Name>/"/>
+            <FlowRow
+              source="觸發：想新增可重用元件"
+              arbitrate="Design 仲裁：加進 20_components/components.jsx；showcase 由 Foundations · Components sub-item 自動引用"
+              follow="跟進：impl 同步 src/components/**；spec 在引用該元件的 screen 規格更新"/>
+            <FlowRow
+              source="觸發：某個設計問題想試多種做法"
+              arbitrate="Design 仲裁：複製任一現有主題目錄（如 axis_color_and_mood），重命名 slug，敘述寫在 variants.jsx 的 IntroBlock；在 90_workbench/app.jsx 的 EXPLORATION_TOPICS 接 router"
+              follow="跟進：Explorations 完全隔離，不牽動 spec 與 impl"/>
+            <FlowRow
+              source="觸發：某個提案要被淘汰"
+              arbitrate="不刪歷史，改該 artboard 的 label：移除 [Current] 改成 Superseded by X · YYYY-MM-DD，新提案標上 [Current]"
+              follow="—"/>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
 
+      {/* 5. 決策狀態用語 ───────────────────────────────────────── */}
       <DCArtboard id="status-vocab" label="決策狀態用語" width={520} height={680}>
         <IntroCard>
           <IntroTag>狀態詞彙</IntroTag>
@@ -76,6 +141,29 @@ function IntroSection() {
         </IntroCard>
       </DCArtboard>
 
+      {/* 6. 觸發-仲裁-跟進的流向 ───────────────────────────────── */}
+      <DCArtboard id="cross-git-sync" label="觸發-仲裁-跟進的流向" width={520} height={720}>
+        <IntroCard>
+          <IntroTag>跨 git 同步</IntroTag>
+          <IntroTitle>改 SuSuGiGi.html 時必走的下游清單</IntroTitle>
+          <IntroBody>
+            <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginBottom: 12 }}>
+              觸發可雙向，但決議都寫進 Design git。下表列出在 Design 仲裁完成後，哪些下游檔案需要跟進。權威來源以 <code>~/.claude/skills/decision_framework_router/products_registry.md</code> 的 sub_mapping 為準，本表為人類閱讀方便的 mirror。
+            </p>
+            <SyncRow page="Intro" spec="—" impl="—" doc="本檔 + Design CLAUDE.md + products_registry.md"/>
+            <SyncRow page="Foundations" spec="—" impl="src/constants/theme.ts" doc="—"/>
+            <SyncRow page="Components" spec="no2_screens/*.md（引用該元件處）" impl="src/components/**" doc="—"/>
+            <SyncRow page="Screens" spec="no2_screens/noN_<name>_screen.md" impl="src/screens/<Name>/" doc="—"/>
+            <SyncRow page="Explorations" spec="—" impl="—" doc="—（完全隔離）"/>
+            <hr style={{ border: 'none', borderTop: `1px dashed ${TOKENS.divider}`, margin: '16px 0' }}/>
+            <p style={{ fontSize: 12, color: TOKENS.ink3, lineHeight: 1.5 }}>
+              另外，data model 與 logic 的決議仲裁端是 Spec git（不經 Design），sub_mapping 標 <code>arbiter: spec</code>。
+            </p>
+          </IntroBody>
+        </IntroCard>
+      </DCArtboard>
+
+      {/* 7. 畫布操作 ───────────────────────────────────────────── */}
       <DCArtboard id="canvas-controls" label="畫布操作" width={520} height={680}>
         <IntroCard>
           <IntroTag>操作</IntroTag>
@@ -95,7 +183,8 @@ function IntroSection() {
         </IntroCard>
       </DCArtboard>
 
-      <DCArtboard id="file-map" label="目錄結構速查" width={520} height={680}>
+      {/* 8. 目錄結構速查 ───────────────────────────────────────── */}
+      <DCArtboard id="file-map" label="目錄結構速查" width={520} height={720}>
         <IntroCard>
           <IntroTag>檔案系統</IntroTag>
           <IntroTitle>數字前綴 = 顯示順序 = 概念順序</IntroTitle>
@@ -104,44 +193,67 @@ function IntroSection() {
 ├── SuSuGiGi.html                  主入口
 ├── 00_intro/intro.jsx             這個分頁的內容
 ├── 10_foundations/
-│   ├── data.jsx                   TOKENS / SPACING / TYPOGRAPHY / ICON_LIBRARY
-│   └── foundations.jsx            視覺化展示
+│   ├── data.jsx                   PALETTE / THEMES / TYPE_STYLES / TYPOGRAPHY /
+│   │                              LINE_HEIGHT / LETTER_SPACING / SPACING /
+│   │                              RADIUS / SHADOW / MOTION /
+│   │                              LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS
+│   └── foundations.jsx            視覺化展示（live JSX 單一來源）
 ├── 20_components/
 │   ├── components.jsx             元件實作
-│   └── components-showcase.jsx    視覺化展示
-├── 30_screens/screens.jsx         所有正式畫面
+│   └── components-showcase.jsx    由 Foundations · Components sub-item 引用
+├── 30_screens/screens.jsx         22 個正式畫面群組
 ├── 50_explorations/
-│   ├── scaffold.jsx               空架構 + 新增主題 SOP
-│   └── <topic_slug>/...           各主題（目前無）
+│   ├── axis_color_and_mood/
+│   ├── axis_surface_material/
+│   ├── axis_iconography_embellishment/
+│   ├── axis_personality_packaged/
+│   └── transaction_editor/
 ├── 90_workbench/
 │   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame
 │   ├── design-canvas.jsx          DesignCanvas / DCSection / DCArtboard
 │   └── ios-frame.jsx              IOSDevice 邊框
 └── 99_deprecated/                 已淘汰`}</pre>
             <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginTop: 12 }}>
-              數字前綴 <code>00 / 10 / 20 / 30 / 40 / 50 / 90 / 99</code> 保證檔案系統內的顯示順序與 tab 概念順序一致。新增分頁時挑空著的 10 倍數段落即可。
+              數字前綴 <code>00 / 10 / 20 / 30 / 50 / 90 / 99</code> 保證檔案系統內的顯示順序與概念順序一致。新增分頁挑空著的 10 倍數段落即可（40 / 60 / 70 / 80 目前空著）。
+            </p>
+            <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginTop: 8 }}>
+              新增 exploration 主題時，<b>複製任一現有主題目錄</b>（例如 axis_color_and_mood）為範本，重命名 slug，敘述寫在 variants.jsx 的 IntroBlock，不需要 README.md。
             </p>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
 
-      <DCArtboard id="impl-link" label="與 impl 的關係" width={520} height={680}>
+      {/* 9. Design 是仲裁端 ───────────────────────────────────── */}
+      <DCArtboard id="design-as-arbiter" label="Design 在四層中的角色" width={520} height={720}>
         <IntroCard>
-          <IntroTag>對齊規則</IntroTag>
-          <IntroTitle>impl 是真相，設計稿追著對齊</IntroTitle>
+          <IntroTag>仲裁模型</IntroTag>
+          <IntroTitle>Design 是設計標準的仲裁端</IntroTitle>
           <IntroBody>
-            <p>本檔案的所有 token / icon / 元件 / 畫面，<b>都對應到</b>：</p>
+            <p><b>觸發可來自任一端：</b></p>
             <ul>
-              <li><b>impl repo：</b><code>no6_product_development/no2_accounting_app/</code></li>
-              <li><b>spec repo：</b><code>no4_product_specs/no2_accounting_app/</code></li>
-              <li><b>design repo：</b>即本 repo（<code>no3_product_designs/no2_accounting_app/</code>）</li>
+              <li>impl 開發中發現某個字太小、某個 token 用起來不對</li>
+              <li>Design 探索時想換配色 / 換字級 / 換動畫</li>
+              <li>Spec 邏輯需要新狀態（例如要多一個 loading 變體）</li>
             </ul>
-            <p>每個 screens.jsx 內的 ScreenComponent 都標註對應的 impl 檔案（搜尋 <code>← src/screens/...</code> 即可找到）。</p>
+            <p style={{ marginTop: 12 }}><b>但決議都寫進 Design git：</b></p>
+            <ul>
+              <li>token 的最終值寫在 <code>10_foundations/data.jsx</code></li>
+              <li>元件的最終形狀寫在 <code>20_components/components.jsx</code></li>
+              <li>畫面的最終樣貌寫在 <code>30_screens/screens.jsx</code></li>
+            </ul>
+            <p style={{ marginTop: 12 }}><b>下游跟隨：</b></p>
+            <ul>
+              <li><b>impl repo：</b><code>no6_product_development/no2_accounting_app/</code> 跟著 <code>src/constants/theme.ts</code> / <code>src/components/</code> / <code>src/screens/</code> 對齊</li>
+              <li><b>spec repo：</b><code>no4_product_specs/no2_accounting_app/</code> 跟著 <code>no2_screens/</code> 與引用元件的規格對齊</li>
+            </ul>
             <hr style={{ border: 'none', borderTop: `1px dashed ${TOKENS.divider}`, margin: '16px 0' }}/>
-            <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6 }}><b>什麼時候要對齊？</b> impl 改 token / 改畫面 / 新增畫面時，先在這份檔案改完、跟相關人對齊視覺，再回去動 impl。或者 impl 已經改了，把這份檔案追上來作為下一輪迭代的起點。順序看當下情境，但兩邊不該長期偏離。</p>
+            <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6 }}>
+              data model 與 logic 的仲裁端不在 Design，在 Spec git（標 <code>arbiter: spec</code>）。Design git 只仲裁視覺與互動。
+            </p>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
+
     </DCSection>
   );
 }
@@ -172,6 +284,12 @@ function IntroTitle({ children }) {
 function IntroBody({ children }) {
   return <div style={{ fontSize: 14, lineHeight: 1.6, color: TOKENS.ink }}>{children}</div>;
 }
+function SectionLabel({ children }) {
+  return <div style={{
+    fontSize: 11, fontWeight: 600, color: TOKENS.ink3, letterSpacing: 0.5,
+    textTransform: 'uppercase', marginTop: 16, marginBottom: 4,
+  }}>{children}</div>;
+}
 
 function TabRow({ no, name, q, dir }) {
   return (
@@ -186,11 +304,34 @@ function TabRow({ no, name, q, dir }) {
   );
 }
 
-function SOPRow({ when, what }) {
+function AnatomyRow({ name, desc }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, padding: '6px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
+      <div style={{ fontSize: 12, fontWeight: 600, color: TOKENS.ink, width: 200, flexShrink: 0 }}>{name}</div>
+      <div style={{ flex: 1, fontSize: 12, color: TOKENS.ink2, lineHeight: 1.5 }}>{desc}</div>
+    </div>
+  );
+}
+
+function FlowRow({ source, arbitrate, follow }) {
   return (
     <div style={{ padding: '12px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
-      <div style={{ fontSize: 13, fontWeight: 500, color: TOKENS.ink, marginBottom: 4 }}>當 {when}</div>
-      <div style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.5 }}>→ {what}</div>
+      <div style={{ fontSize: 13, fontWeight: 500, color: TOKENS.ink, marginBottom: 4 }}>{source}</div>
+      <div style={{ fontSize: 12, color: TOKENS.ink2, lineHeight: 1.5, paddingLeft: 12 }}>→ <b>仲裁：</b>{arbitrate}</div>
+      <div style={{ fontSize: 12, color: TOKENS.ink2, lineHeight: 1.5, paddingLeft: 12 }}>→ <b>跟進：</b>{follow}</div>
+    </div>
+  );
+}
+
+function SyncRow({ page, spec, impl, doc }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '8px 0', borderTop: `1px solid ${TOKENS.hairline}`, fontSize: 12, lineHeight: 1.5 }}>
+      <div style={{ width: 90, fontWeight: 600, color: TOKENS.ink, flexShrink: 0 }}>{page}</div>
+      <div style={{ flex: 1, color: TOKENS.ink2 }}>
+        <div><b style={{ color: TOKENS.ink3 }}>spec:</b> {spec}</div>
+        <div><b style={{ color: TOKENS.ink3 }}>impl:</b> {impl}</div>
+        <div><b style={{ color: TOKENS.ink3 }}>doc:</b> {doc}</div>
+      </div>
     </div>
   );
 }

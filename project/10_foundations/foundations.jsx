@@ -1,48 +1,38 @@
 // ─────────────────────────────────────────────────────────────
-// Foundations · 設計基礎視覺化（對齊 impl src/constants/theme.ts）
+// Foundations · 設計標準視覺化
 //
 // 5 個 sub-item 沿用 claude.ai/design Design System tab 的結構：
 //   Type / Colors / Spacing / Components / Brand
-// （Components 在 components-showcase.jsx 由 FoundationsComponentsSection 串成）
+//   （Components 在 components-showcase.jsx 由 FoundationsComponentsSection 串成）
 //
-// 每個 sub-item 內，HTML 卡片（cards/ 底下，從 bundle 帶來的 2026-05-18 快照）
-// 在前，可縮放 JSX artboard（讀 data.jsx 即時繪製）在後。整體用
-// direction="column" — 卡片由上往下垂直堆，一頁文件式閱讀。
-// 改 data.jsx 的 token 值 → JSX artboard 自動更新；
-// HTML 卡片是當時的快照，要更新需回 claude.ai/design 重新匯出。
+// 所有卡片皆為 live JSX：讀 data.jsx 的 token 即時繪製。
+// token 改 → 視覺自動更新；無 HTML snapshot 雙來源。
+//
+// Token 錨點：Apple HIG / iOS Dynamic Type
 // ─────────────────────────────────────────────────────────────
-
-function HtmlCard({ src }) {
-  return (
-    <iframe
-      src={src}
-      title={src}
-      loading="lazy"
-      style={{ width: '100%', height: '100%', border: 'none', background: '#fff', display: 'block' }}
-    />
-  );
-}
 
 function FoundationsTypeSection() {
   return (
-    <DCSection id="found-type" title="Type" subtitle="3-weight aesthetic：light 300 / regular 400 / medium 500（最高權重）。HTML 卡片為 2026-05-18 快照；JSX artboard 即時讀 TYPOGRAPHY。" direction="column">
-      <DCArtboard id="type-tabular-numerals" label="Tabular numerals" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/type/tabular-numerals.html"/>
+    <DCSection
+      id="found-type"
+      title="Type"
+      subtitle="字體系統以 Apple HIG / iOS Dynamic Type 為錨點。TYPE_STYLES（11 種 HIG 語意 style）為使用入口，TYPOGRAPHY.size 為底層數值。本標準啟用 light / regular / medium 三檔字重；semibold 及以上保留。"
+      direction="column"
+    >
+      <DCArtboard id="type-styles" label="TYPE_STYLES · 11 種 HIG style (live)" width={520} height={760}>
+        <TypeStylesCard/>
       </DCArtboard>
-      <DCArtboard id="type-roles" label="Type roles" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/type/type-roles.html"/>
-      </DCArtboard>
-      <DCArtboard id="type-scale-html" label="Type scale (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/type/type-scale.html"/>
-      </DCArtboard>
-      <DCArtboard id="type-weights-html" label="Type weights (snapshot)" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/type/type-weights.html"/>
-      </DCArtboard>
-      <DCArtboard id="type-scale-live" label="TYPOGRAPHY.size · xs → 3xl (live)" width={520} height={680}>
+      <DCArtboard id="type-scale" label="TYPOGRAPHY.size · 底層 xs → 3xl (live)" width={520} height={520}>
         <TypeScaleCard/>
       </DCArtboard>
-      <DCArtboard id="type-weights-live" label="TYPOGRAPHY.weight · 3-weight system (live)" width={520} height={520}>
+      <DCArtboard id="type-weights" label="TYPOGRAPHY.weight · 啟用 vs 保留 (live)" width={520} height={680}>
         <WeightsCard/>
+      </DCArtboard>
+      <DCArtboard id="type-line-height" label="LINE_HEIGHT · tight / base / relaxed (live)" width={520} height={420}>
+        <LineHeightCard/>
+      </DCArtboard>
+      <DCArtboard id="type-letter-spacing" label="LETTER_SPACING · tight / normal / wide (live)" width={520} height={360}>
+        <LetterSpacingCard/>
       </DCArtboard>
     </DCSection>
   );
@@ -50,25 +40,12 @@ function FoundationsTypeSection() {
 
 function FoundationsColorsSection() {
   return (
-    <DCSection id="found-colors" title="Colors" subtitle="Classic Purple（預設）+ Ocean Teal（opt-in），共用 neutral 與 status 色階。HTML 卡片為 2026-05-18 快照；JSX artboard 即時讀 PALETTE / THEMES。" direction="column">
-      <DCArtboard id="colors-chart-series" label="Chart series" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/colors/chart-series.html"/>
-      </DCArtboard>
-      <DCArtboard id="colors-neutrals-html" label="Neutrals (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/colors/neutrals.html"/>
-      </DCArtboard>
-      <DCArtboard id="colors-primary-purple" label="Primary · Classic Purple" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/colors/primary-classic-purple.html"/>
-      </DCArtboard>
-      <DCArtboard id="colors-primary-teal" label="Primary · Ocean Teal" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/colors/primary-ocean-teal.html"/>
-      </DCArtboard>
-      <DCArtboard id="colors-surfaces-status" label="Surfaces & status" width={700} height={360}>
-        <HtmlCard src="10_foundations/cards/colors/surfaces-status.html"/>
-      </DCArtboard>
-      <DCArtboard id="colors-text-ink" label="Text ink scale" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/colors/text-ink-scale.html"/>
-      </DCArtboard>
+    <DCSection
+      id="found-colors"
+      title="Colors"
+      subtitle="Classic Purple（預設）+ Ocean Teal（opt-in），共用 neutral 與 status 色階。所有色彩讀 data.jsx 的 PALETTE / THEMES 即時繪製。"
+      direction="column"
+    >
       <DCArtboard id="palette-theme1" label="Theme 1 · 經典紫 (live)" width={420} height={520}>
         <PaletteCard theme={THEME_1}/>
       </DCArtboard>
@@ -87,21 +64,23 @@ function FoundationsColorsSection() {
 
 function FoundationsSpacingSection() {
   return (
-    <DCSection id="found-spacing" title="Spacing" subtitle="SPACING = 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64。RADIUS = sm 4 / md 8 / lg 12 / full 9999。底下含 LIST_TOKENS、TX_LIST_TOKENS、SEARCH_BAR_TOKENS、Motion 等 grouped list 與動畫 token 速查表。" direction="column">
-      <DCArtboard id="spacing-elevation" label="Elevation" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/spacing/elevation.html"/>
-      </DCArtboard>
-      <DCArtboard id="spacing-radius-html" label="Radius (snapshot)" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/spacing/radius.html"/>
-      </DCArtboard>
-      <DCArtboard id="spacing-scale-html" label="Spacing scale (snapshot)" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/spacing/spacing-scale.html"/>
-      </DCArtboard>
+    <DCSection
+      id="found-spacing"
+      title="Spacing"
+      subtitle="SPACING = HIG 4 倍數階梯。RADIUS = none/sm/md/lg/xl/2xl/full（不收 14）。SHADOW = HIG 4 階 elevation。MOTION = duration + easing 對齊 HIG。底下含元件 token 速查表。"
+      direction="column"
+    >
       <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
         <SpacingCard/>
       </DCArtboard>
-      <DCArtboard id="radius-live" label="RADIUS (live)" width={520} height={420}>
+      <DCArtboard id="radius-live" label="RADIUS · none → 2xl + full (live)" width={520} height={460}>
         <RadiusCard/>
+      </DCArtboard>
+      <DCArtboard id="shadow-live" label="SHADOW · level0 → level3 (live)" width={520} height={440}>
+        <ShadowCard/>
+      </DCArtboard>
+      <DCArtboard id="motion-live" label="MOTION · duration + easing (live)" width={520} height={460}>
+        <MotionCard/>
       </DCArtboard>
       <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={680}>
         <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS"/>
@@ -112,7 +91,7 @@ function FoundationsSpacingSection() {
       <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={420}>
         <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS"/>
       </DCArtboard>
-      <DCArtboard id="motion-list-empty" label="LIST_EMPTY_TRANSITION (motion)" width={520} height={120}>
+      <DCArtboard id="list-empty-transition" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={140}>
         <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION"/>
       </DCArtboard>
     </DCSection>
@@ -121,19 +100,12 @@ function FoundationsSpacingSection() {
 
 function FoundationsBrandSection() {
   return (
-    <DCSection id="found-brand" title="Brand" subtitle="品牌資產：logo / 文字 lockup、貨幣格式、icon set、語氣樣本。底下接 IconDefinition.json 的完整 icon wall（account / category / UI / ACTION_ICON_MAP）。" direction="column">
-      <DCArtboard id="brand-mark" label="Brand mark" width={700} height={280}>
-        <HtmlCard src="10_foundations/cards/brand/brand-mark.html"/>
-      </DCArtboard>
-      <DCArtboard id="brand-currency" label="Currency formatting" width={700} height={320}>
-        <HtmlCard src="10_foundations/cards/brand/currency-formatting.html"/>
-      </DCArtboard>
-      <DCArtboard id="brand-icon-set" label="Icon set (snapshot)" width={700} height={360}>
-        <HtmlCard src="10_foundations/cards/brand/icon-set.html"/>
-      </DCArtboard>
-      <DCArtboard id="brand-voice" label="Voice samples" width={700} height={360}>
-        <HtmlCard src="10_foundations/cards/brand/voice-samples.html"/>
-      </DCArtboard>
+    <DCSection
+      id="found-brand"
+      title="Brand"
+      subtitle="品牌資產：icon set、ACTION_ICON_MAP（header 動作 → SF Symbol）、GlassView demo。"
+      direction="column"
+    >
       <DCArtboard id="icon-account" label="IconDefinition · account tag (live)" width={520} height={580}>
         <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('account'))}/>
       </DCArtboard>
@@ -220,12 +192,41 @@ function Swatch({ hex, name, note }) {
   );
 }
 
-// ─── TypeScale / Weights ───────────────────────────────────
+// ─── Typography cards ──────────────────────────────────────
+function TypeStylesCard() {
+  const order = ['largeTitle', 'title1', 'title2', 'title3', 'headline', 'body', 'callout', 'subheadline', 'footnote', 'caption1', 'caption2'];
+  return (
+    <FoundCard>
+      <FoundLabel>TYPE_STYLES · HIG Dynamic Type</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        每條：size · weight · lineHeight · letterSpacing。HIG headline 原為 semibold (600)，本標準不啟用 semibold，故以 medium (500) 代替。
+      </div>
+      {order.map(key => {
+        const s = TYPE_STYLES[key];
+        return (
+          <div key={key} style={{ padding: '10px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
+            <div style={{
+              fontSize: s.size, fontWeight: s.weight, lineHeight: `${s.lineHeight}px`,
+              letterSpacing: s.letterSpacing, color: TOKENS.ink,
+            }}>{key} · 記帳 SuSuGiGi</div>
+            <code style={{ fontSize: 10, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums', marginTop: 2, display: 'block' }}>
+              {s.size}pt · w{s.weight} · lh {s.lineHeight} · tracking {s.letterSpacing}
+            </code>
+          </div>
+        );
+      })}
+    </FoundCard>
+  );
+}
+
 function TypeScaleCard() {
   const entries = Object.entries(TYPOGRAPHY.size);
   return (
     <FoundCard>
-      <FoundLabel>TYPOGRAPHY.size</FoundLabel>
+      <FoundLabel>TYPOGRAPHY.size · 底層數值階梯</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        實際使用優先採 TYPE_STYLES；底層數值留給直接控制 size 的少數情境。
+      </div>
       {entries.map(([k, v]) => (
         <div key={k} style={{ display: 'flex', alignItems: 'baseline', gap: 12, padding: '8px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
           <code style={{ fontSize: 11, color: TOKENS.ink3, width: 40 }}>{k}</code>
@@ -238,33 +239,93 @@ function TypeScaleCard() {
 }
 
 function WeightsCard() {
-  const meanings = {
-    light: '安靜文字（ListItem.title、value、note）',
+  const enabledMeanings = {
+    light:   '安靜文字（ListItem.title、value、note）',
     regular: 'body / 段落文字',
-    medium: '最高權重 — NavBar、modal title、button、amount、heading、CTA',
+    medium:  'NavBar / modal title / button / amount / heading / CTA',
   };
+  const reservedHint = '保留 — 未來若有重要焦點需要時開放';
   return (
     <FoundCard>
-      <FoundLabel>TYPOGRAPHY.weight</FoundLabel>
-      {Object.entries(TYPOGRAPHY.weight).map(([k, v]) => (
-        <div key={k} style={{ padding: '12px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
-          <div style={{ display: 'flex', gap: 12, marginBottom: 4 }}>
-            <code style={{ fontSize: 11, color: TOKENS.ink3 }}>{k}</code>
-            <code style={{ fontSize: 11, color: TOKENS.ink3 }}>{v}</code>
+      <FoundLabel>TYPOGRAPHY.weight · HIG 9 階字重</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 8 }}>
+        本標準啟用：<b style={{ color: TOKENS.ink }}>light · regular · medium</b>（3 檔）。其餘 6 檔保留。
+      </div>
+      {Object.entries(TYPOGRAPHY.weight).map(([k, v]) => {
+        const enabled = TYPOGRAPHY_WEIGHT_ENABLED.includes(k);
+        return (
+          <div key={k} style={{
+            padding: '10px 0', borderTop: `1px solid ${TOKENS.hairline}`,
+            opacity: enabled ? 1 : 0.4,
+          }}>
+            <div style={{ display: 'flex', gap: 12, marginBottom: 4, alignItems: 'baseline' }}>
+              <code style={{ fontSize: 11, color: TOKENS.ink3, width: 80 }}>{k}</code>
+              <code style={{ fontSize: 11, color: TOKENS.ink3, width: 30 }}>{v}</code>
+              <span style={{
+                fontSize: 10, padding: '1px 6px', borderRadius: 3,
+                background: enabled ? TOKENS.p50 : TOKENS.surface2,
+                color: enabled ? TOKENS.p500 : TOKENS.ink3,
+                fontWeight: 500,
+              }}>{enabled ? '啟用' : '保留'}</span>
+            </div>
+            <div style={{ fontSize: 18, fontWeight: v, color: TOKENS.ink }}>記帳 SuSuGiGi · The quick brown fox</div>
+            <div style={{ fontSize: 11, color: TOKENS.ink2, marginTop: 2 }}>
+              {enabled ? enabledMeanings[k] : reservedHint}
+            </div>
           </div>
-          <div style={{ fontSize: 22, fontWeight: v, color: TOKENS.ink }}>記帳 SuSuGiGi · The quick brown fox</div>
-          <div style={{ fontSize: 12, color: TOKENS.ink2, marginTop: 4 }}>{meanings[k]}</div>
+        );
+      })}
+    </FoundCard>
+  );
+}
+
+function LineHeightCard() {
+  return (
+    <FoundCard>
+      <FoundLabel>LINE_HEIGHT · 比例</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        三檔比例供自由排版時引用；TYPE_STYLES 內已內建絕對 lineHeight（pt），優先使用 TYPE_STYLES。
+      </div>
+      {Object.entries(LINE_HEIGHT).map(([k, v]) => (
+        <div key={k} style={{ padding: '10px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 4 }}>
+            <code style={{ fontSize: 11, color: TOKENS.ink3, width: 60 }}>{k}</code>
+            <code style={{ fontSize: 11, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums' }}>{v}</code>
+          </div>
+          <div style={{ fontSize: 13, lineHeight: v, color: TOKENS.ink }}>
+            這是一段示範文字。SuSuGiGi 設計工作台用三檔行高比例做為通用排版基準，配合 HIG TYPE_STYLES 的絕對 lineHeight 形成完整字體系統。
+          </div>
         </div>
       ))}
     </FoundCard>
   );
 }
 
-// ─── Spacing / Radius ─────────────────────────────────────
+function LetterSpacingCard() {
+  return (
+    <FoundCard>
+      <FoundLabel>LETTER_SPACING · 字距 (pt)</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        TYPE_STYLES 內已內建各 style 對應 HIG tracking；獨立三檔供自由排版時引用。
+      </div>
+      {Object.entries(LETTER_SPACING).map(([k, v]) => (
+        <div key={k} style={{ padding: '10px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 4 }}>
+            <code style={{ fontSize: 11, color: TOKENS.ink3, width: 60 }}>{k}</code>
+            <code style={{ fontSize: 11, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums' }}>{v}pt</code>
+          </div>
+          <div style={{ fontSize: 16, letterSpacing: v, color: TOKENS.ink }}>記帳 SuSuGiGi · Aa</div>
+        </div>
+      ))}
+    </FoundCard>
+  );
+}
+
+// ─── Spacing / Radius / Shadow / Motion ───────────────────
 function SpacingCard() {
   return (
     <FoundCard>
-      <FoundLabel>SPACING</FoundLabel>
+      <FoundLabel>SPACING · 4-multiple baseline</FoundLabel>
       {Object.entries(SPACING).map(([k, v]) => (
         <div key={k} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '6px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
           <code style={{ fontSize: 11, color: TOKENS.ink3, width: 24, fontVariantNumeric: 'tabular-nums' }}>{k}</code>
@@ -279,12 +340,15 @@ function SpacingCard() {
 function RadiusCard() {
   return (
     <FoundCard>
-      <FoundLabel>RADIUS</FoundLabel>
+      <FoundLabel>RADIUS · HIG continuous corner</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        階梯 none / sm / md / lg / xl / 2xl / full。階梯外的孤兒值（如 14）不採用。
+      </div>
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', paddingTop: 8 }}>
         {Object.entries(RADIUS).map(([k, v]) => (
           <div key={k} style={{ textAlign: 'center' }}>
             <div style={{
-              width: 70, height: 70,
+              width: 60, height: 60,
               borderRadius: v === 9999 ? 9999 : v,
               background: TOKENS.p100, border: `1.5px solid ${TOKENS.p500}`,
             }}/>
@@ -297,7 +361,69 @@ function RadiusCard() {
   );
 }
 
-// ─── TokenTableCard ───────────────────────────────────────
+function ShadowCard() {
+  return (
+    <FoundCard>
+      <FoundLabel>SHADOW · HIG layering</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        level0 無 / level1 subtle (cards) / level2 raised (FAB) / level3 overlay (modals)
+      </div>
+      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', padding: '16px 8px 24px' }}>
+        {Object.entries(SHADOW).map(([k, s]) => (
+          <div key={k} style={{ textAlign: 'center' }}>
+            <div style={{
+              width: 80, height: 80, borderRadius: RADIUS.md,
+              background: TOKENS.surface,
+              boxShadow: s.offsetY === 0 && s.blur === 0
+                ? 'none'
+                : `0 ${s.offsetY}px ${s.blur}px ${s.spread}px ${s.color}`,
+            }}/>
+            <code style={{ fontSize: 11, color: TOKENS.ink2, display: 'block', marginTop: 8 }}>{k}</code>
+            <code style={{ fontSize: 9.5, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums' }}>
+              y{s.offsetY} blur{s.blur}
+            </code>
+          </div>
+        ))}
+      </div>
+    </FoundCard>
+  );
+}
+
+function MotionCard() {
+  return (
+    <FoundCard>
+      <FoundLabel>MOTION · duration + easing</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12 }}>
+        動畫四檔 duration 與四個 easing 函式，對齊 HIG standard / decelerate / accelerate / emphasized。
+      </div>
+      <SectionMini>duration (ms)</SectionMini>
+      {Object.entries(MOTION.duration).map(([k, v]) => (
+        <div key={k} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '5px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
+          <code style={{ fontSize: 11, color: TOKENS.ink3, width: 70 }}>{k}</code>
+          <code style={{ fontSize: 11, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums' }}>{v}ms</code>
+        </div>
+      ))}
+      <SectionMini style={{ marginTop: 16 }}>easing</SectionMini>
+      {Object.entries(MOTION.easing).map(([k, v]) => (
+        <div key={k} style={{ padding: '5px 0', borderTop: `1px solid ${TOKENS.hairline}` }}>
+          <code style={{ fontSize: 11, color: TOKENS.ink3 }}>{k}</code>
+          <code style={{ fontSize: 10, color: TOKENS.ink2, display: 'block', marginTop: 2 }}>{v}</code>
+        </div>
+      ))}
+    </FoundCard>
+  );
+}
+
+function SectionMini({ children, style }) {
+  return (
+    <div style={{
+      fontSize: 10, fontWeight: 600, color: TOKENS.ink3, letterSpacing: 0.5,
+      textTransform: 'uppercase', marginTop: 4, marginBottom: 2, ...(style || {}),
+    }}>{children}</div>
+  );
+}
+
+// ─── TokenTableCard / ActionIconMapCard ───────────────────
 function ActionIconMapCard() {
   const entries = Object.entries(ACTION_ICON_MAP);
   return (
@@ -360,7 +486,6 @@ function IconWallCard({ icons }) {
 }
 
 function UIGlyphWallCard() {
-  // impl 在 UI 上用的 icon name（非分類/帳戶 icon）
   const uiIcons = [
     { name: 'line.3.horizontal.decrease', lib: 'SF' },
     { name: 'magnifyingglass',            lib: 'SF' },
@@ -400,7 +525,7 @@ function UIGlyphWallCard() {
   ];
   return (
     <FoundCard>
-      <FoundLabel>UI Glyphs · 真實 icon name（impl）</FoundLabel>
+      <FoundLabel>UI Glyphs · 真實 icon name</FoundLabel>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, paddingTop: 8 }}>
         {uiIcons.map(g => (
           <div key={g.name} style={{
@@ -427,7 +552,7 @@ function GlassDemoCard() {
           <Glyph name="magnifyingglass" size={16} color={TOKENS.ink} stroke={2}/>
           <span style={{ color: TOKENS.ink, fontWeight: 500 }}>GlassView pill</span>
         </GlassView>
-        <GlassView style={{ padding: 16, borderRadius: 14 }}>
+        <GlassView style={{ padding: 16, borderRadius: RADIUS.lg }}>
           <div style={{ fontSize: 12, color: TOKENS.ink, fontWeight: 500 }}>GLASS token</div>
           <div style={{ fontSize: 11, color: TOKENS.ink2, marginTop: 6, fontVariantNumeric: 'tabular-nums', lineHeight: 1.7 }}>
             blurAmount: {GLASS.blurAmount}<br/>
@@ -462,7 +587,6 @@ function FoundLabel({ children, style }) {
 }
 
 Object.assign(window, {
-  HtmlCard,
   FoundationsTypeSection,
   FoundationsColorsSection,
   FoundationsSpacingSection,

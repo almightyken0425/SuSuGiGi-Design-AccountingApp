@@ -1,9 +1,19 @@
 // ─────────────────────────────────────────────────────────────
-// Tokens — 100% faithful to impl src/constants/theme.ts
-// Export names match impl exactly:
-//   PALETTE / THEMES / DEFAULT_THEME / DEFAULT_THEME_ID
-//   TYPOGRAPHY / SPACING / RADIUS
-//   LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS / BOTTOM_SEARCH_BAR_TOTAL_HEIGHT
+// Tokens — SuSuGiGi 設計標準
+//
+// 錨點：Apple HIG / iOS Dynamic Type（Large default size）
+// 角色：本檔為 Design git 內的設計標準權威，spec 與 impl 跟隨對齊
+//
+// Token 層級（由抽象到具體）：
+//   1. 語意層：PALETTE / THEMES / TYPE_STYLES
+//   2. 底層數值：TYPOGRAPHY.size / TYPOGRAPHY.weight / SPACING / RADIUS
+//   3. 補充維度：LINE_HEIGHT / LETTER_SPACING / SHADOW / MOTION
+//   4. 元件層：LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS（內部不硬編碼，引用上層）
+//
+// 使用優先順序：
+//   - 字體：優先採 TYPE_STYLES（HIG 語意），TYPOGRAPHY.size 為底層備用
+//   - 圓角：採 RADIUS 階梯，不引入階梯外的孤兒值
+//   - 字重：HIG 9 階命名清單完整保留作為設計詞彙；本標準目前僅啟用 light/regular/medium 三檔
 // ─────────────────────────────────────────────────────────────
 
 const PALETTE = {
@@ -95,90 +105,190 @@ const TOKENS = {
 const CHART_COLORS = THEME_1.chart;
 const GLASS = { ...GLASS_BASE };
 
+// ─────────────────────────────────────────────────────────────
+// Typography
+//
+// TYPOGRAPHY 為底層數值階梯（size 與 weight），供需要直接控制數字的場合使用。
+// TYPE_STYLES 為 HIG 語意層，每條包含 { size, weight, lineHeight, letterSpacing }；
+// 元件實際使用時優先採 TYPE_STYLES，少數情境才回退底層數值。
+// ─────────────────────────────────────────────────────────────
+
 const TYPOGRAPHY = {
+  // 底層 size 階梯（pt）；對應 Tailwind 風格命名，便於跨平台溝通。
   size: { xs: 12, sm: 14, base: 16, lg: 18, xl: 20, '2xl': 24, '3xl': 30 },
-  weight: { light: 300, regular: 400, medium: 500 },
+
+  // HIG 9 階字重命名清單（完整保留作為設計詞彙）。
+  // 本設計標準目前只啟用 light / regular / medium 三檔；
+  // semibold 及以上保留，未來若有重要焦點需要時再開放。
+  weight: {
+    ultraLight: 100,
+    thin:       200,
+    light:      300,
+    regular:    400,
+    medium:     500,
+    semibold:   600,  // 保留
+    bold:       700,  // 保留
+    heavy:      800,  // 保留
+    black:      900,  // 保留
+  },
 };
+
+// 本標準目前啟用的字重集合（驗證與文件用）。
+const TYPOGRAPHY_WEIGHT_ENABLED = ['light', 'regular', 'medium'];
+
+// 老命名 alias 保留向後相容（intro / foundations / showcase 用過）
 const TYPE_SCALE = TYPOGRAPHY.size;
 const FONT_WEIGHT = TYPOGRAPHY.weight;
 
+// HIG Dynamic Type Large default size。每條附帶 lineHeight、letterSpacing。
+// HIG 原 headline 為 semibold (600)，本標準不啟用 semibold，故 headline 以 medium 代替。
+const TYPE_STYLES = {
+  largeTitle:  { size: 34, weight: TYPOGRAPHY.weight.regular, lineHeight: 41, letterSpacing:  0.40 },
+  title1:      { size: 28, weight: TYPOGRAPHY.weight.regular, lineHeight: 34, letterSpacing:  0.36 },
+  title2:      { size: 22, weight: TYPOGRAPHY.weight.regular, lineHeight: 28, letterSpacing:  0.35 },
+  title3:      { size: 20, weight: TYPOGRAPHY.weight.regular, lineHeight: 25, letterSpacing:  0.38 },
+  headline:    { size: 17, weight: TYPOGRAPHY.weight.medium,  lineHeight: 22, letterSpacing: -0.41 },
+  body:        { size: 17, weight: TYPOGRAPHY.weight.regular, lineHeight: 22, letterSpacing: -0.41 },
+  callout:     { size: 16, weight: TYPOGRAPHY.weight.regular, lineHeight: 21, letterSpacing: -0.32 },
+  subheadline: { size: 15, weight: TYPOGRAPHY.weight.regular, lineHeight: 20, letterSpacing: -0.24 },
+  footnote:    { size: 13, weight: TYPOGRAPHY.weight.regular, lineHeight: 18, letterSpacing: -0.08 },
+  caption1:    { size: 12, weight: TYPOGRAPHY.weight.regular, lineHeight: 16, letterSpacing:  0.00 },
+  caption2:    { size: 11, weight: TYPOGRAPHY.weight.regular, lineHeight: 13, letterSpacing:  0.07 },
+};
+
+// LINE_HEIGHT 三檔比例供自由排版時引用；TYPE_STYLES 內已內建絕對 lineHeight。
+const LINE_HEIGHT = { tight: 1.2, base: 1.4, relaxed: 1.6 };
+
+// LETTER_SPACING 三檔（pt）供自由排版時引用；TYPE_STYLES 內已內建絕對 letterSpacing。
+const LETTER_SPACING = { tight: -0.4, normal: 0, wide: 0.3 };
+
+// ─────────────────────────────────────────────────────────────
+// Spacing / Radius / Shadow / Motion
+// ─────────────────────────────────────────────────────────────
+
+// HIG 4-multiple baseline。鍵名等同實際 pt 倍數（1 = 4pt）。
 const SPACING = { 1: 4, 2: 8, 3: 12, 4: 16, 6: 24, 8: 32, 10: 40, 12: 48, 16: 64 };
-const RADIUS = { sm: 4, md: 8, lg: 12, full: 9999 };
+
+// HIG continuous corner radius 階梯。不收 14（HIG 標準階梯之外的孤兒值）。
+const RADIUS = {
+  none: 0,
+  sm:   4,
+  md:   8,
+  lg:   12,
+  xl:   16,
+  '2xl': 20,
+  full: 9999,
+};
+
+// HIG layering：level0 無、level1 subtle、level2 raised、level3 overlay。
+const SHADOW = {
+  level0: { offsetY: 0, blur: 0,  spread: 0, color: 'transparent' },
+  level1: { offsetY: 1, blur: 2,  spread: 0, color: 'rgba(0,0,0,0.08)' },
+  level2: { offsetY: 2, blur: 8,  spread: 0, color: 'rgba(0,0,0,0.12)' },
+  level3: { offsetY: 8, blur: 24, spread: 0, color: 'rgba(0,0,0,0.16)' },
+};
+
+// 動畫 duration 與 easing。對齊 HIG 的 standard / decelerate / accelerate / emphasized 範式。
+const MOTION = {
+  duration: {
+    instant: 100,
+    fast:    200,
+    base:    300,
+    slow:    500,
+  },
+  easing: {
+    standard:    'cubic-bezier(0.4, 0, 0.2, 1)',
+    decelerate:  'cubic-bezier(0, 0, 0.2, 1)',
+    accelerate:  'cubic-bezier(0.4, 0, 1, 1)',
+    emphasized:  'cubic-bezier(0.2, 0, 0, 1)',
+  },
+};
+
+// 列表空狀態切換動畫；引用 MOTION，內部不再寫死毫秒數。
+const LIST_EMPTY_TRANSITION = {
+  DURATION_MS: MOTION.duration.fast + 20,  // 220ms（在 fast 與 base 之間，給 crossfade 用）
+  EASING:      MOTION.easing.standard,
+};
+
+// ─────────────────────────────────────────────────────────────
+// 元件層 token —— 內部一律引用上層 TYPE_STYLES / TYPOGRAPHY / SPACING / RADIUS，
+// 不再硬編碼數字。命名保留 impl 既有形式以維持 spec/impl 對齊溝通成本。
+// ─────────────────────────────────────────────────────────────
 
 const LIST_TOKENS = {
-  ITEM_MIN_HEIGHT: 58,
-  ITEM_PADDING_VERTICAL: 17,
-  ITEM_PADDING_HORIZONTAL: SPACING[4],
-  ITEM_GAP_HORIZONTAL: SPACING[3],
-  ITEM_TITLE_SIZE: 17,
-  ITEM_TITLE_WEIGHT: TYPOGRAPHY.weight.light,
-  ICON_SIZE_SMALL: 20,
-  ICON_SIZE_MEDIUM: 24,
-  ICON_SIZE_LARGE: 40,
-  DIVIDER_COLOR_LIGHT: 'rgba(60,60,67,0.10)',
-  DIVIDER_INSET_WITH_ICON: SPACING[4] + 20 + SPACING[3],
+  ITEM_MIN_HEIGHT:           58,
+  ITEM_PADDING_VERTICAL:     TYPE_STYLES.body.size,         // 17
+  ITEM_PADDING_HORIZONTAL:   SPACING[4],
+  ITEM_GAP_HORIZONTAL:       SPACING[3],
+  ITEM_TITLE_SIZE:           TYPE_STYLES.body.size,         // body 17
+  ITEM_TITLE_WEIGHT:         TYPOGRAPHY.weight.light,
+  ICON_SIZE_SMALL:           20,
+  ICON_SIZE_MEDIUM:          24,
+  ICON_SIZE_LARGE:           40,
+  DIVIDER_COLOR_LIGHT:       'rgba(60,60,67,0.10)',
+  DIVIDER_INSET_WITH_ICON:   SPACING[4] + 20 + SPACING[3],
   DIVIDER_INSET_WITHOUT_ICON: SPACING[4],
-  GROUP_CARD_RADIUS: 14,
-  GROUP_CARD_MARGIN_BOTTOM: 35,
-  GROUP_CARD_BORDER_WIDTH: 1,
-  GROUP_CARD_BORDER_COLOR: 'rgba(60,60,67,0.10)',
-  SECTION_TITLE_SIZE: 13,
-  SECTION_TITLE_WEIGHT: TYPOGRAPHY.weight.regular,
+  GROUP_CARD_RADIUS:         RADIUS.lg,                     // 12（HIG 不收 14，改採 lg）
+  GROUP_CARD_MARGIN_BOTTOM:  35,
+  GROUP_CARD_BORDER_WIDTH:   1,
+  GROUP_CARD_BORDER_COLOR:   'rgba(60,60,67,0.10)',
+  SECTION_TITLE_SIZE:        TYPE_STYLES.footnote.size,     // footnote 13
+  SECTION_TITLE_WEIGHT:      TYPOGRAPHY.weight.regular,
   SECTION_TITLE_LETTER_SPACING: 0.5,
   SECTION_TITLE_PADDING_TOP: SPACING[3],
   SECTION_TITLE_PADDING_BOTTOM: SPACING[1] + 2,
   SECTION_TITLE_PADDING_HORIZONTAL: SPACING[4],
-  SELECTION_ITEM_RADIUS: RADIUS.md,
+  SELECTION_ITEM_RADIUS:     RADIUS.md,
   SELECTION_ITEM_MARGIN_BOTTOM: SPACING[2],
-  SELECTION_CHECKMARK_SIZE: 16,
-  TRAILING_CHEVRON_SIZE: 13,
-  TRAILING_CHEVRON_WEIGHT: 'semibold',
-  TRAILING_VALUE_SIZE: 17,
+  SELECTION_CHECKMARK_SIZE:  16,
+  TRAILING_CHEVRON_SIZE:     TYPE_STYLES.footnote.size,     // 13
+  TRAILING_CHEVRON_WEIGHT:   'semibold',
+  TRAILING_VALUE_SIZE:       TYPE_STYLES.body.size,         // 17
   PRESS_BG_HIGHLIGHT_OPACITY: 0.5,
-  GRID_COLUMNS: 2,
-  GRID_GAP: SPACING[3],
-  EMPTY_STATE_ICON_SIZE: 48,
-  EMPTY_STATE_TITLE_SIZE: 17,
-  EMPTY_STATE_DESCRIPTION_SIZE: 14,
-  EMPTY_STATE_ICON_GAP: SPACING[3],
-  EMPTY_STATE_TEXT_GAP: SPACING[2],
+  GRID_COLUMNS:              2,
+  GRID_GAP:                  SPACING[3],
+  EMPTY_STATE_ICON_SIZE:     48,
+  EMPTY_STATE_TITLE_SIZE:    TYPE_STYLES.body.size,         // 17
+  EMPTY_STATE_DESCRIPTION_SIZE: TYPOGRAPHY.size.sm,         // 14
+  EMPTY_STATE_ICON_GAP:      SPACING[3],
+  EMPTY_STATE_TEXT_GAP:      SPACING[2],
   EMPTY_STATE_PADDING_HORIZONTAL: SPACING[6],
 };
 
 const TX_LIST_TOKENS = {
-  SECTION_CARD_RADIUS: 14,
-  SECTION_CARD_MARGIN_BOTTOM: 14,
-  SECTION_CARD_HORIZONTAL_PADDING: SPACING[4],
-  SECTION_HEADER_PADDING_V_COLLAPSED: 12,
-  SECTION_HEADER_PADDING_V_EXPANDED: 10,
-  SECTION_HEADER_PADDING_H: SPACING[4],
-  SECTION_HEADER_TITLE_SIZE_COLLAPSED: 17,
-  SECTION_HEADER_TITLE_SIZE_EXPANDED: 14,
-  SECTION_HEADER_TOTAL_SIZE_COLLAPSED: 15,
-  SECTION_HEADER_TOTAL_SIZE_EXPANDED: 13,
-  SECTION_HEADER_TITLE_WEIGHT: TYPOGRAPHY.weight.medium,
-  SECTION_HEADER_TOTAL_WEIGHT: TYPOGRAPHY.weight.medium,
-  ICON_OUTLINE_BORDER_WIDTH: 1,
-  ICON_OUTLINE_SIZE: 32,
-  ICON_OUTLINE_RADIUS: 10,
-  ROW_AMOUNT_SIZE: 16,
-  ROW_AMOUNT_WEIGHT: TYPOGRAPHY.weight.medium,
-  ROW_LEFT_SLOT_SIZE: 32,
-  ROW_NOTE_SIZE: 15,
-  ROW_SECONDARY_SIZE: 12,
-  MORPH_DURATION_MS: 280,
+  SECTION_CARD_RADIUS:                  RADIUS.lg,                     // 12（HIG 不收 14）
+  SECTION_CARD_MARGIN_BOTTOM:           SPACING[3] + 2,                // 14
+  SECTION_CARD_HORIZONTAL_PADDING:      SPACING[4],
+  SECTION_HEADER_PADDING_V_COLLAPSED:   SPACING[3],
+  SECTION_HEADER_PADDING_V_EXPANDED:    SPACING[2] + 2,
+  SECTION_HEADER_PADDING_H:             SPACING[4],
+  SECTION_HEADER_TITLE_SIZE_COLLAPSED:  TYPE_STYLES.body.size,         // 17
+  SECTION_HEADER_TITLE_SIZE_EXPANDED:   TYPOGRAPHY.size.sm,            // 14
+  SECTION_HEADER_TOTAL_SIZE_COLLAPSED:  TYPE_STYLES.subheadline.size,  // 15
+  SECTION_HEADER_TOTAL_SIZE_EXPANDED:   TYPE_STYLES.footnote.size,     // 13
+  SECTION_HEADER_TITLE_WEIGHT:          TYPOGRAPHY.weight.medium,
+  SECTION_HEADER_TOTAL_WEIGHT:          TYPOGRAPHY.weight.medium,
+  ICON_OUTLINE_BORDER_WIDTH:            1,
+  ICON_OUTLINE_SIZE:                    32,
+  ICON_OUTLINE_RADIUS:                  10,
+  ROW_AMOUNT_SIZE:                      TYPE_STYLES.callout.size,      // 16
+  ROW_AMOUNT_WEIGHT:                    TYPOGRAPHY.weight.medium,
+  ROW_LEFT_SLOT_SIZE:                   32,
+  ROW_NOTE_SIZE:                        TYPE_STYLES.subheadline.size,  // 15
+  ROW_SECONDARY_SIZE:                   TYPE_STYLES.caption1.size,     // 12
+  MORPH_DURATION_MS:                    MOTION.duration.fast + 80,     // 280ms
 };
 // 老命名 alias 保留向後相容（intro / foundations / showcase 用過）
 const TX_TOKENS = TX_LIST_TOKENS;
 
 const SEARCH_BAR_TOKENS = {
-  PILL_HEIGHT: 44,
-  PADDING_HORIZONTAL: SPACING[4],
-  PADDING_VERTICAL: SPACING[3],
-  PILL_PADDING_HORIZONTAL: SPACING[3],
-  ICON_GAP: SPACING[2],
-  ICON_SIZE: 20,
-  INPUT_FONT_SIZE: TYPOGRAPHY.size.base,
+  PILL_HEIGHT:               44,
+  PADDING_HORIZONTAL:        SPACING[4],
+  PADDING_VERTICAL:          SPACING[3],
+  PILL_PADDING_HORIZONTAL:   SPACING[3],
+  ICON_GAP:                  SPACING[2],
+  ICON_SIZE:                 20,
+  INPUT_FONT_SIZE:           TYPOGRAPHY.size.base,
 };
 const SEARCH_TOKENS = SEARCH_BAR_TOKENS;
 const BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BAR_TOKENS.PADDING_VERTICAL * 2;
@@ -200,15 +310,7 @@ const ACTION_ICON_MAP = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// LIST_EMPTY_TRANSITION — 列表空狀態切換動畫
-// （ListEmptyTransition crossfade 兩態互換）
-// ─────────────────────────────────────────────────────────────
-const LIST_EMPTY_TRANSITION = {
-  DURATION_MS: 220,
-};
-
-// ─────────────────────────────────────────────────────────────
-// IconDefinition.json — 完整 43 個 icon（對齊 impl）
+// IconDefinition.json — 完整 43 個 icon
 // ─────────────────────────────────────────────────────────────
 const ICON_LIBRARY = [
   { id: 1,  uniqueName: 'mci-food',             library: 'MaterialCommunityIcons', glyph: 'food',                 tags: ['category'] },
@@ -258,35 +360,31 @@ const ICON_LIBRARY = [
 const ICON_BY_ID = Object.fromEntries(ICON_LIBRARY.map(i => [i.id, i]));
 
 // ─────────────────────────────────────────────────────────────
-// Mock data — 對齊 i18n 字串與 impl 的 seed
+// Mock data — 設計稿視覺化用 seed
 // ─────────────────────────────────────────────────────────────
 const CATEGORIES = [
-  { id: 'food',    name: '飲食',  type: 'expense', iconId: 1  },  // mci-food
-  { id: 'trans',   name: '交通',  type: 'expense', iconId: 2  },  // mci-bus
-  { id: 'shop',    name: '購物',  type: 'expense', iconId: 3  },  // mci-cart
-  { id: 'ent',     name: '娛樂',  type: 'expense', iconId: 4  },  // mci-movie
-  { id: 'home',    name: '居家',  type: 'expense', iconId: 5  },  // mci-home
-  { id: 'health',  name: '醫療',  type: 'expense', iconId: 7  },  // mci-hospital
-  { id: 'edu',     name: '教育',  type: 'expense', iconId: 8  },  // mci-school
-  { id: 'gift',    name: '禮物',  type: 'expense', iconId: 11 },  // ant-star
-  { id: 'salary',  name: '薪資',  type: 'income',  iconId: 10 },  // mci-cash-multiple
-  { id: 'invest',  name: '投資',  type: 'income',  iconId: 12 },  // mci-chart-line
+  { id: 'food',    name: '飲食',  type: 'expense', iconId: 1  },
+  { id: 'trans',   name: '交通',  type: 'expense', iconId: 2  },
+  { id: 'shop',    name: '購物',  type: 'expense', iconId: 3  },
+  { id: 'ent',     name: '娛樂',  type: 'expense', iconId: 4  },
+  { id: 'home',    name: '居家',  type: 'expense', iconId: 5  },
+  { id: 'health',  name: '醫療',  type: 'expense', iconId: 7  },
+  { id: 'edu',     name: '教育',  type: 'expense', iconId: 8  },
+  { id: 'gift',    name: '禮物',  type: 'expense', iconId: 11 },
+  { id: 'salary',  name: '薪資',  type: 'income',  iconId: 10 },
+  { id: 'invest',  name: '投資',  type: 'income',  iconId: 12 },
 ];
 const CAT_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
 const ACCOUNTS = [
-  { id: 'cash',     name: '現金',           balance: 3240,    iconId: 15, typeId: 1, currency: 'TWD' },  // ant-wallet
-  { id: 'bank',     name: '玉山活儲',        balance: 128450,  iconId: 13, typeId: 2, currency: 'TWD' },  // mci-bank
-  { id: 'credit',   name: '國泰世華 信用卡', balance: -8420,   iconId: 14, typeId: 3, currency: 'TWD' },  // ant-creditcard
-  { id: 'invest',   name: '富邦證券',        balance: 462100,  iconId: 12, typeId: 4, currency: 'TWD' },  // mci-chart-line
-  { id: 'usd_cash', name: 'USD 旅費',        balance: 320,     iconId: 23, typeId: 1, currency: 'USD' },  // mci-currency-usd
+  { id: 'cash',     name: '現金',           balance: 3240,    iconId: 15, typeId: 1, currency: 'TWD' },
+  { id: 'bank',     name: '玉山活儲',        balance: 128450,  iconId: 13, typeId: 2, currency: 'TWD' },
+  { id: 'credit',   name: '國泰世華 信用卡', balance: -8420,   iconId: 14, typeId: 3, currency: 'TWD' },
+  { id: 'invest',   name: '富邦證券',        balance: 462100,  iconId: 12, typeId: 4, currency: 'TWD' },
+  { id: 'usd_cash', name: 'USD 旅費',        balance: 320,     iconId: 23, typeId: 1, currency: 'USD' },
 ];
 const ACC_BY_ID = Object.fromEntries(ACCOUNTS.map(a => [a.id, a]));
 
-// 多幣別範例 transaction（May 2026）。amount 在 impl 是 cents 整數。
-// 這份 mock 為方便閱讀用元（÷100 後的值）；只是設計稿、不影響真實計算。
-// recurring: scheduleId != null 的衍生實例
-// currency / convertedAmount: 跨幣別記錄
 const TX = [
   { id: 1,  date: 'May 2',  cat: 'food',   acc: 'credit',   amount: -185,  note: '路易莎咖啡' },
   { id: 2,  date: 'May 2',  cat: 'food',   acc: 'cash',     amount: -120,  note: '便當' },
@@ -368,8 +466,9 @@ function fmt(n, code = 'TWD') {
 Object.assign(window, {
   PALETTE, THEMES, THEME_1, THEME_2, DEFAULT_THEME, DEFAULT_THEME_ID,
   TOKENS, CHART_COLORS, GLASS,
-  TYPOGRAPHY, TYPE_SCALE, FONT_WEIGHT,
-  SPACING, RADIUS,
+  TYPOGRAPHY, TYPOGRAPHY_WEIGHT_ENABLED, TYPE_SCALE, FONT_WEIGHT, TYPE_STYLES,
+  LINE_HEIGHT, LETTER_SPACING,
+  SPACING, RADIUS, SHADOW, MOTION,
   LIST_TOKENS, TX_LIST_TOKENS, TX_TOKENS,
   SEARCH_BAR_TOKENS, SEARCH_TOKENS, BOTTOM_SEARCH_BAR_TOTAL_HEIGHT,
   ACTION_ICON_MAP, LIST_EMPTY_TRANSITION,

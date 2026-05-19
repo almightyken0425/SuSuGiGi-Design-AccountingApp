@@ -25,15 +25,26 @@
 
 本 repo 是一份 React HTML 設計 sandbox（不需建置流程，瀏覽器直接打開）。
 
-入口：`project/SuSuGiGi.html`，含 5 個 tab：
+入口：`project/SuSuGiGi.html`，由 `90_workbench/app.jsx` 作 router，含 **4 個頂層 tab**：
 
 - **Intro** — 本 repo 的使用說明書
-- **Foundations** — design tokens（PALETTE、TYPOGRAPHY、SPACING、ICON_LIBRARY 等）視覺化
-- **Components** — 元件展示（List、SearchBar、Glyph、CalculatorKeypad、DonutChart 等）
-- **Screens** — 22 個正式畫面（含 empty / loading / error 邊界狀態變體）
-- **Explorations** — 多版本提案的並陳空間（目前無主題）
+- **Foundations** — 設計標準視覺化，含 5 個 sub-item：
+    - **Type** — TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY / LINE_HEIGHT / LETTER_SPACING
+    - **Colors** — PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status
+    - **Spacing** — SPACING / RADIUS / SHADOW / MOTION / 元件 token 表
+    - **Components** — 由 `components-showcase.jsx` 引用 `20_components/components.jsx` 的元件展示
+    - **Brand** — 品牌標識相關工件
+- **Screens** — 22 個畫面群組（含 default / empty / loading / error 邊界狀態變體）
+- **Explorations** — 5 個多版本提案主題：
+    - **Axis 1 · Color & Mood**（Open question · 2026-05-16）
+    - **Axis 2 · Surface & Material**（Liquid Glass 為 current direction，4 變體比較·2026-05-15）
+    - **Axis 3 · Iconography & Embellishment**（Open question · 2026-05-16）
+    - **Axis 4 · Personality (packaged)**（Open question · 2026-05-16）
+    - **Transaction Editor**（P1/P2/P7/P8/P9 標 [Current]·2026-05-18）
 
-詳細結構說明見 `INDEX.md`。
+注意：**Components 不是頂層 tab**，已併入 Foundations 作為 sub-item。`20_components/` 目錄仍存在，承載元件實作與 showcase 程式碼。
+
+詳細結構說明見 `project/SuSuGiGi.html` 的 Intro 分頁。
 
 ---
 
@@ -47,24 +58,33 @@
 
 ---
 
-## 配對變動規則
+## Design git 作為設計標準仲裁端
 
-設計變動時通常需要四層聯動檢查。
+本 repo 在 SuSuGiGi 四層 git 中擔任 **設計標準的仲裁端**。意思是：
 
-- **對側 Spec 應檢查：** 設計工件變動可能影響 `no4_product_specs/no2_accounting_app/no2_screens/` 的對應畫面規格
-    - 若設計引入新畫面、新狀態或新元件，需在 Spec 補對應描述
-    - 若設計只是視覺微調（token、間距），通常不影響 Spec 行為描述
-- **對側 Impl 應檢查：** 視覺變動需 impl 的 `src/screens/` 跟進實作
-- **上游 Product Map 應檢查：** `no2_product_planning/no2_product_map/no2_accounting_app/` 是否需更新 module 描述
+- **觸發點可來自任一端：** impl 開發中發現某個字太小、Design 探索想換配色、Spec 邏輯需要新狀態——任一端都可以發起變動訊號
+- **決議寫進本 repo：** 所有 token / 元件 / 畫面的最終決議寫在本 Design git，spec 與 impl 跟隨對齊
+- **本 repo 仲裁範圍：** 視覺與互動標準（token、元件、畫面、動畫）
+- **不仲裁範圍：** data model 與 logic 由 Spec git 仲裁（標 `arbiter: spec`）
 
-配對 commit 使用相同 subject 與 body，branch 名稱逐字一致。
+Foundations 以 **Apple HIG / iOS Dynamic Type** 為錨點重訂 token 系統，承擔 SuSuGiGi accounting app 的設計標準權威來源。
 
 ---
 
-## impl 對齊
+## 配對變動規則
 
-本 repo 的所有 token / icon / 元件 / 畫面都對應到 `no6_product_development/no2_accounting_app/`。最後一次全面對齊：2026-05-14。
+設計變動的同步關係由 `decision_framework_router` skill 的 `products_registry.md` 中 SuSuGiGi 條目下 `no2_accounting_app` 的 `sub_mapping` 維護。**`products_registry.md` 為權威來源**，本文件僅 mirror 主要規則作為人類閱讀方便：
 
-每個 `screens.jsx` 內的 ScreenComponent 都標註對應的 impl 檔案（搜尋 `← src/screens/...`）。
+| 分頁變動 | 仲裁端 | 跟進端 |
+|---|---|---|
+| Intro | design | 本 CLAUDE.md / Product CLAUDE.md / products_registry.md（文件層級） |
+| Foundations | design | impl `src/constants/theme.ts` |
+| Components | design | impl `src/components/**` + spec `no2_screens/*.md` |
+| Screens | design | spec `no2_screens/noN_<name>_screen.md` + impl `src/screens/<Name>/` |
+| Data models | spec | impl（不經 design） |
+| Logics | spec | impl（不經 design） |
+| Explorations | — | 完全隔離 |
 
-impl 是真相，設計稿追著對齊。impl 改 token / 改畫面 / 新增畫面時，先在本 repo 改完、與相關人對齊視覺，再回去動 impl；或者 impl 已改，把本 repo 追上來作為下一輪迭代的起點。兩邊不該長期偏離。
+詳細欄位語意（`arbiter` / `followers` / `scope` / `isolated` / `doc_targets`）見 `products_registry.md` 的 Schema 章節。
+
+配對 commit 使用相同 subject 與 body，branch 名稱逐字一致。
