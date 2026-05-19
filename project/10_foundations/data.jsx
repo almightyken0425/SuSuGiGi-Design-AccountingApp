@@ -380,6 +380,25 @@ const SEARCH_BAR_TOKENS = {
 const SEARCH_TOKENS = SEARCH_BAR_TOKENS;
 const BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BAR_TOKENS.PADDING_VERTICAL * 2;
 
+// SWITCH_TOKENS — RN 原生 Switch 的兩態色彩政策。
+// Design 不自繪 Switch，impl 直接用 React Native Switch；本 token 將「定期/品牌
+// 相關 toggle 用品牌色、一般 toggle 用 success 綠」這條原本隱性的設計政策正式化。
+// TRACK_COLOR_ON 拆 default / brand 兩變體：
+//   - default：一般狀態 toggle，使用 status.success（與 iOS 預設綠相近）
+//   - brand：定期交易、品牌相關功能 toggle，使用 primary.main
+// 配色採用 TOKENS（theme1 snapshot），impl 端 makeSwitchTrackColor(theme, variant)
+// 會回傳對應的 theme 動態色。
+const SWITCH_TOKENS = {
+  TRACK_COLOR_OFF: TOKENS.surface2,
+  TRACK_COLOR_ON: {
+    default: TOKENS.success,
+    brand:   TOKENS.p500,
+  },
+  THUMB_COLOR_ON:  '#FFFFFF',
+  THUMB_COLOR_OFF: '#F4F3F4',
+  IOS_BG_COLOR:    '#3E3E3E',
+};
+
 // ─────────────────────────────────────────────────────────────
 // ACTION_ICON_MAP — header 動作 → SF Symbol 對應
 // （與 ICON_LIBRARY 並列；ICON_LIBRARY 是 phosphor svg 集合，
@@ -616,6 +635,7 @@ Object.assign(window, {
   SPACING, RADIUS, SHADOW, MOTION,
   LIST_TOKENS, TX_LIST_TOKENS, TX_TOKENS,
   SEARCH_BAR_TOKENS, SEARCH_TOKENS, BOTTOM_SEARCH_BAR_TOTAL_HEIGHT,
+  SWITCH_TOKENS,
   ACTION_ICON_MAP, LIST_EMPTY_TRANSITION,
   ICON_LIBRARY, ICON_BY_ID,
   CATEGORIES, CAT_BY_ID, ACCOUNTS, ACC_BY_ID, TX,

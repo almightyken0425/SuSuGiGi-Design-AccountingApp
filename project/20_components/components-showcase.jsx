@@ -304,10 +304,25 @@ function ComponentsChartSection() {
 function ComponentsInputSection() {
   return (
     <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色。最後一張 live GlassView demo（從 Foundations 搬來）。" direction="column">
-      <DCArtboard id="comp-switch" label="Switch · iOS 樣式 (live)" width={402} height={140}>
-        <CompFrame style={{ padding: 32, display: 'flex', alignItems: 'center', gap: 24 }}>
-          <SwitchDemo defaultValue={true}/>
-          <SwitchDemo defaultValue={false}/>
+      <DCArtboard id="comp-switch" label="Switch · default / brand 兩變體 (live)" width={402} height={260}>
+        <CompFrame style={{ padding: SPACING.xl }}>
+          <CompLabel>採 RN 原生 Switch。trackColor 由 SWITCH_TOKENS 提供兩變體</CompLabel>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.lg, marginTop: SPACING.md }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
+              <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
+              <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
+              <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
+                default · status.success（AccountEditor / CategoryEditor 用）
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
+              <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
+              <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
+              <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
+                brand · primary.main（RecurringOptions / CurrencyDetailConfig 用）
+              </span>
+            </div>
+          </div>
         </CompFrame>
       </DCArtboard>
       <DCArtboard id="comp-keypad" label="CalculatorKeypad · 1-2-3-+ / 4-5-6-− / 7-8-9-× / .-0-=-÷ (live)" width={402} height={320}>
@@ -330,9 +345,9 @@ function ComponentsInputSection() {
   );
 }
 
-function SwitchDemo({ defaultValue }) {
+function SwitchDemo({ defaultValue, trackColorOn }) {
   const [v, setV] = React.useState(defaultValue);
-  return <Switch value={v} onChange={setV}/>;
+  return <Switch value={v} onChange={setV} trackColorOn={trackColorOn}/>;
 }
 
 function CompFrame({ children, style = {} }) {
