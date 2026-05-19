@@ -48,15 +48,62 @@ const GLASS_BASE = {
   shadowOpacity: 0.10,
 };
 
+// SHADOW_ELEVATION 為兩 theme 共享的陰影階梯（offsetY / blur / opacity，color 由 theme.shadow.color 引用）。
+// 沿用既有 SHADOW level1~3 α；level0 為「無陰影」placeholder。
+const SHADOW_ELEVATION = {
+  level0: { offsetY: 0, blur: 0,  opacity: 0    },
+  level1: { offsetY: 1, blur: 2,  opacity: 0.08 },
+  level2: { offsetY: 2, blur: 8,  opacity: 0.12 },
+  level3: { offsetY: 8, blur: 24, opacity: 0.16 },
+};
+
+// SCRIM_LEVELS 為兩 theme 共享的遮罩三檔，對齊 iOS 系統慣例。
+const SCRIM_LEVELS = {
+  light:  'rgba(0,0,0,0.20)',  // iOS UIAlertController 等級
+  medium: 'rgba(0,0,0,0.40)',  // iOS formSheet / actionSheet 等級
+  heavy:  'rgba(0,0,0,0.60)',  // iOS 全屏 viewer 等級
+};
+
 const THEME_1 = {
   id: 'theme1',
   name: '經典紫 (Classic Purple)',
   statusBar: 'dark-content',
-  bg: { base: '#F2F2F7', surface: PALETTE.neutral[0], surface_hover: PALETTE.neutral[100] },
-  text: { primary: PALETTE.neutral[900], secondary: PALETTE.neutral[600], disabled: PALETTE.neutral[400], divisor: PALETTE.neutral[300] },
-  border: { base: PALETTE.neutral[200], focus: PRIMARY_PURPLE[500] },
+  bg: {
+    base:          '#F2F2F7',                                            // iOS systemGroupedBackground
+    surface:       PALETTE.neutral[0],
+    surface_hover: PALETTE.neutral[100],
+    surface_dim:   'rgba(0,0,0,0.06)',                                   // 比 surface 淡一點的子區塊底（對齊 iOS systemFill 最淡層）
+  },
+  text: {
+    primary:   PALETTE.neutral[900],
+    secondary: PALETTE.neutral[600],
+    divisor:   PALETTE.neutral[300],
+    // disabled 已移至 state.disabled.fg
+  },
+  border: {
+    base: PALETTE.neutral[200],
+    // focus 已移至 state.focus.border
+  },
+  divider: {
+    base:     PALETTE.neutral[300],                                       // 與 text.divisor 同義，提升命名
+    hairline: 'rgba(60,60,67,0.10)',                                      // iOS systemGray with α
+  },
   primary: { main: PRIMARY_PURPLE[500], ...PRIMARY_PURPLE },
-  status: { success: PALETTE.semantic.success, error: PALETTE.semantic.error, warning: PALETTE.semantic.warning },
+  status: {
+    success:    PALETTE.semantic.success,
+    error:      PALETTE.semantic.error,
+    warning:    PALETTE.semantic.warning,
+    warning_bg: '#FFF4E5',                                                // warning callout 弱化背景（Material warning surface 慣例）
+    warning_fg: '#663C00',                                                // warning callout 弱化文字
+  },
+  state: {
+    press:    { opacity: 0.7 },                                           // 整顆元件按下透明度
+    selected: { bg: PRIMARY_PURPLE[50], fg: PRIMARY_PURPLE[500], border: PRIMARY_PURPLE[500] },
+    disabled: { fg: PALETTE.neutral[400], opacity: 0.38 },                // opacity 對齊 HIG 慣例
+    focus:    { border: PRIMARY_PURPLE[500] },                            // TextInput 焦點邊框
+  },
+  scrim: SCRIM_LEVELS,
+  shadow: { color: PALETTE.neutral[1000], elevation: SHADOW_ELEVATION },
   chart: [PRIMARY_PURPLE[800], PRIMARY_PURPLE[700], PRIMARY_PURPLE[600], PRIMARY_PURPLE[500], PRIMARY_PURPLE[400]],
   contrast: PRIMARY_PURPLE.contrast,
   glass: GLASS_BASE,
@@ -66,11 +113,40 @@ const THEME_2 = {
   id: 'theme2',
   name: '海洋藍 (Ocean Teal)',
   statusBar: 'dark-content',
-  bg: { base: '#F2F2F7', surface: PALETTE.neutral[0], surface_hover: PALETTE.neutral[100] },
-  text: { primary: PALETTE.neutral[900], secondary: PALETTE.neutral[600], disabled: PALETTE.neutral[400], divisor: PALETTE.neutral[300] },
-  border: { base: PALETTE.neutral[200], focus: PRIMARY_TEAL[500] },
+  bg: {
+    base:          '#F2F2F7',
+    surface:       PALETTE.neutral[0],
+    surface_hover: PALETTE.neutral[100],
+    surface_dim:   'rgba(0,0,0,0.06)',
+  },
+  text: {
+    primary:   PALETTE.neutral[900],
+    secondary: PALETTE.neutral[600],
+    divisor:   PALETTE.neutral[300],
+  },
+  border: {
+    base: PALETTE.neutral[200],
+  },
+  divider: {
+    base:     PALETTE.neutral[300],
+    hairline: 'rgba(60,60,67,0.10)',
+  },
   primary: { main: PRIMARY_TEAL[500], ...PRIMARY_TEAL },
-  status: { success: PALETTE.semantic.success, error: PALETTE.semantic.error, warning: PALETTE.semantic.warning },
+  status: {
+    success:    PALETTE.semantic.success,
+    error:      PALETTE.semantic.error,
+    warning:    PALETTE.semantic.warning,
+    warning_bg: '#FFF4E5',
+    warning_fg: '#663C00',
+  },
+  state: {
+    press:    { opacity: 0.7 },
+    selected: { bg: PRIMARY_TEAL[50], fg: PRIMARY_TEAL[500], border: PRIMARY_TEAL[500] },
+    disabled: { fg: PALETTE.neutral[400], opacity: 0.38 },
+    focus:    { border: PRIMARY_TEAL[500] },
+  },
+  scrim: SCRIM_LEVELS,
+  shadow: { color: PALETTE.neutral[1000], elevation: SHADOW_ELEVATION },
   chart: [PRIMARY_TEAL[800], PRIMARY_TEAL[700], PRIMARY_TEAL[600], PRIMARY_TEAL[500], PRIMARY_TEAL[400]],
   contrast: PRIMARY_TEAL.contrast,
   glass: GLASS_BASE,
@@ -80,17 +156,18 @@ const THEMES = { theme1: THEME_1, theme2: THEME_2 };
 const DEFAULT_THEME_ID = 'theme1';
 const DEFAULT_THEME = THEME_1;
 
-// 攤平 TOKENS 給 components.jsx / screens.jsx 用，預設 theme1
+// 攤平 TOKENS — canvas 視覺化 only（components.jsx / screens.jsx 用）。
+// 鎖定 theme1，Impl 端動態 theme 系統不消費此物件；維護時不視為 Impl 對齊缺口。
 const TOKENS = {
   bg:        THEME_1.bg.base,
   surface:   THEME_1.bg.surface,
   surface2:  THEME_1.bg.surface_hover,
   ink:       THEME_1.text.primary,
   ink2:      THEME_1.text.secondary,
-  ink3:      THEME_1.text.disabled,
-  divider:   THEME_1.text.divisor,
+  ink3:      THEME_1.state.disabled.fg,
+  divider:   THEME_1.divider.base,
   border:    THEME_1.border.base,
-  hairline:  'rgba(60,60,67,0.10)',
+  hairline:  THEME_1.divider.hairline,
   hairline2: PALETTE.neutral[200],
   p50:  THEME_1.primary[50],  p100: THEME_1.primary[100], p200: THEME_1.primary[200],
   p300: THEME_1.primary[300], p400: THEME_1.primary[400], p500: THEME_1.primary[500],
@@ -102,6 +179,7 @@ const TOKENS = {
   error:    THEME_1.status.error,
   info:     PALETTE.semantic.info,
 };
+// CHART_COLORS — canvas 視覺化 only，鎖定 theme1；Impl 端動態 theme 系統不消費。
 const CHART_COLORS = THEME_1.chart;
 const GLASS = { ...GLASS_BASE };
 
@@ -193,12 +271,9 @@ const RADIUS = {
 };
 
 // HIG layering：level0 無、level1 subtle、level2 raised、level3 overlay。
-const SHADOW = {
-  level0: { offsetY: 0, blur: 0,  spread: 0, color: 'transparent' },
-  level1: { offsetY: 1, blur: 2,  spread: 0, color: 'rgba(0,0,0,0.08)' },
-  level2: { offsetY: 2, blur: 8,  spread: 0, color: 'rgba(0,0,0,0.12)' },
-  level3: { offsetY: 8, blur: 24, spread: 0, color: 'rgba(0,0,0,0.16)' },
-};
+// 階梯只控 offsetY / blur / opacity；色由 theme.shadow.color 引用（黑色基底）。
+// SHADOW 為向後相容 alias，等同 THEME_1.shadow.elevation（也等於 SHADOW_ELEVATION）。
+const SHADOW = SHADOW_ELEVATION;
 
 // 動畫 duration 與 easing。對齊 HIG 的 standard / decelerate / accelerate / emphasized 範式。
 const MOTION = {
