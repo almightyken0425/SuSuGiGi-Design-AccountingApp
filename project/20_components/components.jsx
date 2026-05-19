@@ -5,7 +5,32 @@
 // 內部映射到自製 SVG（命名以 impl 真名為準）。
 // ─────────────────────────────────────────────────────────────
 
-// ─── Glyph ─── 自製 SVG icon
+// ─── Icon 渲染兩端對應關係 ───
+//
+// Design 端（本檔）：
+//   - Glyph(name)         — canvas 自製 SVG，switch case 內硬寫；
+//                            用於 chevron / x / search 等小型 UI glyph
+//   - PhosphorIcon(glyph) — canvas Phosphor renderer，CSS mask 載入
+//                            project/assets/icons/phosphor/<glyph>.svg
+//   - DynamicIconById(id) — 由 ICON_LIBRARY 找 def，dispatch 到 PhosphorIcon
+//
+// Impl 端（src/components/DynamicIcon.tsx）：
+//   - DynamicIcon(name)         — 用 PHOSPHOR_SVG_MAP 渲染 Phosphor SVG 套件
+//   - DynamicIconById(iconId)   — 由 IconDefinition.json 找 def 再 dispatch 到 DynamicIcon
+//
+// 兩端共享的契約：
+//   - IconDefinition schema（Design `ICON_LIBRARY` ⇔ Impl `assets/definitions/
+//     IconDefinition.json`，欄位 id / uniqueName / library / glyph / tags 一致）
+//   - Phosphor SVG 資產（Design `project/assets/icons/phosphor/` ⇔ Impl 透過
+//     PHOSPHOR_SVG_MAP 引用同一套 Phosphor 套件，CSS mask 等效於 RN react-native-svg
+//     的 fill 行為）
+//
+// DynamicIconById 名稱兩端一致，因其職責純粹是「id → icon」的 lookup，與渲染管道無關。
+// Design 端為何拆 Glyph + PhosphorIcon 兩個 canvas renderer：Glyph 承載小型 UI glyph
+// （硬寫 SVG path）；PhosphorIcon 承載 ICON_LIBRARY 對應的 phosphor 資產。兩者都是
+// canvas 視覺 mock，與 Impl runtime 不共用元件。
+
+// ─── Glyph ─── canvas 視覺 mock，非 impl 對應元件（impl 用 DynamicIcon，見上述對應）
 // 名稱規則：使用 impl 中 <MaterialCommunityIcons name="..."> 或
 // <FontAwesome name="..."> 或 SF Symbols 的真實 name。
 // 不存在的就用視覺近似的 fallback。
@@ -193,11 +218,12 @@ function Glyph({ name, size = 16, color = TOKENS.ink, stroke = 2 }) {
   }
 }
 
-// ─── DynamicIconById ─── 對齊 impl src/components/DynamicIcon.tsx
+// ─── DynamicIconById ─── 名稱與 impl src/components/DynamicIcon.tsx 一致
 // ICON_LIBRARY 全部為 phosphor svg；用 numeric id 找到 glyph，
-// 再透過 CSS mask 載入 project/assets/icons/phosphor/<glyph>.svg。
-// CSS mask 把單色 svg 視為 mask，backgroundColor 套色，等效於 impl
-// react-native-svg 的 fill 行為。
+// 再透過 PhosphorIcon（CSS mask 載入 project/assets/icons/phosphor/<glyph>.svg）渲染。
+// CSS mask 把單色 svg 視為 mask，backgroundColor 套色，等效於 impl react-native-svg
+// 的 fill 行為。impl 端 DynamicIconById 內部則交給 DynamicIcon 透過 PHOSPHOR_SVG_MAP
+// 渲染同一份 Phosphor SVG 資產。
 function DynamicIconById({ iconId, size = 24, color = TOKENS.ink }) {
   const def = ICON_BY_ID[iconId];
   if (!def) return <Glyph name="help" size={size} color={color}/>;
