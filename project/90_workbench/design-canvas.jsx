@@ -169,11 +169,21 @@ function DesignCanvas({ children, minScale, maxScale, style }) {
 // ─────────────────────────────────────────────────────────────
 // DCViewport — transform-based pan/zoom (internal)
 //
-// Input mapping (Figma-style):
-//   • trackpad pinch  → zoom   (ctrlKey wheel; Safari gesture* events)
-//   • trackpad scroll → pan    (two-finger)
-//   • mouse wheel     → zoom   (notched; distinguished from trackpad scroll)
-//   • middle-drag / primary-drag-on-bg → pan
+// Input mapping (modifier-gated, no time / no spatial heuristics):
+//   trackpad two-finger scroll  → pan
+//   trackpad pinch              → ignored (no jitter)
+//   mouse wheel                 → vertical pan
+//   mouse wheel + shift         → horizontal pan
+//   any wheel/pinch + Ctrl(Win)/Cmd(Mac) held → zoom (cursor as anchor)
+//   middle-drag / primary-drag-on-bg → pan
+//
+// Why a real-keyboard tracker (not e.ctrlKey): browsers synthesize
+// ctrlKey=true on every wheel event during trackpad pinch, even when no
+// key is held. Reading e.ctrlKey turns every pinch into a zoom — exactly
+// the misfire we're trying to avoid. We track Control/Meta via
+// keydown/keyup and treat synthesized ctrlKey on wheel as a signal to
+// drop the event (so pinching without holding the zoom key does nothing,
+// instead of producing tiny vertical pan jitter).
 //
 // Transform state lives in a ref and is written straight to the DOM
 // (translate3d + will-change) so wheel ticks don't go through React —
@@ -194,6 +204,13 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
     const vp = vpRef.current;
     if (!vp) return;
 
+    const isMac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || '');
+    const zoomKeyName = isMac ? 'Meta' : 'Control';
+    let zoomKeyDown = false;
+    const onKeyDown = (e) => { if (e.key === zoomKeyName) zoomKeyDown = true; };
+    const onKeyUp = (e) => { if (e.key === zoomKeyName) zoomKeyDown = false; };
+    const onBlur = () => { zoomKeyDown = false; };
+
     const zoomAt = (cx, cy, factor) => {
       const r = vp.getBoundingClientRect();
       const px = cx - r.left, py = cy - r.top;
@@ -207,42 +224,38 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
       apply();
     };
 
-    // Mouse-wheel vs trackpad-scroll heuristic. A physical wheel sends
-    // line-mode deltas (Firefox) or large integer pixel deltas with no X
-    // component (Chrome/Safari, typically multiples of 100/120). Trackpad
-    // two-finger scroll sends small/fractional pixel deltas, often with
-    // non-zero deltaX. ctrlKey is set by the browser for trackpad pinch.
-    const isMouseWheel = (e) =>
-      e.deltaMode !== 0 ||
-      (e.deltaX === 0 && Number.isInteger(e.deltaY) && Math.abs(e.deltaY) >= 40);
-
     const onWheel = (e) => {
       e.preventDefault();
       if (isGesturing) return; // Safari: gesture* owns the pinch — discard concurrent wheels
-      if (e.ctrlKey) {
-        // trackpad pinch (or explicit ctrl+wheel)
+      if (zoomKeyDown) {
         zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.01));
-      } else if (isMouseWheel(e)) {
-        // notched mouse wheel — fixed-ratio step per click
-        zoomAt(e.clientX, e.clientY, Math.exp(-Math.sign(e.deltaY) * 0.18));
-      } else {
-        // trackpad two-finger scroll — pan
-        tf.current.x -= e.deltaX;
-        tf.current.y -= e.deltaY;
-        apply();
+        return;
       }
+      // Synthesized ctrlKey without real zoom key = trackpad pinch w/o intent → swallow
+      if (e.ctrlKey) return;
+      // Shift+wheel on a mouse: browsers sometimes auto-swap deltaY→deltaX, sometimes don't
+      const dx = e.shiftKey && e.deltaX === 0 ? e.deltaY : e.deltaX;
+      const dy = e.shiftKey && e.deltaX === 0 ? 0 : e.deltaY;
+      tf.current.x -= dx;
+      tf.current.y -= dy;
+      apply();
     };
 
-    // Safari sends native gesture* events for trackpad pinch with a smooth
-    // e.scale; preferring these over the ctrl+wheel fallback gives a much
-    // better feel there. No-ops on other browsers. Safari also fires
-    // ctrlKey wheel events during the same pinch — isGesturing makes
-    // onWheel drop those entirely so they neither zoom nor pan.
+    // Safari fires native gesture* events for trackpad pinch with a smooth
+    // e.scale. We honor them only when the real zoom key is held; without
+    // it, swallow so the pinch is a no-op. isGesturing also gates the
+    // concurrent ctrlKey wheel stream Safari emits during the same pinch.
     let gsBase = 1;
     let isGesturing = false;
-    const onGestureStart = (e) => { e.preventDefault(); isGesturing = true; gsBase = tf.current.scale; };
+    const onGestureStart = (e) => {
+      e.preventDefault();
+      if (!zoomKeyDown) return;
+      isGesturing = true;
+      gsBase = tf.current.scale;
+    };
     const onGestureChange = (e) => {
       e.preventDefault();
+      if (!isGesturing) return;
       zoomAt(e.clientX, e.clientY, (gsBase * e.scale) / tf.current.scale);
     };
     const onGestureEnd = (e) => { e.preventDefault(); isGesturing = false; };
@@ -272,23 +285,34 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
       vp.style.cursor = '';
     };
 
-    vp.addEventListener('wheel', onWheel, { passive: false });
-    vp.addEventListener('gesturestart', onGestureStart, { passive: false });
-    vp.addEventListener('gesturechange', onGestureChange, { passive: false });
-    vp.addEventListener('gestureend', onGestureEnd, { passive: false });
+    // capture phase: we must intercept wheels BEFORE inner overflow:auto
+    // descendants (artboard scroll containers) form a scroll-latch. Without
+    // capture, Chrome briefly holds the latched inner element on direction
+    // reversal even when we preventDefault on bubble — feels like a 100-200ms
+    // stall every time the wheel direction flips.
+    vp.addEventListener('wheel', onWheel, { passive: false, capture: true });
+    vp.addEventListener('gesturestart', onGestureStart, { passive: false, capture: true });
+    vp.addEventListener('gesturechange', onGestureChange, { passive: false, capture: true });
+    vp.addEventListener('gestureend', onGestureEnd, { passive: false, capture: true });
     vp.addEventListener('pointerdown', onPointerDown);
     vp.addEventListener('pointermove', onPointerMove);
     vp.addEventListener('pointerup', onPointerUp);
     vp.addEventListener('pointercancel', onPointerUp);
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+    window.addEventListener('blur', onBlur);
     return () => {
-      vp.removeEventListener('wheel', onWheel);
-      vp.removeEventListener('gesturestart', onGestureStart);
-      vp.removeEventListener('gesturechange', onGestureChange);
-      vp.removeEventListener('gestureend', onGestureEnd);
+      vp.removeEventListener('wheel', onWheel, { capture: true });
+      vp.removeEventListener('gesturestart', onGestureStart, { capture: true });
+      vp.removeEventListener('gesturechange', onGestureChange, { capture: true });
+      vp.removeEventListener('gestureend', onGestureEnd, { capture: true });
       vp.removeEventListener('pointerdown', onPointerDown);
       vp.removeEventListener('pointermove', onPointerMove);
       vp.removeEventListener('pointerup', onPointerUp);
       vp.removeEventListener('pointercancel', onPointerUp);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+      window.removeEventListener('blur', onBlur);
     };
   }, [apply, minScale, maxScale]);
 
