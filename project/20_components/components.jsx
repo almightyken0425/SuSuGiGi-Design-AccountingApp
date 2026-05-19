@@ -120,6 +120,13 @@ const GLYPH_ALIASES = {
   'warning': 'warning',
   // alert + reverse
   'alert-circle': 'warning',
+  'alert-circle-outline': 'warning',
+  'alert-outline': 'warning',
+  'clock-outline': 'clock',
+  'close': 'x',
+  'database-plus-outline': 'database',
+  'database-remove-outline': 'database',
+  'file-document-outline': 'book',
   'exchange': 'exchange',
   'repeat': 'repeat',
   'sync': 'sync',
