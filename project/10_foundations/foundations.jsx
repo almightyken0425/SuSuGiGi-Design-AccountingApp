@@ -1,9 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // Foundations · 設計標準視覺化
 //
-// 5 個 sub-item 沿用 claude.ai/design Design System tab 的結構：
-//   Type / Colors / Spacing / Components / Brand
-//   （Components 在 components-showcase.jsx 由 FoundationsComponentsSection 串成）
+// 5 個 sub-item：Type / Colors / Tokens / Components / Brand
+//   - Tokens：跨元件共用的設計原語階梯（Layout / Elevation / Motion / Touch）
+//   - Components：由 components-showcase.jsx 的 FoundationsComponentsSection 串成
+//     元件 family 內含對應元件 token 表 + anatomy（從本檔下放）
 //
 // 所有卡片皆為 live JSX：讀 data.jsx 的 token 即時繪製。
 // token 改 → 視覺自動更新；無 HTML snapshot 雙來源。
@@ -77,12 +78,12 @@ function FoundationsColorsSection() {
   );
 }
 
-function FoundationsSpacingSection() {
+function FoundationsTokensSection() {
   return (
     <DCSection
-      id="found-spacing"
-      title="Spacing"
-      subtitle="SPACING = HIG 4 倍數階梯，語意命名 2xs/xs/sm/md/lg/xl/2xl/3xl/4xl/5xl。最小階 2xs=2 專供「主標題下副標題行內補位」使用，不視為元件間留白。RADIUS = none/sm/md/lg/xl/2xl/full（不收 14）。SHADOW = HIG 4 階 elevation。MOTION = duration + easing 對齊 HIG。ICON_SIZE = icon 尺寸階梯（xs/sm/md/lg/xl/2xl），HIT_TARGET.min = 44 對齊 HIG 觸控最小目標。底下含元件 token 速查表。Row family 統一原則：list row（grouped list 內元件）、form picker（單一觸發器）、chip（多選 pill）三類 row-like 元件各有 token 仲裁，不互換套用。"
+      id="found-tokens"
+      title="Tokens"
+      subtitle="設計原語階梯，跨元件共用。Layout：SPACING（HIG 4 倍數階梯 2xs→5xl，2xs=2 專供「主標題下副標題行內補位」）/ RADIUS（none/sm/md/lg/xl/2xl/full，不收 14）。Elevation：SHADOW HIG 4 階 elevation。Motion：MOTION duration + easing 對齊 HIG（standard / decelerate / accelerate / emphasized）。Touch：ICON_SIZE 6 階階梯（xs/sm/md/lg/xl/2xl），HIT_TARGET.min = 44 對齊 HIG 觸控最小目標。元件專屬 token 表（LIST_TOKENS / TX_LIST_TOKENS / FORM_PICKER_TOKENS / CHIP_TOKENS / SEARCH_BAR_TOKENS / HEADER_ICON_BUTTON_TOKENS / SWITCH_TOKENS / LIST_EMPTY_TRANSITION）已下放至 Components 子項對應 family 旁。"
       direction="column"
     >
       <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
@@ -102,36 +103,6 @@ function FoundationsSpacingSection() {
       </DCArtboard>
       <DCArtboard id="hit-target-live" label="HIT_TARGET · 觸控目標下界 (live)" width={520} height={320}>
         <HitTargetCard/>
-      </DCArtboard>
-      <DCArtboard id="list-anatomy" label="ListItem 解剖 · 間距政策視覺化" width={520} height={780}>
-        <ListAnatomyCard/>
-      </DCArtboard>
-      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={720}>
-        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC}/>
-      </DCArtboard>
-      <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width={520} height={420}>
-        <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC}/>
-      </DCArtboard>
-      <DCArtboard id="form-picker-anatomy" label="Form Picker 解剖 · 對比 ListItem" width={520} height={520}>
-        <FormPickerAnatomyCard/>
-      </DCArtboard>
-      <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width={520} height={340}>
-        <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC}/>
-      </DCArtboard>
-      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList 專用" width={520} height={720}>
-        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC}/>
-      </DCArtboard>
-      <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={360}>
-        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC}/>
-      </DCArtboard>
-      <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width={520} height={220}>
-        <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS"/>
-      </DCArtboard>
-      <DCArtboard id="list-empty-transition" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={180}>
-        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC}/>
-      </DCArtboard>
-      <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width={520} height={280}>
-        <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC}/>
       </DCArtboard>
     </DCSection>
   );
@@ -1203,7 +1174,19 @@ function FoundLabel({ children, style }) {
 Object.assign(window, {
   FoundationsTypeSection,
   FoundationsColorsSection,
-  FoundationsSpacingSection,
+  FoundationsTokensSection,
   FoundationsBrandSection,
   GlassDemoCard,
+  // 以下 helpers 與 token description tables 供 components-showcase.jsx
+  // 內的元件 token 表 artboard 使用
+  TokenTableCard,
+  ListAnatomyCard,
+  FormPickerAnatomyCard,
+  LIST_TOKEN_DESC,
+  FORM_PICKER_TOKEN_DESC,
+  TX_LIST_TOKEN_DESC,
+  SEARCH_BAR_TOKEN_DESC,
+  LIST_EMPTY_TRANSITION_DESC,
+  SWITCH_TOKEN_DESC,
+  CHIP_TOKEN_DESC,
 });

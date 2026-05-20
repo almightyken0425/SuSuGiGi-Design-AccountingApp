@@ -4,8 +4,8 @@
 // 頂部 4 個 tab：
 //   #intro / #foundations / #screens / #explorations
 //
-// Foundations 內含 5 個 sub-item（Type / Colors / Spacing / Components / Brand），
-// 對齊 claude.ai/design Design System tab 的結構。
+// Foundations 內含 5 個 sub-item：Type / Colors / Tokens / Components / Brand。
+// Tokens 收跨元件共用原語；元件專屬 token 表已下放 Components 對應 family。
 //
 // SCREEN_META 中央定義每個 screen 的：
 //   - title           NavBar 標題
@@ -457,16 +457,24 @@ const VIEW_TABS = [
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
-// Foundations topics — 5 個 sub-item，跟 claude.ai/design Design System tab 對齊。
+// Foundations topics — 5 個 sub-item。
 // 每個 sub-item 對應 foundations.jsx / components-showcase.jsx 註冊的 Section component；
 // 內部 DCSection 用 direction="column"，卡片由上往下垂直堆。
+// Tokens 收 SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET 共用原語；
+// 元件專屬 token 表（LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH / HEADER_ICON / SWITCH /
+// LIST_EMPTY_TRANSITION）已下放至 Components sub-item 對應 family 內。
 const FOUNDATIONS_TOPICS = [
   { id: 'type',       label: 'Type',       render: () => <FoundationsTypeSection/> },
   { id: 'colors',     label: 'Colors',     render: () => <FoundationsColorsSection/> },
-  { id: 'spacing',    label: 'Spacing',    render: () => <FoundationsSpacingSection/> },
+  { id: 'tokens',     label: 'Tokens',     render: () => <FoundationsTokensSection/> },
   { id: 'components', label: 'Components', render: () => <FoundationsComponentsSection/> },
   { id: 'brand',      label: 'Brand',      render: () => <FoundationsBrandSection/> },
 ];
+
+// Foundations sub-item 舊名向後相容
+const FOUNDATIONS_SUB_ALIASES = {
+  spacing: 'tokens',
+};
 
 // Explorations topics — 每個 entry 對應 50_explorations/<dir>/variants.jsx 註冊的 Section component
 const EXPLORATION_TOPICS = [
@@ -509,10 +517,13 @@ function parseRoute() {
     const alias = LEGACY_HASH_ALIASES[h];
     return { view: alias.view, sub: alias.sub ?? defaultSubFor(alias.view) };
   }
-  const [view, sub] = h.split('/');
+  const [view, rawSub] = h.split('/');
   if (!VALID_VIEWS.includes(view)) return { view: 'intro', sub: null };
   const subs = subsFor(view);
   if (!subs) return { view, sub: null };
+  const sub = view === 'foundations' && FOUNDATIONS_SUB_ALIASES[rawSub]
+    ? FOUNDATIONS_SUB_ALIASES[rawSub]
+    : rawSub;
   const validSub = subs.find(s => s.id === sub);
   return { view, sub: validSub ? validSub.id : defaultSubFor(view) };
 }

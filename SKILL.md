@@ -10,7 +10,7 @@ Key entry points:
 
 - `BRAND.md` — voice / content / visual foundations / iconography
 - `project/10_foundations/data.jsx` — canonical token source: `PALETTE`, `TYPOGRAPHY`, `SPACING`, `LIST_TOKENS`, `TX_LIST_TOKENS`, `SEARCH_BAR_TOKENS`, `THEMES`, plus mock data (`CATEGORIES`, `ACCOUNTS`, `TX`)
-- `project/SuSuGiGi.html` — the design canvas; open in a browser to browse Intro / Foundations / Screens / Explorations (Foundations 內含 5 個 sub-item：Type / Colors / Spacing / Components / Brand，沿用 claude.ai/design Design System tab 的結構，每個 sub-item 內部用垂直 layout)
+- `project/SuSuGiGi.html` — the design canvas; open in a browser to browse Intro / Foundations / Screens / Explorations (Foundations 內含 5 個 sub-item：Type / Colors / Tokens / Components / Brand。Tokens 收跨元件共用原語；元件專屬 token 表已下放至 Components 對應 family。每個 sub-item 內部用垂直 layout)
 - `project/10_foundations/cards/` — 2026-05-18 claude.ai/design 匯出的快照卡片（28 張，依 5 分類分子目錄），活在 Foundations tab 的 iframe artboard 內
 - `project/20_components/components.jsx` — `Glyph`, `ListItem`, `GroupCard`, `GlassView`, `DonutChart`, `FocusCard`, etc. (canonical visual implementations)
 - `project/30_screens/screens.jsx` — 22 production-mirrored screens with empty / loading / error variants
