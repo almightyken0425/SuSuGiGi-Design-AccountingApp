@@ -697,6 +697,134 @@ function HeaderIconButton({ symbol, onPress, color }) {
   );
 }
 
+// ─── HeaderButtonPill ─── design canvas mock，無 impl 對應元件
+// iOS 26 Liquid Glass bar button item 在 native 自動 hug pill 背景：pill 邊界
+// 等於 customView intrinsic 邊界（OS 渲染，不在 React 端的 token 控制中）。
+// React Native 端無此元件，design canvas 用 GlassView pill 顯式 mock。
+// Props：
+//   - symbols: SF Symbol 名稱陣列（1 個 → 正圓、>=2 → 膠囊）
+//   - color: icon 顏色（預設 ink）
+//   - customViewSize: 單一 customView 邊長（pill 視覺等同 customView）
+//       · 預設 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX (41 = SYMBOL_SIZE + SPACING.md × 2)
+//       · 三個 button 元件統一靠此 token 拿到 41×41 customView（design 仲裁定案）
+//       · impl 端 ModalCloseButton / HeaderCheckmarkButton 待重構（拿掉 padding 改用
+//         View + CONTENT_BOX）；HeaderIconButton 仍用 CONTENT_BOX，token 升級後自動跟上
+function HeaderButtonPill({ symbols = [], color, customViewSize }) {
+  const c = color || TOKENS.ink;
+  const cv = customViewSize ?? HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX;
+  return (
+    <GlassView pill style={{
+      display: 'inline-flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: symbols.length > 1 ? HEADER_ICON_BUTTON_TOKENS.MULTI_ICON_GAP : 0,
+    }}>
+      {symbols.map((sym, i) => (
+        <div key={`${sym}-${i}`} style={{
+          width:  cv,
+          height: cv,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Glyph
+            name={sym}
+            size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE}
+            color={c}
+            stroke={2.4}
+          />
+        </div>
+      ))}
+    </GlassView>
+  );
+}
+
+// ─── MockBackButtonPill ─── design canvas mock，無 impl 對應元件
+// iOS native back button 在 React Navigation `headerBackButtonDisplayMode: 'minimal'`
+// 下渲染為 chevron-only。本元件 mock 其視覺，用 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX
+// (41) 與其他 button 對稱（與 impl 一致性為設計推測值，後續以 iOS 模擬器截圖校準）。
+function MockBackButtonPill({ color }) {
+  const c = color || TOKENS.p500;
+  return (
+    <GlassView pill style={{
+      display: 'inline-flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    }}>
+      <div style={{
+        width:  HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX,
+        height: HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+          <path d="M8 2L2 8l6 6" stroke={c} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    </GlassView>
+  );
+}
+
+// ─── MockNavBar ─── design canvas mock 容器，無 impl 對應元件
+// 對齊 impl AppNavigator.tsx 的 pushScreenOptions：headerTitleStyle fontSize
+// TYPE_STYLES.body.size (17) + medium weight + center；headerTransparent: true。
+// 三槽 layout：左 slot、中 title (絕對置中)、右 slot。
+function MockNavBar({ leftSlot, title, rightSlot }) {
+  return (
+    <div style={{
+      height: 44,
+      paddingLeft: SPACING.sm, paddingRight: SPACING.sm,
+      display: 'flex', alignItems: 'center',
+      position: 'relative',
+    }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+        {leftSlot}
+      </div>
+      <div style={{
+        position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
+        fontSize: TYPE_STYLES.body.size,
+        fontWeight: TYPOGRAPHY.weight.medium,
+        color: TOKENS.ink,
+        whiteSpace: 'nowrap',
+      }}>{title}</div>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        {rightSlot}
+      </div>
+    </div>
+  );
+}
+
+// ─── HeaderMockFrame ─── design canvas mock 容器，無 impl 對應元件
+// 「裁出 header 那一條」的虛擬容器：頂部 IOSStatusBar（reuse 自 90_workbench/
+// ios-frame.jsx）+ children (nav bar) + 下方 content tail（mock list row，
+// 讓 Liquid Glass pill 的 backdrop-filter blur 看得出穿透）。
+// 無 device frame 外框、無 dynamic island、無 home indicator；聚焦 header。
+function HeaderMockFrame({ children, contentTail }) {
+  const defaultTail = (
+    <div style={{
+      paddingLeft: SPACING.lg, paddingRight: SPACING.lg, paddingTop: SPACING.md,
+      fontSize: TYPE_STYLES.body.size, color: TOKENS.ink2,
+    }}>
+      <div style={{
+        background: TOKENS.surface, borderRadius: RADIUS.lg,
+        padding: `${SPACING.md}px ${SPACING.lg}px`,
+        border: `1px solid ${TOKENS.divider.hairline}`,
+      }}>背景 content（用於展示 pill blur 穿透）</div>
+    </div>
+  );
+  return (
+    <div style={{
+      width: 402, height: 160,
+      background: TOKENS.bg,
+      borderRadius: RADIUS.lg,
+      border: `1px solid ${TOKENS.divider.hairline}`,
+      overflow: 'hidden',
+      position: 'relative',
+    }}>
+      <IOSStatusBar dark={false}/>
+      {children}
+      {contentTail !== undefined ? contentTail : defaultTail}
+    </div>
+  );
+}
+
 // ─── DonutChart ─── 對齊 src/components/DonutChart.tsx
 // SIZE 260, OUTER 100 INNER 76 thickness 24, CORNER 6, PAD_ANGLE 1deg
 function DonutChart({ data, size = 260, outerRadius = 100, innerRadius = 76, cornerRadius = 6, padAngleDeg = 1, children }) {
@@ -982,7 +1110,8 @@ Object.assign(window, {
   ListGroupCard, GroupCard, ListSection, ListSeparator,
   ListItem, SelectionListItem, ReorderableListItem, SelectionGridItem,
   ListEmptyState, EmptyState, ListEmptyTransition,
-  ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton,
+  ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton, HeaderButtonPill,
+  MockBackButtonPill, MockNavBar, HeaderMockFrame,
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
   iconBtn,
