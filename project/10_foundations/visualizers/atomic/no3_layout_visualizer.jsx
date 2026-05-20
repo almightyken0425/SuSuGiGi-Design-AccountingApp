@@ -193,26 +193,33 @@ function FoundationsAtomicLayoutSection() {
       id="found-atomic-layout"
       title="Atomic · Layout"
       subtitle="設計原語階梯，跨元件共用。SPACING（HIG 4 倍數階梯 2xs→5xl，2xs=2 專供「主標題下副標題行內補位」）/ RADIUS（none/sm/md/lg/xl/2xl/full，不收 14）/ SHADOW HIG 4 階 elevation / MOTION duration + easing 對齊 HIG / ICON_SIZE 6 階階梯 / HIT_TARGET.min = 44 對齊 HIG 觸控最小目標。元件專屬 token 表已移至 Component Tokens group。"
-      direction="column"
     >
-      <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
-        <SpacingCard/>
-      </DCArtboard>
-      <DCArtboard id="radius-live" label="RADIUS · none → 2xl + full (live)" width={520} height={460}>
-        <RadiusCard/>
-      </DCArtboard>
-      <DCArtboard id="shadow-live" label="SHADOW · level0 → level3 (live)" width={520} height={440}>
-        <ShadowCard/>
-      </DCArtboard>
-      <DCArtboard id="motion-live" label="MOTION · duration + easing (live)" width={520} height={460}>
-        <MotionCard/>
-      </DCArtboard>
-      <DCArtboard id="icon-size-live" label="ICON_SIZE · 6 階階梯 (live)" width={520} height={520}>
-        <IconSizeCard/>
-      </DCArtboard>
-      <DCArtboard id="hit-target-live" label="HIT_TARGET · 觸控目標下界 (live)" width={520} height={320}>
-        <HitTargetCard/>
-      </DCArtboard>
+      <DCFamily id="layout-spacing-radius" title="Spacing & Radius" subtitle="4 倍數間距階梯 + HIG continuous corner 圓角階梯。">
+        <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
+          <SpacingCard/>
+        </DCArtboard>
+        <DCArtboard id="radius-live" label="RADIUS · none → 2xl + full (live)" width={520} height={460}>
+          <RadiusCard/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="layout-effects" title="Effects" subtitle="HIG 4 階陰影 elevation + MOTION duration / easing。">
+        <DCArtboard id="shadow-live" label="SHADOW · level0 → level3 (live)" width={520} height={440}>
+          <ShadowCard/>
+        </DCArtboard>
+        <DCArtboard id="motion-live" label="MOTION · duration + easing (live)" width={520} height={460}>
+          <MotionCard/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="layout-sizing" title="Sizing" subtitle="ICON_SIZE 6 階共用階梯 + HIT_TARGET.min 觸控最小目標規範。">
+        <DCArtboard id="icon-size-live" label="ICON_SIZE · 6 階階梯 (live)" width={520} height={520}>
+          <IconSizeCard/>
+        </DCArtboard>
+        <DCArtboard id="hit-target-live" label="HIT_TARGET · 觸控目標下界 (live)" width={520} height={320}>
+          <HitTargetCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

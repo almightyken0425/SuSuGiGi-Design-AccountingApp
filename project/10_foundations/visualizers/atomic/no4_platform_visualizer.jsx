@@ -48,14 +48,18 @@ function FoundationsAtomicPlatformSection() {
       id="found-atomic-platform"
       title="Atomic · Platform"
       subtitle="平台特定固定值。IOS_SYSTEM_COLOR 收 RN 原生 Switch 的色彩需求；ACTION_ICON_MAP 收 header 動作 → SF Symbol 對應。兩者皆不參與 theme 切換。"
-      direction="column"
     >
-      <DCArtboard id="ios-system-color" label="IOS_SYSTEM_COLOR (live)" width={420} height={260}>
-        <IosSystemColorCard/>
-      </DCArtboard>
-      <DCArtboard id="action-icon-map" label="ACTION_ICON_MAP · header 動作 → SF Symbol (live)" width={520} height={460}>
-        <ActionIconMapCard/>
-      </DCArtboard>
+      <DCFamily id="platform-ios-color" title="iOS System Color" subtitle="RN 原生 Switch 等元件的固定色彩，不參與 theme 切換。">
+        <DCArtboard id="ios-system-color" label="IOS_SYSTEM_COLOR (live)" width={420} height={260}>
+          <IosSystemColorCard/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="platform-icon-map" title="Action Icon Map" subtitle="Header action 對應 SF Symbol，使用系統 icon 達成 iOS 原生外觀。">
+        <DCArtboard id="action-icon-map" label="ACTION_ICON_MAP · header 動作 → SF Symbol (live)" width={520} height={460}>
+          <ActionIconMapCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

@@ -72,11 +72,12 @@ function FoundationsCTTxListSection() {
       id="found-ct-tx-list"
       title="Component Tokens · Transaction List"
       subtitle="交易列為 grouped section 結構，與 LIST_TOKENS 視覺差異大分開仲裁。內含 MORPH / SECTION_ENTRY / FOCUS_CARD 動畫 token。"
-      direction="column"
     >
-      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList row 專用" width="auto" height="auto">
-        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC} sources={TX_LIST_TOKEN_SOURCE}/>
-      </DCArtboard>
+      <DCFamily id="tx-list-tokens-family" title="Tokens" subtitle="TX_LIST_TOKENS 完整表格（含 section header / icon outline / animation 三組）。">
+        <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList row 專用" width="auto" height="auto">
+          <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC} sources={TX_LIST_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

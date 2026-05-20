@@ -139,23 +139,27 @@ function FoundationsAtomicTypeSection() {
       id="found-atomic-type"
       title="Atomic · Type"
       subtitle="字體系統以 Apple HIG / iOS Dynamic Type 為錨點。TYPE_STYLES（11 種 HIG 語意 style）為使用入口，TYPOGRAPHY.size 為底層數值。本標準啟用 light / regular / medium 三檔字重；semibold 及以上保留。"
-      direction="column"
     >
-      <DCArtboard id="type-styles" label="TYPE_STYLES · 11 種 HIG style (live)" width={520} height={760}>
-        <TypeStylesCard/>
-      </DCArtboard>
-      <DCArtboard id="type-scale" label="TYPOGRAPHY.size · 底層 xs → 3xl (live)" width={520} height={520}>
-        <TypeScaleCard/>
-      </DCArtboard>
-      <DCArtboard id="type-weights" label="TYPOGRAPHY.weight · 啟用 vs 保留 (live)" width={520} height={680}>
-        <WeightsCard/>
-      </DCArtboard>
-      <DCArtboard id="type-line-height" label="LINE_HEIGHT · tight / base / relaxed (live)" width={520} height={420}>
-        <LineHeightCard/>
-      </DCArtboard>
-      <DCArtboard id="type-letter-spacing" label="LETTER_SPACING · tight / normal / wide (live)" width={520} height={360}>
-        <LetterSpacingCard/>
-      </DCArtboard>
+      <DCFamily id="type-semantic" title="Semantic Styles" subtitle="HIG 11 種語意 style，使用入口。">
+        <DCArtboard id="type-styles" label="TYPE_STYLES · 11 種 HIG style (live)" width={520} height={760}>
+          <TypeStylesCard/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="type-primitives" title="Typography Primitives" subtitle="底層階梯：size / weight / line-height / letter-spacing。優先採 TYPE_STYLES，原語供直接控制少數情境。">
+        <DCArtboard id="type-scale" label="TYPOGRAPHY.size · 底層 xs → 3xl (live)" width={520} height={520}>
+          <TypeScaleCard/>
+        </DCArtboard>
+        <DCArtboard id="type-weights" label="TYPOGRAPHY.weight · 啟用 vs 保留 (live)" width={520} height={680}>
+          <WeightsCard/>
+        </DCArtboard>
+        <DCArtboard id="type-line-height" label="LINE_HEIGHT · tight / base / relaxed (live)" width={520} height={420}>
+          <LineHeightCard/>
+        </DCArtboard>
+        <DCArtboard id="type-letter-spacing" label="LETTER_SPACING · tight / normal / wide (live)" width={520} height={360}>
+          <LetterSpacingCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

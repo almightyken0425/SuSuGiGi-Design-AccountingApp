@@ -48,6 +48,34 @@ visualizers/
 - 改 component_tokens 的 key/value 時必須同步本目錄對應 visualizer 內的 DESC / SOURCE 表
 - 共用 UI primitives 一律由 `no0_shared_card_kit.jsx` 提供，禁止在各 visualizer 內重複定義 FoundCard / Swatch / TokenTableCard
 
+## DCFamily 結構規範
+
+Canvas 容器階層為 `DCSection > DCFamily > DCArtboard` 三層。每個 visualizer Section 內所有 artboard 必須包在至少一個 DCFamily 內（不允許 artboard 直接掛在 Section 下）。
+
+- **必要 props**：`id`（kebab-case）、`title`（人類可讀）
+- **可選 props**：`subtitle`、`direction`（預設 `'row'`，family 內 artboard 水平並排；token 表類巨型卡片可改 `'column'`）
+- **section direction 已忽略**：family 模式下 DCSection 不再讀 `direction` prop，family 一律垂直堆疊；artboard 方向由 family 自身的 direction 決定
+- **1-artboard 頁面也要包 family**：family title 可以用 `Tokens` 或更具體的子題名稱，維持結構一致
+
+### Family 命名範例
+
+| 場景 | family id 命名 | family title |
+|---|---|---|
+| 純 token 表 | `<leaf>-tokens-family` | `Tokens` |
+| 元件 anatomy | `<leaf>-anatomy-family` | `Anatomy` |
+| 衍生公式 | `<leaf>-derived-family` | `Derived Values` |
+| Components 多元件 | `comp-<leaf>-<topic>` | 具體子題（如 `Item Variants` / `Containers`） |
+
+### Focus overlay 鍵盤行為
+
+- `← / →`：在同 family 內 cycle artboard
+- `shift + ← / →`：跨 family（跳到下一個 family 的第一個 artboard）
+- `↑ / ↓`：跨 section（跳到下一個 leaf 的第一個 artboard）
+
+### 拖拉重排
+
+artboard 可在同 family 內拖拉重排，不會越過 family 邊界。順序持久化到 `.design-canvas.state.json` 的 `sections.<sid>.families.<fid>.order`。
+
 ## 載入順序
 
 - `no0_shared_card_kit.jsx` 必須最先載

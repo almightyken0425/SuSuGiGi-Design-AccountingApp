@@ -91,11 +91,12 @@ function FoundationsBrandUIGlyphsSection() {
       id="found-brand-ui-glyphs"
       title="Brand · UI Glyphs"
       subtitle="品牌資產：UI Glyphs 白名單與品牌標識。Phosphor icon library 已獨立為 Icon Library group。"
-      direction="column"
     >
-      <DCArtboard id="icon-ui" label="UI 元素 · MCI / FontAwesome / SF Symbols (impl 白名單)" width={520} height={1100}>
-        <UIGlyphWallCard/>
-      </DCArtboard>
+      <DCFamily id="brand-ui-glyphs-family" title="UI Glyph Whitelist" subtitle="impl src/constants/uiGlyphs.ts 三組白名單：SF 7 / FA 9 / MCI 31，共 47 個。">
+        <DCArtboard id="icon-ui" label="UI 元素 · MCI / FontAwesome / SF Symbols (impl 白名單)" width={520} height={1100}>
+          <UIGlyphWallCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

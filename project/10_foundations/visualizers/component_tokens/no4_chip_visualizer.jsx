@@ -30,11 +30,12 @@ function FoundationsCTChipSection() {
       id="found-ct-chip"
       title="Component Tokens · Chip"
       subtitle="pill 形多選器（RecurringOptions 的 optionButton 等）。高度 ≈ 30pt 小於 HIT_TARGET.min(44)，屬輔助選擇器。"
-      direction="column"
     >
-      <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width="auto" height="auto">
-        <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC} sources={CHIP_TOKEN_SOURCE}/>
-      </DCArtboard>
+      <DCFamily id="chip-tokens-family" title="Tokens" subtitle="CHIP_TOKENS 完整表格。">
+        <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width="auto" height="auto">
+          <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC} sources={CHIP_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
