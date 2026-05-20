@@ -671,15 +671,28 @@ function HeaderCheckmarkButton({ onPress, disabled }) {
 }
 
 // ─── HeaderIconButton ─── 對齊 src/components/HeaderIconButton.tsx
-// 接 SF symbol name，padding 10×10，color 預設 label（ink），可覆蓋
+// 接 SF symbol name，color 預設 label（ink）；customView 採 CONTENT_BOX 正方形容器
+// 以對齊 iOS 26 Liquid Glass bar button item 自動 pill 行為：單 icon → 正圓、
+// 多 icon row（headerRight 多顆並排）→ 膠囊內 icon 均勻置中。
 function HeaderIconButton({ symbol, onPress, color }) {
   return (
     <button onClick={onPress} style={{
       border: 'none', background: 'transparent', cursor: 'pointer',
-      padding: '10px 10px', display: 'flex',
+      padding: 0, display: 'flex',
       alignItems: 'center', justifyContent: 'center',
     }}>
-      <Glyph name={symbol} size={17} color={color || TOKENS.ink} stroke={2.4}/>
+      <div style={{
+        width:  HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX,
+        height: HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Glyph
+          name={symbol}
+          size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE}
+          color={color || TOKENS.ink}
+          stroke={2.4}
+        />
+      </div>
     </button>
   );
 }

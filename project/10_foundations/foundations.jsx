@@ -112,6 +112,9 @@ function FoundationsSpacingSection() {
       <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={420}>
         <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS"/>
       </DCArtboard>
+      <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width={520} height={220}>
+        <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS"/>
+      </DCArtboard>
       <DCArtboard id="list-empty-transition" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={140}>
         <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION"/>
       </DCArtboard>
