@@ -18,11 +18,12 @@ function FoundationsCTListEmptyTransitionSection() {
       id="found-ct-list-empty-transition"
       title="Component Tokens · List Empty Transition"
       subtitle="列表空狀態切換動畫。引用 MOTION，不再寫死毫秒數。性質為 list 元件 transition spec，收於 component_tokens。"
-      direction="column"
     >
-      <DCArtboard id="list-empty-transition-tokens" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width="auto" height="auto">
-        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC} sources={LIST_EMPTY_TRANSITION_SOURCE}/>
-      </DCArtboard>
+      <DCFamily id="list-empty-transition-tokens-family" title="Tokens" subtitle="LIST_EMPTY_TRANSITION 完整表格（兩項：duration / easing）。">
+        <DCArtboard id="list-empty-transition-tokens" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width="auto" height="auto">
+          <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC} sources={LIST_EMPTY_TRANSITION_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

@@ -198,38 +198,51 @@ function FoundationsAtomicColorsSection() {
       id="found-atomic-colors"
       title="Atomic · Colors"
       subtitle="Classic Purple（預設）+ Ocean Teal（opt-in），共用 neutral 與 status 色階。所有色彩讀 no1_atomic_tokens.jsx 的 PALETTE / THEMES 即時繪製。"
-      direction="column"
     >
-      <DCArtboard id="palette-theme1" label="Theme 1 · 經典紫 (live)" width={420} height={520}>
-        <PaletteCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="palette-theme2" label="Theme 2 · 海洋藍 (live)" width={420} height={520}>
-        <PaletteCard theme={THEME_2}/>
-      </DCArtboard>
-      <DCArtboard id="palette-neutrals" label="Neutrals · PALETTE.neutral (live)" width={420} height={580}>
-        <NeutralsCard/>
-      </DCArtboard>
-      <DCArtboard id="palette-semantic" label="Semantic · Status / Text / Border (live)" width={420} height={520}>
-        <SemanticCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="surfaces-live" label="Surfaces · base / surface / surface_hover / surface_dim (live)" width={420} height={420}>
-        <SurfacesCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="dividers-live" label="Dividers · base / hairline (live)" width={420} height={240}>
-        <DividersCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="state-live" label="State · press / selected / disabled / focus (live)" width={520} height={520}>
-        <StatesCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="scrim-live" label="Scrim · light / medium / heavy (live)" width={520} height={240}>
-        <ScrimCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="warning-callout-live" label="Status · warning callout (live)" width={520} height={280}>
-        <WarningCalloutCard theme={THEME_1}/>
-      </DCArtboard>
-      <DCArtboard id="glass-demo-live" label="GLASS · pill / rounded (live)" width={520} height={420}>
-        <GlassDemoCard/>
-      </DCArtboard>
+      <DCFamily id="colors-palettes" title="Brand Palettes" subtitle="主題色：Classic Purple 為預設，Ocean Teal 為 opt-in。primary[50…900] 階梯 + chart series + contrast。">
+        <DCArtboard id="palette-theme1" label="Theme 1 · 經典紫 (live)" width={420} height={520}>
+          <PaletteCard theme={THEME_1}/>
+        </DCArtboard>
+        <DCArtboard id="palette-theme2" label="Theme 2 · 海洋藍 (live)" width={420} height={520}>
+          <PaletteCard theme={THEME_2}/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="colors-neutrals" title="Neutrals" subtitle="跨主題共用的灰階階梯 n0 → n1000。">
+        <DCArtboard id="palette-neutrals" label="Neutrals · PALETTE.neutral (live)" width={420} height={580}>
+          <NeutralsCard/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="colors-semantic" title="Semantic Surfaces" subtitle="Status / Text / Border + Surfaces 階梯 + Dividers，三張並排呈現 semantic 色系全貌。">
+        <DCArtboard id="palette-semantic" label="Semantic · Status / Text / Border (live)" width={420} height={520}>
+          <SemanticCard theme={THEME_1}/>
+        </DCArtboard>
+        <DCArtboard id="surfaces-live" label="Surfaces · base / surface / surface_hover / surface_dim (live)" width={420} height={420}>
+          <SurfacesCard theme={THEME_1}/>
+        </DCArtboard>
+        <DCArtboard id="dividers-live" label="Dividers · base / hairline (live)" width={420} height={240}>
+          <DividersCard theme={THEME_1}/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="colors-interaction" title="Interaction States" subtitle="互動狀態（press / selected / disabled / focus）+ Modal 遮罩三檔。">
+        <DCArtboard id="state-live" label="State · press / selected / disabled / focus (live)" width={520} height={520}>
+          <StatesCard theme={THEME_1}/>
+        </DCArtboard>
+        <DCArtboard id="scrim-live" label="Scrim · light / medium / heavy (live)" width={520} height={240}>
+          <ScrimCard theme={THEME_1}/>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="colors-special" title="Special Surfaces" subtitle="Warning callout 弱化態 + Liquid Glass 玻璃效果展示。">
+        <DCArtboard id="warning-callout-live" label="Status · warning callout (live)" width={520} height={280}>
+          <WarningCalloutCard theme={THEME_1}/>
+        </DCArtboard>
+        <DCArtboard id="glass-demo-live" label="GLASS · pill / rounded (live)" width={520} height={420}>
+          <GlassDemoCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

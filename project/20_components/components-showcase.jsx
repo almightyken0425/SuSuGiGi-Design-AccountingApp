@@ -16,7 +16,8 @@
 
 function ComponentsListSection() {
   return (
-    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list row 元件家族。對應 token 表與 ListSeparator divider inset 規則見 Foundations > Component Tokens 對應 leaf（List / Transaction List / List Empty Transition）。" direction="column">
+    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list row 元件家族。對應 token 表與 ListSeparator divider inset 規則見 Foundations > Component Tokens 對應 leaf（List / Transaction List / List Empty Transition）。">
+      <DCFamily id="comp-list-items" title="Item Variants" subtitle="row 級元件：標準 ListItem 多變體、選擇列、拖拉列。">
       <DCArtboard id="comp-listitem" label="ListItem · 變體 (live)" width={402} height={620}>
         <CompFrame>
           <CompLabel>ListItem 不同組合</CompLabel>
@@ -68,7 +69,9 @@ function ComponentsListSection() {
           </div>
         </CompFrame>
       </DCArtboard>
+      </DCFamily>
 
+      <DCFamily id="comp-list-containers" title="Containers" subtitle="容器級元件：卡片風格選擇器、section 分組外殼。">
       <DCArtboard id="comp-grid" label="SelectionGridItem · 卡片風格 (live)" width={402} height={500}>
         <CompFrame>
           <CompLabel>用於 ThemeSettings — preview 區（aspectRatio 1.4）+ title + check-circle 右上角</CompLabel>
@@ -111,7 +114,9 @@ function ComponentsListSection() {
           </div>
         </CompFrame>
       </DCArtboard>
+      </DCFamily>
 
+      <DCFamily id="comp-list-empty" title="Empty State" subtitle="空狀態元件與 crossfade 過場動畫。">
       <DCArtboard id="comp-empty-live" label="ListEmptyState (live)" width={402} height={500}>
         <CompFrame>
           <div style={{ padding: 80 }}>
@@ -126,18 +131,21 @@ function ComponentsListSection() {
           <ListEmptyTransitionDemo/>
         </CompFrame>
       </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
 
 function ComponentsFormSection() {
   return (
-    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器與多選 chip。FormPicker（AccountSelector / CategorySelector）為單一觸發器；CHIP（pill 形多選）用於 RecurringOptions 等多選場景。對應 token 表見 Foundations > Component Tokens > Form Picker / Chip。" direction="column">
-      <DCArtboard id="comp-form-placeholder" label="Form 元件 demo 預留位" width={402} height={140}>
-        <CompFrame>
-          <CompLabel>FormPicker / Chip live demo（規格細節見對應 Component Tokens sub-item）</CompLabel>
-        </CompFrame>
-      </DCArtboard>
+    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器與多選 chip。FormPicker（AccountSelector / CategorySelector）為單一觸發器；CHIP（pill 形多選）用於 RecurringOptions 等多選場景。對應 token 表見 Foundations > Component Tokens > Form Picker / Chip。">
+      <DCFamily id="comp-form-family" title="Form Surfaces" subtitle="FormPicker 與 Chip 等表單觸發器。">
+        <DCArtboard id="comp-form-placeholder" label="Form 元件 demo 預留位" width={402} height={140}>
+          <CompFrame>
+            <CompLabel>FormPicker / Chip live demo（規格細節見對應 Component Tokens sub-item）</CompLabel>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
@@ -173,390 +181,191 @@ function ListEmptyTransitionDemo() {
   );
 }
 
-// 矩陣資料：依 impl 中 src/screens/**/setOptions 與 src/navigation/AppNavigator.tsx
-// 比對而來，列出三個 header button 元件在各 screen 的出現位置。
-// 共 33 個實例（HeaderIconButton 5、HeaderCheckmarkButton 13、ModalCloseButton 16）。
-const HEADER_ICON_BUTTON_INSTANCES = [
-  { screen: 'Home',         position: 'headerLeft',  symbol: 'line.3.horizontal.decrease', use: '→ Filter' },
-  { screen: 'Home',         position: 'headerRight', symbol: 'magnifyingglass',            use: '→ Search（與下列同 row，hug 膠囊）' },
-  { screen: 'Home',         position: 'headerRight', symbol: 'gearshape',                  use: '→ Settings（與上列同 row，hug 膠囊）' },
-  { screen: 'AccountList',  position: 'headerRight', symbol: 'arrow.triangle.merge',       use: '→ MergeEditor (account)' },
-  { screen: 'CategoryList', position: 'headerRight', symbol: 'arrow.triangle.merge',       use: '→ MergeEditor (category)' },
-];
-const HEADER_CHECKMARK_BUTTON_SCREENS = [
-  'AccountEditor', 'CategoryEditor', 'TransactionEditor', 'TransferEditor', 'MergeEditor',
-  'BaseCurrencySetting', 'LanguageSetting', 'LaunchModeSetting', 'ThemeSettings', 'TimeZoneSetting',
-  'CurrencyRateEditor', 'CurrencyDetailConfig',
-];
-const MODAL_CLOSE_BUTTON_SCREENS = [
-  'Filter', 'Paywall', 'Search',
-  'AccountEditor', 'CategoryEditor', 'TransactionEditor', 'TransferEditor', 'MergeEditor',
-  'BaseCurrencySetting', 'LanguageSetting', 'LaunchModeSetting', 'ThemeSettings', 'TimeZoneSetting',
-  'CurrencyRateEditor', 'CurrencyDetailConfig', 'Import',
-];
-
-function MatrixRow({ children, head = false }) {
-  return (
-    <div style={{
-      display: 'grid', gridTemplateColumns: '180px 110px 1fr',
-      gap: SPACING.md,
-      padding: `${head ? SPACING.sm : 6}px ${SPACING.sm}px`,
-      borderBottom: `1px solid ${TOKENS.hairline2}`,
-      fontSize: head ? 10 : TYPE_STYLES.footnote.size,
-      fontWeight: head ? TYPOGRAPHY.weight.medium : TYPOGRAPHY.weight.regular,
-      color: head ? TOKENS.ink3 : TOKENS.ink2,
-      letterSpacing: head ? 0.4 : 0,
-      textTransform: head ? 'uppercase' : 'none',
-    }}>{children}</div>
-  );
-}
-
-function MatrixGroupHeading({ title, count, note }) {
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'baseline', gap: SPACING.sm,
-      marginTop: SPACING.lg, marginBottom: SPACING.sm,
-    }}>
-      <span style={{ fontSize: TYPE_STYLES.callout.size, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink }}>{title}</span>
-      <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink3 }}>· {count} 處{note ? ` · ${note}` : ''}</span>
-    </div>
-  );
-}
-
-function HeaderButtonScreenMatrixCard() {
-  return (
-    <FoundCard>
-      <div style={{
-        fontSize: TYPE_STYLES.title3.size,
-        fontWeight: TYPOGRAPHY.weight.medium,
-        color: TOKENS.ink,
-        marginBottom: SPACING.sm,
-      }}>Header Button × Screen 出現矩陣</div>
-      <div style={{
-        fontSize: TYPE_STYLES.footnote.size,
-        color: TOKENS.ink2,
-        lineHeight: 1.5,
-        marginBottom: SPACING.md,
-      }}>
-        依 impl <code>src/navigation/AppNavigator.tsx</code> 與各 screen 的
-        <code> useLayoutEffect + navigation.setOptions</code> 比對而來。共 33 個實例。
-        矩陣作為 design 端的反向索引，正向（每個 screen 用哪些 button）由 spec git
-        的 <code>no2_screens/</code> 個別維護。
-      </div>
-
-      <MatrixGroupHeading title="HeaderIconButton" count={5} note="目標 41×41（CONTENT_BOX；impl 現為 24×24，待 token 升級）"/>
-      <MatrixRow head>
-        <span>Screen</span><span>Position</span><span>Symbol · 用途</span>
-      </MatrixRow>
-      {HEADER_ICON_BUTTON_INSTANCES.map((row, i) => (
-        <MatrixRow key={`hib-${i}`}>
-          <span style={{ color: TOKENS.ink, fontFamily: 'inherit' }}>{row.screen}</span>
-          <span style={{ fontFamily: 'monospace' }}>{row.position}</span>
-          <span><code>{row.symbol}</code> {row.use}</span>
-        </MatrixRow>
-      ))}
-
-      <MatrixGroupHeading title="HeaderCheckmarkButton" count={HEADER_CHECKMARK_BUTTON_SCREENS.length} note="皆 headerRight · customView 41×41（CONTENT_BOX，design 仲裁統一值）"/>
-      <div style={{
-        display: 'flex', flexWrap: 'wrap', gap: 6,
-        padding: SPACING.sm,
-        fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2,
-      }}>
-        {HEADER_CHECKMARK_BUTTON_SCREENS.map((s) => (
-          <span key={s} style={{
-            padding: '2px 8px', borderRadius: RADIUS.full,
-            background: TOKENS.surface2, color: TOKENS.ink,
-            border: `1px solid ${TOKENS.hairline2}`,
-          }}>{s}</span>
-        ))}
-      </div>
-
-      <MatrixGroupHeading title="ModalCloseButton" count={MODAL_CLOSE_BUTTON_SCREENS.length} note="皆 headerLeft · customView 41×41（CONTENT_BOX，design 仲裁統一值）"/>
-      <div style={{
-        display: 'flex', flexWrap: 'wrap', gap: 6,
-        padding: SPACING.sm,
-        fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2,
-      }}>
-        {MODAL_CLOSE_BUTTON_SCREENS.map((s) => (
-          <span key={s} style={{
-            padding: '2px 8px', borderRadius: RADIUS.full,
-            background: TOKENS.surface2, color: TOKENS.ink,
-            border: `1px solid ${TOKENS.hairline2}`,
-          }}>{s}</span>
-        ))}
-      </div>
-
-      <div style={{
-        marginTop: SPACING.lg, paddingTop: SPACING.md,
-        borderTop: `1px solid ${TOKENS.hairline2}`,
-        fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink3, lineHeight: 1.5,
-      }}>
-        Pill 容器組合規則：Home headerRight 的 <code>magnifyingglass</code> + <code>gearshape</code> 屬同一
-        <code> headerRight</code> row，iOS 自動 hug 為<strong>膠囊 pill</strong>（2 個 customView 共用 1 個 pill）。
-        其餘 31 處皆為單顆 button，hug 為<strong>正圓 pill</strong>。
-      </div>
-    </FoundCard>
-  );
-}
-
 function ComponentsNavigationSection() {
   return (
-    <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 採 React Navigation 原生 createNativeStackNavigator；NavHeader / ModalHeader 已廢除，配置由下方政策說明界定。" direction="column">
-      <DCArtboard id="comp-native-header-policy" label="Native Header Configuration · 政策" width={560} height={760}>
-        <CompFrame style={{ padding: SPACING.lg, overflow: 'auto' }}>
-          <div style={{
-            fontSize: TYPE_STYLES.title3.size,
-            fontWeight: TYPOGRAPHY.weight.medium,
-            color: TOKENS.ink,
-            marginBottom: SPACING.md,
-          }}>
-            Native Header Configuration
-          </div>
-          <div style={{
-            fontSize: TYPE_STYLES.body.size,
-            lineHeight: 1.45,
-            color: TOKENS.ink2,
-            marginBottom: SPACING.lg,
-          }}>
-            SuSuGiGi 不自繪 navigation header。所有 push / modal screen 的 header
-            由 React Navigation 的 createNativeStackNavigator 渲染，對齊 iOS 26
-            Liquid Glass 與 HIG 預設行為（含 minimal back button、原生 blur 等）。
-            Design 端 NavHeader / ModalHeader 函式保留作視覺參考但不對外 export，
-            screens.jsx 也不再使用。
-          </div>
-
-          <PolicyHeading>Push screen 共通 screenOptions</PolicyHeading>
-          <PolicyRow token="TYPE_STYLES.body.size" target="headerTitleStyle.fontSize" note="17pt medium，對齊 HIG body"/>
-          <PolicyRow token="theme.primary.main" target="headerTintColor" note="back / trailing 顏色"/>
-          <PolicyRow token="true" target="headerTransparent" note="無底色，背景內容延伸到 header 後"/>
-          <PolicyRow token="'minimal'" target="headerBackButtonDisplayMode" note="iOS 16+ 預設：只圖示不帶文字"/>
-          <PolicyRow token="false" target="headerShadowVisible" note="無底邊陰影線"/>
-
-          <PolicyHeading>Trailing / Leading 元件組合</PolicyHeading>
-          <PolicyRow token="Home 模式" target="headerLeft = HeaderIconButton('line.3.horizontal.decrease')；headerRight = [HeaderIconButton('magnifyingglass'), HeaderIconButton('gearshape')]"/>
-          <PolicyRow token="Push 模式" target="headerRight = HeaderIconButton(action)；leading 由原生 back button 處理"/>
-
-          <PolicyHeading>Modal screen 配置（presentation: 'fullScreenModal'）</PolicyHeading>
-          <PolicyRow token="共同基底" target="headerLeft = ModalCloseButton（SF symbol 'xmark'）"/>
-          <PolicyRow token="Info Modal" target="無 headerRight。例：Filter / Paywall / Search"/>
-          <PolicyRow token="Editor Modal" target="headerRight = HeaderCheckmarkButton（含 disabled 狀態）。例：AccountEditor / CategoryEditor"/>
-
-          <PolicyHeading>Pill hug 機制（iOS 26 native auto-pill）</PolicyHeading>
-          <PolicyRow token="統一 customView" target="HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX (41 = SYMBOL_SIZE + SPACING.md × 2)，三個 button 一致（design 仲裁定案）"/>
-          <PolicyRow token="同 headerRight 多 customView" target="共用一個膠囊 pill，內 customView 間距 = MULTI_ICON_GAP (8)"/>
-          <PolicyRow token="Pill 邊界" target="iOS 26 native auto-hug pill 邊界 = customView intrinsic 邊界；React 端不控制此 padding"/>
-          <PolicyRow token="實例分佈" target="本 app 僅 Home headerRight (magnifyingglass + gearshape) 為膠囊；其餘 31 處皆正圓。詳見下方 Header Button × Screen 矩陣"/>
-
-          <PolicyHeading>Impl 待重構（design 仲裁決議）</PolicyHeading>
-          <PolicyRow token="theme.ts HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX" target="從 ICON_SIZE.md (24) 改為 TYPE_STYLES.body.size + SPACING.md * 2 (41)，與 design canvas 同步"/>
-          <PolicyRow token="HeaderIconButton.tsx" target="customView box 仍綁 CONTENT_BOX，視覺自動跟著升到 41×41（無需改 code，只需 token 升級後生效）"/>
-          <PolicyRow token="ModalCloseButton.tsx" target="移除 TouchableOpacity styles.button 的 paddingHorizontal/Vertical: SPACING.md，改用 View 包 CONTENT_BOX × CONTENT_BOX box（仿 HeaderIconButton 結構），customView 自然對齊 CONTENT_BOX = 41"/>
-          <PolicyRow token="HeaderCheckmarkButton.tsx" target="同 ModalCloseButton 重構"/>
-          <PolicyRow token="hitSlop" target="HeaderIconButton 既有 hitSlop {10,10,10,10}（41+20=61 > 44 已過線）；Modal/Checkmark 重構後 hitSlop 沿用 {8,8,8,8} 即可（41+16=57 > 44）"/>
-
-          <div style={{
-            marginTop: SPACING.lg,
-            paddingTop: SPACING.md,
-            borderTop: `1px solid ${TOKENS.hairline2}`,
-            fontSize: TYPE_STYLES.footnote.size,
-            color: TOKENS.ink3,
-            lineHeight: 1.5,
-          }}>
-            Impl 原型參照：<code>src/navigation/AppNavigator.tsx</code> 的 screenOptions
-            與各 screen 透過 useLayoutEffect + navigation.setOptions 設定的 headerLeft /
-            headerRight。
-          </div>
-          <div style={{
-            marginTop: SPACING.md,
-            paddingTop: SPACING.md,
-            borderTop: `1px solid ${TOKENS.hairline2}`,
-            fontSize: TYPE_STYLES.footnote.size,
-            color: TOKENS.ink3,
-            lineHeight: 1.5,
-          }}>
-            下方 4 個 Header Mock artboard 為 design 仲裁端的 prototype 容器：在真實
-            header 脈絡（status bar + nav bar + content）下檢視 pill 比例。若 mock 內
-            視覺與理想不一致，調 <code>HeaderButtonPill</code> 的 <code>customViewSize</code>
-            等參數定案後，另開 impl PR 改 padding 結構同步。
-          </div>
-        </CompFrame>
-      </DCArtboard>
-
-      {/* ─── 4 個 Header Mock 情境 · prototype 容器 ─── */}
-      <DCArtboard id="header-mock-home" label="① Push · App Root (Home) 真實脈絡 (live)" width={440} height={200}>
-        <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
-          <HeaderMockFrame>
-            <MockNavBar
-              leftSlot={<HeaderButtonPill symbols={["line.3.horizontal.decrease"]} color={TOKENS.p500}/>}
-              title="SuSuGiGi"
-              rightSlot={<HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} color={TOKENS.p500}/>}
-            />
-          </HeaderMockFrame>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="header-mock-push" label="② Push · With Back Button (CategoryList) (live)" width={440} height={200}>
-        <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
-          <HeaderMockFrame>
-            <MockNavBar
-              leftSlot={<MockBackButtonPill color={TOKENS.p500}/>}
-              title="分類"
-              rightSlot={<HeaderButtonPill symbols={["arrow.triangle.merge"]} color={TOKENS.p500}/>}
-            />
-          </HeaderMockFrame>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="header-mock-editor-modal" label="③ Editor Modal (AccountEditor) (live)" width={440} height={200}>
-        <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
-          <HeaderMockFrame>
-            <MockNavBar
-              leftSlot={<HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>}
-              title="編輯帳戶"
-              rightSlot={<HeaderButtonPill symbols={["checkmark"]} color={TOKENS.p500}/>}
-            />
-          </HeaderMockFrame>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="header-mock-info-modal" label="④ Info Modal (Filter) (live)" width={440} height={200}>
-        <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
-          <HeaderMockFrame>
-            <MockNavBar
-              leftSlot={<HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>}
-              title="篩選"
-              rightSlot={null}
-            />
-          </HeaderMockFrame>
-        </CompFrame>
-      </DCArtboard>
-
-      <DCArtboard id="comp-fab-actions" label="FloatingActionBar · actions (live)" width={402} height={160}>
-        <CompFrame style={{ position: 'relative', height: 160, background: TOKENS.bg }}>
-          <FloatingActionBar mode="actions" onExpensePress={()=>{}} onTransferPress={()=>{}} onIncomePress={()=>{}}/>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-fab-undo" label="FloatingActionBar · undo (live)" width={402} height={160}>
-        <CompFrame style={{ position: 'relative', height: 160, background: TOKENS.bg }}>
-          <FloatingActionBar mode="undo" undoMessage="已刪除交易" remainingTime={4}/>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-search-pill" label="BottomSearchBar · GlassView pill (live)" width={402} height={140}>
-        <CompFrame style={{ position: 'relative', background: TOKENS.bg }}>
-          <BottomSearchBar value="" onChangeText={()=>{}} placeholder="搜尋..."/>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-modal-close" label="ModalCloseButton · xmark in pill (live)" width={402} height={116}>
-        <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 16 }}>
-          <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3 }}>
-            Modal headerLeft · 正圓 pill · customView 41×41（CONTENT_BOX，design 仲裁統一值）
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>
-          </div>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-header-icon-btn" label="HeaderIconButton · Single vs Multi pill (live)" width={402} height={180}>
-        <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: SPACING.md, padding: 16 }}>
-          <div>
-            <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3, marginBottom: 6 }}>
-              Single · 正圓 pill · customView 41×41（CONTENT_BOX）
+    <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 採 React Navigation 原生 createNativeStackNavigator；NavHeader / ModalHeader 已廢除。下分三家族：Header Button pill 元件、4 個 mock 情境驗證、其他浮動 surface。">
+      <DCFamily id="nav-buttons" title="Header Buttons" subtitle="三個 pill 元件：customView 41×41（HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX 統一值），iOS 26 native auto-hug 為正圓或膠囊。">
+        <DCArtboard id="comp-modal-close" label="ModalCloseButton · xmark in pill (live)" width={402} height={116}>
+          <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 16 }}>
+            <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3 }}>
+              Modal headerLeft · 正圓 pill · customView 41×41
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <HeaderButtonPill symbols={["magnifyingglass"]} color={TOKENS.p500}/>
+              <HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>
             </div>
-          </div>
-          <div>
-            <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3, marginBottom: 6 }}>
-              Multi · 膠囊 pill（Home headerRight: magnifyingglass + gearshape，customView 各 41×41，gap 8）
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-header-icon-btn" label="HeaderIconButton · Single vs Multi pill (live)" width={402} height={180}>
+          <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: SPACING.md, padding: 16 }}>
+            <div>
+              <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3, marginBottom: 6 }}>
+                Single · 正圓 pill · customView 41×41
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <HeaderButtonPill symbols={["magnifyingglass"]} color={TOKENS.p500}/>
+              </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} color={TOKENS.p500}/>
+            <div>
+              <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3, marginBottom: 6 }}>
+                Multi · 膠囊 pill（Home headerRight，customView 各 41×41，gap 8）
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} color={TOKENS.p500}/>
+              </div>
             </div>
-          </div>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-header-check" label="HeaderCheckmarkButton · checkmark in pill (live)" width={402} height={116}>
-        <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 16 }}>
-          <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3 }}>
-            Editor headerRight · 正圓 pill · customView 41×41（CONTENT_BOX，含 disabled）
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <HeaderButtonPill symbols={["checkmark"]} color={TOKENS.p500}/>
-            <span style={{ fontSize: 10.5, color: TOKENS.ink3 }}>↓ disabled</span>
-            <HeaderButtonPill symbols={["checkmark"]} color={TOKENS.ink3}/>
-          </div>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="header-button-screen-matrix" label="Header Button × Screen 出現矩陣（對齊 impl）" width="auto" height="auto">
-        <HeaderButtonScreenMatrixCard/>
-      </DCArtboard>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-header-check" label="HeaderCheckmarkButton · checkmark in pill (live)" width={402} height={116}>
+          <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 16 }}>
+            <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3 }}>
+              Editor headerRight · 正圓 pill · customView 41×41（含 disabled）
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <HeaderButtonPill symbols={["checkmark"]} color={TOKENS.p500}/>
+              <span style={{ fontSize: 10.5, color: TOKENS.ink3 }}>↓ disabled</span>
+              <HeaderButtonPill symbols={["checkmark"]} color={TOKENS.ink3}/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="nav-mocks" title="Header Mock Scenarios" subtitle="在真實 status bar + nav bar + content 脈絡下檢視 pill 比例的 prototype 容器，四種典型 header 場景並排比較。">
+        <DCArtboard id="header-mock-home" label="① Push · App Root (Home) 真實脈絡 (live)" width={440} height={200}>
+          <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
+            <HeaderMockFrame>
+              <MockNavBar
+                leftSlot={<HeaderButtonPill symbols={["line.3.horizontal.decrease"]} color={TOKENS.p500}/>}
+                title="SuSuGiGi"
+                rightSlot={<HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} color={TOKENS.p500}/>}
+              />
+            </HeaderMockFrame>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="header-mock-push" label="② Push · With Back Button (CategoryList) (live)" width={440} height={200}>
+          <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
+            <HeaderMockFrame>
+              <MockNavBar
+                leftSlot={<MockBackButtonPill color={TOKENS.p500}/>}
+                title="分類"
+                rightSlot={<HeaderButtonPill symbols={["arrow.triangle.merge"]} color={TOKENS.p500}/>}
+              />
+            </HeaderMockFrame>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="header-mock-editor-modal" label="③ Editor Modal (AccountEditor) (live)" width={440} height={200}>
+          <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
+            <HeaderMockFrame>
+              <MockNavBar
+                leftSlot={<HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>}
+                title="編輯帳戶"
+                rightSlot={<HeaderButtonPill symbols={["checkmark"]} color={TOKENS.p500}/>}
+              />
+            </HeaderMockFrame>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="header-mock-info-modal" label="④ Info Modal (Filter) (live)" width={440} height={200}>
+          <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
+            <HeaderMockFrame>
+              <MockNavBar
+                leftSlot={<HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>}
+                title="篩選"
+                rightSlot={null}
+              />
+            </HeaderMockFrame>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="nav-surfaces" title="Other Navigation Surfaces" subtitle="浮動元件：FAB 兩模式 + 搜尋 pill。">
+        <DCArtboard id="comp-fab-actions" label="FloatingActionBar · actions (live)" width={402} height={160}>
+          <CompFrame style={{ position: 'relative', height: 160, background: TOKENS.bg }}>
+            <FloatingActionBar mode="actions" onExpensePress={()=>{}} onTransferPress={()=>{}} onIncomePress={()=>{}}/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-fab-undo" label="FloatingActionBar · undo (live)" width={402} height={160}>
+          <CompFrame style={{ position: 'relative', height: 160, background: TOKENS.bg }}>
+            <FloatingActionBar mode="undo" undoMessage="已刪除交易" remainingTime={4}/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-search-pill" label="BottomSearchBar · GlassView pill (live)" width={402} height={140}>
+          <CompFrame style={{ position: 'relative', background: TOKENS.bg }}>
+            <BottomSearchBar value="" onChangeText={()=>{}} placeholder="搜尋..."/>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
 
 function ComponentsChartSection() {
   return (
-    <DCSection id="comp-chart" title="Components · Chart" subtitle="DonutChart 是 Home 中央視覺核心。SIZE 260, OUTER 100, INNER 76, CORNER 6, PAD_ANGLE 1deg。FocusCard 切換 expense / income 模式。" direction="column">
-      <DCArtboard id="comp-donut" label="DonutChart (live)" width={402} height={360}>
-        <CompFrame style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 32 }}>
-          <DonutChart data={pieData(TX).map(d => ({ key: d.id, value: d.value, color: d.color }))}>
-            <div style={{ textAlign: 'center', width: 100 }}>
-              <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginBottom: 4 }}>餘額</div>
-              <div style={{
-                fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
-                color: TOKENS.ink, fontVariantNumeric: 'tabular-nums',
-              }}>{fmt(periodTotals(TX).balance)}</div>
+    <DCSection id="comp-chart" title="Components · Chart" subtitle="DonutChart 是 Home 中央視覺核心。SIZE 260, OUTER 100, INNER 76, CORNER 6, PAD_ANGLE 1deg。FocusCard 切換 expense / income 模式。">
+      <DCFamily id="comp-chart-family" title="Home Chart Surfaces" subtitle="Home 中央的視覺資產：甜甜圈圖 + expense/income focus 對照。">
+        <DCArtboard id="comp-donut" label="DonutChart (live)" width={402} height={360}>
+          <CompFrame style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 32 }}>
+            <DonutChart data={pieData(TX).map(d => ({ key: d.id, value: d.value, color: d.color }))}>
+              <div style={{ textAlign: 'center', width: 100 }}>
+                <div style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, marginBottom: 4 }}>餘額</div>
+                <div style={{
+                  fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
+                  color: TOKENS.ink, fontVariantNumeric: 'tabular-nums',
+                }}>{fmt(periodTotals(TX).balance)}</div>
+              </div>
+            </DonutChart>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-focus" label="FocusCard · active / inactive (live)" width={402} height={180}>
+          <CompFrame style={{ padding: 16 }}>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <FocusCard kind="expense" amount={4395} active onPress={()=>{}}/>
+              <FocusCard kind="income"  amount={68000} active={false} onPress={()=>{}}/>
             </div>
-          </DonutChart>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-focus" label="FocusCard · active / inactive (live)" width={402} height={180}>
-        <CompFrame style={{ padding: 16 }}>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <FocusCard kind="expense" amount={4395} active onPress={()=>{}}/>
-            <FocusCard kind="income"  amount={68000} active={false} onPress={()=>{}}/>
-          </div>
-        </CompFrame>
-      </DCArtboard>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
 
 function ComponentsInputSection() {
   return (
-    <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色。對應 SWITCH_TOKENS 表見 Foundations > Component Tokens > Switch。" direction="column">
-      <DCArtboard id="comp-switch" label="Switch · default / brand 兩變體 (live)" width={402} height={260}>
-        <CompFrame style={{ padding: SPACING.xl }}>
-          <CompLabel>採 RN 原生 Switch。trackColor 由 SWITCH_TOKENS 提供兩變體</CompLabel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.lg, marginTop: SPACING.md }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
-              <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
-              <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
-              <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
-                default · status.success（AccountEditor / CategoryEditor 用）
-              </span>
+    <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色。對應 SWITCH_TOKENS 表見 Foundations > Component Tokens > Switch。">
+      <DCFamily id="comp-input-family" title="Input Surfaces" subtitle="iOS 風格輸入相關元件：Switch、Calculator、Glass pill。">
+        <DCArtboard id="comp-switch" label="Switch · default / brand 兩變體 (live)" width={402} height={260}>
+          <CompFrame style={{ padding: SPACING.xl }}>
+            <CompLabel>採 RN 原生 Switch。trackColor 由 SWITCH_TOKENS 提供兩變體</CompLabel>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.lg, marginTop: SPACING.md }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
+                <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
+                <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
+                <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
+                  default · status.success（AccountEditor / CategoryEditor 用）
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
+                <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
+                <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
+                <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
+                  brand · primary.main（RecurringOptions / CurrencyDetailConfig 用）
+                </span>
+              </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
-              <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
-              <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
-              <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
-                brand · primary.main（RecurringOptions / CurrencyDetailConfig 用）
-              </span>
-            </div>
-          </div>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-keypad" label="CalculatorKeypad · 1-2-3-+ / 4-5-6-− / 7-8-9-× / .-0-=-÷ (live)" width={402} height={320}>
-        <CompFrame style={{ padding: 0 }}>
-          <CalculatorKeypad onPress={()=>{}}/>
-        </CompFrame>
-      </DCArtboard>
-      <DCArtboard id="comp-glass" label="GlassView · pill (live)" width={402} height={140}>
-        <CompFrame style={{ padding: 24, background: 'linear-gradient(135deg, #4323a0, #c0b6df)' }}>
-          <GlassView pill style={{ padding: '12px 20px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            <Glyph name="line.3.horizontal.decrease" size={ICON_SIZE.xs} color={TOKENS.ink} stroke={2}/>
-            <span style={{ color: TOKENS.ink, fontWeight: 500 }}>Glass pill</span>
-          </GlassView>
-        </CompFrame>
-      </DCArtboard>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-keypad" label="CalculatorKeypad · 1-2-3-+ / 4-5-6-− / 7-8-9-× / .-0-=-÷ (live)" width={402} height={320}>
+          <CompFrame style={{ padding: 0 }}>
+            <CalculatorKeypad onPress={()=>{}}/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-glass" label="GlassView · pill (live)" width={402} height={140}>
+          <CompFrame style={{ padding: 24, background: 'linear-gradient(135deg, #4323a0, #c0b6df)' }}>
+            <GlassView pill style={{ padding: '12px 20px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <Glyph name="line.3.horizontal.decrease" size={ICON_SIZE.xs} color={TOKENS.ink} stroke={2}/>
+              <span style={{ color: TOKENS.ink, fontWeight: 500 }}>Glass pill</span>
+            </GlassView>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
@@ -583,50 +392,6 @@ function CompLabel({ children }) {
       fontSize: 11, fontWeight: 600, letterSpacing: 1, color: TOKENS.ink3,
       textTransform: 'uppercase',
     }}>{children}</div>
-  );
-}
-
-// PolicyHeading / PolicyRow — Native Header Configuration 等政策段落用的 text 元件。
-function PolicyHeading({ children }) {
-  return (
-    <div style={{
-      fontSize: TYPE_STYLES.headline.size,
-      fontWeight: TYPOGRAPHY.weight.medium,
-      color: TOKENS.ink,
-      marginTop: SPACING.lg,
-      marginBottom: SPACING.sm,
-    }}>{children}</div>
-  );
-}
-function PolicyRow({ token, target, note }) {
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'flex-start',
-      paddingTop: SPACING.xs, paddingBottom: SPACING.xs,
-      borderBottom: `1px solid ${TOKENS.hairline2}`,
-    }}>
-      <div style={{
-        flex: '0 0 38%',
-        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-        fontSize: TYPE_STYLES.footnote.size,
-        color: TOKENS.p700,
-        wordBreak: 'break-all',
-      }}>{token}</div>
-      <div style={{ flex: 1, paddingLeft: SPACING.sm }}>
-        <div style={{
-          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-          fontSize: TYPE_STYLES.footnote.size,
-          color: TOKENS.ink,
-        }}>{target}</div>
-        {note && (
-          <div style={{
-            fontSize: TYPE_STYLES.caption1.size,
-            color: TOKENS.ink3,
-            marginTop: 2,
-          }}>{note}</div>
-        )}
-      </div>
-    </div>
   );
 }
 

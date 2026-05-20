@@ -24,11 +24,12 @@ function FoundationsCTSwitchSection() {
       id="found-ct-switch"
       title="Component Tokens · Switch"
       subtitle="RN 原生 Switch 的兩態色彩政策。default 走 status.success（一般 toggle），brand 走 primary.main（定期/品牌相關 toggle）。impl makeSwitchTrackColor(theme, variant) 回傳 theme 動態色。"
-      direction="column"
     >
-      <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width="auto" height="auto">
-        <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC} sources={SWITCH_TOKEN_SOURCE}/>
-      </DCArtboard>
+      <DCFamily id="switch-tokens-family" title="Tokens" subtitle="SWITCH_TOKENS 完整表格（兩態色彩政策）。">
+        <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width="auto" height="auto">
+          <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC} sources={SWITCH_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

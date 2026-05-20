@@ -32,14 +32,17 @@ function FoundationsIconLibraryAllIconsSection() {
       id="found-icon-library-all"
       title="Icon Library · All Icons"
       subtitle="97 個 phosphor SVG。account tag（id 1-11）給帳戶選擇用、category tag（id 12-97）給類別選擇用。對齊 impl assets/definitions/IconDefinition.json。"
-      direction="column"
     >
-      <DCArtboard id="icon-account" label="IconDefinition · account tag (live)" width={520} height={580}>
-        <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('account'))}/>
-      </DCArtboard>
-      <DCArtboard id="icon-category" label="IconDefinition · category tag (live)" width={520} height={760}>
-        <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('category'))}/>
-      </DCArtboard>
+      <DCFamily id="icon-account-family" title="Account Tag" subtitle="帳戶選擇器用的 icon（id 1-11，共 11 個）。">
+        <DCArtboard id="icon-account" label="IconDefinition · account tag (live)" width={520} height={580}>
+          <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('account'))}/>
+        </DCArtboard>
+      </DCFamily>
+      <DCFamily id="icon-category-family" title="Category Tag" subtitle="類別選擇器用的 icon（id 12-97，共 86 個）。">
+        <DCArtboard id="icon-category" label="IconDefinition · category tag (live)" width={520} height={760}>
+          <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('category'))}/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

@@ -102,14 +102,17 @@ function FoundationsCTFormPickerSection() {
       id="found-ct-form-picker"
       title="Component Tokens · Form Picker"
       subtitle="form 觸發器（AccountSelector / CategorySelector）。視覺與 ListItem 不同：icon 32px 圓形 chip、有外框、padding 12。"
-      direction="column"
     >
-      <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width="auto" height="auto">
-        <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC} sources={FORM_PICKER_TOKEN_SOURCE}/>
-      </DCArtboard>
-      <DCArtboard id="form-picker-anatomy" label="Form Picker 解剖 · 對比 ListItem" width={520} height={520}>
-        <FormPickerAnatomyCard/>
-      </DCArtboard>
+      <DCFamily id="form-picker-tokens-family" title="Tokens" subtitle="FORM_PICKER_TOKENS 完整表格。">
+        <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width="auto" height="auto">
+          <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC} sources={FORM_PICKER_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
+      <DCFamily id="form-picker-anatomy-family" title="Anatomy" subtitle="解剖：對比 ListItem 看為什麼不該共用 token。">
+        <DCArtboard id="form-picker-anatomy" label="Form Picker 解剖 · 對比 ListItem" width={520} height={520}>
+          <FormPickerAnatomyCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

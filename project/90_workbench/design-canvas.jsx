@@ -104,10 +104,13 @@ function DesignCanvas({ children, minScale, maxScale, style, resetKey }) {
   }, [state.sections]);
 
   // Build registries synchronously from children so FocusOverlay can read
-  // them in the same render. Only direct DCSection > DCArtboard children are
-  // walked — wrapping them in other elements opts out of focus/reorder.
-  const registry = {};     // slotId -> { sectionId, artboard }
-  const sectionMeta = {};  // sectionId -> { title, subtitle, slotIds[] }
+  // them in the same render. Supports two layouts:
+  //   1) DCSection > DCArtboard (legacy flat)
+  //   2) DCSection > DCFamily > DCArtboard (grouped)
+  // A section can use one mode or the other, not both. Wrapping artboards in
+  // other elements opts out of focus/reorder.
+  const registry = {};     // slotId -> { sectionId, familyId, artboard }
+  const sectionMeta = {};  // sectionId -> { title, subtitle, slotIds[], families[]|null }
   const sectionOrder = [];
   React.Children.forEach(children, (sec) => {
     if (!sec || sec.type !== DCSection) return;
@@ -115,20 +118,57 @@ function DesignCanvas({ children, minScale, maxScale, style, resetKey }) {
     if (!sid) return;
     sectionOrder.push(sid);
     const persisted = state.sections[sid] || {};
-    const srcIds = [];
-    React.Children.forEach(sec.props.children, (ab) => {
-      if (!ab || ab.type !== DCArtboard) return;
-      const aid = ab.props.id ?? ab.props.label;
-      if (!aid) return;
-      registry[`${sid}/${aid}`] = { sectionId: sid, artboard: ab };
-      srcIds.push(aid);
-    });
-    const kept = (persisted.order || []).filter((k) => srcIds.includes(k));
-    sectionMeta[sid] = {
-      title: persisted.title ?? sec.props.title,
-      subtitle: sec.props.subtitle,
-      slotIds: [...kept, ...srcIds.filter((k) => !kept.includes(k))],
-    };
+    const secChildren = React.Children.toArray(sec.props.children);
+    const familyNodes = secChildren.filter((c) => c && c.type === DCFamily);
+
+    if (familyNodes.length > 0) {
+      const flatSlotIds = [];
+      const familyList = [];
+      familyNodes.forEach((fam) => {
+        const fid = fam.props.id;
+        if (!fid) return;
+        const famArtboards = React.Children.toArray(fam.props.children).filter((c) => c && c.type === DCArtboard);
+        const famSrcIds = [];
+        famArtboards.forEach((ab) => {
+          const aid = ab.props.id ?? ab.props.label;
+          if (!aid) return;
+          registry[`${sid}/${aid}`] = { sectionId: sid, familyId: fid, artboard: ab };
+          famSrcIds.push(aid);
+        });
+        const famPersisted = (persisted.families || {})[fid] || {};
+        const famKept = (famPersisted.order || []).filter((k) => famSrcIds.includes(k));
+        const famOrdered = [...famKept, ...famSrcIds.filter((k) => !famKept.includes(k))];
+        familyList.push({
+          id: fid,
+          title: famPersisted.title ?? fam.props.title,
+          subtitle: fam.props.subtitle,
+          slotIds: famOrdered,
+        });
+        flatSlotIds.push(...famOrdered);
+      });
+      sectionMeta[sid] = {
+        title: persisted.title ?? sec.props.title,
+        subtitle: sec.props.subtitle,
+        slotIds: flatSlotIds,
+        families: familyList,
+      };
+    } else {
+      const srcIds = [];
+      secChildren.forEach((ab) => {
+        if (!ab || ab.type !== DCArtboard) return;
+        const aid = ab.props.id ?? ab.props.label;
+        if (!aid) return;
+        registry[`${sid}/${aid}`] = { sectionId: sid, familyId: null, artboard: ab };
+        srcIds.push(aid);
+      });
+      const kept = (persisted.order || []).filter((k) => srcIds.includes(k));
+      sectionMeta[sid] = {
+        title: persisted.title ?? sec.props.title,
+        subtitle: sec.props.subtitle,
+        slotIds: [...kept, ...srcIds.filter((k) => !kept.includes(k))],
+        families: null,
+      };
+    }
   });
 
   const api = React.useMemo(() => ({
@@ -359,27 +399,38 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {}, resetK
 }
 
 // ─────────────────────────────────────────────────────────────
-// DCSection — editable title + artboards in persisted order
+// DCSection — editable title + (families | flat artboards) in persisted order
 //
-// direction="row"（預設）：artboards 水平擺，grip 可拖拉重排（X 軸）。
-//   Screens / Explorations tab 用這個 — 同主題不同 variants 並陳對比。
-// direction="column"：artboards 垂直堆，grip 停用（順序固定）。
-//   Foundations tab 用這個 — 一頁文件式由上往下閱讀。
+// Two modes (mutually exclusive per section, detected by child shape):
+//   1) DCSection > DCArtboard          legacy flat mode
+//   2) DCSection > DCFamily > DCArtboard  grouped mode
+//
+// direction="row" / "column" applies only to flat mode (artboard arrangement
+// within the section). In family mode the section always stacks families
+// vertically; each family carries its own direction.
+//
+// Flat mode legacy notes:
+//   direction="row"（預設）：artboards 水平擺，grip 可拖拉重排（X 軸）。
+//     Screens / Explorations tab 用這個 — 同主題不同 variants 並陳對比。
+//   direction="column"：artboards 垂直堆，grip 停用（順序固定）。
+//     舊 Foundations tab 用過；新版改用 family 模式。
 // ─────────────────────────────────────────────────────────────
 function DCSection({ id, title, subtitle, children, gap = 48, direction = 'row' }) {
   const ctx = React.useContext(DCCtx);
   const sid = id ?? title;
   const all = React.Children.toArray(children);
+  const families = all.filter((c) => c && c.type === DCFamily);
   const artboards = all.filter((c) => c && c.type === DCArtboard);
-  const rest = all.filter((c) => !(c && c.type === DCArtboard));
-  const srcOrder = artboards.map((a) => a.props.id ?? a.props.label);
+  const rest = all.filter((c) => !(c && c.type === DCArtboard) && !(c && c.type === DCFamily));
   const sec = (ctx && sid && ctx.section(sid)) || {};
+  const isFamilyMode = families.length > 0;
 
+  // Flat-mode order (legacy)
+  const srcOrder = artboards.map((a) => a.props.id ?? a.props.label);
   const order = React.useMemo(() => {
     const kept = (sec.order || []).filter((k) => srcOrder.includes(k));
     return [...kept, ...srcOrder.filter((k) => !kept.includes(k))];
   }, [sec.order, srcOrder.join('|')]);
-
   const byId = Object.fromEntries(artboards.map((a) => [a.props.id ?? a.props.label, a]));
   const isCol = direction === 'column';
 
@@ -391,31 +442,102 @@ function DCSection({ id, title, subtitle, children, gap = 48, direction = 'row' 
           style={{ fontSize: 28, fontWeight: 600, color: DC.title, letterSpacing: -0.4, marginBottom: 6, display: 'inline-block' }} />
         {subtitle && <div style={{ fontSize: 16, color: DC.subtitle }}>{subtitle}</div>}
       </div>
-      <div style={{
-        display: 'flex',
-        flexDirection: isCol ? 'column' : 'row',
-        gap, padding: '0 60px',
-        alignItems: 'flex-start',
-        width: isCol ? 'fit-content' : 'max-content',
-      }}>
-        {order.map((k) => (
-          <DCArtboardFrame key={k} sectionId={sid} artboard={byId[k]} order={order}
-            label={(sec.labels || {})[k] ?? byId[k].props.label}
-            draggable={!isCol}
-            onRename={(v) => ctx && ctx.patchSection(sid, (x) => ({ labels: { ...x.labels, [k]: v } }))}
-            onReorder={(next) => ctx && ctx.patchSection(sid, { order: next })}
-            onFocus={() => ctx && ctx.setFocus(`${sid}/${k}`)} />
-        ))}
-      </div>
+      {isFamilyMode ? (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 64, padding: '0 60px',
+          alignItems: 'flex-start',
+          width: 'fit-content',
+        }}>
+          {families.map((fam) => (
+            <DCFamilyFrame key={fam.props.id} sectionId={sid} family={fam} sec={sec} ctx={ctx} />
+          ))}
+        </div>
+      ) : (
+        <div style={{
+          display: 'flex',
+          flexDirection: isCol ? 'column' : 'row',
+          gap, padding: '0 60px',
+          alignItems: 'flex-start',
+          width: isCol ? 'fit-content' : 'max-content',
+        }}>
+          {order.map((k) => (
+            <DCArtboardFrame key={k} sectionId={sid} familyId={null} artboard={byId[k]} order={order}
+              label={(sec.labels || {})[k] ?? byId[k].props.label}
+              draggable={!isCol}
+              onRename={(v) => ctx && ctx.patchSection(sid, (x) => ({ labels: { ...x.labels, [k]: v } }))}
+              onReorder={(next) => ctx && ctx.patchSection(sid, { order: next })}
+              onFocus={() => ctx && ctx.setFocus(`${sid}/${k}`)} />
+          ))}
+        </div>
+      )}
       {rest}
     </div>
   );
 }
 
-// DCArtboard — marker; rendered by DCArtboardFrame via DCSection.
+// DCArtboard — marker; rendered by DCArtboardFrame via DCSection or DCFamily.
 function DCArtboard() { return null; }
 
-function DCArtboardFrame({ sectionId, artboard, label, order, draggable = true, onRename, onReorder, onFocus }) {
+// ─────────────────────────────────────────────────────────────
+// DCFamily — sub-group within a Section. Holds a labeled batch of artboards
+// that share a theme (e.g. "Header Buttons" inside "Navigation").
+//
+// direction="row"（預設）：family 內 artboard 水平並排，同類變體一眼比較。
+// direction="column"：family 內 artboard 垂直堆，文件流場景用。
+//
+// Focus overlay 鍵盤行為：← / → 在同 family 內 cycle；shift + ← / → 跨 family；
+// ↑ / ↓ 跨 section。
+// ─────────────────────────────────────────────────────────────
+function DCFamily() { return null; }
+
+function DCFamilyFrame({ sectionId, family, sec, ctx }) {
+  const { id: fid, title, subtitle, direction = 'row', gap = 32, children } = family.props;
+  const artboards = React.Children.toArray(children).filter((c) => c && c.type === DCArtboard);
+  const srcOrder = artboards.map((a) => a.props.id ?? a.props.label);
+  const famState = ((sec.families || {})[fid]) || {};
+
+  const order = React.useMemo(() => {
+    const kept = (famState.order || []).filter((k) => srcOrder.includes(k));
+    return [...kept, ...srcOrder.filter((k) => !kept.includes(k))];
+  }, [famState.order, srcOrder.join('|')]);
+
+  const byId = Object.fromEntries(artboards.map((a) => [a.props.id ?? a.props.label, a]));
+  const isCol = direction === 'column';
+
+  return (
+    <div data-dc-family={fid} style={{ position: 'relative' }}>
+      <div style={{ marginBottom: 24 }}>
+        <DCEditable tag="div" value={famState.title ?? title}
+          onChange={(v) => ctx && ctx.patchSection(sectionId, (x) => ({
+            families: { ...(x.families || {}), [fid]: { ...((x.families || {})[fid]), title: v } },
+          }))}
+          style={{ fontSize: 19, fontWeight: 600, color: DC.title, letterSpacing: -0.2, marginBottom: 4, display: 'inline-block' }} />
+        {subtitle && <div style={{ fontSize: 13, color: DC.subtitle, marginTop: 2 }}>{subtitle}</div>}
+      </div>
+      <div style={{
+        display: 'flex',
+        flexDirection: isCol ? 'column' : 'row',
+        gap, alignItems: 'flex-start',
+        width: isCol ? 'fit-content' : 'max-content',
+      }}>
+        {order.map((k) => (
+          <DCArtboardFrame key={k} sectionId={sectionId} familyId={fid} artboard={byId[k]} order={order}
+            label={(sec.labels || {})[k] ?? byId[k].props.label}
+            draggable={!isCol}
+            onRename={(v) => ctx && ctx.patchSection(sectionId, (x) => ({ labels: { ...x.labels, [k]: v } }))}
+            onReorder={(next) => ctx && ctx.patchSection(sectionId, (x) => ({
+              families: { ...(x.families || {}), [fid]: { ...((x.families || {})[fid]), order: next } },
+            }))}
+            onFocus={() => ctx && ctx.setFocus(`${sectionId}/${k}`)} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DCArtboardFrame({ sectionId, familyId, artboard, label, order, draggable = true, onRename, onReorder, onFocus }) {
   const { id: rawId, label: rawLabel, width = 260, height = 480, children, style = {} } = artboard.props;
   const id = rawId ?? rawLabel;
   const ref = React.useRef(null);
@@ -426,7 +548,8 @@ function DCArtboardFrame({ sectionId, artboard, label, order, draggable = true, 
 
   // Live drag-reorder: dragged card sticks to cursor; siblings slide into
   // their would-be slots in real time via transforms. DOM order only
-  // changes on drop.
+  // changes on drop. Drag scope is the family (if present) or the section,
+  // so artboards never cross family boundaries via drag.
   const onGripDown = (e) => {
     e.preventDefault(); e.stopPropagation();
     const me = ref.current;
@@ -434,7 +557,11 @@ function DCArtboardFrame({ sectionId, artboard, label, order, draggable = true, 
     // getBoundingClientRect().left are screen-space — divide by the viewport's
     // current scale so the dragged card tracks the cursor at any zoom level.
     const scale = me.getBoundingClientRect().width / me.offsetWidth || 1;
-    const peers = Array.from(document.querySelectorAll(`[data-dc-section="${sectionId}"] [data-dc-slot]`));
+    const scopeSel = familyId
+      ? `[data-dc-family="${familyId}"]`
+      : `[data-dc-section="${sectionId}"]`;
+    const peers = Array.from(document.querySelectorAll(`${scopeSel} [data-dc-slot]`))
+      .filter((el) => order.includes(el.dataset.dcSlot));
     const homes = peers.map((el) => ({ el, id: el.dataset.dcSlot, x: el.getBoundingClientRect().left }));
     const slotXs = homes.map((h) => h.x);
     const startIdx = order.indexOf(id);
@@ -533,15 +660,30 @@ function DCEditable({ value, onChange, style, tag = 'span', onClick }) {
 // ─────────────────────────────────────────────────────────────
 function DCFocusOverlay({ entry, sectionMeta, sectionOrder }) {
   const ctx = React.useContext(DCCtx);
-  const { sectionId, artboard } = entry;
+  const { sectionId, familyId, artboard } = entry;
   const sec = ctx.section(sectionId);
   const meta = sectionMeta[sectionId];
-  const peers = meta.slotIds;
   const aid = artboard.props.id ?? artboard.props.label;
-  const idx = peers.indexOf(aid);
   const secIdx = sectionOrder.indexOf(sectionId);
 
-  const go = (d) => { const n = peers[(idx + d + peers.length) % peers.length]; if (n) ctx.setFocus(`${sectionId}/${n}`); };
+  // Family-aware peer list: in family mode, dots + ← / → cycle the current
+  // family; shift + ← / → jumps families. In flat mode, peers is the section's
+  // slotIds and shift falls back to section nav.
+  const currentFamily = meta.families ? meta.families.find((f) => f.slotIds.includes(aid)) : null;
+  const peers = currentFamily ? currentFamily.slotIds : meta.slotIds;
+  const idx = peers.indexOf(aid);
+
+  const go = (d) => {
+    const n = peers[(idx + d + peers.length) % peers.length];
+    if (n) ctx.setFocus(`${sectionId}/${n}`);
+  };
+  const goFamily = (d) => {
+    if (!meta.families || meta.families.length === 0) { goSection(d); return; }
+    const fi = meta.families.findIndex((f) => f.slotIds.includes(aid));
+    if (fi < 0) return;
+    const nf = meta.families[(fi + d + meta.families.length) % meta.families.length];
+    if (nf && nf.slotIds.length > 0) ctx.setFocus(`${sectionId}/${nf.slotIds[0]}`);
+  };
   const goSection = (d) => {
     const ns = sectionOrder[(secIdx + d + sectionOrder.length) % sectionOrder.length];
     const first = sectionMeta[ns] && sectionMeta[ns].slotIds[0];
@@ -550,8 +692,8 @@ function DCFocusOverlay({ entry, sectionMeta, sectionOrder }) {
 
   React.useEffect(() => {
     const k = (e) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); e.shiftKey ? goFamily(-1) : go(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); e.shiftKey ? goFamily(1) : go(1); }
       if (e.key === 'ArrowUp') { e.preventDefault(); goSection(-1); }
       if (e.key === 'ArrowDown') { e.preventDefault(); goSection(1); }
     };
@@ -598,6 +740,7 @@ function DCFocusOverlay({ entry, sectionMeta, sectionOrder }) {
               borderRadius: 6, textAlign: 'left', fontFamily: 'inherit' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 18, fontWeight: 600, letterSpacing: -0.3 }}>{meta.title}</span>
+              {currentFamily && <span style={{ fontSize: 14, opacity: .6 }}>· {currentFamily.title}</span>}
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" style={{ opacity: .7 }}><path d="M2 4l3.5 3.5L9 4"/></svg>
             </span>
             {meta.subtitle && <span style={{ display: 'block', fontSize: 13, opacity: .6, fontWeight: 400, marginTop: 2 }}>{meta.subtitle}</span>}
@@ -685,5 +828,5 @@ function DCPostIt({ children, top, left, right, bottom, rotate = -2, width = 180
   );
 }
 
-Object.assign(window, { DesignCanvas, DCSection, DCArtboard, DCPostIt });
+Object.assign(window, { DesignCanvas, DCSection, DCFamily, DCArtboard, DCPostIt });
 

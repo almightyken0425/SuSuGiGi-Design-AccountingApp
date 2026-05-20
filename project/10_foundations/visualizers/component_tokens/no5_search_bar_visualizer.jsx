@@ -28,20 +28,23 @@ function FoundationsCTSearchBarSection() {
       id="found-ct-search-bar"
       title="Component Tokens · Search Bar"
       subtitle="BottomSearchBar pill 形搜尋列。pill 高度 = HIT_TARGET.min；附帶衍生值 BOTTOM_SEARCH_BAR_TOTAL_HEIGHT。"
-      direction="column"
     >
-      <DCArtboard id="search-bar-tokens" label="SEARCH_BAR_TOKENS 表格" width="auto" height="auto">
-        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC} sources={SEARCH_BAR_TOKEN_SOURCE}/>
-      </DCArtboard>
-      <DCArtboard id="search-bar-total-height" label="BOTTOM_SEARCH_BAR_TOTAL_HEIGHT · 衍生值" width={520} height={140}>
-        <FoundCard>
-          <FoundLabel>BOTTOM_SEARCH_BAR_TOTAL_HEIGHT</FoundLabel>
-          <div style={{ fontSize: 12, color: TOKENS.ink2, lineHeight: 1.6 }}>
-            <code>BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BAR_TOKENS.PADDING_VERTICAL * 2</code>
-            <div style={{ marginTop: 8 }}>= {SEARCH_BAR_TOKENS.PILL_HEIGHT} + {SEARCH_BAR_TOKENS.PADDING_VERTICAL} × 2 = <code style={{ fontVariantNumeric: 'tabular-nums' }}>{BOTTOM_SEARCH_BAR_TOTAL_HEIGHT}</code></div>
-          </div>
-        </FoundCard>
-      </DCArtboard>
+      <DCFamily id="search-bar-tokens-family" title="Tokens" subtitle="SEARCH_BAR_TOKENS 完整表格。">
+        <DCArtboard id="search-bar-tokens" label="SEARCH_BAR_TOKENS 表格" width="auto" height="auto">
+          <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC} sources={SEARCH_BAR_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
+      <DCFamily id="search-bar-derived-family" title="Derived Values" subtitle="衍生公式：底層 pill + padding 推導的整體高度。">
+        <DCArtboard id="search-bar-total-height" label="BOTTOM_SEARCH_BAR_TOTAL_HEIGHT · 衍生值" width={520} height={140}>
+          <FoundCard>
+            <FoundLabel>BOTTOM_SEARCH_BAR_TOTAL_HEIGHT</FoundLabel>
+            <div style={{ fontSize: 12, color: TOKENS.ink2, lineHeight: 1.6 }}>
+              <code>BOTTOM_SEARCH_BAR_TOTAL_HEIGHT = SEARCH_BAR_TOKENS.PILL_HEIGHT + SEARCH_BAR_TOKENS.PADDING_VERTICAL * 2</code>
+              <div style={{ marginTop: 8 }}>= {SEARCH_BAR_TOKENS.PILL_HEIGHT} + {SEARCH_BAR_TOKENS.PADDING_VERTICAL} × 2 = <code style={{ fontVariantNumeric: 'tabular-nums' }}>{BOTTOM_SEARCH_BAR_TOTAL_HEIGHT}</code></div>
+            </div>
+          </FoundCard>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

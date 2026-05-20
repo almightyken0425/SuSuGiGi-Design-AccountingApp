@@ -200,14 +200,17 @@ function FoundationsCTListSection() {
       id="found-ct-list"
       title="Component Tokens · List"
       subtitle="grouped list / ListItem / SelectionGridItem 元件的內部參數。引用 atomic 層 ROW_HEIGHT / SPACING / TYPE_STYLES / ICON_SIZE / RADIUS / TYPOGRAPHY。"
-      direction="column"
     >
-      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width="auto" height="auto">
-        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC} sources={LIST_TOKEN_SOURCE}/>
-      </DCArtboard>
-      <DCArtboard id="list-anatomy" label="ListItem 解剖 · 間距政策視覺化" width={520} height={780}>
-        <ListAnatomyCard/>
-      </DCArtboard>
+      <DCFamily id="list-tokens-family" title="Tokens" subtitle="LIST_TOKENS 完整表格與引用鏈。">
+        <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width="auto" height="auto">
+          <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC} sources={LIST_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
+      <DCFamily id="list-anatomy-family" title="Anatomy" subtitle="ListItem 結構解剖：有 icon / 無 icon row、divider inset 兩種規則。">
+        <DCArtboard id="list-anatomy" label="ListItem 解剖 · 間距政策視覺化" width={520} height={780}>
+          <ListAnatomyCard/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }

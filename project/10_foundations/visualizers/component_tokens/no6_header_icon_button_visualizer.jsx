@@ -20,11 +20,12 @@ function FoundationsCTHeaderIconButtonSection() {
       id="found-ct-header-icon-button"
       title="Component Tokens · Header Icon Button"
       subtitle="Navigation header 上 icon-only 動作鍵。對齊 iOS 26 Liquid Glass bar button item 自動 pill 行為。"
-      direction="column"
     >
-      <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width="auto" height="auto">
-        <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS" descriptions={HEADER_ICON_BUTTON_TOKEN_DESC} sources={HEADER_ICON_BUTTON_TOKEN_SOURCE}/>
-      </DCArtboard>
+      <DCFamily id="header-icon-button-tokens-family" title="Tokens" subtitle="HEADER_ICON_BUTTON_TOKENS 完整表格（CONTENT_BOX / SYMBOL_SIZE / MULTI_ICON_GAP 三項）。">
+        <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width="auto" height="auto">
+          <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS" descriptions={HEADER_ICON_BUTTON_TOKEN_DESC} sources={HEADER_ICON_BUTTON_TOKEN_SOURCE}/>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
