@@ -17,6 +17,40 @@
 // 元件改 → 視覺自動更新；無 HTML snapshot 雙來源。
 // ─────────────────────────────────────────────────────────────
 
+// ListSeparator 變體卡：上半部 token 表（KEY/SOURCE/VALUE/用途），
+// 下半部 live ListSeparator，三個 inset 用同一張 row 模板對位演示。
+function ListSeparatorVariantCard() {
+  const variants = {
+    '0 / 滿版':                   0,
+    'DIVIDER_INSET_WITHOUT_ICON': LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON,
+    'DIVIDER_INSET_WITH_ICON':    LIST_TOKENS.DIVIDER_INSET_WITH_ICON,
+  };
+  const sources = {
+    '0 / 滿版':                   '—',
+    'DIVIDER_INSET_WITHOUT_ICON': 'SPACING.lg',
+    'DIVIDER_INSET_WITH_ICON':    'SPACING.lg + ICON_SIZE.sm + SPACING.md',
+  };
+  const desc = {
+    '0 / 滿版':                   '滿版分隔（無 inset）',
+    'DIVIDER_INSET_WITHOUT_ICON': '無 icon 群組的 divider，齊行末 padding',
+    'DIVIDER_INSET_WITH_ICON':    '有 icon 群組的 divider，避開 icon 欄',
+  };
+  return (
+    <FoundCard>
+      <TokenTableCard tokens={variants} title="ListSeparator · insetLeft 變體" sources={sources} descriptions={desc}/>
+      <div style={{ marginTop: SPACING.lg, paddingTop: SPACING.lg, borderTop: `1px dashed ${TOKENS.ink3}` }}>
+        <div style={{ fontSize: 9.5, color: TOKENS.ink3, letterSpacing: 0.3, marginBottom: SPACING.sm }}>LIVE</div>
+        {Object.entries(variants).map(([k, v], i) => (
+          <div key={k} style={{ marginTop: i === 0 ? 0 : SPACING.md }}>
+            <div style={{ fontSize: 10.5, color: TOKENS.ink2, marginBottom: 4 }}>{k} · {v}</div>
+            <ListSeparator insetLeft={v}/>
+          </div>
+        ))}
+      </div>
+    </FoundCard>
+  );
+}
+
 function ComponentsListSection() {
   return (
     <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list 元件，是整個 app 最常用的構件。元件 showcase 與對應 token 表（LIST_TOKENS / TX_LIST_TOKENS / LIST_EMPTY_TRANSITION）緊鄰擺放。所有卡片為 live JSX。" direction="column">
@@ -47,8 +81,8 @@ function ComponentsListSection() {
         <ListAnatomyCard/>
       </DCArtboard>
 
-      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={720}>
-        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC}/>
+      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width="auto" height="auto">
+        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC} sources={LIST_TOKEN_SOURCE}/>
       </DCArtboard>
 
       <DCArtboard id="comp-selection-list" label="SelectionListItem · 選擇列 (live)" width={402} height={500}>
@@ -123,24 +157,8 @@ function ComponentsListSection() {
         </CompFrame>
       </DCArtboard>
 
-      <DCArtboard id="comp-list-separator" label="ListSeparator · insetLeft 變體 (live)" width={402} height={280}>
-        <CompFrame>
-          <CompLabel>1px hairline，insetLeft 控制縮排起點</CompLabel>
-          <div style={{ padding: SPACING.lg }}>
-            <div style={{ marginBottom: SPACING.md, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>
-              insetLeft = 0（滿版）
-            </div>
-            <ListSeparator/>
-            <div style={{ marginTop: SPACING.lg, marginBottom: SPACING.md, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>
-              insetLeft = LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON（{LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON}）
-            </div>
-            <ListSeparator insetLeft={LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON}/>
-            <div style={{ marginTop: SPACING.lg, marginBottom: SPACING.md, fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>
-              insetLeft = LIST_TOKENS.DIVIDER_INSET_WITH_ICON（{LIST_TOKENS.DIVIDER_INSET_WITH_ICON}）
-            </div>
-            <ListSeparator insetLeft={LIST_TOKENS.DIVIDER_INSET_WITH_ICON}/>
-          </div>
-        </CompFrame>
+      <DCArtboard id="comp-list-separator" label="ListSeparator · insetLeft 變體 (live)" width="auto" height="auto">
+        <ListSeparatorVariantCard/>
       </DCArtboard>
 
       <DCArtboard id="comp-empty-live" label="ListEmptyState (live)" width={402} height={500}>
@@ -158,12 +176,12 @@ function ComponentsListSection() {
         </CompFrame>
       </DCArtboard>
 
-      <DCArtboard id="list-empty-transition-tokens" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={180}>
-        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC}/>
+      <DCArtboard id="list-empty-transition-tokens" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width="auto" height="auto">
+        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC} sources={LIST_EMPTY_TRANSITION_SOURCE}/>
       </DCArtboard>
 
-      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList row 專用" width={520} height={720}>
-        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC}/>
+      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList row 專用" width="auto" height="auto">
+        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC} sources={TX_LIST_TOKEN_SOURCE}/>
       </DCArtboard>
     </DCSection>
   );
@@ -176,12 +194,12 @@ function ComponentsFormSection() {
         <FormPickerAnatomyCard/>
       </DCArtboard>
 
-      <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width={520} height={420}>
-        <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC}/>
+      <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width="auto" height="auto">
+        <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC} sources={FORM_PICKER_TOKEN_SOURCE}/>
       </DCArtboard>
 
-      <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width={520} height={340}>
-        <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC}/>
+      <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width="auto" height="auto">
+        <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC} sources={CHIP_TOKEN_SOURCE}/>
       </DCArtboard>
     </DCSection>
   );
@@ -289,8 +307,8 @@ function ComponentsNavigationSection() {
           <BottomSearchBar value="" onChangeText={()=>{}} placeholder="搜尋..."/>
         </CompFrame>
       </DCArtboard>
-      <DCArtboard id="search-bar-tokens" label="SEARCH_BAR_TOKENS 表格" width={520} height={360}>
-        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC}/>
+      <DCArtboard id="search-bar-tokens" label="SEARCH_BAR_TOKENS 表格" width="auto" height="auto">
+        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC} sources={SEARCH_BAR_TOKEN_SOURCE}/>
       </DCArtboard>
       <DCArtboard id="comp-modal-close" label="ModalCloseButton · X (live)" width={402} height={80}>
         <CompFrame style={{ display: 'flex', alignItems: 'center', padding: 16 }}>
@@ -305,8 +323,8 @@ function ComponentsNavigationSection() {
           <HeaderIconButton symbol="arrow.triangle.merge" color={TOKENS.p500} onPress={() => {}}/>
         </CompFrame>
       </DCArtboard>
-      <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width={520} height={220}>
-        <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS"/>
+      <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width="auto" height="auto">
+        <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS" descriptions={HEADER_ICON_BUTTON_TOKEN_DESC} sources={HEADER_ICON_BUTTON_TOKEN_SOURCE}/>
       </DCArtboard>
       <DCArtboard id="comp-header-check" label="HeaderCheckmarkButton (live)" width={402} height={80}>
         <CompFrame style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16 }}>
@@ -370,8 +388,8 @@ function ComponentsInputSection() {
           </div>
         </CompFrame>
       </DCArtboard>
-      <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width={520} height={280}>
-        <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC}/>
+      <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width="auto" height="auto">
+        <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC} sources={SWITCH_TOKEN_SOURCE}/>
       </DCArtboard>
       <DCArtboard id="comp-keypad" label="CalculatorKeypad · 1-2-3-+ / 4-5-6-− / 7-8-9-× / .-0-=-÷ (live)" width={402} height={320}>
         <CompFrame style={{ padding: 0 }}>
