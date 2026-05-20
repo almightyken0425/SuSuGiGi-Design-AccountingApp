@@ -635,7 +635,7 @@ function App() {
   return (
     <>
       <SideTOC view={view} sub={sub} onNavigate={navigate}/>
-      <DesignCanvas>
+      <DesignCanvas resetKey={`${view}/${sub ?? ''}`}>
         {view === 'intro'        && <IntroSection/>}
         {view === 'foundations' && FOUNDATIONS_TOPICS.filter(t => t.id === sub).map(t => (
           <React.Fragment key={t.id}>{t.render()}</React.Fragment>

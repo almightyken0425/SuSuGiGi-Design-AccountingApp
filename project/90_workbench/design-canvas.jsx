@@ -68,7 +68,7 @@ const DCCtx = React.createContext(null);
 // ─────────────────────────────────────────────────────────────
 const DC_STATE_FILE = '.design-canvas.state.json';
 
-function DesignCanvas({ children, minScale, maxScale, style }) {
+function DesignCanvas({ children, minScale, maxScale, style, resetKey }) {
   const [state, setState] = React.useState({ sections: {}, focus: null });
   // Hold rendering until the sidecar read settles so the saved order/titles
   // appear on first paint (no source-order flash). didRead gates writes until
@@ -158,7 +158,7 @@ function DesignCanvas({ children, minScale, maxScale, style }) {
 
   return (
     <DCCtx.Provider value={api}>
-      <DCViewport minScale={minScale} maxScale={maxScale} style={style}>{ready && children}</DCViewport>
+      <DCViewport minScale={minScale} maxScale={maxScale} style={style} resetKey={resetKey}>{ready && children}</DCViewport>
       {state.focus && registry[state.focus] && (
         <DCFocusOverlay entry={registry[state.focus]} sectionMeta={sectionMeta} sectionOrder={sectionOrder} />
       )}
@@ -189,7 +189,7 @@ function DesignCanvas({ children, minScale, maxScale, style }) {
 // (translate3d + will-change) so wheel ticks don't go through React —
 // keeps pans at 60fps on dense canvases.
 // ─────────────────────────────────────────────────────────────
-function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
+function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {}, resetKey }) {
   const vpRef = React.useRef(null);
   const worldRef = React.useRef(null);
   const tf = React.useRef({ x: 0, y: 0, scale: 1 });
@@ -199,6 +199,13 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {} }) {
     const el = worldRef.current;
     if (el) el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
   }, []);
+
+  // route 切換時把 viewport 拉回原點，避免前一個 sub-tab 累積的 pan/zoom
+  // 把新內容推離可視範圍（小 sub-tab 內容塞不下大偏移）。
+  React.useEffect(() => {
+    tf.current = { x: 0, y: 0, scale: 1 };
+    apply();
+  }, [resetKey, apply]);
 
   React.useEffect(() => {
     const vp = vpRef.current;
