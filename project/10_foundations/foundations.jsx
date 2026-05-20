@@ -705,7 +705,7 @@ const LIST_TOKEN_DESC = {
 };
 
 const LIST_TOKEN_SOURCE = {
-  ITEM_MIN_HEIGHT:                  '—',
+  ITEM_MIN_HEIGHT:                  'ROW_HEIGHT.base',
   ITEM_PADDING_VERTICAL:            'TYPE_STYLES.body.size',
   ITEM_PADDING_HORIZONTAL:          'SPACING.lg',
   ITEM_GAP_HORIZONTAL:              'SPACING.md',
@@ -717,11 +717,11 @@ const LIST_TOKEN_SOURCE = {
   DIVIDER_INSET_WITH_ICON:          'SPACING.lg + ICON_SIZE.sm + SPACING.md',
   DIVIDER_INSET_WITHOUT_ICON:       'SPACING.lg',
   GROUP_CARD_RADIUS:                'RADIUS.lg',
-  GROUP_CARD_MARGIN_BOTTOM:         '—',
-  GROUP_CARD_BORDER_WIDTH:          '—',
+  GROUP_CARD_MARGIN_BOTTOM:         '(literal: 35, 離開 SPACING 階梯)',
+  GROUP_CARD_BORDER_WIDTH:          'StyleSheet.hairlineWidth',
   SECTION_TITLE_SIZE:               'TYPE_STYLES.footnote.size',
   SECTION_TITLE_WEIGHT:             'TYPOGRAPHY.weight.regular',
-  SECTION_TITLE_LETTER_SPACING:     '—',
+  SECTION_TITLE_LETTER_SPACING:     '(literal)',
   SECTION_TITLE_PADDING_TOP:        'SPACING.md',
   SECTION_TITLE_PADDING_BOTTOM:     "SPACING.xs + SPACING['2xs']",
   SECTION_TITLE_PADDING_HORIZONTAL: 'SPACING.lg',
@@ -729,10 +729,10 @@ const LIST_TOKEN_SOURCE = {
   SELECTION_ITEM_MARGIN_BOTTOM:     'SPACING.sm',
   SELECTION_CHECKMARK_SIZE:         'ICON_SIZE.xs',
   TRAILING_CHEVRON_SIZE:            'TYPE_STYLES.footnote.size',
-  TRAILING_CHEVRON_WEIGHT:          '—',
+  TRAILING_CHEVRON_WEIGHT:          '(literal: SF Symbols semibold enum)',
   TRAILING_VALUE_SIZE:              'TYPE_STYLES.body.size',
-  PRESS_BG_HIGHLIGHT_OPACITY:       '—',
-  GRID_COLUMNS:                     '—',
+  PRESS_BG_HIGHLIGHT_OPACITY:       '(literal)',
+  GRID_COLUMNS:                     '(literal)',
   GRID_GAP:                         'SPACING.md',
   EMPTY_STATE_ICON_SIZE:            "ICON_SIZE['2xl']",
   EMPTY_STATE_TITLE_SIZE:           'TYPE_STYLES.body.size',
@@ -757,7 +757,7 @@ const FORM_PICKER_TOKEN_DESC = {
 };
 
 const FORM_PICKER_TOKEN_SOURCE = {
-  ROW_MIN_HEIGHT:         '—',
+  ROW_MIN_HEIGHT:         'ROW_HEIGHT.base',
   ROW_PADDING_VERTICAL:   'SPACING.md',
   ROW_PADDING_HORIZONTAL: 'SPACING.lg',
   ICON_SIZE:              'ICON_SIZE.lg',
@@ -815,15 +815,23 @@ const TX_LIST_TOKEN_SOURCE = {
   SECTION_HEADER_TOTAL_SIZE_EXPANDED:   'TYPE_STYLES.footnote.size',
   SECTION_HEADER_TITLE_WEIGHT:          'TYPOGRAPHY.weight.medium',
   SECTION_HEADER_TOTAL_WEIGHT:          'TYPOGRAPHY.weight.medium',
-  ICON_OUTLINE_BORDER_WIDTH:            '—',
+  ICON_OUTLINE_BORDER_WIDTH:            'StyleSheet.hairlineWidth',
   ICON_OUTLINE_SIZE:                    'ICON_SIZE.lg',
-  ICON_OUTLINE_RADIUS:                  '—',
+  ICON_OUTLINE_RADIUS:                  '(literal: 視覺校準, 32px icon 配 RADIUS 階梯之外)',
   ROW_AMOUNT_SIZE:                      'TYPE_STYLES.callout.size',
   ROW_AMOUNT_WEIGHT:                    'TYPOGRAPHY.weight.medium',
   ROW_LEFT_SLOT_SIZE:                   'ICON_SIZE.lg',
   ROW_NOTE_SIZE:                        'TYPE_STYLES.subheadline.size',
   ROW_SECONDARY_SIZE:                   'TYPE_STYLES.caption1.size',
   MORPH_DURATION_MS:                    'MOTION.duration.fast + 80',
+  SECTION_ENTRY_DURATION_MS:            '(literal: visual calibration)',
+  SECTION_ENTRY_STAGGER_MS:             '(literal: stagger interval)',
+  SECTION_ENTRY_TRANSLATE_Y:            '(literal: entry offset)',
+  SECTION_ENTRY_STAGGER_MAX_INDEX:      '(literal: index cap)',
+  SECTION_SHRINK_DURATION_MS:           'MOTION.duration.fast',
+  SECTION_GROW_DURATION_MS:             '(literal: visual calibration)',
+  FOCUS_CARD_SHRINK_DURATION_MS:        '(literal: visual calibration)',
+  FOCUS_CARD_GROW_DURATION_MS:          '(literal: visual calibration)',
 };
 
 const SEARCH_BAR_TOKEN_DESC = {
@@ -867,9 +875,9 @@ const SWITCH_TOKEN_DESC = {
 const SWITCH_TOKEN_SOURCE = {
   TRACK_COLOR_OFF:  'TOKENS.surface2',
   TRACK_COLOR_ON:   'TOKENS.success / TOKENS.p500',
-  THUMB_COLOR_ON:   '—',
-  THUMB_COLOR_OFF:  '—',
-  IOS_BG_COLOR:     '—',
+  THUMB_COLOR_ON:   'IOS_SYSTEM_COLOR.switchThumbOn',
+  THUMB_COLOR_OFF:  'IOS_SYSTEM_COLOR.switchThumbOff',
+  IOS_BG_COLOR:     'IOS_SYSTEM_COLOR.switchTrackBg',
 };
 
 const HEADER_ICON_BUTTON_TOKEN_DESC = {
@@ -903,7 +911,7 @@ const CHIP_TOKEN_SOURCE = {
   GAP_VERTICAL:          'SPACING.sm',
   TEXT_SIZE:             'TYPOGRAPHY.size.sm',
   TEXT_WEIGHT_SELECTED:  'TYPOGRAPHY.weight.medium',
-  BORDER_WIDTH:          '—',
+  BORDER_WIDTH:          'StyleSheet.hairlineWidth',
 };
 
 function TokenTableCard({ tokens, title, descriptions, sources }) {
