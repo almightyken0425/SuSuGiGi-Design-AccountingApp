@@ -3,13 +3,13 @@
 // ─────────────────────────────────────────────────────────────
 
 const HEADER_ICON_BUTTON_TOKEN_DESC = {
-  CONTENT_BOX:    'customView 正方形邊長（Liquid Glass hug 後自動成正圓 pill）',
+  CONTENT_BOX:    'customView 正方形邊長（symbol + 上下左右 padding；Liquid Glass hug 後自動成正圓 pill）',
   SYMBOL_SIZE:    'SF Symbol point size，對齊 iOS bar button 慣用 body 級',
   MULTI_ICON_GAP: '多 icon 共用 customView 時 icon 之間的水平 gap',
 };
 
 const HEADER_ICON_BUTTON_TOKEN_SOURCE = {
-  CONTENT_BOX:    'ICON_SIZE.md',
+  CONTENT_BOX:    'TYPE_STYLES.body.size + SPACING.md * 2',
   SYMBOL_SIZE:    'TYPE_STYLES.body.size',
   MULTI_ICON_GAP: 'SPACING.sm',
 };
