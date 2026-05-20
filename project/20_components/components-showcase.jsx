@@ -1,12 +1,17 @@
 // ─────────────────────────────────────────────────────────────
 // Components Showcase · 元件視覺化
 //
-// 4 個家族 section，由 `FoundationsComponentsSection` 串成 Foundations
-// > Components 子項的內容（4 個 DCSection 自然垂直 stack）：
-//   - ComponentsListSection
-//   - ComponentsNavigationSection
-//   - ComponentsChartSection
-//   - ComponentsInputSection
+// 5 個家族 section，由 `FoundationsComponentsSection` 串成 Foundations
+// > Components 子項的內容（DCSection 自然垂直 stack）：
+//   - ComponentsListSection         List / TxList row family
+//   - ComponentsFormSection         FormPicker / Chip family
+//   - ComponentsNavigationSection   Header / SearchBar / FAB
+//   - ComponentsChartSection        Donut / FocusCard
+//   - ComponentsInputSection        Switch / Keypad / GlassView
+//
+// 每個 family 內，元件 showcase / anatomy 與對應 token 表緊鄰擺放，
+// token 表用 TokenTableCard / ListAnatomyCard / FormPickerAnatomyCard
+// 等 helper（定義在 foundations.jsx，全域可用）。
 //
 // 所有卡片皆為 live JSX：讀 components.jsx 的元件即時 render。
 // 元件改 → 視覺自動更新；無 HTML snapshot 雙來源。
@@ -14,7 +19,7 @@
 
 function ComponentsListSection() {
   return (
-    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list 元件，是整個 app 最常用的構件。所有卡片為 live JSX。" direction="column">
+    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list 元件，是整個 app 最常用的構件。元件 showcase 與對應 token 表（LIST_TOKENS / TX_LIST_TOKENS / LIST_EMPTY_TRANSITION）緊鄰擺放。所有卡片為 live JSX。" direction="column">
       <DCArtboard id="comp-listitem" label="ListItem · 變體 (live)" width={402} height={620}>
         <CompFrame>
           <CompLabel>ListItem 不同組合</CompLabel>
@@ -36,6 +41,14 @@ function ComponentsListSection() {
             </ListGroupCard>
           </div>
         </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="list-anatomy" label="ListItem 解剖 · 間距政策視覺化" width={520} height={780}>
+        <ListAnatomyCard/>
+      </DCArtboard>
+
+      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={720}>
+        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC}/>
       </DCArtboard>
 
       <DCArtboard id="comp-selection-list" label="SelectionListItem · 選擇列 (live)" width={402} height={500}>
@@ -144,6 +157,32 @@ function ComponentsListSection() {
           <ListEmptyTransitionDemo/>
         </CompFrame>
       </DCArtboard>
+
+      <DCArtboard id="list-empty-transition-tokens" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={180}>
+        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC}/>
+      </DCArtboard>
+
+      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList row 專用" width={520} height={720}>
+        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC}/>
+      </DCArtboard>
+    </DCSection>
+  );
+}
+
+function ComponentsFormSection() {
+  return (
+    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器與多選 chip。FormPicker（AccountSelector / CategorySelector）為單一觸發器，icon 32 圓形 chip、有自身外框，與 ListItem 結構差異大，分開仲裁。CHIP（pill 形多選）用於 RecurringOptions 等多選場景，高度 30pt 低於 HIT_TARGET，屬輔助選擇器。" direction="column">
+      <DCArtboard id="form-picker-anatomy" label="Form Picker 解剖 · 對比 ListItem" width={520} height={520}>
+        <FormPickerAnatomyCard/>
+      </DCArtboard>
+
+      <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width={520} height={420}>
+        <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC}/>
+      </DCArtboard>
+
+      <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width={520} height={340}>
+        <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC}/>
+      </DCArtboard>
     </DCSection>
   );
 }
@@ -250,6 +289,9 @@ function ComponentsNavigationSection() {
           <BottomSearchBar value="" onChangeText={()=>{}} placeholder="搜尋..."/>
         </CompFrame>
       </DCArtboard>
+      <DCArtboard id="search-bar-tokens" label="SEARCH_BAR_TOKENS 表格" width={520} height={360}>
+        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC}/>
+      </DCArtboard>
       <DCArtboard id="comp-modal-close" label="ModalCloseButton · X (live)" width={402} height={80}>
         <CompFrame style={{ display: 'flex', alignItems: 'center', padding: 16 }}>
           <ModalCloseButton onPress={()=>{}}/>
@@ -262,6 +304,9 @@ function ComponentsNavigationSection() {
           <HeaderIconButton symbol="gearshape" color={TOKENS.p500} onPress={() => {}}/>
           <HeaderIconButton symbol="arrow.triangle.merge" color={TOKENS.p500} onPress={() => {}}/>
         </CompFrame>
+      </DCArtboard>
+      <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width={520} height={220}>
+        <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS"/>
       </DCArtboard>
       <DCArtboard id="comp-header-check" label="HeaderCheckmarkButton (live)" width={402} height={80}>
         <CompFrame style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16 }}>
@@ -324,6 +369,9 @@ function ComponentsInputSection() {
             </div>
           </div>
         </CompFrame>
+      </DCArtboard>
+      <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width={520} height={280}>
+        <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC}/>
       </DCArtboard>
       <DCArtboard id="comp-keypad" label="CalculatorKeypad · 1-2-3-+ / 4-5-6-− / 7-8-9-× / .-0-=-÷ (live)" width={402} height={320}>
         <CompFrame style={{ padding: 0 }}>
@@ -417,13 +465,14 @@ function PolicyRow({ token, target, note }) {
 
 // ─────────────────────────────────────────────────────────────
 // FoundationsComponentsSection — Foundations > Components 子項的入口。
-// 串 4 個 family Section 為一組，DesignCanvas 會自動垂直 stack
+// 串 5 個 family Section 為一組，DesignCanvas 會自動垂直 stack
 // （DCSection 之間 marginBottom: 80）。
 // ─────────────────────────────────────────────────────────────
 function FoundationsComponentsSection() {
   return (
     <>
       <ComponentsListSection/>
+      <ComponentsFormSection/>
       <ComponentsNavigationSection/>
       <ComponentsChartSection/>
       <ComponentsInputSection/>
@@ -433,6 +482,7 @@ function FoundationsComponentsSection() {
 
 Object.assign(window, {
   ComponentsListSection,
+  ComponentsFormSection,
   ComponentsNavigationSection,
   ComponentsChartSection,
   ComponentsInputSection,

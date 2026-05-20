@@ -15,7 +15,7 @@
 | Tab | 它回答什麼問題 | 目錄 |
 |---|---|---|
 | Intro        | 「這份檔案是什麼？怎麼用？」 | `project/00_intro/` |
-| Foundations  | 「設計標準的零件——字、顏色、間距、陰影、動畫、元件、品牌資產」。**5 個 sub-item**：Type / Colors / Spacing / Components / Brand，全部用垂直 layout 一路往下讀。Components sub-item 內又自然分成 List / Navigation / Chart / Input 四個 family 區塊垂直堆。 | `project/10_foundations/` + `project/20_components/components-showcase.jsx` |
+| Foundations  | 「設計標準的零件——字、顏色、跨元件原語、元件 + 對應 token、品牌資產」。**5 個 sub-item**：Type / Colors / Tokens / Components / Brand，全部用垂直 layout 一路往下讀。Tokens 收 SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET 共用原語。Components sub-item 內分 List / Form / Navigation / Chart / Input 五個 family 區塊垂直堆，每個 family 內元件 showcase 與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）緊鄰擺放。 | `project/10_foundations/` + `project/20_components/components-showcase.jsx` |
 | Screens      | 「每個畫面長什麼樣？空 / 載入 / 錯誤狀態？想鳥瞰用畫布縮放。」 | `project/30_screens/` |
 | Explorations | 「這個設計問題我想了好幾種做法」（並陳） | `project/50_explorations/` |
 
@@ -72,11 +72,14 @@ project/
 │   │                              LINE_HEIGHT / LETTER_SPACING / SPACING /
 │   │                              RADIUS / SHADOW / MOTION /
 │   │                              LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS
-│   └── foundations.jsx            5 個 Section（Type / Colors / Spacing / Brand 直接定義；
-│                                  Components 由 components-showcase.jsx 提供 FoundationsComponentsSection）
+│   └── foundations.jsx            5 個 Section（Type / Colors / Tokens / Brand 直接定義；
+│                                  Components 由 components-showcase.jsx 提供 FoundationsComponentsSection。
+│                                  元件 token 表 helper（TokenTableCard / ListAnatomyCard /
+│                                  FormPickerAnatomyCard）也定義於此，供 components-showcase 引用）
 ├── 20_components/
 │   ├── components.jsx             元件實作（被 showcase 與 screens 共用）
-│   └── components-showcase.jsx    4 個家族 showcase（List / Navigation / Chart / Input），
+│   └── components-showcase.jsx    5 個家族 showcase（List / Form / Navigation / Chart / Input），
+│                                  每個 family 內元件與對應 token 表緊鄰擺放，
 │                                  由 FoundationsComponentsSection 串在 Foundations > Components 子項內
 ├── 30_screens/screens.jsx         22 個正式畫面群組
 ├── 50_explorations/
@@ -151,3 +154,4 @@ Explorations 為純設計探索，**完全隔離不牽動 spec 與 impl**。
 - `#filter` / `#tx-list` / `#recurring` / `#row-height` → `#screens`
 - `#design_system` → `#foundations`
 - `#components` → `#foundations/components`
+- `#foundations/spacing` → `#foundations/tokens`（sub-item 重命名）

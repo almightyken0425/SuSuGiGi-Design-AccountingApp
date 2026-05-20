@@ -43,7 +43,7 @@ function IntroSection() {
             <TabRow no="30" name="Screens" q="每個畫面長什麼樣？空 / 載入 / 錯誤狀態？" dir="30_screens/"/>
             <TabRow no="50" name="Explorations" q="這個設計問題我想了好幾種做法。" dir="50_explorations/"/>
             <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginTop: 16 }}>
-              注意：<b>Components 不是頂層分頁</b>，已併入 Foundations 作為其中一個 sub-item（與 claude.ai/design Design System tab 的結構對齊）。<code>20_components/</code> 目錄仍存在，承載元件實作與 showcase，由 Foundations · Components sub-item 引用。
+              注意：<b>Components 不是頂層分頁</b>，已併入 Foundations 作為其中一個 sub-item。<code>20_components/</code> 目錄仍存在，承載元件實作與 showcase，由 Foundations · Components sub-item 引用；每個元件 family 內，元件 showcase 與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）緊鄰擺放。
             </p>
           </IntroBody>
         </IntroCard>
@@ -58,8 +58,8 @@ function IntroSection() {
             <SectionLabel>Foundations · 5 個 sub-item</SectionLabel>
             <AnatomyRow name="Type" desc="TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY.size / TYPOGRAPHY.weight / LINE_HEIGHT / LETTER_SPACING"/>
             <AnatomyRow name="Colors" desc="PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status / Text ink"/>
-            <AnatomyRow name="Spacing" desc="SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET / LIST_TOKENS（含 ListItem 解剖）/ TX_LIST_TOKENS / FORM_PICKER_TOKENS（含 Form Picker 解剖）/ CHIP_TOKENS / SEARCH_BAR_TOKENS / SWITCH_TOKENS"/>
-            <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示"/>
+            <AnatomyRow name="Tokens" desc="跨元件共用原語：SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET"/>
+            <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示。5 個 family（List / Form / Navigation / Chart / Input），每個 family 內元件與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS / CHIP_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS / HEADER_ICON_BUTTON_TOKENS / SWITCH_TOKENS / LIST_EMPTY_TRANSITION）緊鄰擺放"/>
             <AnatomyRow name="Brand" desc="品牌標識、商標相關工件"/>
 
             <SectionLabel>Screens · 22 個畫面群組</SectionLabel>

@@ -31,8 +31,8 @@
 - **Foundations** — 設計標準視覺化，含 5 個 sub-item：
     - **Type** — TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY / LINE_HEIGHT / LETTER_SPACING
     - **Colors** — PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status
-    - **Spacing** — SPACING / RADIUS / SHADOW / MOTION / 元件 token 表
-    - **Components** — 由 `components-showcase.jsx` 引用 `20_components/components.jsx` 的元件展示
+    - **Tokens** — 跨元件共用原語：SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET
+    - **Components** — 由 `components-showcase.jsx` 引用 `20_components/components.jsx` 的元件展示。5 個 family（List / Form / Navigation / Chart / Input），每個 family 內元件 showcase 與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）緊鄰擺放
     - **Brand** — 品牌標識相關工件
 - **Screens** — 22 個畫面群組（含 default / empty / loading / error 邊界狀態變體）
 - **Explorations** — 5 個多版本提案主題：
