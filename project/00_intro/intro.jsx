@@ -94,11 +94,11 @@ function IntroSection() {
 
             <FlowRow
               source="觸發：impl 開發時某個字太小、圓角不對、動畫太快"
-              arbitrate="Design 仲裁：改 10_foundations/data.jsx 的 TYPE_STYLES / RADIUS / MOTION"
+              arbitrate="Design 仲裁：改 10_foundations/ atomic 層對應檔（no3_typography.jsx 改 TYPE_STYLES / no4_layout_tokens.jsx 改 RADIUS / MOTION）"
               follow="跟進：impl 同步改 src/constants/theme.ts；spec 通常不影響"/>
             <FlowRow
               source="觸發：Design 探索想換配色 / 換字級 / 換 icon 風格"
-              arbitrate="Design 仲裁：先在 50_explorations/ 開主題比較，[Current] 確認後改 10_foundations/data.jsx"
+              arbitrate="Design 仲裁：先在 50_explorations/ 開主題比較，[Current] 確認後改 10_foundations/no1_atomic_tokens.jsx 或 no3_typography.jsx"
               follow="跟進：impl 同步 src/constants/theme.ts；元件視覺 src/components/**"/>
             <FlowRow
               source="觸發：Spec 邏輯需要新狀態（例如新增 loading 變體）"
@@ -192,18 +192,26 @@ function IntroSection() {
             <pre style={fileTreeStyle}>{`project/
 ├── SuSuGiGi.html                  主入口
 ├── 00_intro/intro.jsx             這個分頁的內容
-├── 10_foundations/
-│   ├── data.jsx                   PALETTE / THEMES / TYPE_STYLES / TYPOGRAPHY /
-│   │                              LINE_HEIGHT / LETTER_SPACING / SPACING /
-│   │                              RADIUS / SHADOW / MOTION /
-│   │                              ICON_SIZE / HIT_TARGET /
-│   │                              LIST_TOKENS / TX_LIST_TOKENS /
-│   │                              FORM_PICKER_TOKENS / CHIP_TOKENS /
-│   │                              SEARCH_BAR_TOKENS / SWITCH_TOKENS
-│   └── foundations.jsx            視覺化展示（live JSX 單一來源）
+├── 10_foundations/                設計標準權威
+│   ├── no1_atomic_tokens.jsx      PALETTE / THEMES / GLASS_BASE / SHADOW_ELEVATION / SCRIM_LEVELS
+│   ├── no2_canvas_tokens.jsx      TOKENS / CHART_COLORS（canvas 渲染快照）
+│   ├── no3_typography.jsx         TYPOGRAPHY / TYPE_STYLES / LINE_HEIGHT / LETTER_SPACING
+│   ├── no4_layout_tokens.jsx      SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET / ROW_HEIGHT
+│   ├── no5_platform_tokens.jsx    IOS_SYSTEM_COLOR / ACTION_ICON_MAP
+│   ├── no6_icon_library.jsx       97 phosphor SVG
+│   ├── component_tokens/          元件級 token（一元件一檔，引用 atomic 層）
+│   │   └── no1-no8                LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH_BAR /
+│   │                              HEADER_ICON_BUTTON / SWITCH / LIST_EMPTY_TRANSITION
+│   └── visualizers/               Foundations TOC 三 group 視覺化卡片
+│       ├── no0_shared_card_kit    共用 UI primitives
+│       ├── atomic/no1-no4         Type / Colors / Layout / Platform
+│       ├── component_tokens/no1-no8  與 component_tokens/ 一對一對應
+│       └── showcase/no2-no3       Brand / Icon Library
+├── 15_fixtures/                   Mock 資料 + canvas helpers（不對齊 spec / impl）
+│   └── no1-no4                    categories / accounts / transactions / helpers
 ├── 20_components/
 │   ├── components.jsx             元件實作
-│   └── components-showcase.jsx    由 Foundations · Components sub-item 引用
+│   └── components-showcase.jsx    Foundations · Showcase · Components leaf 入口
 ├── 30_screens/screens.jsx         22 個正式畫面群組
 ├── 50_explorations/
 │   ├── axis_color_and_mood/
@@ -212,7 +220,7 @@ function IntroSection() {
 │   ├── axis_personality_packaged/
 │   └── transaction_editor/
 ├── 90_workbench/
-│   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame
+│   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame + SideTOC（三層）
 │   ├── design-canvas.jsx          DesignCanvas / DCSection / DCArtboard
 │   └── ios-frame.jsx              IOSDevice 邊框
 └── 99_deprecated/                 已淘汰`}</pre>
@@ -240,7 +248,7 @@ function IntroSection() {
             </ul>
             <p style={{ marginTop: 12 }}><b>但決議都寫進 Design git：</b></p>
             <ul>
-              <li>token 的最終值寫在 <code>10_foundations/data.jsx</code></li>
+              <li>token 的最終值寫在 <code>10_foundations/</code>（atomic 層 noN_*.jsx 與 component_tokens/）</li>
               <li>元件的最終形狀寫在 <code>20_components/components.jsx</code></li>
               <li>畫面的最終樣貌寫在 <code>30_screens/screens.jsx</code></li>
             </ul>

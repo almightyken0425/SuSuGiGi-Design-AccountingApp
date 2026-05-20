@@ -42,8 +42,29 @@
   <script type="text/babel" src="90_workbench/ios-frame.jsx"></script>
   <script type="text/babel" src="90_workbench/design-canvas.jsx"></script>
 
-  <!-- Foundations (tokens, sample data) -->
-  <script type="text/babel" src="10_foundations/data.jsx"></script>
+  <!-- Foundations atomic 層（嚴格依序：atomic → canvas → typography → layout → platform → icon library） -->
+  <script type="text/babel" src="10_foundations/no1_atomic_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/no2_canvas_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/no3_typography.jsx"></script>
+  <script type="text/babel" src="10_foundations/no4_layout_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/no5_platform_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/no6_icon_library.jsx"></script>
+
+  <!-- Foundations 元件級 token（依賴 atomic 層） -->
+  <script type="text/babel" src="10_foundations/component_tokens/no1_list_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no2_tx_list_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no3_form_picker_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no4_chip_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no5_search_bar_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no6_header_icon_button_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no7_switch_tokens.jsx"></script>
+  <script type="text/babel" src="10_foundations/component_tokens/no8_list_empty_transition.jsx"></script>
+
+  <!-- Fixtures · mock 與 helpers -->
+  <script type="text/babel" src="15_fixtures/no1_categories.jsx"></script>
+  <script type="text/babel" src="15_fixtures/no2_accounts.jsx"></script>
+  <script type="text/babel" src="15_fixtures/no3_transactions.jsx"></script>
+  <script type="text/babel" src="15_fixtures/no4_helpers.jsx"></script>
 
   <!-- Components (UI atoms used by screens & showcase) -->
   <script type="text/babel" src="20_components/components.jsx"></script>
@@ -51,9 +72,25 @@
   <!-- Production screens -->
   <script type="text/babel" src="30_screens/screens.jsx"></script>
 
+  <!-- Visualizers · shared kit + atomic + component_tokens + showcase -->
+  <script type="text/babel" src="10_foundations/visualizers/no0_shared_card_kit.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/atomic/no1_type_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/atomic/no2_colors_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/atomic/no3_layout_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/atomic/no4_platform_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no1_list_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no2_tx_list_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no3_form_picker_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no4_chip_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no5_search_bar_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no6_header_icon_button_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no7_switch_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/component_tokens/no8_list_empty_transition_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/showcase/no2_brand_visualizer.jsx"></script>
+  <script type="text/babel" src="10_foundations/visualizers/showcase/no3_icon_library_visualizer.jsx"></script>
+
   <!-- Tab content modules -->
   <script type="text/babel" src="00_intro/intro.jsx"></script>
-  <script type="text/babel" src="10_foundations/foundations.jsx"></script>
   <script type="text/babel" src="20_components/components-showcase.jsx"></script>
 
   <!-- Exploration topics (must load before app.jsx) -->

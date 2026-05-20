@@ -1,0 +1,71 @@
+// ─────────────────────────────────────────────────────────────
+// Canvas helpers · pure function 資料轉換與格式化
+//
+// 給 screens / explorations / components-showcase 渲染示範用。
+// 所有 helpers 必須是 pure function，不引用 impl 業務邏輯。
+// ─────────────────────────────────────────────────────────────
+
+const baseAmount = (t) => t.convertedAmount ?? t.amount;
+
+function periodTotals(items) {
+  let income = 0, expense = 0;
+  for (const t of items) {
+    const a = baseAmount(t);
+    if (a > 0) income += a; else expense += -a;
+  }
+  return { income, expense, balance: income - expense };
+}
+
+function groupByDate(items) {
+  const m = new Map();
+  for (const t of items) {
+    if (!m.has(t.date)) m.set(t.date, []);
+    m.get(t.date).push(t);
+  }
+  return Array.from(m.entries()).map(([title, data]) => ({
+    id: 'date_' + title, title, data,
+    total: data.reduce((s, t) => s + baseAmount(t), 0),
+  }));
+}
+
+function groupByCategory(items, chartMode = 'expense') {
+  const filtered = items.filter(t => chartMode === 'expense' ? baseAmount(t) < 0 : baseAmount(t) > 0);
+  const m = new Map();
+  for (const t of filtered) {
+    if (!m.has(t.cat)) m.set(t.cat, []);
+    m.get(t.cat).push(t);
+  }
+  return Array.from(m.entries()).map(([cat, data]) => ({
+    id: 'cat_' + cat, cat,
+    title: CAT_BY_ID[cat].name,
+    iconId: CAT_BY_ID[cat].iconId,
+    data,
+    total: data.reduce((s, t) => s + baseAmount(t), 0),
+  })).sort((a, b) => Math.abs(b.total) - Math.abs(a.total));
+}
+
+function pieData(items) {
+  const m = new Map();
+  for (const t of items) {
+    const a = baseAmount(t);
+    if (a >= 0) continue;
+    m.set(t.cat, (m.get(t.cat) || 0) + (-a));
+  }
+  const arr = Array.from(m.entries()).sort((a, b) => b[1] - a[1]);
+  return arr.map(([id, value], i) => ({
+    id, value,
+    color: CHART_COLORS[i % CHART_COLORS.length],
+    cat: CAT_BY_ID[id],
+  }));
+}
+
+function fmt(n, code = 'TWD') {
+  const sign = n < 0 ? '-' : '';
+  const abs = Math.abs(n);
+  const symbol = code === 'TWD' ? 'NT$' : code === 'USD' ? 'US$' : code === 'JPY' ? '¥' : code;
+  return sign + symbol + abs.toLocaleString('en-US');
+}
+
+Object.assign(window, {
+  baseAmount, periodTotals, groupByDate, groupByCategory, pieData, fmt,
+});

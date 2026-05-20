@@ -4,8 +4,11 @@
 // 頂部 4 個 tab：
 //   #intro / #foundations / #screens / #explorations
 //
-// Foundations 內含 5 個 sub-item：Type / Colors / Tokens / Components / Brand。
-// Tokens 收跨元件共用原語；元件專屬 token 表已下放 Components 對應 family。
+// Foundations 內含 3 個 group × 15 leaf sub-item（hash 三段式：#foundations/<group>/<topic>）：
+//   - Atomic            (4) — Type / Colors / Layout / Platform
+//   - Component Tokens  (8) — List / Transaction List / Form Picker / Chip / Search Bar /
+//                              Header Icon Button / Switch / List Empty Transition
+//   - Showcase          (3) — Components / Brand / Icon Library
 //
 // SCREEN_META 中央定義每個 screen 的：
 //   - title           NavBar 標題
@@ -447,8 +450,8 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
 }
 
 // ─── Side TOC nav ────────────────────────────────────────────
-// 兩層 nav：top-level views 與 sub-items（Screens groups / Explorations topics）。
-// 選擇 screens 或 explorations 子項時，canvas 只 render 該子項，避免 canvas 過大。
+// 三層 nav：top-level views → Foundations group → leaf topic。
+// Screens / Explorations 仍維持兩層（views → sub-item）。
 const VIEW_TABS = [
   { id: 'intro',        label: 'Intro' },
   { id: 'foundations',  label: 'Foundations',  hasSubs: true },
@@ -457,24 +460,40 @@ const VIEW_TABS = [
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
-// Foundations topics — 5 個 sub-item。
-// 每個 sub-item 對應 foundations.jsx / components-showcase.jsx 註冊的 Section component；
-// 內部 DCSection 用 direction="column"，卡片由上往下垂直堆。
-// Tokens 收 SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET 共用原語；
-// 元件專屬 token 表（LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH / HEADER_ICON / SWITCH /
-// LIST_EMPTY_TRANSITION）已下放至 Components sub-item 對應 family 內。
-const FOUNDATIONS_TOPICS = [
-  { id: 'type',       label: 'Type',       render: () => <FoundationsTypeSection/> },
-  { id: 'colors',     label: 'Colors',     render: () => <FoundationsColorsSection/> },
-  { id: 'tokens',     label: 'Tokens',     render: () => <FoundationsTokensSection/> },
-  { id: 'components', label: 'Components', render: () => <FoundationsComponentsSection/> },
-  { id: 'brand',      label: 'Brand',      render: () => <FoundationsBrandSection/> },
+// Foundations groups — 3 group × 15 leaf sub-item。
+// hash 路徑：#foundations/<group>/<topic>。每個 topic 對應 visualizers 目錄下單一 Section component。
+const FOUNDATIONS_GROUPS = [
+  {
+    id: 'atomic', label: 'Atomic',
+    topics: [
+      { id: 'type',     label: 'Type',     render: () => <FoundationsAtomicTypeSection/> },
+      { id: 'colors',   label: 'Colors',   render: () => <FoundationsAtomicColorsSection/> },
+      { id: 'layout',   label: 'Layout',   render: () => <FoundationsAtomicLayoutSection/> },
+      { id: 'platform', label: 'Platform', render: () => <FoundationsAtomicPlatformSection/> },
+    ],
+  },
+  {
+    id: 'component-tokens', label: 'Component Tokens',
+    topics: [
+      { id: 'list',                  label: 'List',                  render: () => <FoundationsCTListSection/> },
+      { id: 'tx-list',               label: 'Transaction List',      render: () => <FoundationsCTTxListSection/> },
+      { id: 'form-picker',           label: 'Form Picker',           render: () => <FoundationsCTFormPickerSection/> },
+      { id: 'chip',                  label: 'Chip',                  render: () => <FoundationsCTChipSection/> },
+      { id: 'search-bar',            label: 'Search Bar',            render: () => <FoundationsCTSearchBarSection/> },
+      { id: 'header-icon-button',    label: 'Header Icon Button',    render: () => <FoundationsCTHeaderIconButtonSection/> },
+      { id: 'switch',                label: 'Switch',                render: () => <FoundationsCTSwitchSection/> },
+      { id: 'list-empty-transition', label: 'List Empty Transition', render: () => <FoundationsCTListEmptyTransitionSection/> },
+    ],
+  },
+  {
+    id: 'showcase', label: 'Showcase',
+    topics: [
+      { id: 'components',   label: 'Components',   render: () => <FoundationsShowcaseComponentsSection/> },
+      { id: 'brand',        label: 'Brand',        render: () => <FoundationsShowcaseBrandSection/> },
+      { id: 'icon-library', label: 'Icon Library', render: () => <FoundationsShowcaseIconLibrarySection/> },
+    ],
+  },
 ];
-
-// Foundations sub-item 舊名向後相容
-const FOUNDATIONS_SUB_ALIASES = {
-  spacing: 'tokens',
-};
 
 // Explorations topics — 每個 entry 對應 50_explorations/<dir>/variants.jsx 註冊的 Section component
 const EXPLORATION_TOPICS = [
@@ -485,19 +504,34 @@ const EXPLORATION_TOPICS = [
   { id: 'transaction-editor', label: 'Transaction Editor',                render: () => <TransactionEditorSection/> },
 ];
 
+// 找 Foundations group / topic 的 helper。沒命中時回 fallback（atomic/type）。
+function resolveFoundationsRoute(rawGroup, rawTopic) {
+  const group = FOUNDATIONS_GROUPS.find(g => g.id === rawGroup);
+  if (!group) {
+    const fallback = FOUNDATIONS_GROUPS[0];
+    return { group: fallback.id, topic: fallback.topics[0].id };
+  }
+  const topic = group.topics.find(t => t.id === rawTopic);
+  return { group: group.id, topic: topic ? topic.id : group.topics[0].id };
+}
+
 const subsFor = (view) => {
-  if (view === 'foundations')  return FOUNDATIONS_TOPICS.map(t => ({ id: t.id, label: t.label }));
   if (view === 'screens')      return SCREEN_GROUPS.map(g => ({ id: g.id, label: g.title }));
   if (view === 'explorations') return EXPLORATION_TOPICS.map(t => ({ id: t.id, label: t.label }));
   return null;
 };
 
 const defaultSubFor = (view) => {
+  if (view === 'foundations') {
+    const g = FOUNDATIONS_GROUPS[0];
+    return { group: g.id, topic: g.topics[0].id };
+  }
   const subs = subsFor(view);
   return subs && subs[0] ? subs[0].id : null;
 };
 
-// 舊 hash 別名（向後相容）— entry 可以選擇性帶 sub，沒帶就走 defaultSubFor。
+// 舊 hash 別名（向後相容）。Foundations 從兩段 #foundations/<topic> 升級為三段
+// #foundations/<group>/<topic>，舊收藏連結透過此表 redirect。
 const LEGACY_HASH_ALIASES = {
   'overview':       { view: 'screens' },
   'flows':          { view: 'screens' },
@@ -507,43 +541,70 @@ const LEGACY_HASH_ALIASES = {
   'recurring':      { view: 'screens' },
   'row-height':     { view: 'screens' },
   'design_system':  { view: 'foundations' },
-  'components':     { view: 'foundations', sub: 'components' },
+  // 舊兩段 hash → 三段
+  'foundations/type':       { view: 'foundations', group: 'atomic',           topic: 'type' },
+  'foundations/colors':     { view: 'foundations', group: 'atomic',           topic: 'colors' },
+  'foundations/tokens':     { view: 'foundations', group: 'atomic',           topic: 'layout' },
+  'foundations/spacing':    { view: 'foundations', group: 'atomic',           topic: 'layout' },
+  'foundations/components': { view: 'foundations', group: 'showcase',         topic: 'components' },
+  'foundations/brand':      { view: 'foundations', group: 'showcase',         topic: 'brand' },
+  'components':             { view: 'foundations', group: 'showcase',         topic: 'components' },
 };
 
 function parseRoute() {
   const h = window.location.hash.replace('#', '');
-  if (!h) return { view: 'intro', sub: null };
+  if (!h) return { view: 'intro', group: null, topic: null, sub: null };
   if (LEGACY_HASH_ALIASES[h]) {
     const alias = LEGACY_HASH_ALIASES[h];
-    return { view: alias.view, sub: alias.sub ?? defaultSubFor(alias.view) };
+    if (alias.view === 'foundations') {
+      const f = alias.group ? { group: alias.group, topic: alias.topic } : defaultSubFor('foundations');
+      return { view: 'foundations', group: f.group, topic: f.topic, sub: null };
+    }
+    return { view: alias.view, group: null, topic: null, sub: alias.sub ?? defaultSubFor(alias.view) };
   }
-  const [view, rawSub] = h.split('/');
-  if (!VALID_VIEWS.includes(view)) return { view: 'intro', sub: null };
+  const parts = h.split('/');
+  const view = parts[0];
+  if (!VALID_VIEWS.includes(view)) return { view: 'intro', group: null, topic: null, sub: null };
+  if (view === 'foundations') {
+    const f = resolveFoundationsRoute(parts[1], parts[2]);
+    return { view, group: f.group, topic: f.topic, sub: null };
+  }
   const subs = subsFor(view);
-  if (!subs) return { view, sub: null };
-  const sub = view === 'foundations' && FOUNDATIONS_SUB_ALIASES[rawSub]
-    ? FOUNDATIONS_SUB_ALIASES[rawSub]
-    : rawSub;
-  const validSub = subs.find(s => s.id === sub);
-  return { view, sub: validSub ? validSub.id : defaultSubFor(view) };
+  if (!subs) return { view, group: null, topic: null, sub: null };
+  const rawSub = parts[1];
+  const validSub = subs.find(s => s.id === rawSub);
+  return { view, group: null, topic: null, sub: validSub ? validSub.id : defaultSubFor(view) };
 }
 
-function buildHash(view, sub) {
-  return sub ? `${view}/${sub}` : view;
+function buildHash(view, payload) {
+  if (view === 'foundations') {
+    if (payload && payload.group && payload.topic) return `${view}/${payload.group}/${payload.topic}`;
+    return view;
+  }
+  return payload ? `${view}/${payload}` : view;
 }
 
 function TocRow({ label, active, hasChildren, expanded, level, onClick }) {
   const isTop = level === 0;
+  // level 0 = top tab；level 1 = Foundations group 或 Screens/Explorations sub；level 2 = Foundations leaf
+  const padding =
+    level === 0 ? '8px 12px' :
+    level === 1 ? '6px 10px 6px 26px' :
+                  '5px 10px 5px 42px';
+  const fontSize =
+    level === 0 ? 13.5 :
+    level === 1 ? 12 :
+                  11.5;
   return (
     <button onClick={onClick} style={{
       display: 'flex', alignItems: 'center', gap: 6,
       width: '100%', textAlign: 'left',
       border: 'none', cursor: 'pointer',
-      padding: isTop ? '8px 12px' : '6px 10px 6px 26px',
+      padding,
       borderRadius: 7,
       background: active ? (isTop ? TOKENS.p500 : 'rgba(67,35,160,0.10)') : 'transparent',
       color: active ? (isTop ? '#fff' : TOKENS.p600) : '#3a3a3a',
-      fontSize: isTop ? 13.5 : 12,
+      fontSize,
       fontWeight: active ? 600 : 500,
       fontFamily: 'inherit',
       transition: 'background 140ms, color 140ms',
@@ -564,7 +625,23 @@ function TocRow({ label, active, hasChildren, expanded, level, onClick }) {
   );
 }
 
-function SideTOC({ view, sub, onNavigate }) {
+function SideTOC({ route, onNavigate }) {
+  const { view, sub, group: activeGroup, topic: activeTopic } = route;
+  // 每個 Foundations group 維護自身展開狀態；預設只展開選中 leaf 所屬 group。
+  const [expandedGroups, setExpandedGroups] = React.useState(() => {
+    const init = {};
+    FOUNDATIONS_GROUPS.forEach(g => { init[g.id] = view === 'foundations' && g.id === activeGroup; });
+    return init;
+  });
+  // 路由變化時自動展開選中 group（其餘維持手動狀態）。
+  React.useEffect(() => {
+    if (view === 'foundations' && activeGroup) {
+      setExpandedGroups(prev => prev[activeGroup] ? prev : { ...prev, [activeGroup]: true });
+    }
+  }, [view, activeGroup]);
+
+  const toggleGroup = (gid) => setExpandedGroups(prev => ({ ...prev, [gid]: !prev[gid] }));
+
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, bottom: 0,
@@ -591,18 +668,42 @@ function SideTOC({ view, sub, onNavigate }) {
       </div>
       {VIEW_TABS.map(t => {
         const active = view === t.id;
-        const subs = t.hasSubs ? subsFor(t.id) : null;
         return (
           <div key={t.id}>
             <TocRow
               label={t.label}
               active={active}
-              hasChildren={!!subs}
+              hasChildren={!!t.hasSubs}
               expanded={active}
               level={0}
               onClick={() => onNavigate(t.id, null)}
             />
-            {active && subs && subs.map(s => (
+            {active && t.id === 'foundations' && FOUNDATIONS_GROUPS.map(g => {
+              const groupActive = activeGroup === g.id;
+              const groupExpanded = !!expandedGroups[g.id];
+              return (
+                <div key={g.id}>
+                  <TocRow
+                    label={g.label}
+                    active={false}
+                    hasChildren={true}
+                    expanded={groupExpanded}
+                    level={1}
+                    onClick={() => toggleGroup(g.id)}
+                  />
+                  {groupExpanded && g.topics.map(tp => (
+                    <TocRow
+                      key={tp.id}
+                      label={tp.label}
+                      active={groupActive && activeTopic === tp.id}
+                      level={2}
+                      onClick={() => onNavigate('foundations', { group: g.id, topic: tp.id })}
+                    />
+                  ))}
+                </div>
+              );
+            })}
+            {active && t.id !== 'foundations' && t.hasSubs && subsFor(t.id).map(s => (
               <TocRow
                 key={s.id}
                 label={s.label}
@@ -626,14 +727,17 @@ function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const navigate = (view, sub) => {
-    const finalSub = sub || defaultSubFor(view);
-    const next = buildHash(view, finalSub);
-    const current = buildHash(route.view, route.sub);
+  const navigate = (view, payload) => {
+    const finalPayload = payload ?? defaultSubFor(view);
+    const next = buildHash(view, finalPayload);
+    const currentPayload = view === 'foundations'
+      ? (route.view === 'foundations' ? { group: route.group, topic: route.topic } : null)
+      : route.sub;
+    const current = buildHash(route.view, currentPayload);
     if (next !== current) window.location.hash = next;
   };
 
-  const { view, sub } = route;
+  const { view, sub, group: foundationsGroup, topic: foundationsTopic } = route;
 
   const [sharedFilter, setSharedFilter] = React.useState({
     timeGranularity: 'month',
@@ -643,14 +747,21 @@ function App() {
 
   const W = 402, H = 874;
 
+  const foundationsTopicEntry = view === 'foundations'
+    ? (() => {
+        const g = FOUNDATIONS_GROUPS.find(grp => grp.id === foundationsGroup);
+        return g ? g.topics.find(tp => tp.id === foundationsTopic) : null;
+      })()
+    : null;
+
   return (
     <>
-      <SideTOC view={view} sub={sub} onNavigate={navigate}/>
-      <DesignCanvas resetKey={`${view}/${sub ?? ''}`}>
+      <SideTOC route={route} onNavigate={navigate}/>
+      <DesignCanvas resetKey={view === 'foundations' ? `foundations/${foundationsGroup ?? ''}/${foundationsTopic ?? ''}` : `${view}/${sub ?? ''}`}>
         {view === 'intro'        && <IntroSection/>}
-        {view === 'foundations' && FOUNDATIONS_TOPICS.filter(t => t.id === sub).map(t => (
-          <React.Fragment key={t.id}>{t.render()}</React.Fragment>
-        ))}
+        {view === 'foundations' && foundationsTopicEntry && (
+          <React.Fragment>{foundationsTopicEntry.render()}</React.Fragment>
+        )}
         {view === 'screens' && SCREEN_GROUPS.filter(g => g.id === sub).map(group => (
           <DCSection key={group.id} id={`screens-${group.id}`} title={group.title} subtitle={group.subtitle}>
             {group.screens.map(s => (
@@ -670,6 +781,6 @@ function App() {
   );
 }
 
-Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, FOUNDATIONS_TOPICS, EXPLORATION_TOPICS });
+Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, FOUNDATIONS_GROUPS, EXPLORATION_TOPICS });
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
