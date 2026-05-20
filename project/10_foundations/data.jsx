@@ -307,6 +307,20 @@ const HIT_TARGET = {
   min: 44,
 };
 
+// 跨元件共用 row 高度原語。58 = HIT_TARGET.min(44) + 視覺安全補位。
+// 目前由 LIST_TOKENS.ITEM_MIN_HEIGHT 與 FORM_PICKER_TOKENS.ROW_MIN_HEIGHT 引用。
+const ROW_HEIGHT = {
+  base: 58,
+};
+
+// 平台元件原色——非主題色、不參與 theme 切換。RN 原生 Switch 等 iOS 元件
+// 的視覺一致性需求收斂在此命名空間。
+const IOS_SYSTEM_COLOR = {
+  switchThumbOn:  '#FFFFFF',
+  switchThumbOff: '#F4F3F4',
+  switchTrackBg:  '#3E3E3E',
+};
+
 // 列表空狀態切換動畫；引用 MOTION，內部不再寫死毫秒數。
 const LIST_EMPTY_TRANSITION = {
   DURATION_MS: MOTION.duration.fast + 20,  // 220ms（在 fast 與 base 之間，給 crossfade 用）
@@ -319,7 +333,7 @@ const LIST_EMPTY_TRANSITION = {
 // ─────────────────────────────────────────────────────────────
 
 const LIST_TOKENS = {
-  ITEM_MIN_HEIGHT:           58,
+  ITEM_MIN_HEIGHT:           ROW_HEIGHT.base,
   ITEM_PADDING_VERTICAL:     TYPE_STYLES.body.size,         // 17
   ITEM_PADDING_HORIZONTAL:   SPACING.lg,
   ITEM_GAP_HORIZONTAL:       SPACING.md,
@@ -332,7 +346,7 @@ const LIST_TOKENS = {
   DIVIDER_INSET_WITHOUT_ICON: SPACING.lg,
   GROUP_CARD_RADIUS:         RADIUS.lg,                     // 12（HIG 不收 14，改採 lg）
   GROUP_CARD_MARGIN_BOTTOM:  35,                            // 離開 SPACING 階梯：35 為 section 間呼吸距，HIG 階梯內無此值
-  GROUP_CARD_BORDER_WIDTH:   1,
+  GROUP_CARD_BORDER_WIDTH:   1,                             // impl: StyleSheet.hairlineWidth；canvas 為 React Web 無法 resolve，沿用 1 顯示
   SECTION_TITLE_SIZE:        TYPE_STYLES.footnote.size,     // footnote 13
   SECTION_TITLE_WEIGHT:      TYPOGRAPHY.weight.regular,
   SECTION_TITLE_LETTER_SPACING: 0.5,
@@ -369,7 +383,7 @@ const TX_LIST_TOKENS = {
   SECTION_HEADER_TOTAL_SIZE_EXPANDED:   TYPE_STYLES.footnote.size,     // 13
   SECTION_HEADER_TITLE_WEIGHT:          TYPOGRAPHY.weight.medium,
   SECTION_HEADER_TOTAL_WEIGHT:          TYPOGRAPHY.weight.medium,
-  ICON_OUTLINE_BORDER_WIDTH:            1,
+  ICON_OUTLINE_BORDER_WIDTH:            1,                             // impl: StyleSheet.hairlineWidth；canvas 為 React Web 無法 resolve，沿用 1 顯示
   ICON_OUTLINE_SIZE:                    ICON_SIZE.lg,
   ICON_OUTLINE_RADIUS:                  10,                            // 離開 RADIUS 階梯：32px icon 配 RADIUS.md(8) 偏方、配 lg(12) 偏圓，10 為視覺校準
   ROW_AMOUNT_SIZE:                      TYPE_STYLES.callout.size,      // 16
@@ -378,6 +392,14 @@ const TX_LIST_TOKENS = {
   ROW_NOTE_SIZE:                        TYPE_STYLES.subheadline.size,  // 15
   ROW_SECONDARY_SIZE:                   TYPE_STYLES.caption1.size,     // 12
   MORPH_DURATION_MS:                    MOTION.duration.fast + 80,     // 280ms
+  SECTION_ENTRY_DURATION_MS:            160,                           // (literal: visual calibration)
+  SECTION_ENTRY_STAGGER_MS:             20,                            // (literal: stagger interval)
+  SECTION_ENTRY_TRANSLATE_Y:            6,                             // (literal: entry offset，介於 SPACING.xs 與 sm 之間)
+  SECTION_ENTRY_STAGGER_MAX_INDEX:      4,                             // (literal: index cap)
+  SECTION_SHRINK_DURATION_MS:           MOTION.duration.fast,          // 200ms
+  SECTION_GROW_DURATION_MS:             312,                           // (literal: visual calibration)
+  FOCUS_CARD_SHRINK_DURATION_MS:        92,                            // (literal: visual calibration)
+  FOCUS_CARD_GROW_DURATION_MS:          148,                           // (literal: visual calibration)
 };
 // 老命名 alias 保留向後相容（intro / foundations / showcase 用過）
 const TX_TOKENS = TX_LIST_TOKENS;
@@ -386,7 +408,7 @@ const TX_TOKENS = TX_LIST_TOKENS;
 // 「打開 form 的單一觸發 row」）。視覺與 ListItem 不同：icon 32px 圓形 chip、
 // 有外框、padding 12（vs ListItem 17）。不與 LIST_TOKENS 共用。
 const FORM_PICKER_TOKENS = {
-  ROW_MIN_HEIGHT:         58,                       // 對齊 ListItem，亦 ≥ HIT_TARGET.min
+  ROW_MIN_HEIGHT:         ROW_HEIGHT.base,          // 對齊 ListItem，亦 ≥ HIT_TARGET.min
   ROW_PADDING_VERTICAL:   SPACING.md,               // 12（form input 內距）
   ROW_PADDING_HORIZONTAL: SPACING.lg,               // 16（與 LIST 對齊行末）
   ICON_SIZE:              ICON_SIZE.lg,             // 32（引第 3 層階梯）
@@ -410,7 +432,7 @@ const CHIP_TOKENS = {
   GAP_VERTICAL:           SPACING.sm,               // 8（chip 換行間距）
   TEXT_SIZE:              TYPOGRAPHY.size.sm,       // 14
   TEXT_WEIGHT_SELECTED:   TYPOGRAPHY.weight.medium,
-  BORDER_WIDTH:           1,
+  BORDER_WIDTH:           1,                        // impl: StyleSheet.hairlineWidth；canvas 為 React Web 無法 resolve，沿用 1 顯示
 };
 
 const SEARCH_BAR_TOKENS = {
@@ -449,9 +471,9 @@ const SWITCH_TOKENS = {
     default: TOKENS.success,
     brand:   TOKENS.p500,
   },
-  THUMB_COLOR_ON:  '#FFFFFF',
-  THUMB_COLOR_OFF: '#F4F3F4',
-  IOS_BG_COLOR:    '#3E3E3E',
+  THUMB_COLOR_ON:  IOS_SYSTEM_COLOR.switchThumbOn,
+  THUMB_COLOR_OFF: IOS_SYSTEM_COLOR.switchThumbOff,
+  IOS_BG_COLOR:    IOS_SYSTEM_COLOR.switchTrackBg,
 };
 
 // ─────────────────────────────────────────────────────────────
