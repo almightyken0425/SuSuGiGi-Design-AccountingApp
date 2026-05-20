@@ -1,47 +1,22 @@
 // ─────────────────────────────────────────────────────────────
 // Components Showcase · 元件視覺化（純展示，不含 token 表）
 //
-// 5 個家族 section，由 `FoundationsShowcaseComponentsSection` 串成
-// Foundations > Showcase > Components leaf 的內容：
+// 5 個家族 section，各自為 Foundations > Components group 底下一個 leaf：
 //   - ComponentsListSection         List / TxList row family
 //   - ComponentsFormSection         FormPicker / Chip family
 //   - ComponentsNavigationSection   Header / SearchBar / FAB
 //   - ComponentsChartSection        Donut / FocusCard
 //   - ComponentsInputSection        Switch / Keypad / GlassView
 //
-// 本檔僅承載「元件實境 demo」。對應的元件級 token 表已搬到
-// Foundations > Component Tokens 對應 sub-item 內。
+// 本檔僅承載「元件實境 demo」。對應的元件級 token 表搬到
+// Foundations > Component Tokens 對應 leaf 內。
 //
 // 所有卡片皆為 live JSX：讀 components.jsx 的元件即時 render。
 // ─────────────────────────────────────────────────────────────
 
-function ListSeparatorVariantCard() {
-  const variants = {
-    '0 / 滿版':                   0,
-    'DIVIDER_INSET_WITHOUT_ICON': LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON,
-    'DIVIDER_INSET_WITH_ICON':    LIST_TOKENS.DIVIDER_INSET_WITH_ICON,
-  };
-  return (
-    <FoundCard>
-      <FoundLabel>ListSeparator · insetLeft 變體 (live)</FoundLabel>
-      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12, lineHeight: 1.5 }}>
-        三組 inset 用同一張 row 模板對位演示。對應 token 表見 Foundations &gt; Component Tokens &gt; List。
-      </div>
-      <div>
-        {Object.entries(variants).map(([k, v], i) => (
-          <div key={k} style={{ marginTop: i === 0 ? 0 : SPACING.md }}>
-            <div style={{ fontSize: 10.5, color: TOKENS.ink2, marginBottom: 4 }}>{k} · {v}</div>
-            <ListSeparator insetLeft={v}/>
-          </div>
-        ))}
-      </div>
-    </FoundCard>
-  );
-}
-
 function ComponentsListSection() {
   return (
-    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list 元件。對應 token 表（LIST_TOKENS / TX_LIST_TOKENS / LIST_EMPTY_TRANSITION）見 Foundations > Component Tokens 對應 sub-item。" direction="column">
+    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list row 元件家族。對應 token 表與 ListSeparator divider inset 規則見 Foundations > Component Tokens 對應 leaf（List / Transaction List / List Empty Transition）。" direction="column">
       <DCArtboard id="comp-listitem" label="ListItem · 變體 (live)" width={402} height={620}>
         <CompFrame>
           <CompLabel>ListItem 不同組合</CompLabel>
@@ -135,10 +110,6 @@ function ComponentsListSection() {
             </ListSection>
           </div>
         </CompFrame>
-      </DCArtboard>
-
-      <DCArtboard id="comp-list-separator" label="ListSeparator · insetLeft 變體 (live)" width="auto" height="auto">
-        <ListSeparatorVariantCard/>
       </DCArtboard>
 
       <DCArtboard id="comp-empty-live" label="ListEmptyState (live)" width={402} height={500}>
@@ -434,28 +405,10 @@ function PolicyRow({ token, target, note }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// FoundationsShowcaseComponentsSection — Foundations > Showcase > Components leaf 的入口。
-// 串 5 個 family Section 為一組，DesignCanvas 會自動垂直 stack
-// （DCSection 之間 marginBottom: 80）。
-// ─────────────────────────────────────────────────────────────
-function FoundationsShowcaseComponentsSection() {
-  return (
-    <>
-      <ComponentsListSection/>
-      <ComponentsFormSection/>
-      <ComponentsNavigationSection/>
-      <ComponentsChartSection/>
-      <ComponentsInputSection/>
-    </>
-  );
-}
-
 Object.assign(window, {
   ComponentsListSection,
   ComponentsFormSection,
   ComponentsNavigationSection,
   ComponentsChartSection,
   ComponentsInputSection,
-  FoundationsShowcaseComponentsSection,
 });

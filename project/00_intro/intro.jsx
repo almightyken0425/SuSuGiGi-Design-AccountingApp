@@ -43,7 +43,7 @@ function IntroSection() {
             <TabRow no="30" name="Screens" q="每個畫面長什麼樣？空 / 載入 / 錯誤狀態？" dir="30_screens/"/>
             <TabRow no="50" name="Explorations" q="這個設計問題我想了好幾種做法。" dir="50_explorations/"/>
             <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginTop: 16 }}>
-              注意：<b>Components 不是頂層分頁</b>，已併入 Foundations 作為其中一個 sub-item。<code>20_components/</code> 目錄仍存在，承載元件實作與 showcase，由 Foundations · Components sub-item 引用；每個元件 family 內，元件 showcase 與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）緊鄰擺放。
+              注意：<b>Components 不是頂層分頁</b>，已併入 Foundations 作為其中一個 group（List / Form / Navigation / Chart / Input 共 5 leaf）。<code>20_components/</code> 目錄仍存在，承載元件實作；元件 showcase 由 Foundations · Components group 各 leaf 分頁渲染。對應的 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）位於 Foundations · Component Tokens group。
             </p>
           </IntroBody>
         </IntroCard>
@@ -110,7 +110,7 @@ function IntroSection() {
               follow="跟進：spec 新增 noN_<name>_screen.md；impl 完成 src/screens/<Name>/"/>
             <FlowRow
               source="觸發：想新增可重用元件"
-              arbitrate="Design 仲裁：加進 20_components/components.jsx；showcase 由 Foundations · Components sub-item 自動引用"
+              arbitrate="Design 仲裁：加進 20_components/components.jsx；showcase 由 Foundations · Components group 對應 leaf 自動引用"
               follow="跟進：impl 同步 src/components/**；spec 在引用該元件的 screen 規格更新"/>
             <FlowRow
               source="觸發：某個設計問題想試多種做法"
@@ -202,16 +202,17 @@ function IntroSection() {
 │   ├── component_tokens/          元件級 token（一元件一檔，引用 atomic 層）
 │   │   └── no1-no8                LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH_BAR /
 │   │                              HEADER_ICON_BUTTON / SWITCH / LIST_EMPTY_TRANSITION
-│   └── visualizers/               Foundations TOC 三 group 視覺化卡片
+│   └── visualizers/               Foundations TOC group 視覺化卡片
 │       ├── no0_shared_card_kit    共用 UI primitives
 │       ├── atomic/no1-no4         Type / Colors / Layout / Platform
 │       ├── component_tokens/no1-no8  與 component_tokens/ 一對一對應
-│       └── showcase/no2-no3       Brand / Icon Library
+│       ├── brand/no1              UI Glyphs
+│       └── icon_library/no1       All Icons
 ├── 15_fixtures/                   Mock 資料 + canvas helpers（不對齊 spec / impl）
 │   └── no1-no4                    categories / accounts / transactions / helpers
 ├── 20_components/
 │   ├── components.jsx             元件實作
-│   └── components-showcase.jsx    Foundations · Showcase · Components leaf 入口
+│   └── components-showcase.jsx    Foundations · Components group 5 leaf 內容
 ├── 30_screens/screens.jsx         22 個正式畫面群組
 ├── 50_explorations/
 │   ├── axis_color_and_mood/

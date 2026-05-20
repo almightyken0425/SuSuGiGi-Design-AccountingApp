@@ -30,7 +30,7 @@
 
 ## TOC 對應
 
-Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，三 group × 15 leaf：
+Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 group × 19 leaf：
 
 | Group | Leaf | 渲染檔案 |
 |---|---|---|
@@ -46,9 +46,13 @@ Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，三
 | Component Tokens | Header Icon Button | `visualizers/component_tokens/no6_header_icon_button_visualizer.jsx` |
 | Component Tokens | Switch | `visualizers/component_tokens/no7_switch_visualizer.jsx` |
 | Component Tokens | List Empty Transition | `visualizers/component_tokens/no8_list_empty_transition_visualizer.jsx` |
-| Showcase | Components | `20_components/components-showcase.jsx`（提供 `FoundationsShowcaseComponentsSection`） |
-| Showcase | Brand | `visualizers/showcase/no2_brand_visualizer.jsx` |
-| Showcase | Icon Library | `visualizers/showcase/no3_icon_library_visualizer.jsx` |
+| Components | List | `20_components/components-showcase.jsx`（`ComponentsListSection`） |
+| Components | Form | `20_components/components-showcase.jsx`（`ComponentsFormSection`） |
+| Components | Navigation | `20_components/components-showcase.jsx`（`ComponentsNavigationSection`） |
+| Components | Chart | `20_components/components-showcase.jsx`（`ComponentsChartSection`） |
+| Components | Input | `20_components/components-showcase.jsx`（`ComponentsInputSection`） |
+| Brand | UI Glyphs | `visualizers/brand/no1_ui_glyphs.jsx` |
+| Icon Library | All Icons | `visualizers/icon_library/no1_all_icons.jsx` |
 
 ## 載入順序
 

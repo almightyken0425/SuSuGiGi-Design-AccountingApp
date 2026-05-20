@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// Foundations > Showcase > Icon Library · 97 個 phosphor icon catalog
+// Foundations > Icon Library > All Icons · 97 個 phosphor icon catalog
 //
 // account tag（id 1-11）+ category tag（id 12-97）兩段並列展示。
 // 對齊 impl assets/definitions/IconDefinition.json。
@@ -26,11 +26,11 @@ function IconWallCard({ icons }) {
   );
 }
 
-function FoundationsShowcaseIconLibrarySection() {
+function FoundationsIconLibraryAllIconsSection() {
   return (
     <DCSection
-      id="found-showcase-icon-library"
-      title="Showcase · Icon Library"
+      id="found-icon-library-all"
+      title="Icon Library · All Icons"
       subtitle="97 個 phosphor SVG。account tag（id 1-11）給帳戶選擇用、category tag（id 12-97）給類別選擇用。對齊 impl assets/definitions/IconDefinition.json。"
       direction="column"
     >
@@ -44,4 +44,4 @@ function FoundationsShowcaseIconLibrarySection() {
   );
 }
 
-Object.assign(window, { IconWallCard, FoundationsShowcaseIconLibrarySection });
+Object.assign(window, { IconWallCard, FoundationsIconLibraryAllIconsSection });

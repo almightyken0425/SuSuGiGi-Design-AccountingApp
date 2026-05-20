@@ -21,18 +21,23 @@ visualizers/
 │   ├── no6_header_icon_button_visualizer.jsx FoundationsCTHeaderIconButtonSection
 │   ├── no7_switch_visualizer.jsx            FoundationsCTSwitchSection
 │   └── no8_list_empty_transition_visualizer.jsx FoundationsCTListEmptyTransitionSection
-└── showcase/                                對應 Foundations > Showcase group
-    ├── no2_brand_visualizer.jsx             FoundationsShowcaseBrandSection
-    └── no3_icon_library_visualizer.jsx      FoundationsShowcaseIconLibrarySection
-    # showcase/no1 由 20_components/components-showcase.jsx 提供
-    # （FoundationsShowcaseComponentsSection）
+├── brand/                                   對應 Foundations > Brand group
+│   └── no1_ui_glyphs.jsx                    FoundationsBrandUIGlyphsSection
+└── icon_library/                            對應 Foundations > Icon Library group
+    └── no1_all_icons.jsx                    FoundationsIconLibraryAllIconsSection
+
+# Foundations > Components group 5 leaf 由 20_components/components-showcase.jsx 提供
+# （ComponentsListSection / ComponentsFormSection / ComponentsNavigationSection /
+#  ComponentsChartSection / ComponentsInputSection）
 ```
 
 ## Section 命名規範
 
-- Atomic：`Foundations Atomic<Topic>Section`（例 `FoundationsAtomicTypeSection`）
+- Atomic：`FoundationsAtomic<Topic>Section`（例 `FoundationsAtomicTypeSection`）
 - Component Tokens：`FoundationsCT<Topic>Section`（例 `FoundationsCTListSection`）
-- Showcase：`FoundationsShowcase<Topic>Section`（例 `FoundationsShowcaseBrandSection`）
+- Brand：`FoundationsBrand<Topic>Section`（例 `FoundationsBrandUIGlyphsSection`）
+- Icon Library：`FoundationsIconLibrary<Topic>Section`（例 `FoundationsIconLibraryAllIconsSection`）
+- Components（在 20_components/ 下）：`Components<Topic>Section`（例 `ComponentsListSection`）
 
 對應 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` render 函式名稱。
 
@@ -46,5 +51,5 @@ visualizers/
 ## 載入順序
 
 - `no0_shared_card_kit.jsx` 必須最先載
-- atomic / component_tokens / showcase 三層彼此無依賴，可平行載
-- 全部 visualizers 必須在 `components-showcase.jsx` 之前載入（後者引用 `FoundationsShowcaseComponentsSection` 之外的 visualizer 不依賴本目錄）
+- atomic / component_tokens / brand / icon_library 四個子目錄彼此無依賴，可平行載
+- 本目錄與 `components-showcase.jsx` 彼此獨立，但都需在 `app.jsx` 之前載入（後者透過 `FOUNDATIONS_GROUPS` 引用 Section 函式）

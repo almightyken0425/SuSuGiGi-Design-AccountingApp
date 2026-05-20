@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
-// Foundations > Showcase > Brand · 品牌資產（UI Glyphs + 品牌標識）
+// Foundations > Brand > UI Glyphs · 品牌資產（UI Glyphs + 品牌標識）
 //
-// 不包含 phosphor icon library（已拆出獨立 sub-item）。本檔聚焦於：
+// 不包含 phosphor icon library（獨立為 Icon Library group）。本檔聚焦於：
 //   - UI Glyphs wall（impl uiGlyphs.ts 白名單：SF / FA / MCI）
 //   - 品牌標識（GlassView 風格 logo / pill）
 // ─────────────────────────────────────────────────────────────
@@ -85,12 +85,12 @@ function UIGlyphWallCard() {
   );
 }
 
-function FoundationsShowcaseBrandSection() {
+function FoundationsBrandUIGlyphsSection() {
   return (
     <DCSection
-      id="found-showcase-brand"
-      title="Showcase · Brand"
-      subtitle="品牌資產：UI Glyphs 白名單與品牌標識。Phosphor icon library 已獨立為 Icon Library sub-item。"
+      id="found-brand-ui-glyphs"
+      title="Brand · UI Glyphs"
+      subtitle="品牌資產：UI Glyphs 白名單與品牌標識。Phosphor icon library 已獨立為 Icon Library group。"
       direction="column"
     >
       <DCArtboard id="icon-ui" label="UI 元素 · MCI / FontAwesome / SF Symbols (impl 白名單)" width={520} height={1100}>
@@ -100,4 +100,4 @@ function FoundationsShowcaseBrandSection() {
   );
 }
 
-Object.assign(window, { UIGlyphWallCard, FoundationsShowcaseBrandSection });
+Object.assign(window, { UIGlyphWallCard, FoundationsBrandUIGlyphsSection });

@@ -24,9 +24,10 @@ component_tokens/no1–no8   ← 元件級 token（引用上層原料）
 visualizers/no0_shared_card_kit
 visualizers/atomic/no1–no4
 visualizers/component_tokens/no1–no8
-visualizers/showcase/no2–no3
+visualizers/brand/no1
+visualizers/icon_library/no1
         ↓
-20_components/components-showcase ← 5 family demo（提供 FoundationsShowcaseComponentsSection）
+20_components/components-showcase ← 5 family demo（Components group 5 leaf 各自取一個 Section）
         ↓
 50_explorations/*          ← 5 個探索（消費 fixtures）
         ↓

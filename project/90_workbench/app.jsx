@@ -460,8 +460,8 @@ const VIEW_TABS = [
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
-// Foundations groups — 3 group × 15 leaf sub-item。
-// hash 路徑：#foundations/<group>/<topic>。每個 topic 對應 visualizers 目錄下單一 Section component。
+// Foundations groups — 5 group × 19 leaf sub-item。
+// hash 路徑：#foundations/<group>/<topic>。每個 topic 對應單一 Section component。
 const FOUNDATIONS_GROUPS = [
   {
     id: 'atomic', label: 'Atomic',
@@ -486,11 +486,25 @@ const FOUNDATIONS_GROUPS = [
     ],
   },
   {
-    id: 'showcase', label: 'Showcase',
+    id: 'components', label: 'Components',
     topics: [
-      { id: 'components',   label: 'Components',   render: () => <FoundationsShowcaseComponentsSection/> },
-      { id: 'brand',        label: 'Brand',        render: () => <FoundationsShowcaseBrandSection/> },
-      { id: 'icon-library', label: 'Icon Library', render: () => <FoundationsShowcaseIconLibrarySection/> },
+      { id: 'list',       label: 'List',       render: () => <ComponentsListSection/> },
+      { id: 'form',       label: 'Form',       render: () => <ComponentsFormSection/> },
+      { id: 'navigation', label: 'Navigation', render: () => <ComponentsNavigationSection/> },
+      { id: 'chart',      label: 'Chart',      render: () => <ComponentsChartSection/> },
+      { id: 'input',      label: 'Input',      render: () => <ComponentsInputSection/> },
+    ],
+  },
+  {
+    id: 'brand', label: 'Brand',
+    topics: [
+      { id: 'ui-glyphs', label: 'UI Glyphs', render: () => <FoundationsBrandUIGlyphsSection/> },
+    ],
+  },
+  {
+    id: 'icon-library', label: 'Icon Library',
+    topics: [
+      { id: 'all-icons', label: 'All Icons', render: () => <FoundationsIconLibraryAllIconsSection/> },
     ],
   },
 ];
@@ -542,13 +556,17 @@ const LEGACY_HASH_ALIASES = {
   'row-height':     { view: 'screens' },
   'design_system':  { view: 'foundations' },
   // 舊兩段 hash → 三段
-  'foundations/type':       { view: 'foundations', group: 'atomic',           topic: 'type' },
-  'foundations/colors':     { view: 'foundations', group: 'atomic',           topic: 'colors' },
-  'foundations/tokens':     { view: 'foundations', group: 'atomic',           topic: 'layout' },
-  'foundations/spacing':    { view: 'foundations', group: 'atomic',           topic: 'layout' },
-  'foundations/components': { view: 'foundations', group: 'showcase',         topic: 'components' },
-  'foundations/brand':      { view: 'foundations', group: 'showcase',         topic: 'brand' },
-  'components':             { view: 'foundations', group: 'showcase',         topic: 'components' },
+  'foundations/type':       { view: 'foundations', group: 'atomic',       topic: 'type' },
+  'foundations/colors':     { view: 'foundations', group: 'atomic',       topic: 'colors' },
+  'foundations/tokens':     { view: 'foundations', group: 'atomic',       topic: 'layout' },
+  'foundations/spacing':    { view: 'foundations', group: 'atomic',       topic: 'layout' },
+  'foundations/components': { view: 'foundations', group: 'components',   topic: 'list' },
+  'foundations/brand':      { view: 'foundations', group: 'brand',        topic: 'ui-glyphs' },
+  'components':             { view: 'foundations', group: 'components',   topic: 'list' },
+  // 上一版 showcase 三段 → 新三段（Components / Brand / Icon Library 升 group 後）
+  'foundations/showcase/components':   { view: 'foundations', group: 'components',   topic: 'list' },
+  'foundations/showcase/brand':        { view: 'foundations', group: 'brand',        topic: 'ui-glyphs' },
+  'foundations/showcase/icon-library': { view: 'foundations', group: 'icon-library', topic: 'all-icons' },
 };
 
 function parseRoute() {
