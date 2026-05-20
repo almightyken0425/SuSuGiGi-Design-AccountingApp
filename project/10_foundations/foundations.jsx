@@ -97,11 +97,11 @@ function FoundationsSpacingSection() {
       <DCArtboard id="motion-live" label="MOTION · duration + easing (live)" width={520} height={460}>
         <MotionCard/>
       </DCArtboard>
-      <DCArtboard id="icon-size" label="ICON_SIZE · icon 尺寸階梯" width={520} height={320}>
-        <TokenTableCard tokens={ICON_SIZE} title="ICON_SIZE"/>
+      <DCArtboard id="icon-size-live" label="ICON_SIZE · 6 階階梯 (live)" width={520} height={520}>
+        <IconSizeCard/>
       </DCArtboard>
-      <DCArtboard id="hit-target" label="HIT_TARGET · 觸控目標" width={520} height={140}>
-        <TokenTableCard tokens={HIT_TARGET} title="HIT_TARGET"/>
+      <DCArtboard id="hit-target-live" label="HIT_TARGET · 觸控目標下界 (live)" width={520} height={320}>
+        <HitTargetCard/>
       </DCArtboard>
       <DCArtboard id="list-anatomy" label="ListItem 解剖 · 間距政策視覺化" width={520} height={780}>
         <ListAnatomyCard/>
@@ -576,6 +576,96 @@ function SectionMini({ children, style }) {
       fontSize: 10, fontWeight: 600, color: TOKENS.ink3, letterSpacing: 0.5,
       textTransform: 'uppercase', marginTop: 4, marginBottom: 2, ...(style || {}),
     }}>{children}</div>
+  );
+}
+
+// ─── IconSizeCard / HitTargetCard ─────────────────────────
+// 視覺化 ICON_SIZE 6 階階梯（與 SPACING / RADIUS 同階展示），
+// 對比 HIT_TARGET.min 標出「icon size ≠ hit target」的政策邊界。
+
+const ICON_SIZE_USAGE = {
+  xs:    'chevron / 小型 inline icon',
+  sm:    '列表標準 leftIcon、search bar icon',
+  md:    '稍大 inline icon、header SF Symbol pill 內 icon',
+  lg:    'form picker chip、TxList row 左槽 outline',
+  xl:    '強調區 / hero icon',
+  '2xl': '空狀態 icon',
+};
+
+function IconSizeCard() {
+  return (
+    <FoundCard>
+      <FoundLabel>ICON_SIZE · 6 階階梯（與 SPACING / RADIUS 同階）</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 14, lineHeight: 1.5 }}>
+        第 3 層共用階梯，供元件層 token（LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS /
+        FORM_PICKER_TOKENS）內 icon 尺寸引用，不再 hard-code。
+      </div>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, padding: '8px 0 16px', minHeight: 80 }}>
+        {Object.entries(ICON_SIZE).map(([k, v]) => (
+          <div key={k} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{
+              width: v, height: v, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: TOKENS.p50, borderRadius: 4,
+            }}>
+              <Glyph name="cog-outline" size={v - 2} color={TOKENS.p500} stroke={1.6}/>
+            </div>
+            <code style={{ fontSize: 11, color: TOKENS.ink2, marginTop: 6, fontVariantNumeric: 'tabular-nums' }}>{k}</code>
+            <code style={{ fontSize: 10, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums' }}>{v}px</code>
+          </div>
+        ))}
+      </div>
+      <SectionMini style={{ marginTop: 16 }}>典型用途</SectionMini>
+      <div style={{ display: 'grid', gridTemplateColumns: 'auto auto 1fr', columnGap: 12, rowGap: 4 }}>
+        {Object.entries(ICON_SIZE).map(([k, v]) => (
+          <React.Fragment key={k}>
+            <code style={{ fontSize: 11, color: TOKENS.ink, lineHeight: 1.6 }}>{k}</code>
+            <code style={{ fontSize: 11, color: TOKENS.ink2, fontVariantNumeric: 'tabular-nums', lineHeight: 1.6 }}>{v}</code>
+            <span style={{ fontSize: 10.5, color: TOKENS.ink2, lineHeight: 1.6 }}>{ICON_SIZE_USAGE[k]}</span>
+          </React.Fragment>
+        ))}
+      </div>
+    </FoundCard>
+  );
+}
+
+function HitTargetCard() {
+  const hit = HIT_TARGET.min;
+  const sm  = ICON_SIZE.sm;
+  return (
+    <FoundCard>
+      <FoundLabel>HIT_TARGET.min · 觸控目標下界 = {hit}pt</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 16, lineHeight: 1.5 }}>
+        iOS HIG 規範觸控最小目標為 44pt。icon size ≠ hit target——小 icon 周圍可加 padding 達標。
+      </div>
+      <div style={{ display: 'flex', gap: 32, alignItems: 'center', justifyContent: 'center', padding: '12px 0 8px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: hit, height: hit,
+            background: 'rgba(124, 92, 255, 0.18)',
+            border: `1px dashed ${TOKENS.p500}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            borderRadius: 4,
+          }}>
+            <Glyph name="cog-outline" size={sm} color={TOKENS.p500} stroke={1.8}/>
+          </div>
+          <code style={{ fontSize: 10, color: TOKENS.ink3, display: 'block', marginTop: 6, lineHeight: 1.5 }}>
+            ICON_SIZE.sm ({sm}) 居中於<br/>HIT_TARGET.min ({hit})
+          </code>
+        </div>
+        <div style={{ fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6, maxWidth: 220 }}>
+          <div style={{ marginBottom: 6 }}>· 虛線方框 = 44×44 觸控目標</div>
+          <div style={{ marginBottom: 6 }}>· 實心 icon = 20×20</div>
+          <div>· 兩者差距由元件 padding / hit slop 補滿</div>
+        </div>
+      </div>
+      <SectionMini style={{ marginTop: 14 }}>套用情境</SectionMini>
+      <div style={{ fontSize: 10.5, color: TOKENS.ink2, lineHeight: 1.6, paddingTop: 4 }}>
+        · <code>SEARCH_BAR_TOKENS.PILL_HEIGHT = HIT_TARGET.min</code><br/>
+        · <code>LIST_TOKENS.ITEM_MIN_HEIGHT(58) ≥ HIT_TARGET.min(44)</code><br/>
+        · <code>FORM_PICKER_TOKENS.ROW_MIN_HEIGHT(58) ≥ HIT_TARGET.min(44)</code><br/>
+        · <code>CHIP_TOKENS</code> 高度 ≈ 30pt &lt; 44，屬例外（chip 為輔助選擇器）
+      </div>
+    </FoundCard>
   );
 }
 
