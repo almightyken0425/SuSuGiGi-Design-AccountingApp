@@ -8,7 +8,7 @@
 //   1. 語意層：PALETTE / THEMES / TYPE_STYLES
 //   2. 底層數值：TYPOGRAPHY.size / TYPOGRAPHY.weight / SPACING / RADIUS
 //   3. 補充維度：LINE_HEIGHT / LETTER_SPACING / SHADOW / MOTION / ICON_SIZE / HIT_TARGET
-//   4. 元件層：LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS（內部不硬編碼，引用上層）
+//   4. 元件層：LIST_TOKENS / TX_LIST_TOKENS / FORM_PICKER_TOKENS / CHIP_TOKENS / SEARCH_BAR_TOKENS / SWITCH_TOKENS（內部不硬編碼，引用上層）
 //
 // 使用優先順序：
 //   - 字體：優先採 TYPE_STYLES（HIG 語意），TYPOGRAPHY.size 為底層備用
@@ -382,6 +382,37 @@ const TX_LIST_TOKENS = {
 // 老命名 alias 保留向後相容（intro / foundations / showcase 用過）
 const TX_TOKENS = TX_LIST_TOKENS;
 
+// FORM_PICKER_TOKENS — form 觸發器（AccountSelector / CategorySelector 等
+// 「打開 form 的單一觸發 row」）。視覺與 ListItem 不同：icon 32px 圓形 chip、
+// 有外框、padding 12（vs ListItem 17）。不與 LIST_TOKENS 共用。
+const FORM_PICKER_TOKENS = {
+  ROW_MIN_HEIGHT:         58,                       // 對齊 ListItem，亦 ≥ HIT_TARGET.min
+  ROW_PADDING_VERTICAL:   SPACING.md,               // 12（form input 內距）
+  ROW_PADDING_HORIZONTAL: SPACING.lg,               // 16（與 LIST 對齊行末）
+  ICON_SIZE:              ICON_SIZE.lg,             // 32（引第 3 層階梯）
+  ICON_RADIUS:            RADIUS.xl,                // 16（圓形 chip）
+  ICON_GAP_HORIZONTAL:    SPACING.md,               // 12（icon → text）
+  VALUE_SIZE:             TYPE_STYLES.body.size,    // 17
+  VALUE_WEIGHT:           TYPOGRAPHY.weight.medium,
+  SUBTEXT_SIZE:           TYPOGRAPHY.size.sm,       // 14
+  SUBTEXT_MARGIN_TOP:     SPACING['2xs'],           // 2
+  PICKER_PANEL_RADIUS:    RADIUS.md,                // 8（picker 展開時的圓角）
+};
+
+// CHIP_TOKENS — pill 形多選器（RecurringOptions 的 optionButton 等）。
+// 注意：chip 高度 ≈ PADDING_VERTICAL*2 + TEXT_SIZE = 8*2 + 14 = 30pt，
+// 小於 HIT_TARGET.min(44)。屬輔助選擇器，主 CTA 需外加 hit slop。
+const CHIP_TOKENS = {
+  PADDING_VERTICAL:       SPACING.sm,               // 8
+  PADDING_HORIZONTAL:     SPACING.md,               // 12
+  RADIUS:                 RADIUS.xl,                // 16（pill）
+  GAP_HORIZONTAL:         SPACING.sm,               // 8（chip 之間）
+  GAP_VERTICAL:           SPACING.sm,               // 8（chip 換行間距）
+  TEXT_SIZE:              TYPOGRAPHY.size.sm,       // 14
+  TEXT_WEIGHT_SELECTED:   TYPOGRAPHY.weight.medium,
+  BORDER_WIDTH:           1,
+};
+
 const SEARCH_BAR_TOKENS = {
   PILL_HEIGHT:               HIT_TARGET.min,
   PADDING_HORIZONTAL:        SPACING.lg,
@@ -658,6 +689,7 @@ Object.assign(window, {
   LINE_HEIGHT, LETTER_SPACING,
   SPACING, RADIUS, SHADOW, MOTION, ICON_SIZE, HIT_TARGET,
   LIST_TOKENS, TX_LIST_TOKENS, TX_TOKENS,
+  FORM_PICKER_TOKENS, CHIP_TOKENS,
   SEARCH_BAR_TOKENS, SEARCH_TOKENS, BOTTOM_SEARCH_BAR_TOTAL_HEIGHT,
   HEADER_ICON_BUTTON_TOKENS,
   SWITCH_TOKENS,

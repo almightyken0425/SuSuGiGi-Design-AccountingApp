@@ -82,7 +82,7 @@ function FoundationsSpacingSection() {
     <DCSection
       id="found-spacing"
       title="Spacing"
-      subtitle="SPACING = HIG 4 倍數階梯，語意命名 2xs/xs/sm/md/lg/xl/2xl/3xl/4xl/5xl。最小階 2xs=2 專供「主標題下副標題行內補位」使用，不視為元件間留白。RADIUS = none/sm/md/lg/xl/2xl/full（不收 14）。SHADOW = HIG 4 階 elevation。MOTION = duration + easing 對齊 HIG。ICON_SIZE = icon 尺寸階梯（xs/sm/md/lg/xl/2xl），HIT_TARGET.min = 44 對齊 HIG 觸控最小目標。底下含元件 token 速查表。"
+      subtitle="SPACING = HIG 4 倍數階梯，語意命名 2xs/xs/sm/md/lg/xl/2xl/3xl/4xl/5xl。最小階 2xs=2 專供「主標題下副標題行內補位」使用，不視為元件間留白。RADIUS = none/sm/md/lg/xl/2xl/full（不收 14）。SHADOW = HIG 4 階 elevation。MOTION = duration + easing 對齊 HIG。ICON_SIZE = icon 尺寸階梯（xs/sm/md/lg/xl/2xl），HIT_TARGET.min = 44 對齊 HIG 觸控最小目標。底下含元件 token 速查表。Row family 統一原則：list row（grouped list 內元件）、form picker（單一觸發器）、chip（多選 pill）三類 row-like 元件各有 token 仲裁，不互換套用。"
       direction="column"
     >
       <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
@@ -103,8 +103,20 @@ function FoundationsSpacingSection() {
       <DCArtboard id="hit-target" label="HIT_TARGET · 觸控目標" width={520} height={140}>
         <TokenTableCard tokens={HIT_TARGET} title="HIT_TARGET"/>
       </DCArtboard>
-      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={680}>
-        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS"/>
+      <DCArtboard id="list-anatomy" label="ListItem 解剖 · 間距政策視覺化" width={520} height={780}>
+        <ListAnatomyCard/>
+      </DCArtboard>
+      <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={720}>
+        <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS" descriptions={LIST_TOKEN_DESC}/>
+      </DCArtboard>
+      <DCArtboard id="form-picker-tokens" label="FORM_PICKER_TOKENS 表格" width={520} height={420}>
+        <TokenTableCard tokens={FORM_PICKER_TOKENS} title="FORM_PICKER_TOKENS" descriptions={FORM_PICKER_TOKEN_DESC}/>
+      </DCArtboard>
+      <DCArtboard id="form-picker-anatomy" label="Form Picker 解剖 · 對比 ListItem" width={520} height={520}>
+        <FormPickerAnatomyCard/>
+      </DCArtboard>
+      <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width={520} height={340}>
+        <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC}/>
       </DCArtboard>
       <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList 專用" width={520} height={620}>
         <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS"/>
@@ -585,20 +597,309 @@ function ActionIconMapCard() {
   );
 }
 
-function TokenTableCard({ tokens, title }) {
+// ─── Token description tables ─────────────────────────────────────
+// 為 TokenTableCard 提供「用途」欄文字。本輪只覆蓋 row family 三組
+// （LIST / FORM_PICKER / CHIP）；既有 TX_LIST / SEARCH / LIST_EMPTY /
+// SWITCH 留待 Phase 4 補完。
+
+const LIST_TOKEN_DESC = {
+  ITEM_MIN_HEIGHT:               'row 最小高度（≥ HIT_TARGET.min=44）',
+  ITEM_PADDING_VERTICAL:         'row 上下 padding，引 body font size 維持垂直節奏',
+  ITEM_PADDING_HORIZONTAL:       'row 左右邊距，有/無 icon 皆從此值起算',
+  ITEM_GAP_HORIZONTAL:           'icon ↔ text、text ↔ trailing 之間的水平 gap',
+  ITEM_TITLE_SIZE:               'row 主標題字級（HIG body）',
+  ITEM_TITLE_WEIGHT:             'row 主標題字重（light 為安靜文字）',
+  ICON_SIZE_SMALL:               'row 標準 leftIcon 尺寸',
+  ICON_SIZE_MEDIUM:              '較大型 inline icon（少用）',
+  ICON_SIZE_LARGE:               '強調區或 hero icon',
+  DIVIDER_INSET_WITH_ICON:       '有 icon 群組的 divider inset（避開 icon 欄）',
+  DIVIDER_INSET_WITHOUT_ICON:    '無 icon 群組的 divider inset（齊行末 padding）',
+  GROUP_CARD_RADIUS:             'group card 外殼圓角',
+  GROUP_CARD_MARGIN_BOTTOM:      'group card 之間呼吸距（刻意離開 SPACING 階梯）',
+  GROUP_CARD_BORDER_WIDTH:       'group card 外殼描邊',
+  SECTION_TITLE_SIZE:            'section 標題字級（HIG footnote）',
+  SECTION_TITLE_WEIGHT:          'section 標題字重',
+  SECTION_TITLE_LETTER_SPACING:  'section 標題字間距（小字級補回可讀性）',
+  SECTION_TITLE_PADDING_TOP:     'section 標題上方留白',
+  SECTION_TITLE_PADDING_BOTTOM:  'section 標題到首列之間的留白',
+  SECTION_TITLE_PADDING_HORIZONTAL: 'section 標題左右邊距，齊 row',
+  SELECTION_ITEM_RADIUS:         'SelectionGridItem 卡片圓角',
+  SELECTION_ITEM_MARGIN_BOTTOM:  'SelectionListItem 卡片下 margin',
+  SELECTION_CHECKMARK_SIZE:      '選擇態 checkmark icon 大小',
+  TRAILING_CHEVRON_SIZE:         '右側 chevron 字級',
+  TRAILING_CHEVRON_WEIGHT:       '右側 chevron 字重',
+  TRAILING_VALUE_SIZE:           '右側 value 字級（與 title 對齊）',
+  PRESS_BG_HIGHLIGHT_OPACITY:    'press 態背景高亮透明度',
+  GRID_COLUMNS:                  'SelectionGridItem 預設欄數',
+  GRID_GAP:                      'SelectionGridItem 卡片之間 gap',
+  EMPTY_STATE_ICON_SIZE:         '空狀態 icon 大小',
+  EMPTY_STATE_TITLE_SIZE:        '空狀態主標字級',
+  EMPTY_STATE_DESCRIPTION_SIZE:  '空狀態描述字級',
+  EMPTY_STATE_ICON_GAP:          '空狀態 icon → 主標的垂直 gap',
+  EMPTY_STATE_TEXT_GAP:          '空狀態主標 → 描述的垂直 gap',
+  EMPTY_STATE_PADDING_HORIZONTAL: '空狀態左右邊距',
+};
+
+const FORM_PICKER_TOKEN_DESC = {
+  ROW_MIN_HEIGHT:         'form picker 高度，對齊 ListItem 視覺節奏',
+  ROW_PADDING_VERTICAL:   'form input 內距，比 ListItem 緊（input 視覺）',
+  ROW_PADDING_HORIZONTAL: '左右邊距，與 LIST 對齊行末',
+  ICON_SIZE:              '圓形 chip icon 尺寸（比 ListItem 大）',
+  ICON_RADIUS:            'icon chip 圓角（圓形）',
+  ICON_GAP_HORIZONTAL:    'icon → text 的水平 gap',
+  VALUE_SIZE:             '主值字級（HIG body）',
+  VALUE_WEIGHT:           '主值字重（medium，比 ListItem 重）',
+  SUBTEXT_SIZE:           '副文字字級',
+  SUBTEXT_MARGIN_TOP:     '主值下副文字補位',
+  PICKER_PANEL_RADIUS:    'inline picker 展開時的圓角',
+};
+
+const CHIP_TOKEN_DESC = {
+  PADDING_VERTICAL:      'chip 上下 padding',
+  PADDING_HORIZONTAL:    'chip 左右 padding',
+  RADIUS:                'pill 圓角（半圓）',
+  GAP_HORIZONTAL:        'chip 之間水平 gap',
+  GAP_VERTICAL:          'chip 換行時垂直 gap',
+  TEXT_SIZE:             'chip 字級',
+  TEXT_WEIGHT_SELECTED:  '選中態字重',
+  BORDER_WIDTH:          'chip 描邊（未選態）',
+};
+
+function TokenTableCard({ tokens, title, descriptions }) {
   const entries = Object.entries(tokens);
+  const hasDesc = descriptions && Object.keys(descriptions).length > 0;
+  const gridTemplateColumns = hasDesc ? '1fr auto 1.6fr' : '1fr auto';
   return (
     <FoundCard>
       <FoundLabel>{title}</FoundLabel>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', columnGap: 12, rowGap: 4 }}>
+      <div style={{ display: 'grid', gridTemplateColumns, columnGap: 12, rowGap: 4 }}>
+        {hasDesc && (
+          <React.Fragment>
+            <code style={{ fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3 }}>KEY</code>
+            <code style={{ fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3, textAlign: 'right' }}>VALUE</code>
+            <code style={{ fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3 }}>用途</code>
+          </React.Fragment>
+        )}
         {entries.map(([k, v]) => (
           <React.Fragment key={k}>
             <code style={{ fontSize: 11, color: TOKENS.ink, lineHeight: 1.6 }}>{k}</code>
             <code style={{ fontSize: 11, color: TOKENS.ink2, fontVariantNumeric: 'tabular-nums', lineHeight: 1.6, textAlign: 'right', whiteSpace: 'nowrap' }}>
               {typeof v === 'object' ? JSON.stringify(v) : String(v)}
             </code>
+            {hasDesc && (
+              <span style={{ fontSize: 10.5, color: TOKENS.ink2, lineHeight: 1.5 }}>
+                {descriptions[k] || ''}
+              </span>
+            )}
           </React.Fragment>
         ))}
+      </div>
+    </FoundCard>
+  );
+}
+
+// ─── Row family anatomy ──────────────────────────────────
+// 把 LIST_TOKENS 的數值畫成可讀的 row 結構，與 token 表互為閱讀對位。
+// 標籤一律用「token 名 = 引用鏈 = 數值」三段式，不寫 hard-coded 數字。
+
+function AnatomyRuler({ segments }) {
+  // segments: [{ width, label, color }]，由左到右串成一條 row 上方的比例尺
+  return (
+    <div style={{ display: 'flex', alignItems: 'stretch', height: 28, marginBottom: 4 }}>
+      {segments.map((s, i) => (
+        <div key={i} style={{
+          width: s.width,
+          background: s.color,
+          borderLeft: i === 0 ? 'none' : `1px dashed ${TOKENS.ink3}`,
+          borderRight: i === segments.length - 1 ? 'none' : 'none',
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+          paddingBottom: 2,
+        }}>
+          <code style={{ fontSize: 8.5, color: TOKENS.ink3, fontVariantNumeric: 'tabular-nums', textAlign: 'center', lineHeight: 1.1 }}>
+            {s.label}
+          </code>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ListAnatomyCard() {
+  const PAD = LIST_TOKENS.ITEM_PADDING_HORIZONTAL;
+  const GAP = LIST_TOKENS.ITEM_GAP_HORIZONTAL;
+  const ICN = LIST_TOKENS.ICON_SIZE_SMALL;
+  const ROW_W = 380;                                       // 卡內 row 視覺寬度
+  const titleW = ROW_W - PAD - ICN - GAP - 80 - GAP - 13 - PAD;
+  const titleWNoIcon = ROW_W - PAD - 80 - GAP - 13 - PAD;
+  const dividerInsetWith = LIST_TOKENS.DIVIDER_INSET_WITH_ICON;
+  const dividerInsetNo   = LIST_TOKENS.DIVIDER_INSET_WITHOUT_ICON;
+
+  const rowBg = TOKENS.surface;
+  const titleColor = TOKENS.ink;
+  const padShade = 'rgba(124, 92, 255, 0.10)';   // primary 淺
+  const gapShade = 'rgba(124, 92, 255, 0.22)';
+  const iconShade = 'rgba(60, 60, 67, 0.08)';
+  const textShade = 'rgba(60, 60, 67, 0.04)';
+
+  // 對應「有 icon」row 的 ruler segments
+  const segsWith = [
+    { width: PAD, label: `H-PAD\n${PAD}`,             color: padShade },
+    { width: ICN, label: `ICON.sm\n${ICN}`,           color: iconShade },
+    { width: GAP, label: `GAP\n${GAP}`,               color: gapShade },
+    { width: titleW, label: 'TITLE',                   color: textShade },
+    { width: GAP, label: `GAP\n${GAP}`,               color: gapShade },
+    { width: 80,  label: 'VALUE',                      color: textShade },
+    { width: GAP, label: `GAP\n${GAP}`,               color: gapShade },
+    { width: 13,  label: 'CHV',                        color: iconShade },
+    { width: PAD, label: `H-PAD\n${PAD}`,             color: padShade },
+  ];
+  const segsNoIcon = [
+    { width: PAD, label: `H-PAD\n${PAD}`,             color: padShade },
+    { width: titleWNoIcon, label: 'TITLE (從 16 起算)', color: textShade },
+    { width: GAP, label: `GAP\n${GAP}`,               color: gapShade },
+    { width: 13,  label: 'CHV',                        color: iconShade },
+    { width: PAD, label: `H-PAD\n${PAD}`,             color: padShade },
+  ];
+
+  return (
+    <FoundCard>
+      <FoundLabel>ListItem 解剖 · LIST_TOKENS 在 row 上的位置</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12, lineHeight: 1.5 }}>
+        每段間距以 token 引用鏈標示：例如 H-PAD = <code>ITEM_PADDING_HORIZONTAL = SPACING.lg = {PAD}</code>。
+        ICON 寬 = <code>ICON_SIZE_SMALL = ICON_SIZE.sm = {ICN}</code>。
+        GAP = <code>ITEM_GAP_HORIZONTAL = SPACING.md = {GAP}</code>。
+      </div>
+
+      {/* ─── 有 icon row ─── */}
+      <SectionMini>有 leftIcon</SectionMini>
+      <div style={{ width: ROW_W, margin: '0 auto' }}>
+        <AnatomyRuler segments={segsWith}/>
+        <div style={{
+          width: ROW_W, height: LIST_TOKENS.ITEM_MIN_HEIGHT,
+          background: rowBg,
+          border: `1px solid ${TOKENS.hairline}`,
+          display: 'flex', alignItems: 'center',
+          paddingLeft: PAD, paddingRight: PAD,
+          boxSizing: 'border-box',
+        }}>
+          <div style={{ width: ICN, height: ICN, borderRadius: ICN/2, background: TOKENS.p100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: GAP, flexShrink: 0 }}>
+            <Glyph name="tag-outline" size={ICN - 4} color={TOKENS.p500} stroke={1.8}/>
+          </div>
+          <div style={{ flex: 1, fontSize: LIST_TOKENS.ITEM_TITLE_SIZE, color: titleColor, fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT }}>title 標題</div>
+          <div style={{ fontSize: LIST_TOKENS.TRAILING_VALUE_SIZE, color: TOKENS.ink2, marginRight: GAP, fontVariantNumeric: 'tabular-nums' }}>NT$1,200</div>
+          <code style={{ fontSize: LIST_TOKENS.TRAILING_CHEVRON_SIZE, color: TOKENS.ink3 }}>›</code>
+        </div>
+        <div style={{ fontSize: 9.5, color: TOKENS.ink3, marginTop: 4, textAlign: 'center', lineHeight: 1.5 }}>
+          ITEM_MIN_HEIGHT = {LIST_TOKENS.ITEM_MIN_HEIGHT} ≥ HIT_TARGET.min = {HIT_TARGET.min} · ITEM_PADDING_VERTICAL = TYPE_STYLES.body.size = {LIST_TOKENS.ITEM_PADDING_VERTICAL}
+        </div>
+      </div>
+
+      {/* ─── 無 icon row ─── */}
+      <SectionMini style={{ marginTop: 20 }}>無 leftIcon — text 仍從 16 起算（不對齊有 icon 的 48）</SectionMini>
+      <div style={{ width: ROW_W, margin: '0 auto' }}>
+        <AnatomyRuler segments={segsNoIcon}/>
+        <div style={{
+          width: ROW_W, height: LIST_TOKENS.ITEM_MIN_HEIGHT,
+          background: rowBg,
+          border: `1px solid ${TOKENS.hairline}`,
+          display: 'flex', alignItems: 'center',
+          paddingLeft: PAD, paddingRight: PAD,
+          boxSizing: 'border-box',
+        }}>
+          <div style={{ flex: 1, fontSize: LIST_TOKENS.ITEM_TITLE_SIZE, color: titleColor, fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT }}>無 icon · title 從 16 開始</div>
+          <code style={{ fontSize: LIST_TOKENS.TRAILING_CHEVRON_SIZE, color: TOKENS.ink3 }}>›</code>
+        </div>
+      </div>
+
+      {/* ─── divider inset 示意 ─── */}
+      <SectionMini style={{ marginTop: 20 }}>Divider inset · 兩種規則</SectionMini>
+      <div style={{ width: ROW_W, margin: '0 auto' }}>
+        <div style={{ position: 'relative', marginBottom: 16 }}>
+          <div style={{ height: 8, background: TOKENS.surface2 }}/>
+          <div style={{ position: 'absolute', left: dividerInsetWith, right: 0, top: 8, height: 1, background: TOKENS.ink3 }}/>
+          <div style={{ fontSize: 9.5, color: TOKENS.ink3, marginTop: 12, lineHeight: 1.5 }}>
+            <strong>有 icon 群組</strong>：<code>DIVIDER_INSET_WITH_ICON = SPACING.lg + ICON_SIZE.sm + SPACING.md = {dividerInsetWith}</code>
+          </div>
+        </div>
+        <div style={{ position: 'relative' }}>
+          <div style={{ height: 8, background: TOKENS.surface2 }}/>
+          <div style={{ position: 'absolute', left: dividerInsetNo, right: 0, top: 8, height: 1, background: TOKENS.ink3 }}/>
+          <div style={{ fontSize: 9.5, color: TOKENS.ink3, marginTop: 12, lineHeight: 1.5 }}>
+            <strong>無 icon 群組</strong>：<code>DIVIDER_INSET_WITHOUT_ICON = SPACING.lg = {dividerInsetNo}</code>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── 政策說明 ─── */}
+      <div style={{ marginTop: 20, padding: 12, background: TOKENS.surface2, borderRadius: RADIUS.md, fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6 }}>
+        <div style={{ marginBottom: 6 }}>· 有 icon vs 無 icon 的 row text baseline <strong>不對齊</strong>；需要對齊請統一帶/不帶 icon。</div>
+        <div style={{ marginBottom: 6 }}>· Divider 對齊 row：有 icon 群組 inset {dividerInsetWith}（避開 icon 欄）、無 icon 群組 inset {dividerInsetNo}（齊行末 padding）。</div>
+        <div style={{ marginBottom: 6 }}>· <code>GROUP_CARD_MARGIN_BOTTOM = {LIST_TOKENS.GROUP_CARD_MARGIN_BOTTOM}</code> 為刻意離開 SPACING 階梯的孤兒值（section 間呼吸距）。</div>
+        <div>· Divider 顏色由 <code>TOKENS.divider.hairline</code> 仲裁（不在 LIST_TOKENS）。</div>
+      </div>
+    </FoundCard>
+  );
+}
+
+function FormPickerAnatomyCard() {
+  const ROW_W = 360;
+  const LIST_PAD = LIST_TOKENS.ITEM_PADDING_HORIZONTAL;
+  const LIST_ICN = LIST_TOKENS.ICON_SIZE_SMALL;
+  const LIST_GAP = LIST_TOKENS.ITEM_GAP_HORIZONTAL;
+  const FP_PAD_H = FORM_PICKER_TOKENS.ROW_PADDING_HORIZONTAL;
+  const FP_PAD_V = FORM_PICKER_TOKENS.ROW_PADDING_VERTICAL;
+  const FP_ICN = FORM_PICKER_TOKENS.ICON_SIZE;
+  const FP_GAP = FORM_PICKER_TOKENS.ICON_GAP_HORIZONTAL;
+
+  return (
+    <FoundCard>
+      <FoundLabel>Form Picker vs ListItem · 為什麼不該共用同一份 token</FoundLabel>
+      <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 16, lineHeight: 1.5 }}>
+        ListItem 用於 grouped list（已有外殼），icon 20、padding 17；
+        Form Picker（AccountSelector/CategorySelector）為單一觸發器，icon 32 圓形 chip、有自身外框、padding 12。
+        兩者結構差異大，分開仲裁。
+      </div>
+
+      <SectionMini>ListItem · ICON_SIZE.sm = {LIST_ICN} / PAD_V = {LIST_TOKENS.ITEM_PADDING_VERTICAL}</SectionMini>
+      <div style={{
+        width: ROW_W, height: LIST_TOKENS.ITEM_MIN_HEIGHT, margin: '0 auto 18px',
+        background: TOKENS.surface,
+        border: `1px solid ${TOKENS.hairline}`,
+        display: 'flex', alignItems: 'center',
+        paddingLeft: LIST_PAD, paddingRight: LIST_PAD,
+        boxSizing: 'border-box',
+      }}>
+        <div style={{ width: LIST_ICN, height: LIST_ICN, borderRadius: LIST_ICN/2, background: TOKENS.p100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: LIST_GAP, flexShrink: 0 }}>
+          <Glyph name="bank-outline" size={LIST_ICN - 4} color={TOKENS.p500} stroke={1.8}/>
+        </div>
+        <div style={{ flex: 1, fontSize: LIST_TOKENS.ITEM_TITLE_SIZE, color: TOKENS.ink, fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT }}>銀行帳戶</div>
+        <code style={{ fontSize: LIST_TOKENS.TRAILING_CHEVRON_SIZE, color: TOKENS.ink3 }}>›</code>
+      </div>
+
+      <SectionMini>Form Picker · ICON_SIZE.lg = {FP_ICN} / PAD_V = {FP_PAD_V} / 有外框</SectionMini>
+      <div style={{
+        width: ROW_W, minHeight: FORM_PICKER_TOKENS.ROW_MIN_HEIGHT, margin: '0 auto',
+        background: TOKENS.surface,
+        borderRadius: RADIUS.md,
+        border: `1px solid ${TOKENS.border}`,
+        display: 'flex', alignItems: 'center',
+        paddingTop: FP_PAD_V, paddingBottom: FP_PAD_V,
+        paddingLeft: FP_PAD_H, paddingRight: FP_PAD_H,
+        boxSizing: 'border-box',
+      }}>
+        <div style={{ width: FP_ICN, height: FP_ICN, borderRadius: FORM_PICKER_TOKENS.ICON_RADIUS, background: TOKENS.p100, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: FP_GAP, flexShrink: 0 }}>
+          <Glyph name="bank-outline" size={FP_ICN - 12} color={TOKENS.p500} stroke={1.8}/>
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: FORM_PICKER_TOKENS.VALUE_SIZE, color: TOKENS.ink, fontWeight: FORM_PICKER_TOKENS.VALUE_WEIGHT }}>主要支票帳戶</div>
+          <div style={{ fontSize: FORM_PICKER_TOKENS.SUBTEXT_SIZE, color: TOKENS.ink2, marginTop: FORM_PICKER_TOKENS.SUBTEXT_MARGIN_TOP }}>TWD · 餘額 NT$45,200</div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 18, padding: 12, background: TOKENS.surface2, borderRadius: RADIUS.md, fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6 }}>
+        <div style={{ marginBottom: 6 }}>· icon 大小：list 用 ICON_SIZE.sm({LIST_ICN})，picker 用 ICON_SIZE.lg({FP_ICN})——picker 為獨立觸發器，需要更強的視覺重量。</div>
+        <div style={{ marginBottom: 6 }}>· padding：list 用 body size({LIST_TOKENS.ITEM_PADDING_VERTICAL})，picker 用 SPACING.md({FP_PAD_V})——picker 為 form input 視覺。</div>
+        <div>· 外框：list 自身無外框（靠 ListGroupCard 群組外殼），picker 自帶 border（單獨觸發器需自證為 form 元素）。</div>
       </div>
     </FoundCard>
   );

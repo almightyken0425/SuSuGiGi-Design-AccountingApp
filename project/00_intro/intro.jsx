@@ -58,7 +58,7 @@ function IntroSection() {
             <SectionLabel>Foundations · 5 個 sub-item</SectionLabel>
             <AnatomyRow name="Type" desc="TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY.size / TYPOGRAPHY.weight / LINE_HEIGHT / LETTER_SPACING"/>
             <AnatomyRow name="Colors" desc="PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status / Text ink"/>
-            <AnatomyRow name="Spacing" desc="SPACING / RADIUS / SHADOW / MOTION / LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS"/>
+            <AnatomyRow name="Spacing" desc="SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET / LIST_TOKENS（含 ListItem 解剖）/ TX_LIST_TOKENS / FORM_PICKER_TOKENS（含 Form Picker 解剖）/ CHIP_TOKENS / SEARCH_BAR_TOKENS / SWITCH_TOKENS"/>
             <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示"/>
             <AnatomyRow name="Brand" desc="品牌標識、商標相關工件"/>
 
@@ -196,7 +196,10 @@ function IntroSection() {
 │   ├── data.jsx                   PALETTE / THEMES / TYPE_STYLES / TYPOGRAPHY /
 │   │                              LINE_HEIGHT / LETTER_SPACING / SPACING /
 │   │                              RADIUS / SHADOW / MOTION /
-│   │                              LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS
+│   │                              ICON_SIZE / HIT_TARGET /
+│   │                              LIST_TOKENS / TX_LIST_TOKENS /
+│   │                              FORM_PICKER_TOKENS / CHIP_TOKENS /
+│   │                              SEARCH_BAR_TOKENS / SWITCH_TOKENS
 │   └── foundations.jsx            視覺化展示（live JSX 單一來源）
 ├── 20_components/
 │   ├── components.jsx             元件實作
