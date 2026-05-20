@@ -704,6 +704,44 @@ const LIST_TOKEN_DESC = {
   EMPTY_STATE_PADDING_HORIZONTAL: '空狀態左右邊距',
 };
 
+const LIST_TOKEN_SOURCE = {
+  ITEM_MIN_HEIGHT:                  '—',
+  ITEM_PADDING_VERTICAL:            'TYPE_STYLES.body.size',
+  ITEM_PADDING_HORIZONTAL:          'SPACING.lg',
+  ITEM_GAP_HORIZONTAL:              'SPACING.md',
+  ITEM_TITLE_SIZE:                  'TYPE_STYLES.body.size',
+  ITEM_TITLE_WEIGHT:                'TYPOGRAPHY.weight.light',
+  ICON_SIZE_SMALL:                  'ICON_SIZE.sm',
+  ICON_SIZE_MEDIUM:                 'ICON_SIZE.md',
+  ICON_SIZE_LARGE:                  'ICON_SIZE.xl',
+  DIVIDER_INSET_WITH_ICON:          'SPACING.lg + ICON_SIZE.sm + SPACING.md',
+  DIVIDER_INSET_WITHOUT_ICON:       'SPACING.lg',
+  GROUP_CARD_RADIUS:                'RADIUS.lg',
+  GROUP_CARD_MARGIN_BOTTOM:         '—',
+  GROUP_CARD_BORDER_WIDTH:          '—',
+  SECTION_TITLE_SIZE:               'TYPE_STYLES.footnote.size',
+  SECTION_TITLE_WEIGHT:             'TYPOGRAPHY.weight.regular',
+  SECTION_TITLE_LETTER_SPACING:     '—',
+  SECTION_TITLE_PADDING_TOP:        'SPACING.md',
+  SECTION_TITLE_PADDING_BOTTOM:     "SPACING.xs + SPACING['2xs']",
+  SECTION_TITLE_PADDING_HORIZONTAL: 'SPACING.lg',
+  SELECTION_ITEM_RADIUS:            'RADIUS.md',
+  SELECTION_ITEM_MARGIN_BOTTOM:     'SPACING.sm',
+  SELECTION_CHECKMARK_SIZE:         'ICON_SIZE.xs',
+  TRAILING_CHEVRON_SIZE:            'TYPE_STYLES.footnote.size',
+  TRAILING_CHEVRON_WEIGHT:          '—',
+  TRAILING_VALUE_SIZE:              'TYPE_STYLES.body.size',
+  PRESS_BG_HIGHLIGHT_OPACITY:       '—',
+  GRID_COLUMNS:                     '—',
+  GRID_GAP:                         'SPACING.md',
+  EMPTY_STATE_ICON_SIZE:            "ICON_SIZE['2xl']",
+  EMPTY_STATE_TITLE_SIZE:           'TYPE_STYLES.body.size',
+  EMPTY_STATE_DESCRIPTION_SIZE:     'TYPOGRAPHY.size.sm',
+  EMPTY_STATE_ICON_GAP:             'SPACING.md',
+  EMPTY_STATE_TEXT_GAP:             'SPACING.sm',
+  EMPTY_STATE_PADDING_HORIZONTAL:   'SPACING.xl',
+};
+
 const FORM_PICKER_TOKEN_DESC = {
   ROW_MIN_HEIGHT:         'form picker 高度，對齊 ListItem 視覺節奏',
   ROW_PADDING_VERTICAL:   'form input 內距，比 ListItem 緊（input 視覺）',
@@ -716,6 +754,20 @@ const FORM_PICKER_TOKEN_DESC = {
   SUBTEXT_SIZE:           '副文字字級',
   SUBTEXT_MARGIN_TOP:     '主值下副文字補位',
   PICKER_PANEL_RADIUS:    'inline picker 展開時的圓角',
+};
+
+const FORM_PICKER_TOKEN_SOURCE = {
+  ROW_MIN_HEIGHT:         '—',
+  ROW_PADDING_VERTICAL:   'SPACING.md',
+  ROW_PADDING_HORIZONTAL: 'SPACING.lg',
+  ICON_SIZE:              'ICON_SIZE.lg',
+  ICON_RADIUS:            'RADIUS.xl',
+  ICON_GAP_HORIZONTAL:    'SPACING.md',
+  VALUE_SIZE:             'TYPE_STYLES.body.size',
+  VALUE_WEIGHT:           'TYPOGRAPHY.weight.medium',
+  SUBTEXT_SIZE:           'TYPOGRAPHY.size.sm',
+  SUBTEXT_MARGIN_TOP:     "SPACING['2xs']",
+  PICKER_PANEL_RADIUS:    'RADIUS.md',
 };
 
 const TX_LIST_TOKEN_DESC = {
@@ -750,6 +802,30 @@ const TX_LIST_TOKEN_DESC = {
   FOCUS_CARD_GROW_DURATION_MS:          'focus card 展開',
 };
 
+const TX_LIST_TOKEN_SOURCE = {
+  SECTION_CARD_RADIUS:                  'RADIUS.lg',
+  SECTION_CARD_MARGIN_BOTTOM:           "SPACING.md + SPACING['2xs']",
+  SECTION_CARD_HORIZONTAL_PADDING:      'SPACING.lg',
+  SECTION_HEADER_PADDING_V_COLLAPSED:   'SPACING.md',
+  SECTION_HEADER_PADDING_V_EXPANDED:    "SPACING.sm + SPACING['2xs']",
+  SECTION_HEADER_PADDING_H:             'SPACING.lg',
+  SECTION_HEADER_TITLE_SIZE_COLLAPSED:  'TYPE_STYLES.body.size',
+  SECTION_HEADER_TITLE_SIZE_EXPANDED:   'TYPOGRAPHY.size.sm',
+  SECTION_HEADER_TOTAL_SIZE_COLLAPSED:  'TYPE_STYLES.subheadline.size',
+  SECTION_HEADER_TOTAL_SIZE_EXPANDED:   'TYPE_STYLES.footnote.size',
+  SECTION_HEADER_TITLE_WEIGHT:          'TYPOGRAPHY.weight.medium',
+  SECTION_HEADER_TOTAL_WEIGHT:          'TYPOGRAPHY.weight.medium',
+  ICON_OUTLINE_BORDER_WIDTH:            '—',
+  ICON_OUTLINE_SIZE:                    'ICON_SIZE.lg',
+  ICON_OUTLINE_RADIUS:                  '—',
+  ROW_AMOUNT_SIZE:                      'TYPE_STYLES.callout.size',
+  ROW_AMOUNT_WEIGHT:                    'TYPOGRAPHY.weight.medium',
+  ROW_LEFT_SLOT_SIZE:                   'ICON_SIZE.lg',
+  ROW_NOTE_SIZE:                        'TYPE_STYLES.subheadline.size',
+  ROW_SECONDARY_SIZE:                   'TYPE_STYLES.caption1.size',
+  MORPH_DURATION_MS:                    'MOTION.duration.fast + 80',
+};
+
 const SEARCH_BAR_TOKEN_DESC = {
   PILL_HEIGHT:               'pill 高度（= HIT_TARGET.min）',
   PADDING_HORIZONTAL:        'bar 容器左右 padding',
@@ -760,9 +836,24 @@ const SEARCH_BAR_TOKEN_DESC = {
   INPUT_FONT_SIZE:           '輸入框字級（body 對齊）',
 };
 
+const SEARCH_BAR_TOKEN_SOURCE = {
+  PILL_HEIGHT:               'HIT_TARGET.min',
+  PADDING_HORIZONTAL:        'SPACING.lg',
+  PADDING_VERTICAL:          'SPACING.md',
+  PILL_PADDING_HORIZONTAL:   'SPACING.md',
+  ICON_GAP:                  'SPACING.sm',
+  ICON_SIZE:                 'ICON_SIZE.sm',
+  INPUT_FONT_SIZE:           'TYPOGRAPHY.size.base',
+};
+
 const LIST_EMPTY_TRANSITION_DESC = {
   DURATION_MS: '列表空狀態切換動畫長度（220ms，fast 與 base 之間）',
   EASING:      '緩動函式（HIG standard）',
+};
+
+const LIST_EMPTY_TRANSITION_SOURCE = {
+  DURATION_MS: 'MOTION.duration.fast + 20',
+  EASING:      'MOTION.easing.standard',
 };
 
 const SWITCH_TOKEN_DESC = {
@@ -771,6 +862,26 @@ const SWITCH_TOKEN_DESC = {
   THUMB_COLOR_ON:   '選中態 thumb 色（白）',
   THUMB_COLOR_OFF:  '未選態 thumb 色（淺灰）',
   IOS_BG_COLOR:     'iOS Switch 容器背景色',
+};
+
+const SWITCH_TOKEN_SOURCE = {
+  TRACK_COLOR_OFF:  'TOKENS.surface2',
+  TRACK_COLOR_ON:   'TOKENS.success / TOKENS.p500',
+  THUMB_COLOR_ON:   '—',
+  THUMB_COLOR_OFF:  '—',
+  IOS_BG_COLOR:     '—',
+};
+
+const HEADER_ICON_BUTTON_TOKEN_DESC = {
+  CONTENT_BOX:    'customView 正方形邊長（Liquid Glass hug 後自動成正圓 pill）',
+  SYMBOL_SIZE:    'SF Symbol point size，對齊 iOS bar button 慣用 body 級',
+  MULTI_ICON_GAP: '多 icon 共用 customView 時 icon 之間的水平 gap',
+};
+
+const HEADER_ICON_BUTTON_TOKEN_SOURCE = {
+  CONTENT_BOX:    'ICON_SIZE.md',
+  SYMBOL_SIZE:    'TYPE_STYLES.body.size',
+  MULTI_ICON_GAP: 'SPACING.sm',
 };
 
 const CHIP_TOKEN_DESC = {
@@ -784,24 +895,49 @@ const CHIP_TOKEN_DESC = {
   BORDER_WIDTH:          'chip 描邊（未選態）',
 };
 
-function TokenTableCard({ tokens, title, descriptions }) {
+const CHIP_TOKEN_SOURCE = {
+  PADDING_VERTICAL:      'SPACING.sm',
+  PADDING_HORIZONTAL:    'SPACING.md',
+  RADIUS:                'RADIUS.xl',
+  GAP_HORIZONTAL:        'SPACING.sm',
+  GAP_VERTICAL:          'SPACING.sm',
+  TEXT_SIZE:             'TYPOGRAPHY.size.sm',
+  TEXT_WEIGHT_SELECTED:  'TYPOGRAPHY.weight.medium',
+  BORDER_WIDTH:          '—',
+};
+
+function TokenTableCard({ tokens, title, descriptions, sources }) {
   const entries = Object.entries(tokens);
   const hasDesc = descriptions && Object.keys(descriptions).length > 0;
-  const gridTemplateColumns = hasDesc ? '1fr auto 1.6fr' : '1fr auto';
+  const hasSource = sources && Object.keys(sources).length > 0;
+  // KEY | (SOURCE) | VALUE | (用途)
+  const gridTemplateColumns = [
+    '1fr',
+    hasSource ? 'auto' : null,
+    'auto',
+    hasDesc ? '1.6fr' : null,
+  ].filter(Boolean).join(' ');
+  const headerStyle = { fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3 };
   return (
     <FoundCard>
       <FoundLabel>{title}</FoundLabel>
       <div style={{ display: 'grid', gridTemplateColumns, columnGap: 12, rowGap: 4 }}>
-        {hasDesc && (
+        {(hasDesc || hasSource) && (
           <React.Fragment>
-            <code style={{ fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3 }}>KEY</code>
-            <code style={{ fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3, textAlign: 'right' }}>VALUE</code>
-            <code style={{ fontSize: 9.5, color: TOKENS.ink3, lineHeight: 1.4, letterSpacing: 0.3 }}>用途</code>
+            <code style={headerStyle}>KEY</code>
+            {hasSource && <code style={headerStyle}>SOURCE</code>}
+            <code style={{ ...headerStyle, textAlign: 'right' }}>VALUE</code>
+            {hasDesc && <code style={headerStyle}>用途</code>}
           </React.Fragment>
         )}
         {entries.map(([k, v]) => (
           <React.Fragment key={k}>
             <code style={{ fontSize: 11, color: TOKENS.ink, lineHeight: 1.6 }}>{k}</code>
+            {hasSource && (
+              <code style={{ fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6, whiteSpace: 'nowrap' }}>
+                {sources[k] || '—'}
+              </code>
+            )}
             <code style={{ fontSize: 11, color: TOKENS.ink2, fontVariantNumeric: 'tabular-nums', lineHeight: 1.6, textAlign: 'right', whiteSpace: 'nowrap' }}>
               {typeof v === 'object' ? JSON.stringify(v) : String(v)}
             </code>
@@ -1189,4 +1325,13 @@ Object.assign(window, {
   LIST_EMPTY_TRANSITION_DESC,
   SWITCH_TOKEN_DESC,
   CHIP_TOKEN_DESC,
+  HEADER_ICON_BUTTON_TOKEN_DESC,
+  LIST_TOKEN_SOURCE,
+  FORM_PICKER_TOKEN_SOURCE,
+  TX_LIST_TOKEN_SOURCE,
+  SEARCH_BAR_TOKEN_SOURCE,
+  LIST_EMPTY_TRANSITION_SOURCE,
+  SWITCH_TOKEN_SOURCE,
+  CHIP_TOKEN_SOURCE,
+  HEADER_ICON_BUTTON_TOKEN_SOURCE,
 });

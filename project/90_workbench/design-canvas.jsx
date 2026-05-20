@@ -419,6 +419,10 @@ function DCArtboardFrame({ sectionId, artboard, label, order, draggable = true, 
   const { id: rawId, label: rawLabel, width = 260, height = 480, children, style = {} } = artboard.props;
   const id = rawId ?? rawLabel;
   const ref = React.useRef(null);
+  // 'auto' = let CSS size the card to its content (used by token tables
+  // whose row count varies). minWidth keeps the frame from collapsing.
+  const isAutoW = width === 'auto';
+  const isAutoH = height === 'auto';
 
   // Live drag-reorder: dragged card sticks to cursor; siblings slide into
   // their would-be slots in real time via transforms. DOM order only
@@ -499,7 +503,11 @@ function DCArtboardFrame({ sectionId, artboard, label, order, draggable = true, 
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M7 1h4v4M5 11H1V7M11 1L7.5 4.5M1 11l3.5-3.5"/></svg>
       </button>
       <div className="dc-card"
-        style={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)', overflow: 'hidden', width, height, background: '#fff', ...style }}>
+        style={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)', overflow: 'hidden',
+          width: isAutoW ? 'fit-content' : width,
+          minWidth: isAutoW ? 260 : undefined,
+          height: isAutoH ? 'auto' : height,
+          background: '#fff', ...style }}>
         {children || <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#bbb', fontSize: 13, fontFamily: DC.font }}>{id}</div>}
       </div>
     </div>
@@ -552,9 +560,12 @@ function DCFocusOverlay({ entry, sectionMeta, sectionOrder }) {
   });
 
   const { width = 260, height = 480, children } = artboard.props;
+  const isAutoW = width === 'auto';
+  const isAutoH = height === 'auto';
   const [vp, setVp] = React.useState({ w: window.innerWidth, h: window.innerHeight });
   React.useEffect(() => { const r = () => setVp({ w: window.innerWidth, h: window.innerHeight }); window.addEventListener('resize', r); return () => window.removeEventListener('resize', r); }, []);
-  const scale = Math.max(0.1, Math.min((vp.w - 200) / width, (vp.h - 260) / height, 2));
+  // Auto-sized artboards skip the zoom-to-fit math (no fixed dims to scale to).
+  const scale = (isAutoW || isAutoH) ? 1 : Math.max(0.1, Math.min((vp.w - 200) / width, (vp.h - 260) / height, 2));
 
   const [ddOpen, setDd] = React.useState(false);
   const Arrow = ({ dir, onClick }) => (
@@ -618,8 +629,18 @@ function DCFocusOverlay({ entry, sectionMeta, sectionOrder }) {
           the card) exits focus */}
       <div
         style={{ position: 'absolute', top: 64, bottom: 56, left: 100, right: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-        <div onClick={(e) => e.stopPropagation()} style={{ width: width * scale, height: height * scale, position: 'relative' }}>
-          <div style={{ width, height, transform: `scale(${scale})`, transformOrigin: 'top left', background: '#fff', borderRadius: 2, overflow: 'hidden',
+        <div onClick={(e) => e.stopPropagation()} style={{
+          width: isAutoW ? 'auto' : width * scale,
+          height: isAutoH ? 'auto' : height * scale,
+          position: 'relative',
+        }}>
+          <div style={{
+            width: isAutoW ? 'fit-content' : width,
+            minWidth: isAutoW ? 260 : undefined,
+            height: isAutoH ? 'auto' : height,
+            transform: (isAutoW || isAutoH) ? undefined : `scale(${scale})`,
+            transformOrigin: 'top left',
+            background: '#fff', borderRadius: 2, overflow: 'hidden',
             boxShadow: '0 20px 80px rgba(0,0,0,.4)' }}>
             {children || <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#bbb' }}>{aid}</div>}
           </div>
