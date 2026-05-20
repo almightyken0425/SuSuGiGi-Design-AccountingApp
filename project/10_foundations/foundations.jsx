@@ -118,17 +118,20 @@ function FoundationsSpacingSection() {
       <DCArtboard id="chip-tokens" label="CHIP_TOKENS 表格" width={520} height={340}>
         <TokenTableCard tokens={CHIP_TOKENS} title="CHIP_TOKENS" descriptions={CHIP_TOKEN_DESC}/>
       </DCArtboard>
-      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList 專用" width={520} height={620}>
-        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS"/>
+      <DCArtboard id="tx-list-tokens" label="TX_LIST_TOKENS · TxList 專用" width={520} height={720}>
+        <TokenTableCard tokens={TX_LIST_TOKENS} title="TX_LIST_TOKENS" descriptions={TX_LIST_TOKEN_DESC}/>
       </DCArtboard>
-      <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={420}>
-        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS"/>
+      <DCArtboard id="search-tokens" label="SEARCH_BAR_TOKENS" width={520} height={360}>
+        <TokenTableCard tokens={SEARCH_BAR_TOKENS} title="SEARCH_BAR_TOKENS" descriptions={SEARCH_BAR_TOKEN_DESC}/>
       </DCArtboard>
       <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width={520} height={220}>
         <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS"/>
       </DCArtboard>
-      <DCArtboard id="list-empty-transition" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={140}>
-        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION"/>
+      <DCArtboard id="list-empty-transition" label="LIST_EMPTY_TRANSITION · 列表空狀態切換" width={520} height={180}>
+        <TokenTableCard tokens={LIST_EMPTY_TRANSITION} title="LIST_EMPTY_TRANSITION" descriptions={LIST_EMPTY_TRANSITION_DESC}/>
+      </DCArtboard>
+      <DCArtboard id="switch-tokens" label="SWITCH_TOKENS · RN 原生 Switch 兩態" width={520} height={280}>
+        <TokenTableCard tokens={SWITCH_TOKENS} title="SWITCH_TOKENS" descriptions={SWITCH_TOKEN_DESC}/>
       </DCArtboard>
     </DCSection>
   );
@@ -652,6 +655,61 @@ const FORM_PICKER_TOKEN_DESC = {
   SUBTEXT_SIZE:           '副文字字級',
   SUBTEXT_MARGIN_TOP:     '主值下副文字補位',
   PICKER_PANEL_RADIUS:    'inline picker 展開時的圓角',
+};
+
+const TX_LIST_TOKEN_DESC = {
+  SECTION_CARD_RADIUS:                  '交易 section 卡片外殼圓角',
+  SECTION_CARD_MARGIN_BOTTOM:           'section 卡片之間的呼吸距',
+  SECTION_CARD_HORIZONTAL_PADDING:      '卡片內水平 padding',
+  SECTION_HEADER_PADDING_V_COLLAPSED:   'section header 收合態垂直 padding',
+  SECTION_HEADER_PADDING_V_EXPANDED:    'section header 展開態垂直 padding（較緊）',
+  SECTION_HEADER_PADDING_H:             'section header 水平 padding',
+  SECTION_HEADER_TITLE_SIZE_COLLAPSED:  '收合態標題字級（body）',
+  SECTION_HEADER_TITLE_SIZE_EXPANDED:   '展開態標題字級（縮小）',
+  SECTION_HEADER_TOTAL_SIZE_COLLAPSED:  '收合態金額字級',
+  SECTION_HEADER_TOTAL_SIZE_EXPANDED:   '展開態金額字級（縮小）',
+  SECTION_HEADER_TITLE_WEIGHT:          'section 標題字重',
+  SECTION_HEADER_TOTAL_WEIGHT:          'section 金額字重',
+  ICON_OUTLINE_BORDER_WIDTH:            '左槽 icon outline 描邊',
+  ICON_OUTLINE_SIZE:                    '左槽 icon 容器尺寸（ICON_SIZE.lg）',
+  ICON_OUTLINE_RADIUS:                  '左槽 icon 容器圓角（離開 RADIUS 階梯的視覺校準）',
+  ROW_AMOUNT_SIZE:                      '交易列金額字級（callout）',
+  ROW_AMOUNT_WEIGHT:                    '交易列金額字重',
+  ROW_LEFT_SLOT_SIZE:                   '交易列左槽尺寸',
+  ROW_NOTE_SIZE:                        '備註字級（subheadline）',
+  ROW_SECONDARY_SIZE:                   '次要文字字級（caption1）',
+  MORPH_DURATION_MS:                    'section 收合/展開動畫長度',
+  SECTION_ENTRY_DURATION_MS:            'section 進場動畫長度',
+  SECTION_ENTRY_STAGGER_MS:             'section 進場錯位間隔',
+  SECTION_ENTRY_TRANSLATE_Y:            'section 進場初始位移',
+  SECTION_ENTRY_STAGGER_MAX_INDEX:      '錯位上限索引',
+  SECTION_SHRINK_DURATION_MS:           'section 縮短動畫',
+  SECTION_GROW_DURATION_MS:             'section 展開動畫',
+  FOCUS_CARD_SHRINK_DURATION_MS:        'focus card 縮短',
+  FOCUS_CARD_GROW_DURATION_MS:          'focus card 展開',
+};
+
+const SEARCH_BAR_TOKEN_DESC = {
+  PILL_HEIGHT:               'pill 高度（= HIT_TARGET.min）',
+  PADDING_HORIZONTAL:        'bar 容器左右 padding',
+  PADDING_VERTICAL:          'bar 容器上下 padding',
+  PILL_PADDING_HORIZONTAL:   'pill 內水平 padding',
+  ICON_GAP:                  'pill 內 icon ↔ text gap',
+  ICON_SIZE:                 'pill 內 icon 大小（ICON_SIZE.sm）',
+  INPUT_FONT_SIZE:           '輸入框字級（body 對齊）',
+};
+
+const LIST_EMPTY_TRANSITION_DESC = {
+  DURATION_MS: '列表空狀態切換動畫長度（220ms，fast 與 base 之間）',
+  EASING:      '緩動函式（HIG standard）',
+};
+
+const SWITCH_TOKEN_DESC = {
+  TRACK_COLOR_OFF:  '未選態 track 色（surface_hover）',
+  TRACK_COLOR_ON:   '選中態 track 色：default 走 success、brand 走 primary',
+  THUMB_COLOR_ON:   '選中態 thumb 色（白）',
+  THUMB_COLOR_OFF:  '未選態 thumb 色（淺灰）',
+  IOS_BG_COLOR:     'iOS Switch 容器背景色',
 };
 
 const CHIP_TOKEN_DESC = {
