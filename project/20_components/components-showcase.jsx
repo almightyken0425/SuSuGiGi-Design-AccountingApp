@@ -20,18 +20,18 @@ function ComponentsListSection() {
           <CompLabel>ListItem 不同組合</CompLabel>
           <div style={{ padding: SPACING.lg }}>
             <ListGroupCard>
-              <ListItem leftIcon={<Glyph name="tag-outline" size={20} color={TOKENS.ink} stroke={1.8}/>}
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
                 title="只有 title"/>
-              <ListItem leftIcon={<Glyph name="bank-outline" size={20} color={TOKENS.ink} stroke={1.8}/>}
+              <ListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
                 title="title + subtitle" subtitle="輔助說明文字"/>
-              <ListItem leftIcon={<Glyph name="cog-outline" size={20} color={TOKENS.ink} stroke={1.8}/>}
+              <ListItem leftIcon={<Glyph name="cog-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
                 title="title + value + chevron" value="NT$1,200" showChevron/>
               <ListItem title="無 leftIcon · divider 縮到 16px" showChevron/>
-              <ListItem leftIcon={<Glyph name="star-outline" size={20} color={TOKENS.p500} stroke={1.8}/>}
+              <ListItem leftIcon={<Glyph name="star-outline" size={ICON_SIZE.sm} color={TOKENS.p500} stroke={1.8}/>}
                 title="titleColor = primary" titleColor={TOKENS.p500} showChevron/>
-              <ListItem leftIcon={<Glyph name="trash" size={20} color={TOKENS.error} stroke={1.8}/>}
+              <ListItem leftIcon={<Glyph name="trash" size={ICON_SIZE.sm} color={TOKENS.error} stroke={1.8}/>}
                 title="destructive (error 色)" titleColor={TOKENS.error}/>
-              <ListItem leftIcon={<Glyph name="bug-outline" size={20} color={TOKENS.ink} stroke={1.8}/>}
+              <ListItem leftIcon={<Glyph name="bug-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
                 title="disabled state" disabled/>
             </ListGroupCard>
           </div>
@@ -58,7 +58,7 @@ function ComponentsListSection() {
             <ListGroupCard>
               {ACCOUNTS.map(a => (
                 <ReorderableListItem key={a.id}
-                  leftIcon={<DynamicIconById iconId={a.iconId} size={20} color={TOKENS.ink}/>}
+                  leftIcon={<DynamicIconById iconId={a.iconId} size={ICON_SIZE.sm} color={TOKENS.ink}/>}
                   title={a.name} subtitle={a.currency}
                   style={{ height: 60 }}/>
               ))}
@@ -333,7 +333,7 @@ function ComponentsInputSection() {
       <DCArtboard id="comp-glass" label="GlassView · pill (live)" width={402} height={140}>
         <CompFrame style={{ padding: 24, background: 'linear-gradient(135deg, #4323a0, #c0b6df)' }}>
           <GlassView pill style={{ padding: '12px 20px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            <Glyph name="line.3.horizontal.decrease" size={16} color={TOKENS.ink} stroke={2}/>
+            <Glyph name="line.3.horizontal.decrease" size={ICON_SIZE.xs} color={TOKENS.ink} stroke={2}/>
             <span style={{ color: TOKENS.ink, fontWeight: 500 }}>Glass pill</span>
           </GlassView>
         </CompFrame>

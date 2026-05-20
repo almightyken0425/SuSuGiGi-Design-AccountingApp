@@ -295,7 +295,7 @@ function ListGroupCard({ children, style = {} }) {
       borderRadius: LIST_TOKENS.GROUP_CARD_RADIUS,
       borderWidth: LIST_TOKENS.GROUP_CARD_BORDER_WIDTH,
       borderStyle: 'solid',
-      borderColor: LIST_TOKENS.GROUP_CARD_BORDER_COLOR,
+      borderColor: TOKENS.divider.hairline,
       overflow: 'hidden',
       marginBottom: LIST_TOKENS.GROUP_CARD_MARGIN_BOTTOM,
       ...style,
@@ -342,7 +342,7 @@ function ListSeparator({ insetLeft = 0, style = {} }) {
     <div style={{
       height: 1,
       marginLeft: insetLeft,
-      background: LIST_TOKENS.DIVIDER_COLOR_LIGHT,
+      background: TOKENS.divider.hairline,
       ...style,
     }}/>
   );
@@ -380,7 +380,7 @@ function ListItem({ leftIcon, title, titleColor, subtitle, value, showChevron, t
         paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         background: pressed && !disabled ? TOKENS.surface2 : TOKENS.surface,
-        borderTop: `0.5px solid ${LIST_TOKENS.DIVIDER_COLOR_LIGHT}`,
+        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
         cursor: onPress && !disabled ? 'pointer' : 'default',
         userSelect: 'none',
         ...style,
@@ -429,7 +429,7 @@ function SelectionListItem({ leftIcon, title, subtitle, selected, onPress, disab
         paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         background: pressed && !disabled ? TOKENS.surface2 : TOKENS.surface,
-        borderTop: `0.5px solid ${LIST_TOKENS.DIVIDER_COLOR_LIGHT}`,
+        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
         cursor: onPress && !disabled ? 'pointer' : 'default',
         userSelect: 'none', opacity: disabled ? 0.5 : 1, ...style,
       }}>
@@ -462,7 +462,7 @@ function ReorderableListItem({ leftIcon, title, subtitle, trailing, style = {} }
       paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
       paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
       background: TOKENS.surface,
-      borderTop: `0.5px solid ${LIST_TOKENS.DIVIDER_COLOR_LIGHT}`,
+      borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
       userSelect: 'none', ...style,
     }}>
       {leftIcon && (
@@ -599,7 +599,7 @@ function NavHeader({ title, leadingText, leadingAction, trailing }) {
             padding: '8px 4px', display: 'flex', alignItems: 'center', gap: 2,
             fontFamily: 'inherit',
           }}>
-            <Glyph name="chevron-left" size={16} color={TOKENS.p500} stroke={2.4}/>
+            <Glyph name="chevron-left" size={ICON_SIZE.xs} color={TOKENS.p500} stroke={2.4}/>
             {leadingText && <span>{leadingText}</span>}
           </button>
         )}
@@ -804,9 +804,9 @@ function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, o
         }}>
           {mode === 'actions' ? (
             <>
-              <button onClick={onExpensePress} style={fabBtn}><Glyph name="minus" size={24} color={TOKENS.p500}/></button>
-              <button onClick={onTransferPress} style={fabBtn}><Glyph name="exchange" size={24} color={TOKENS.p500} stroke={2.4}/></button>
-              <button onClick={onIncomePress} style={fabBtn}><Glyph name="plus" size={24} color={TOKENS.p500}/></button>
+              <button onClick={onExpensePress} style={fabBtn}><Glyph name="minus" size={ICON_SIZE.md} color={TOKENS.p500}/></button>
+              <button onClick={onTransferPress} style={fabBtn}><Glyph name="exchange" size={ICON_SIZE.md} color={TOKENS.p500} stroke={2.4}/></button>
+              <button onClick={onIncomePress} style={fabBtn}><Glyph name="plus" size={ICON_SIZE.md} color={TOKENS.p500}/></button>
             </>
           ) : (
             <>
@@ -825,7 +825,7 @@ function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, o
                 color: TOKENS.ink, textAlign: 'center',
                 whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
               }}>{undoMessage || '已刪除'}</span>
-              <button onClick={onUndoClose} style={fabBtn}><Glyph name="x" size={24} color={TOKENS.p500} stroke={2.4}/></button>
+              <button onClick={onUndoClose} style={fabBtn}><Glyph name="x" size={ICON_SIZE.md} color={TOKENS.p500} stroke={2.4}/></button>
             </>
           )}
         </div>

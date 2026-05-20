@@ -7,7 +7,7 @@
 // Token 層級（由抽象到具體）：
 //   1. 語意層：PALETTE / THEMES / TYPE_STYLES
 //   2. 底層數值：TYPOGRAPHY.size / TYPOGRAPHY.weight / SPACING / RADIUS
-//   3. 補充維度：LINE_HEIGHT / LETTER_SPACING / SHADOW / MOTION
+//   3. 補充維度：LINE_HEIGHT / LETTER_SPACING / SHADOW / MOTION / ICON_SIZE / HIT_TARGET
 //   4. 元件層：LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS（內部不硬編碼，引用上層）
 //
 // 使用優先順序：
@@ -291,6 +291,22 @@ const MOTION = {
   },
 };
 
+// Icon 尺寸階梯。供元件層 token 與 consumer 共用，避免 icon size 散落硬編碼。
+// 與 SPACING 階梯獨立，命名規則一致以便閱讀。
+const ICON_SIZE = {
+  xs:    16,   // chevron / 小型 inline icon
+  sm:    20,   // 列表標準 icon
+  md:    24,   // 大型 inline icon
+  lg:    32,   // icon outline / row 左槽
+  xl:    40,   // 強調區 icon
+  '2xl': 48,   // 空狀態大 icon
+};
+
+// 觸控目標尺寸。iOS HIG 觸控最小目標為 44pt。
+const HIT_TARGET = {
+  min: 44,
+};
+
 // 列表空狀態切換動畫；引用 MOTION，內部不再寫死毫秒數。
 const LIST_EMPTY_TRANSITION = {
   DURATION_MS: MOTION.duration.fast + 20,  // 220ms（在 fast 與 base 之間，給 crossfade 用）
@@ -309,16 +325,14 @@ const LIST_TOKENS = {
   ITEM_GAP_HORIZONTAL:       SPACING.md,
   ITEM_TITLE_SIZE:           TYPE_STYLES.body.size,         // body 17
   ITEM_TITLE_WEIGHT:         TYPOGRAPHY.weight.light,
-  ICON_SIZE_SMALL:           20,
-  ICON_SIZE_MEDIUM:          24,
-  ICON_SIZE_LARGE:           40,
-  DIVIDER_COLOR_LIGHT:       'rgba(60,60,67,0.10)',
-  DIVIDER_INSET_WITH_ICON:   SPACING.lg + 20 + SPACING.md,
+  ICON_SIZE_SMALL:           ICON_SIZE.sm,
+  ICON_SIZE_MEDIUM:          ICON_SIZE.md,
+  ICON_SIZE_LARGE:           ICON_SIZE.xl,
+  DIVIDER_INSET_WITH_ICON:   SPACING.lg + ICON_SIZE.sm + SPACING.md,
   DIVIDER_INSET_WITHOUT_ICON: SPACING.lg,
   GROUP_CARD_RADIUS:         RADIUS.lg,                     // 12（HIG 不收 14，改採 lg）
-  GROUP_CARD_MARGIN_BOTTOM:  35,
+  GROUP_CARD_MARGIN_BOTTOM:  35,                            // 離開 SPACING 階梯：35 為 section 間呼吸距，HIG 階梯內無此值
   GROUP_CARD_BORDER_WIDTH:   1,
-  GROUP_CARD_BORDER_COLOR:   'rgba(60,60,67,0.10)',
   SECTION_TITLE_SIZE:        TYPE_STYLES.footnote.size,     // footnote 13
   SECTION_TITLE_WEIGHT:      TYPOGRAPHY.weight.regular,
   SECTION_TITLE_LETTER_SPACING: 0.5,
@@ -327,14 +341,14 @@ const LIST_TOKENS = {
   SECTION_TITLE_PADDING_HORIZONTAL: SPACING.lg,
   SELECTION_ITEM_RADIUS:     RADIUS.md,
   SELECTION_ITEM_MARGIN_BOTTOM: SPACING.sm,
-  SELECTION_CHECKMARK_SIZE:  16,
+  SELECTION_CHECKMARK_SIZE:  ICON_SIZE.xs,
   TRAILING_CHEVRON_SIZE:     TYPE_STYLES.footnote.size,     // 13
   TRAILING_CHEVRON_WEIGHT:   'semibold',
   TRAILING_VALUE_SIZE:       TYPE_STYLES.body.size,         // 17
   PRESS_BG_HIGHLIGHT_OPACITY: 0.5,
   GRID_COLUMNS:              2,
   GRID_GAP:                  SPACING.md,
-  EMPTY_STATE_ICON_SIZE:     48,
+  EMPTY_STATE_ICON_SIZE:     ICON_SIZE['2xl'],
   EMPTY_STATE_TITLE_SIZE:    TYPE_STYLES.body.size,         // 17
   EMPTY_STATE_DESCRIPTION_SIZE: TYPOGRAPHY.size.sm,         // 14
   EMPTY_STATE_ICON_GAP:      SPACING.md,
@@ -356,11 +370,11 @@ const TX_LIST_TOKENS = {
   SECTION_HEADER_TITLE_WEIGHT:          TYPOGRAPHY.weight.medium,
   SECTION_HEADER_TOTAL_WEIGHT:          TYPOGRAPHY.weight.medium,
   ICON_OUTLINE_BORDER_WIDTH:            1,
-  ICON_OUTLINE_SIZE:                    32,
-  ICON_OUTLINE_RADIUS:                  10,
+  ICON_OUTLINE_SIZE:                    ICON_SIZE.lg,
+  ICON_OUTLINE_RADIUS:                  10,                            // 離開 RADIUS 階梯：32px icon 配 RADIUS.md(8) 偏方、配 lg(12) 偏圓，10 為視覺校準
   ROW_AMOUNT_SIZE:                      TYPE_STYLES.callout.size,      // 16
   ROW_AMOUNT_WEIGHT:                    TYPOGRAPHY.weight.medium,
-  ROW_LEFT_SLOT_SIZE:                   32,
+  ROW_LEFT_SLOT_SIZE:                   ICON_SIZE.lg,
   ROW_NOTE_SIZE:                        TYPE_STYLES.subheadline.size,  // 15
   ROW_SECONDARY_SIZE:                   TYPE_STYLES.caption1.size,     // 12
   MORPH_DURATION_MS:                    MOTION.duration.fast + 80,     // 280ms
@@ -369,12 +383,12 @@ const TX_LIST_TOKENS = {
 const TX_TOKENS = TX_LIST_TOKENS;
 
 const SEARCH_BAR_TOKENS = {
-  PILL_HEIGHT:               44,
+  PILL_HEIGHT:               HIT_TARGET.min,
   PADDING_HORIZONTAL:        SPACING.lg,
   PADDING_VERTICAL:          SPACING.md,
   PILL_PADDING_HORIZONTAL:   SPACING.md,
   ICON_GAP:                  SPACING.sm,
-  ICON_SIZE:                 20,
+  ICON_SIZE:                 ICON_SIZE.sm,
   INPUT_FONT_SIZE:           TYPOGRAPHY.size.base,
 };
 const SEARCH_TOKENS = SEARCH_BAR_TOKENS;
@@ -632,7 +646,7 @@ Object.assign(window, {
   TOKENS, CHART_COLORS, GLASS,
   TYPOGRAPHY, TYPOGRAPHY_WEIGHT_ENABLED, TYPE_SCALE, FONT_WEIGHT, TYPE_STYLES,
   LINE_HEIGHT, LETTER_SPACING,
-  SPACING, RADIUS, SHADOW, MOTION,
+  SPACING, RADIUS, SHADOW, MOTION, ICON_SIZE, HIT_TARGET,
   LIST_TOKENS, TX_LIST_TOKENS, TX_TOKENS,
   SEARCH_BAR_TOKENS, SEARCH_TOKENS, BOTTOM_SEARCH_BAR_TOTAL_HEIGHT,
   SWITCH_TOKENS,

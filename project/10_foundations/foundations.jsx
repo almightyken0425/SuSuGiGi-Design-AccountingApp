@@ -82,7 +82,7 @@ function FoundationsSpacingSection() {
     <DCSection
       id="found-spacing"
       title="Spacing"
-      subtitle="SPACING = HIG 4 倍數階梯，語意命名 2xs/xs/sm/md/lg/xl/2xl/3xl/4xl/5xl。最小階 2xs=2 專供「主標題下副標題行內補位」使用，不視為元件間留白。RADIUS = none/sm/md/lg/xl/2xl/full（不收 14）。SHADOW = HIG 4 階 elevation。MOTION = duration + easing 對齊 HIG。底下含元件 token 速查表。"
+      subtitle="SPACING = HIG 4 倍數階梯，語意命名 2xs/xs/sm/md/lg/xl/2xl/3xl/4xl/5xl。最小階 2xs=2 專供「主標題下副標題行內補位」使用，不視為元件間留白。RADIUS = none/sm/md/lg/xl/2xl/full（不收 14）。SHADOW = HIG 4 階 elevation。MOTION = duration + easing 對齊 HIG。ICON_SIZE = icon 尺寸階梯（xs/sm/md/lg/xl/2xl），HIT_TARGET.min = 44 對齊 HIG 觸控最小目標。底下含元件 token 速查表。"
       direction="column"
     >
       <DCArtboard id="spacing-live" label="SPACING · 4-multiple baseline (live)" width={520} height={520}>
@@ -96,6 +96,12 @@ function FoundationsSpacingSection() {
       </DCArtboard>
       <DCArtboard id="motion-live" label="MOTION · duration + easing (live)" width={520} height={460}>
         <MotionCard/>
+      </DCArtboard>
+      <DCArtboard id="icon-size" label="ICON_SIZE · icon 尺寸階梯" width={520} height={320}>
+        <TokenTableCard tokens={ICON_SIZE} title="ICON_SIZE"/>
+      </DCArtboard>
+      <DCArtboard id="hit-target" label="HIT_TARGET · 觸控目標" width={520} height={140}>
+        <TokenTableCard tokens={HIT_TARGET} title="HIT_TARGET"/>
       </DCArtboard>
       <DCArtboard id="list-tokens" label="LIST_TOKENS 表格" width={520} height={680}>
         <TokenTableCard tokens={LIST_TOKENS} title="LIST_TOKENS"/>
@@ -607,7 +613,7 @@ function IconWallCard({ icons }) {
             background: TOKENS.surface2,
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
           }}>
-            <DynamicIconById iconId={i.id} size={24} color={TOKENS.ink}/>
+            <DynamicIconById iconId={i.id} size={ICON_SIZE.md} color={TOKENS.ink}/>
             <code style={{ fontSize: 9.5, color: TOKENS.ink2, textAlign: 'center', wordBreak: 'break-word' }}>{i.uniqueName}</code>
             <code style={{ fontSize: 8, color: TOKENS.ink3 }}>id {i.id}</code>
           </div>
@@ -705,7 +711,7 @@ function GlassDemoCard() {
     <FoundCard style={{ background: 'linear-gradient(135deg, #4323a0, #c0b6df)' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <GlassView pill style={{ display: 'inline-flex', padding: '12px 20px', alignItems: 'center', gap: 8, alignSelf: 'flex-start' }}>
-          <Glyph name="magnifyingglass" size={16} color={TOKENS.ink} stroke={2}/>
+          <Glyph name="magnifyingglass" size={ICON_SIZE.xs} color={TOKENS.ink} stroke={2}/>
           <span style={{ color: TOKENS.ink, fontWeight: 500 }}>GlassView pill</span>
         </GlassView>
         <GlassView style={{ padding: 16, borderRadius: RADIUS.lg }}>

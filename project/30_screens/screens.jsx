@@ -150,7 +150,7 @@ function PP_SectionCard({ section, collapsed, onToggle, mode }) {
       background: TOKENS.surface,
       borderRadius: TX_LIST_TOKENS.SECTION_CARD_RADIUS,
       borderWidth: LIST_TOKENS.GROUP_CARD_BORDER_WIDTH, borderStyle: 'solid',
-      borderColor: LIST_TOKENS.GROUP_CARD_BORDER_COLOR,
+      borderColor: TOKENS.divider.hairline,
       overflow: 'hidden', transition: _HS_MORPH,
     }}>
       <PP_SectionHeader
@@ -168,7 +168,7 @@ function PP_SectionCard({ section, collapsed, onToggle, mode }) {
               width: TX_LIST_TOKENS.ROW_LEFT_SLOT_SIZE, height: TX_LIST_TOKENS.ROW_LEFT_SLOT_SIZE,
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              {cat && <DynamicIconById iconId={cat.iconId} size={20} color={TOKENS.p500}/>}
+              {cat && <DynamicIconById iconId={cat.iconId} size={ICON_SIZE.sm} color={TOKENS.p500}/>}
             </div>
           );
         const acc = ACC_BY_ID[tx.acc];
@@ -293,11 +293,11 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
     <div style={{ padding: SPACING.lg, background: TOKENS.bg, minHeight: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.sm, marginBottom: 40 }}>
         <button onClick={() => setFilterState(s => ({ ...s, timeGranularity: cycle(TIME_VALUES, timeGranularity) }))} style={filterTile}>
-          <Glyph name="calendar-blank-outline" size={16} color={TOKENS.ink2} stroke={2}/>
+          <Glyph name="calendar-blank-outline" size={ICON_SIZE.xs} color={TOKENS.ink2} stroke={2}/>
           <span style={filterTileText}>{TIME_LABELS[timeGranularity]}</span>
         </button>
         <button onClick={() => setFilterState(s => ({ ...s, groupBy: cycle(GROUP_VALUES, groupBy) }))} style={filterTile}>
-          <Glyph name="tag-outline" size={16} color={TOKENS.ink2} stroke={2}/>
+          <Glyph name="tag-outline" size={ICON_SIZE.xs} color={TOKENS.ink2} stroke={2}/>
           <span style={filterTileText}>{GROUP_LABELS[groupBy]}</span>
         </button>
       </div>
@@ -323,7 +323,7 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
                   paddingLeft: SPACING.md, paddingRight: SPACING.md,
                   borderRadius: RADIUS.lg,
                   borderWidth: selected ? 1.5 : 1, borderStyle: 'solid',
-                  borderColor: selected ? TOKENS.p500 : LIST_TOKENS.DIVIDER_COLOR_LIGHT,
+                  borderColor: selected ? TOKENS.p500 : TOKENS.divider.hairline,
                   background: TOKENS.surface,
                   cursor: last ? 'not-allowed' : 'pointer', fontFamily: 'inherit',
                 }}>
@@ -331,7 +331,7 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
                     width: 32, height: 32, borderRadius: RADIUS.md,
                     background: selected ? TOKENS.p50 : TOKENS.surface,
                     borderWidth: selected ? 0 : 1, borderStyle: 'solid',
-                    borderColor: LIST_TOKENS.DIVIDER_COLOR_LIGHT,
+                    borderColor: TOKENS.divider.hairline,
                     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                   }}>
                     <DynamicIconById iconId={a.iconId} size={17} color={swatchIconColor}/>
@@ -391,7 +391,7 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
     <div style={{ position: 'relative', minHeight: '100%', background: TOKENS.bg }}>
       {isLoading ? (
         <div style={{ paddingTop: 100, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', gap: SPACING.md }}>
-          <Spinner size={32}/>
+          <Spinner size={ICON_SIZE.lg}/>
           <span style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2 }}>搜尋中...</span>
         </div>
       ) : showEmpty ? (
@@ -413,7 +413,7 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
                 borderBottom: `1px solid ${TOKENS.surface}`,
               }}>
                 <div style={{ marginRight: SPACING.lg, width: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <DynamicIconById iconId={cat.iconId} size={24} color={color}/>
+                  <DynamicIconById iconId={cat.iconId} size={ICON_SIZE.md} color={color}/>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
@@ -674,7 +674,7 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', padding: 0,
           }}>
-            <Glyph name="repeat" size={24} color={recurring ? TOKENS.p500 : TOKENS.ink3} stroke={2}/>
+            <Glyph name="repeat" size={ICON_SIZE.md} color={recurring ? TOKENS.p500 : TOKENS.ink3} stroke={2}/>
           </button>
         </div>
         {/* RecurringOptions panel — impl 在 showRecurringOptions=true 時於 dateContainer 下方顯示 */}
@@ -700,7 +700,7 @@ function TransactionEditorScreen({ type = 'expense', isEdit = false, variant = '
               fontVariantNumeric: 'tabular-nums',
             }}>{amount || '0.00'}</span>
             <div style={{ padding: SPACING.sm }}>
-              <Glyph name="backspace-outline" size={24} color={TOKENS.ink2} stroke={1.6}/>
+              <Glyph name="backspace-outline" size={ICON_SIZE.md} color={TOKENS.ink2} stroke={1.6}/>
             </div>
           </div>
         </div>
@@ -876,7 +876,7 @@ function TransferEditorScreen({ isEdit = false }) {
             borderColor: recurring ? TOKENS.p500 : TOKENS.border,
             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: 0,
           }}>
-            <Glyph name="repeat" size={24} color={recurring ? TOKENS.p500 : TOKENS.ink3} stroke={2}/>
+            <Glyph name="repeat" size={ICON_SIZE.md} color={recurring ? TOKENS.p500 : TOKENS.ink3} stroke={2}/>
           </button>
         </div>
         {recurring && <RecurringOptionsPanel/>}
@@ -888,7 +888,7 @@ function TransferEditorScreen({ isEdit = false }) {
                 onPress={() => setActiveField('from')}/>
             </div>
             <div style={{ width: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}>
-              <Glyph name="arrow-right" size={24} color={TOKENS.ink2}/>
+              <Glyph name="arrow-right" size={ICON_SIZE.md} color={TOKENS.ink2}/>
             </div>
             <div style={{ flex: 1 }}>
               <AmountField active={activeField === 'to' && isCrossCurrency} disabled={!isCrossCurrency}
@@ -902,7 +902,7 @@ function TransferEditorScreen({ isEdit = false }) {
           <StaticWheelPicker label={fromAcc.name} subLabel={fromAcc.currency}/>
           <div style={{ width: SPACING.lg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ marginTop: 30 }}>
-              <Glyph name="arrow-right" size={24} color={TOKENS.ink2}/>
+              <Glyph name="arrow-right" size={ICON_SIZE.md} color={TOKENS.ink2}/>
             </div>
           </div>
           <StaticWheelPicker label={toAcc.name} subLabel={toAcc.currency}/>
@@ -973,7 +973,7 @@ function AmountField({ active, value, currency, disabled, onPress }) {
           position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
           padding: SPACING.sm,
         }}>
-          <Glyph name="backspace-outline" size={24} color={TOKENS.ink2} stroke={1.6}/>
+          <Glyph name="backspace-outline" size={ICON_SIZE.md} color={TOKENS.ink2} stroke={1.6}/>
         </div>
       )}
     </div>
@@ -1027,7 +1027,7 @@ function AccountEditorScreen({ isNew = true }) {
           isExpanded={expanded === 'icon'}
           collapsedValue={
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <DynamicIconById iconId={3} size={24} color={TOKENS.ink}/>
+              <DynamicIconById iconId={3} size={ICON_SIZE.md} color={TOKENS.ink}/>
               <span style={{ marginLeft: 8 }}>ph-wallet</span>
             </div>
           }
@@ -1044,7 +1044,7 @@ function AccountEditorScreen({ isNew = true }) {
                   background: selected ? TOKENS.p500 : 'transparent',
                   marginTop: 4, marginBottom: 4,
                 }}>
-                  <DynamicIconById iconId={i.id} size={24} color={selected ? '#fff' : TOKENS.ink}/>
+                  <DynamicIconById iconId={i.id} size={ICON_SIZE.md} color={selected ? '#fff' : TOKENS.ink}/>
                 </div>
               );
             })}
@@ -1105,7 +1105,7 @@ function CollapsiblePicker({ isExpanded, collapsedValue, onToggle, children, dis
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}>
         <div style={{ fontSize: TYPOGRAPHY.size.base, color: disabled ? TOKENS.ink3 : TOKENS.ink }}>{collapsedValue}</div>
-        {!disabled && <Glyph name="chevron-down" size={20} color={TOKENS.ink2}/>}
+        {!disabled && <Glyph name="chevron-down" size={ICON_SIZE.sm} color={TOKENS.ink2}/>}
       </div>
     );
   }
@@ -1122,7 +1122,7 @@ function CollapsiblePicker({ isExpanded, collapsedValue, onToggle, children, dis
         cursor: 'pointer',
       }}>
         <span style={{ fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2, fontWeight: TYPOGRAPHY.weight.medium }}>選擇</span>
-        <Glyph name="chevron-up" size={20} color={TOKENS.ink2}/>
+        <Glyph name="chevron-up" size={ICON_SIZE.sm} color={TOKENS.ink2}/>
       </div>
       <div style={{ maxHeight: 200, overflowY: 'auto' }}>{children}</div>
     </div>
@@ -1166,7 +1166,7 @@ function CategoryEditorScreen({ isNew = true, type = 'expense' }) {
           isExpanded={expanded === 'icon'}
           collapsedValue={
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <DynamicIconById iconId={13} size={24} color={TOKENS.ink}/>
+              <DynamicIconById iconId={13} size={ICON_SIZE.md} color={TOKENS.ink}/>
               <span style={{ marginLeft: 8 }}>ph-coffee</span>
             </div>
           }
@@ -1183,7 +1183,7 @@ function CategoryEditorScreen({ isNew = true, type = 'expense' }) {
                   background: selected ? TOKENS.p500 : 'transparent',
                   marginTop: 4, marginBottom: 4,
                 }}>
-                  <DynamicIconById iconId={i.id} size={24} color={selected ? '#fff' : TOKENS.ink}/>
+                  <DynamicIconById iconId={i.id} size={ICON_SIZE.md} color={selected ? '#fff' : TOKENS.ink}/>
                 </div>
               );
             })}
@@ -1229,7 +1229,7 @@ function PaywallScreen({ variant = 'default' }) {
         padding: SPACING.xl, background: TOKENS.bg, minHeight: '100%',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       }}>
-        <Spinner size={48}/>
+        <Spinner size={ICON_SIZE['2xl']}/>
       </div>
     );
   }
@@ -1344,7 +1344,7 @@ function LoginScreen({ variant = 'default' }) {
           opacity: isLoading ? 0.6 : 1,
         }}>
           {isLoading ? (
-            <Spinner size={20} color="#fff"/>
+            <Spinner size={ICON_SIZE.sm} color="#fff"/>
           ) : (
             <>
               <div style={{
