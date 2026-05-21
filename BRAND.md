@@ -119,8 +119,9 @@ box-shadow:      0 4px 12px rgba(0,0,0,0.10);
 ### Animation & motion
 
 - **Easing。** 兩種命名 easing：`--ease-standard cubic-bezier(0.4, 0, 0.2, 1)` 用於 in-place morph（section 收合、值替換），`--ease-spring cubic-bezier(0.2, 1.2, 0.4, 1)` 用於 FAB 進場退場（溫和 overshoot——從不彈跳）。
-- **Duration。** `120ms / 200ms / 280ms`。Section card morph 最慢 `280ms`。Press state `80ms`。
-- **Press feedback。** Universal button rule：`button:active { transform: scale(0.97) }`。微微 press-shrink，沒有色彩 flash。List row 額外把背景從 `surface` 翻成 `surface_hover` 顯示按下狀態。
+- **Duration。** 對齊 `MOTION.duration` 階梯：`instant 100ms` / `fast 200ms` / `base 300ms` / `slow 500ms`。Press feedback 用 `instant`；section 收合、值替換用 `fast`；section card morph 與大型過場用 `base` 或 `slow`。
+- **Press feedback。** Universal button rule：`button:active { transform: scale(0.97) }`，duration `instant (100ms)`。微微 press-shrink，沒有色彩 flash。List row 額外把背景從 `surface` 翻成 `surface_hover` 顯示按下狀態。Header button 三件套（HeaderIconButton / HeaderCheckmarkButton / ModalCloseButton）與覆寫後的系統返回鍵統一透過 `HEADER_ICON_BUTTON_TOKENS.PRESS_ANIMATION` 套同一規則。
+- **Intent 系統。** Header button 三件套 + 覆寫返回鍵以三種 intent 區分語意：`commit`（送出 / 確認，如 checkmark）、`action`（主動觸發功能，如 search / settings / filter / merge / 返回）、`dismiss`（離開當前畫面，如 xmark）。同一 intent 同時驅動 icon 顏色與 expo-haptics 觸覺反饋。本波三 intent **icon 顏色統一用主題色**（commit / action / dismiss 都是 `p500`），保留 map 結構以便未來分化（如 destructive 動作改紅）；haptic 維持差異化（commit 用 `impactMedium`、action 與 dismiss 用 `impactLight`）。對應 token：`HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT` 與 `HAPTIC_BY_INTENT`。
 - **Hover。** 行動優先——hover 效果最小。Row 變淡背景到 `surface_hover`，hover 上不動其他東西。
 - **沒有 fade、沒有 bounce、沒有慶祝動畫。** Donut chart slice 不會彈進、新交易就是直接出現，沒戲。
 

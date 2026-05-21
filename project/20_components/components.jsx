@@ -697,20 +697,23 @@ function HeaderIconButton({ symbol, onPress, color }) {
   );
 }
 
-// ─── HeaderButtonPill ─── design canvas mock，無 impl 對應元件
-// iOS 26 Liquid Glass bar button item 在 native 自動 hug pill 背景：pill 邊界
-// 等於 customView intrinsic 邊界（OS 渲染，不在 React 端的 token 控制中）。
-// React Native 端無此元件，design canvas 用 GlassView pill 顯式 mock。
+// ─── HeaderButtonPill ─── design canvas mock，代表三個 RN button 元件的視覺
+// 在 design canvas 中同時模擬兩種 Liquid Glass pill 來源：
+//   (1) 在 navigation native header 內：UIKit 自動 hug pill 背景（OS 渲染，不在 React 端 token 控制中）；
+//       impl 端 glass prop = false，依賴系統
+//   (2) 在 sheet 自繪 header 內：impl 端 glass prop = true，元件自帶 <GlassView pill> 包裝
+// 政策由 HEADER_ICON_BUTTON_TOKENS.GLASS_CONTEXT 仲裁。canvas 視覺上兩者相同，差異在渲染來源。
+//
 // Props：
 //   - symbols: SF Symbol 名稱陣列（1 個 → 正圓、>=2 → 膠囊）
-//   - color: icon 顏色（預設 ink）
+//   - intent: 'commit' | 'action' | 'dismiss'（同時驅動 color 與 haptic；impl 端對應 prop 同名）
+//   - color: 顯式覆寫 icon 顏色（測試 / 例外情境用；正常呼叫端用 intent 即可）
 //   - customViewSize: 單一 customView 邊長（pill 視覺等同 customView）
 //       · 預設 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX (41 = SYMBOL_SIZE + SPACING.md × 2)
-//       · 三個 button 元件統一靠此 token 拿到 41×41 customView（design 仲裁定案）
-//       · impl 端 ModalCloseButton / HeaderCheckmarkButton 待重構（拿掉 padding 改用
-//         View + CONTENT_BOX）；HeaderIconButton 仍用 CONTENT_BOX，token 升級後自動跟上
-function HeaderButtonPill({ symbols = [], color, customViewSize }) {
-  const c = color || TOKENS.ink;
+//       · 三個 button 元件（HeaderIconButton / HeaderCheckmarkButton / ModalCloseButton）
+//         以及 AppNavigator screenOptions 覆寫的系統返回鍵，統一靠此 token 拿到 41×41 customView
+function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSize }) {
+  const c = color || HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT[intent] || TOKENS.ink;
   const cv = customViewSize ?? HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX;
   return (
     <GlassView pill style={{
@@ -737,12 +740,12 @@ function HeaderButtonPill({ symbols = [], color, customViewSize }) {
   );
 }
 
-// ─── MockBackButtonPill ─── design canvas mock，無 impl 對應元件
-// iOS native back button 在 React Navigation `headerBackButtonDisplayMode: 'minimal'`
-// 下渲染為 chevron-only。本元件 mock 其視覺，用 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX
-// (41) 與其他 button 對稱（與 impl 一致性為設計推測值，後續以 iOS 模擬器截圖校準）。
+// ─── MockBackButtonPill ─── design canvas mock，代表返回鍵覆寫後的視覺
+// impl 端在 AppNavigator screenOptions 統一覆寫 headerLeft 為 HeaderIconButton + chevron.left
+// （不採系統 UIBarButtonItem back button），與其他三個自訂 button 行為一致：scale + haptic + 41×41 customView。
+// swipe-back 手勢由 navigation controller gestureEnabled 控制，不受 headerLeft 覆寫影響。
 function MockBackButtonPill({ color }) {
-  const c = color || TOKENS.p500;
+  const c = color || HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT.action;
   return (
     <GlassView pill style={{
       display: 'inline-flex',
