@@ -20,7 +20,10 @@ visualizers/
 │   ├── no5_search_bar_visualizer.jsx        FoundationsCTSearchBarSection
 │   ├── no6_header_icon_button_visualizer.jsx FoundationsCTHeaderIconButtonSection
 │   ├── no7_switch_visualizer.jsx            FoundationsCTSwitchSection
-│   └── no8_list_empty_transition_visualizer.jsx FoundationsCTListEmptyTransitionSection
+│   ├── no8_list_empty_transition_visualizer.jsx FoundationsCTListEmptyTransitionSection
+│   ├── no9_amount_field_visualizer.jsx      FoundationsCTAmountFieldSection
+│   ├── no10_static_wheel_picker_visualizer.jsx FoundationsCTStaticWheelPickerSection
+│   └── no11_recurring_options_visualizer.jsx FoundationsCTRecurringOptionsSection
 ├── brand/                                   對應 Foundations > Brand group
 │   └── no1_ui_glyphs.jsx                    FoundationsBrandUIGlyphsSection
 └── icon_library/                            對應 Foundations > Icon Library group
