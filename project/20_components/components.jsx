@@ -734,30 +734,34 @@ function HeaderIconButton({ symbol, onPress, color }) {
   );
 }
 
-// ─── HeaderButtonPill ─── design canvas mock，代表三個 RN button 元件的視覺
-// 在 design canvas 中同時模擬兩種 Liquid Glass pill 來源：
-//   (1) 在 navigation native header 內：UIKit 自動 hug pill 背景（OS 渲染，不在 React 端 token 控制中）；
-//       impl 端 glass prop = false，依賴系統
-//   (2) 在 sheet 自繪 header 內：impl 端 glass prop = true，元件自帶 <GlassView pill> 包裝
-// 政策由 HEADER_ICON_BUTTON_TOKENS.GLASS_CONTEXT 仲裁。canvas 視覺上兩者相同，差異在渲染來源。
+// ─── HeaderButtonPill ─── design canvas mock，視覺對齊 impl iOS 26 UIKit shared background pill
+// 不再 wrap GlassView（GlassView 是「白玻璃片」風格——白底 55%、1px 白邊、4px shadow；
+// 跟 iOS 26 navigation bar button 的 systemFill 淡灰半透明風格差距明顯）。
+// 改用 iOS systemFill 風格 background，無 border、無 shadow，更接近實機視覺。
+//
+// 多 icon（HomeScreen 右上 search + settings）共用同一 shared background 形成單一膠囊，
+// icon 之間無視覺 gap——對應 UIKit 自動把多個 rightBarButtonItem grouping 為 shared pill 的行為。
 //
 // Props：
-//   - symbols: SF Symbol 名稱陣列（1 個 → 正圓、>=2 → 膠囊）
-//   - intent: 'commit' | 'action' | 'dismiss'（同時驅動 color 與 haptic；impl 端對應 prop 同名）
+//   - symbols: SF Symbol 名稱陣列（1 個 → 正圓、>=2 → 橫向膠囊）
+//   - intent: 'commit' | 'action' | 'dismiss'（同時驅動 color；impl 端對應 prop 同名）
 //   - color: 顯式覆寫 icon 顏色（測試 / 例外情境用；正常呼叫端用 intent 即可）
-//   - customViewSize: 單一 customView 邊長（pill 視覺等同 customView）
-//       · 預設 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX (41 = SYMBOL_SIZE + SPACING.md × 2)
-//       · 三個 button 元件（HeaderIconButton / HeaderCheckmarkButton / ModalCloseButton）
-//         以及 AppNavigator screenOptions 覆寫的系統返回鍵，統一靠此 token 拿到 41×41 customView
+//   - customViewSize: 單一 button 邊長，預設 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX (41)
+// MOCK_BG 為 iOS 26 navigation bar systemFill 淡灰半透明的近似值（rgba(118,118,128,0.12)，
+// light mode）；design canvas 視覺對齊用，非設計 token。
+const HEADER_BUTTON_MOCK_BG = 'rgba(118,118,128,0.12)';
 function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSize, onPress }) {
   const c = color || HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT[intent] || TOKENS.ink;
   const cv = customViewSize ?? HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX;
   const pill = (
-    <GlassView pill style={{
+    <div style={{
       display: 'inline-flex',
       flexDirection: 'row',
       alignItems: 'center',
-      gap: symbols.length > 1 ? HEADER_ICON_BUTTON_TOKENS.MULTI_ICON_GAP : 0,
+      background: HEADER_BUTTON_MOCK_BG,
+      backdropFilter: 'blur(20px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+      borderRadius: cv / 2,
     }}>
       {symbols.map((sym, i) => (
         <div key={`${sym}-${i}`} style={{
@@ -773,7 +777,7 @@ function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSi
           />
         </div>
       ))}
-    </GlassView>
+    </div>
   );
   // 無 onPress 時直接渲染 pill（保留既有 components-showcase 等 caller 行為）；
   // 有 onPress 時自動 wrap button 以利 SCREEN_META 等真實互動使用。
@@ -788,27 +792,26 @@ function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSi
 }
 
 // ─── MockBackButtonPill ─── design canvas mock，代表返回鍵覆寫後的視覺
-// impl 端在 AppNavigator screenOptions 統一覆寫 headerLeft 為 HeaderIconButton + chevron.left
-// （不採系統 UIBarButtonItem back button），與其他三個自訂 button 行為一致：scale + haptic + 41×41 customView。
-// swipe-back 手勢由 navigation controller gestureEnabled 控制，不受 headerLeft 覆寫影響。
+// 視覺對齊 HeaderButtonPill 的 systemFill 風格 shared background。
 function MockBackButtonPill({ color }) {
   const c = color || HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT.action;
+  const cv = HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX;
   return (
-    <GlassView pill style={{
+    <div style={{
       display: 'inline-flex',
-      flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
+      width: cv,
+      height: cv,
+      background: HEADER_BUTTON_MOCK_BG,
+      backdropFilter: 'blur(20px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+      borderRadius: cv / 2,
     }}>
-      <div style={{
-        width:  HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX,
-        height: HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
-          <path d="M8 2L2 8l6 6" stroke={c} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
-    </GlassView>
+      <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+        <path d="M8 2L2 8l6 6" stroke={c} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </div>
   );
 }
 
