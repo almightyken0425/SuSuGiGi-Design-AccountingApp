@@ -185,24 +185,24 @@ function ComponentsNavigationSection() {
   return (
     <DCSection id="comp-nav" title="Components · Navigation" subtitle="放在 screen 邊界的元件。Header 採 React Navigation 原生 createNativeStackNavigator；NavHeader / ModalHeader 已廢除。下分三家族：Header Button pill 元件、4 個 mock 情境驗證、其他浮動 surface。">
       <DCFamily id="nav-buttons" title="Header Buttons" subtitle="三個 pill 元件：customView 41×41（HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX 統一值），iOS 26 native auto-hug 為正圓或膠囊。">
-        <DCArtboard id="comp-modal-close" label="ModalCloseButton · xmark in pill (live)" width={402} height={116}>
+        <DCArtboard id="comp-modal-close" label="ModalCloseButton · xmark in pill (intent=dismiss)" width={402} height={116}>
           <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 16 }}>
             <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3 }}>
-              Modal headerLeft · 正圓 pill · customView 41×41
+              Modal headerLeft · 正圓 pill · customView 41×41 · intent=dismiss (ink + impactLight)
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>
+              <HeaderButtonPill symbols={["xmark"]} intent="dismiss"/>
             </div>
           </CompFrame>
         </DCArtboard>
-        <DCArtboard id="comp-header-icon-btn" label="HeaderIconButton · Single vs Multi pill (live)" width={402} height={180}>
+        <DCArtboard id="comp-header-icon-btn" label="HeaderIconButton · Single vs Multi pill (intent=action)" width={402} height={180}>
           <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: SPACING.md, padding: 16 }}>
             <div>
               <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3, marginBottom: 6 }}>
-                Single · 正圓 pill · customView 41×41
+                Single · 正圓 pill · customView 41×41 · intent=action (p500 + impactLight)
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <HeaderButtonPill symbols={["magnifyingglass"]} color={TOKENS.p500}/>
+                <HeaderButtonPill symbols={["magnifyingglass"]} intent="action"/>
               </div>
             </div>
             <div>
@@ -210,18 +210,18 @@ function ComponentsNavigationSection() {
                 Multi · 膠囊 pill（Home headerRight，customView 各 41×41，gap 8）
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} color={TOKENS.p500}/>
+                <HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} intent="action"/>
               </div>
             </div>
           </CompFrame>
         </DCArtboard>
-        <DCArtboard id="comp-header-check" label="HeaderCheckmarkButton · checkmark in pill (live)" width={402} height={116}>
+        <DCArtboard id="comp-header-check" label="HeaderCheckmarkButton · checkmark in pill (intent=commit)" width={402} height={116}>
           <CompFrame style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: 16 }}>
             <div style={{ fontSize: 10.5, color: TOKENS.ink3, letterSpacing: 0.3 }}>
-              Editor headerRight · 正圓 pill · customView 41×41（含 disabled）
+              Editor headerRight · 正圓 pill · customView 41×41 · intent=commit (p500 + impactMedium)
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <HeaderButtonPill symbols={["checkmark"]} color={TOKENS.p500}/>
+              <HeaderButtonPill symbols={["checkmark"]} intent="commit"/>
               <span style={{ fontSize: 10.5, color: TOKENS.ink3 }}>↓ disabled</span>
               <HeaderButtonPill symbols={["checkmark"]} color={TOKENS.ink3}/>
             </div>
@@ -229,14 +229,14 @@ function ComponentsNavigationSection() {
         </DCArtboard>
       </DCFamily>
 
-      <DCFamily id="nav-mocks" title="Header Mock Scenarios" subtitle="在真實 status bar + nav bar + content 脈絡下檢視 pill 比例的 prototype 容器，四種典型 header 場景並排比較。">
+      <DCFamily id="nav-mocks" title="Header Mock Scenarios" subtitle="在真實 status bar + nav bar + content 脈絡下檢視 pill 比例的 prototype 容器，五種典型 header 場景並排比較（含 sheet 自繪 header）。">
         <DCArtboard id="header-mock-home" label="① Push · App Root (Home) 真實脈絡 (live)" width={440} height={200}>
           <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
             <HeaderMockFrame>
               <MockNavBar
-                leftSlot={<HeaderButtonPill symbols={["line.3.horizontal.decrease"]} color={TOKENS.p500}/>}
+                leftSlot={<HeaderButtonPill symbols={["line.3.horizontal.decrease"]} intent="action"/>}
                 title="SuSuGiGi"
-                rightSlot={<HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} color={TOKENS.p500}/>}
+                rightSlot={<HeaderButtonPill symbols={["magnifyingglass", "gearshape"]} intent="action"/>}
               />
             </HeaderMockFrame>
           </CompFrame>
@@ -245,9 +245,9 @@ function ComponentsNavigationSection() {
           <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
             <HeaderMockFrame>
               <MockNavBar
-                leftSlot={<MockBackButtonPill color={TOKENS.p500}/>}
+                leftSlot={<MockBackButtonPill/>}
                 title="分類"
-                rightSlot={<HeaderButtonPill symbols={["arrow.triangle.merge"]} color={TOKENS.p500}/>}
+                rightSlot={<HeaderButtonPill symbols={["arrow.triangle.merge"]} intent="action"/>}
               />
             </HeaderMockFrame>
           </CompFrame>
@@ -256,9 +256,9 @@ function ComponentsNavigationSection() {
           <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
             <HeaderMockFrame>
               <MockNavBar
-                leftSlot={<HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>}
+                leftSlot={<HeaderButtonPill symbols={["xmark"]} intent="dismiss"/>}
                 title="編輯帳戶"
-                rightSlot={<HeaderButtonPill symbols={["checkmark"]} color={TOKENS.p500}/>}
+                rightSlot={<HeaderButtonPill symbols={["checkmark"]} intent="commit"/>}
               />
             </HeaderMockFrame>
           </CompFrame>
@@ -267,11 +267,44 @@ function ComponentsNavigationSection() {
           <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
             <HeaderMockFrame>
               <MockNavBar
-                leftSlot={<HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>}
+                leftSlot={<HeaderButtonPill symbols={["xmark"]} intent="dismiss"/>}
                 title="篩選"
                 rightSlot={null}
               />
             </HeaderMockFrame>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="header-mock-sheet" label="⑤ Sheet 自繪 header (Currency selector pageSheet · glass prop=true) (live)" width={440} height={220}>
+          <CompFrame style={{ padding: SPACING.md, display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+              width: 402, height: 180,
+              background: TOKENS.bg, borderRadius: RADIUS.lg,
+              border: `1px solid ${TOKENS.hairline}`, overflow: 'hidden',
+              position: 'relative', display: 'flex', flexDirection: 'column',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 8 }}>
+                <div style={{ width: 36, height: 5, borderRadius: 999, background: TOKENS.ink3, opacity: 0.4 }}/>
+              </div>
+              <MockNavBar
+                leftSlot={<HeaderButtonPill symbols={["xmark"]} intent="dismiss"/>}
+                title="選擇貨幣"
+                rightSlot={null}
+              />
+              <div style={{
+                paddingLeft: SPACING.lg, paddingRight: SPACING.lg, paddingTop: SPACING.md,
+                fontSize: TYPE_STYLES.body.size, color: TOKENS.ink2,
+              }}>
+                <div style={{
+                  background: TOKENS.surface, borderRadius: RADIUS.lg,
+                  padding: `${SPACING.md}px ${SPACING.lg}px`,
+                  border: `1px solid ${TOKENS.hairline}`,
+                }}>USD · 美元</div>
+              </div>
+              <div style={{
+                position: 'absolute', bottom: 6, right: 8,
+                fontSize: 9, color: TOKENS.ink3, letterSpacing: 0.3,
+              }}>無 status bar · sheet handle 在上 · button glass 自帶</div>
+            </div>
           </CompFrame>
         </DCArtboard>
       </DCFamily>
