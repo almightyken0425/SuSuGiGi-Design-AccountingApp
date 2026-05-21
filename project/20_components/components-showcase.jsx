@@ -138,11 +138,54 @@ function ComponentsListSection() {
 
 function ComponentsFormSection() {
   return (
-    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器與多選 chip。FormPicker（AccountSelector / CategorySelector）為單一觸發器；CHIP（pill 形多選）用於 RecurringOptions 等多選場景。對應 token 表見 Foundations > Component Tokens > Form Picker / Chip。">
-      <DCFamily id="comp-form-family" title="Form Surfaces" subtitle="FormPicker 與 Chip 等表單觸發器。">
-        <DCArtboard id="comp-form-placeholder" label="Form 元件 demo 預留位" width={402} height={140}>
-          <CompFrame>
-            <CompLabel>FormPicker / Chip live demo（規格細節見對應 Component Tokens sub-item）</CompLabel>
+    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器、金額輸入、定期設定卡片。對應 token 表見 Foundations > Component Tokens > Form Picker / Chip / Switch。新升 5 個元件（AmountField / StaticWheelPicker / AccountSelector / CategorySelector / RecurringOptions）尚未建專屬 component_tokens 檔，為後續 follow-up。">
+      <DCFamily id="comp-form-pickers" title="Form Pickers" subtitle="impl AccountSelector / CategorySelector 在 TxEditor / TransferEditor 採 mode='static' 常駐顯示；design canvas 對應 StaticWheelPicker 視覺 stub。">
+        <DCArtboard id="comp-static-wheel" label="StaticWheelPicker · 通用 wheel 視覺 stub (live)" width={402} height={180}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>單欄 wheel-style 顯示，中央 label + 括弧 subLabel</CompLabel>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
+              <StaticWheelPicker label="玉山活儲" subLabel="TWD"/>
+              <StaticWheelPicker label="飲食" subLabel="支出" accent={TOKENS.error}/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-account-selector" label="AccountSelector · static mode 並排 (live)" width={402} height={180}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>對齊 impl src/components/AccountSelector.tsx mode='static'</CompLabel>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
+              <AccountSelector account={ACC_BY_ID.bank}/>
+              <AccountSelector account={ACC_BY_ID.usd_cash}/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-category-selector" label="CategorySelector · expense / income 配色 (live)" width={402} height={180}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>type='expense' 用 status.error；type='income' 用 status.success</CompLabel>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
+              <CategorySelector category={CAT_BY_ID.food}/>
+              <CategorySelector category={CAT_BY_ID.salary}/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="comp-form-amount" title="Editor Inputs" subtitle="金額輸入欄三態：default / active（含 backspace icon）/ disabled。高度 80 為視覺校準。">
+        <DCArtboard id="comp-amount-field" label="AmountField · default / active / disabled (live)" width={402} height={220}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>active 時 primary border + bg.base；disabled 透明化</CompLabel>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.md, marginTop: SPACING.md }}>
+              <AmountField value="" currency="TWD"/>
+              <AmountField active value="15,000" currency="TWD"/>
+              <AmountField disabled value="480" currency="USD"/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="comp-form-recurring" title="Recurring Settings" subtitle="impl src/components/RecurringOptions.tsx 對應卡片，含 Switch + 頻率 chip + interval input + 結束條件。design canvas 版自包 state，即看即試。">
+        <DCArtboard id="comp-recurring-options" label="RecurringOptions · 完整定期設定卡片 (live)" width={402} height={520}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <RecurringOptions/>
           </CompFrame>
         </DCArtboard>
       </DCFamily>

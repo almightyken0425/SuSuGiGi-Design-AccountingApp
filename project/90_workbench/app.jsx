@@ -26,29 +26,23 @@ function PushHeader({ title, leadingText, leadingAction, trailing }) {
   return <NavHeader title={title} leadingText={leadingText} leadingAction={leadingAction} trailing={trailing}/>;
 }
 
+// SCREEN_META — 本目錄 v1 僅含 5 個重做完成的 screen。
+// 其餘 17 個（Settings / Login / Paywall / Accounts / Categories / Theme / Language /
+// Timezone / LaunchMode / BaseCurrency / CurrencyList / RateList / DataMgmt / Debug 等）
+// 已於本次重構移除，待逐步 follow 30_screens/ 新前例重做後再補回。
 const SCREEN_META = {
-  // ─── Home ─── default / 邊界狀態
+  // ─── Home ─── default / empty
   home: {
     title: 'SuSuGiGi', present: 'push', hasFAB: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter}/>,
-    headerLeft: (ctx) => <HeaderIconButton symbol="line.3.horizontal.decrease" onPress={() => ctx.push('filter')}/>,
-    headerRight: (ctx) => (
-      <div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-        <HeaderIconButton symbol="magnifyingglass" onPress={() => ctx.push('search')}/>
-        <HeaderIconButton symbol="gearshape" onPress={() => ctx.push('settings')}/>
-      </div>
-    ),
+    headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
+    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass']} intent="action" onPress={() => ctx.push('search')}/>,
   },
   'home-empty': {
     title: 'SuSuGiGi', present: 'push', hasFAB: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter} variant="empty"/>,
-    headerLeft: (ctx) => <HeaderIconButton symbol="line.3.horizontal.decrease" onPress={() => ctx.push('filter')}/>,
-    headerRight: (ctx) => (
-      <div style={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
-        <HeaderIconButton symbol="magnifyingglass" onPress={() => ctx.push('search')}/>
-        <HeaderIconButton symbol="gearshape" onPress={() => ctx.push('settings')}/>
-      </div>
-    ),
+    headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
+    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass']} intent="action" onPress={() => ctx.push('search')}/>,
   },
   // ─── Filter ─── default / no-accounts
   filter: {
@@ -59,7 +53,8 @@ const SCREEN_META = {
     title: '顯示設定', present: 'modal',
     render: (ctx) => <HomeFilterScreen filterState={ctx.sharedFilter} setFilterState={ctx.setSharedFilter} variant="no-accounts"/>,
   },
-  // ─── Search ─── default(initial) / with-results / no-results / loading
+  // ─── Search ─── initial / with-results / no-results
+  // impl loading 走 ListEmptyTransition crossfade 不顯示 spinner，design 不另畫 loading variant
   search: {
     title: '搜尋', present: 'modal',
     render: () => <SearchScreen/>,
@@ -71,10 +66,6 @@ const SCREEN_META = {
   'search-no-results': {
     title: '搜尋', present: 'modal',
     render: () => <SearchScreen variant="no-results"/>,
-  },
-  'search-loading': {
-    title: '搜尋', present: 'modal',
-    render: () => <SearchScreen variant="loading"/>,
   },
   // ─── Transaction Editor ─── default / income / error
   'tx-editor': {
@@ -89,124 +80,14 @@ const SCREEN_META = {
     title: '新增支出', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="expense" variant="error"/>,
   },
+  // ─── Transfer Editor ─── default / error
   transfer: {
     title: '新增轉帳', present: 'modal', save: true,
     render: () => <TransferEditorScreen/>,
   },
-  // ─── Login ─── default / loading
-  login: {
-    title: '', present: 'none',
-    render: () => <LoginScreen/>,
-  },
-  'login-loading': {
-    title: '', present: 'none',
-    render: () => <LoginScreen variant="loading"/>,
-  },
-  settings: {
-    title: '設定', present: 'push', headerLeftText: '',
-    render: (ctx) => <SettingsScreen
-      onAccounts={() => ctx.push('accounts')}
-      onCategories={() => ctx.push('categories')}
-      onPreference={() => ctx.push('preference')}
-      onPaywall={() => ctx.push('paywall')}
-      onData={() => ctx.push('data-mgmt')}
-      onDebug={() => ctx.push('debug')}
-    />,
-  },
-  preference: {
-    title: '偏好設定', present: 'push', headerLeftText: '',
-    render: (ctx) => <PreferenceScreen
-      onTheme={() => ctx.push('theme')}
-      onLaunch={() => ctx.push('launchmode')}
-      onCurrency={() => ctx.push('currency')}
-      onCurrencyList={() => ctx.push('currlist')}
-      onRateList={() => ctx.push('ratelist')}
-      onLanguage={() => ctx.push('language')}
-      onTimezone={() => ctx.push('timezone')}
-    />,
-  },
-  // ─── Paywall ─── default / loading
-  paywall: {
-    title: '解鎖 Premium', present: 'modal',
-    render: () => <PaywallScreen/>,
-  },
-  'paywall-loading': {
-    title: '解鎖 Premium', present: 'modal',
-    render: () => <PaywallScreen variant="loading"/>,
-  },
-  // ─── Accounts ─── default / empty
-  accounts: {
-    title: '帳戶', present: 'push', headerLeftText: '',
-    render: (ctx) => <AccountListScreen onAdd={() => ctx.push('acc-editor')}/>,
-    headerRight: () => <HeaderIconButton symbol="arrow.triangle.merge" color={TOKENS.p500} onPress={() => {}}/>,
-  },
-  'accounts-empty': {
-    title: '帳戶', present: 'push', headerLeftText: '',
-    render: (ctx) => <AccountListScreen onAdd={() => ctx.push('acc-editor')} variant="empty"/>,
-    headerRight: () => <HeaderIconButton symbol="arrow.triangle.merge" color={TOKENS.p500} onPress={() => {}}/>,
-  },
-  'acc-editor': {
-    title: '新增帳戶', present: 'modal', save: true,
-    render: () => <AccountEditorScreen isNew/>,
-  },
-  'acc-editor-edit': {
-    title: '編輯帳戶', present: 'modal', save: true,
-    render: () => <AccountEditorScreen isNew={false}/>,
-  },
-  categories: {
-    title: '類別', present: 'push', headerLeftText: '',
-    render: (ctx) => <CategoryListScreen
-      onAddExpense={() => ctx.push('cat-editor')}
-      onAddIncome={() => ctx.push('cat-editor')}/>,
-    headerRight: () => <HeaderIconButton symbol="arrow.triangle.merge" color={TOKENS.p500} onPress={() => {}}/>,
-  },
-  'cat-editor': {
-    title: '新增類別', present: 'modal', save: true,
-    render: () => <CategoryEditorScreen isNew type="expense"/>,
-  },
-  'cat-editor-edit': {
-    title: '編輯類別', present: 'modal', save: true,
-    render: () => <CategoryEditorScreen isNew={false} type="expense"/>,
-  },
-  theme: {
-    title: '主題', present: 'modal', save: true,
-    render: () => <ThemeSettingsScreen/>,
-  },
-  language: {
-    title: '語言', present: 'modal', save: true,
-    render: () => <LanguageSettingScreen/>,
-  },
-  timezone: {
-    title: '時區', present: 'modal', save: true,
-    render: () => <TimeZoneSettingScreen/>,
-  },
-  launchmode: {
-    title: '啟動設定', present: 'modal', save: true,
-    render: () => <LaunchModeSettingScreen/>,
-  },
-  currency: {
-    title: '基準貨幣', present: 'modal', save: true,
-    render: () => <BaseCurrencySettingScreen/>,
-  },
-  currlist: {
-    title: '貨幣設定', present: 'push', headerLeftText: '',
-    render: () => <CurrencyListScreen/>,
-  },
-  ratelist: {
-    title: '匯率管理', present: 'push', headerLeftText: '',
-    render: () => <CurrencyRateListScreen/>,
-  },
-  'ratelist-empty': {
-    title: '匯率管理', present: 'push', headerLeftText: '',
-    render: () => <CurrencyRateListScreen variant="empty"/>,
-  },
-  'data-mgmt': {
-    title: '資料管理', present: 'push', headerLeftText: '',
-    render: () => <DataManagementScreen/>,
-  },
-  debug: {
-    title: 'Debug Info', present: 'push', headerLeftText: '',
-    render: () => <DebugInfoScreen/>,
+  'transfer-error': {
+    title: '新增轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="error"/>,
   },
 };
 
@@ -238,10 +119,9 @@ const SCREEN_GROUPS = [
   {
     id: 'search',
     title: 'Search · 搜尋',
-    subtitle: '4 種狀態：初始提示輸入 / 載入中 / 有結果 / 找不到結果（src/screens/Search/SearchScreen.tsx）。',
+    subtitle: '3 種狀態：初始提示輸入 / 有結果 / 找不到結果（src/screens/Search/SearchScreen.tsx）。impl loading 走 ListEmptyTransition crossfade 不顯示 spinner。',
     screens: [
       { id: 'search',              label: 'Initial · 提示輸入' },
-      { id: 'search-loading',      label: 'Loading · 搜尋中' },
       { id: 'search-with-results', label: 'With results · 有結果' },
       { id: 'search-no-results',   label: 'No results · 找不到結果' },
     ],
@@ -261,149 +141,8 @@ const SCREEN_GROUPS = [
     title: 'Transfer Editor · 轉帳',
     subtitle: '跨帳戶 / 跨幣別轉帳 modal（src/screens/Transactions/TransferEditorScreen.tsx）。',
     screens: [
-      { id: 'transfer', label: 'Default · 跨幣別' },
-    ],
-  },
-  {
-    id: 'login',
-    title: 'Login · 登入',
-    subtitle: 'Google 登入畫面（src/screens/Auth/LoginScreen.tsx）。',
-    screens: [
-      { id: 'login',         label: 'Default' },
-      { id: 'login-loading', label: 'Loading · 登入中' },
-    ],
-  },
-  {
-    id: 'settings',
-    title: 'Settings · 設定',
-    subtitle: '設定總頁（src/screens/Settings/SettingsScreen.tsx）。',
-    screens: [
-      { id: 'settings', label: 'Default' },
-    ],
-  },
-  {
-    id: 'preference',
-    title: 'Preference · 偏好設定',
-    subtitle: '偏好設定總頁（src/screens/Settings/PreferenceScreen.tsx）。',
-    screens: [
-      { id: 'preference', label: 'Default' },
-    ],
-  },
-  {
-    id: 'paywall',
-    title: 'Paywall · 解鎖 Premium',
-    subtitle: 'IAP 訂閱頁（src/screens/Paywall/PaywallScreen.tsx）。',
-    screens: [
-      { id: 'paywall',         label: 'Default · 顯示產品' },
-      { id: 'paywall-loading', label: 'Loading · 載入產品中' },
-    ],
-  },
-  {
-    id: 'accounts',
-    title: 'Accounts · 帳戶',
-    subtitle: '帳戶列表（src/screens/Accounts/AccountListScreen.tsx）。empty 狀態：只顯示新增帳戶按鈕。',
-    screens: [
-      { id: 'accounts',       label: 'Default · 有帳戶' },
-      { id: 'accounts-empty', label: 'Empty · 無帳戶' },
-    ],
-  },
-  {
-    id: 'account-editor',
-    title: 'Account Editor · 編輯帳戶',
-    subtitle: '帳戶編輯器（src/screens/Accounts/AccountEditorScreen.tsx）。新增模式無刪除按鈕；編輯模式有啟用開關 + 刪除。',
-    screens: [
-      { id: 'acc-editor',      label: '新增模式' },
-      { id: 'acc-editor-edit', label: '編輯模式' },
-    ],
-  },
-  {
-    id: 'categories',
-    title: 'Categories · 類別',
-    subtitle: '類別列表（src/screens/Categories/CategoryListScreen.tsx）。支出 / 收入兩個區段。',
-    screens: [
-      { id: 'categories', label: 'Default' },
-    ],
-  },
-  {
-    id: 'category-editor',
-    title: 'Category Editor · 編輯類別',
-    subtitle: '類別編輯器（src/screens/Categories/CategoryEditorScreen.tsx）。',
-    screens: [
-      { id: 'cat-editor',      label: '新增模式' },
-      { id: 'cat-editor-edit', label: '編輯模式' },
-    ],
-  },
-  {
-    id: 'theme',
-    title: 'Theme Settings · 主題',
-    subtitle: '雙主題切換（src/screens/Settings/ThemeSettingsScreen.tsx）。SelectionGridItem 卡片 + 顏色 preview。',
-    screens: [
-      { id: 'theme', label: 'Default' },
-    ],
-  },
-  {
-    id: 'language',
-    title: 'Language Setting · 語言',
-    subtitle: 'src/screens/Settings/LanguageSettingScreen.tsx',
-    screens: [
-      { id: 'language', label: 'Default' },
-    ],
-  },
-  {
-    id: 'timezone',
-    title: 'TimeZone Setting · 時區',
-    subtitle: '帶 BottomSearchBar（src/screens/Settings/TimeZoneSettingScreen.tsx）。',
-    screens: [
-      { id: 'timezone', label: 'Default' },
-    ],
-  },
-  {
-    id: 'launchmode',
-    title: 'Launch Mode · 啟動設定',
-    subtitle: 'src/screens/Settings/LaunchModeSettingScreen.tsx',
-    screens: [
-      { id: 'launchmode', label: 'Default' },
-    ],
-  },
-  {
-    id: 'base-currency',
-    title: 'Base Currency · 基準貨幣',
-    subtitle: '帶 BottomSearchBar（src/screens/Settings/BaseCurrencySettingScreen.tsx）。',
-    screens: [
-      { id: 'currency', label: 'Default' },
-    ],
-  },
-  {
-    id: 'currency-list',
-    title: 'Currency List · 貨幣設定',
-    subtitle: 'src/screens/Settings/CurrencyListScreen.tsx',
-    screens: [
-      { id: 'currlist', label: 'Default' },
-    ],
-  },
-  {
-    id: 'rate-list',
-    title: 'Currency Rate List · 匯率管理',
-    subtitle: '跨幣別匯率（src/screens/Settings/CurrencyRateListScreen.tsx）。empty 用 currency_rate.empty_state 字串。',
-    screens: [
-      { id: 'ratelist',       label: 'Default · 有匯率' },
-      { id: 'ratelist-empty', label: 'Empty · 尚無匯率' },
-    ],
-  },
-  {
-    id: 'data-mgmt',
-    title: 'Data Management · 資料管理',
-    subtitle: '備份 / 匯入 / 匯出 / 清空（src/screens/Settings/DataManagementScreen.tsx）。',
-    screens: [
-      { id: 'data-mgmt', label: 'Default' },
-    ],
-  },
-  {
-    id: 'debug',
-    title: 'Debug Info',
-    subtitle: '帳戶活動統計（src/screens/Settings/DebugInfoScreen.tsx）。',
-    screens: [
-      { id: 'debug', label: 'Default' },
+      { id: 'transfer',       label: 'Default · 跨幣別' },
+      { id: 'transfer-error', label: 'Error · 驗證錯誤' },
     ],
   },
 ];
@@ -427,6 +166,15 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
   const headerRight = meta.headerRight ? meta.headerRight(ctx) : null;
   const leadingText = isPush ? (meta.headerLeftText ?? '') : undefined;
 
+  // ScreenFrame 結構：
+  //   ScreenFrame (relative, h:100%, overflow:hidden)
+  //   └── flex column (h:100%)
+  //       ├── ModalHeader / PushHeader (fixed 在頂部、不滾)
+  //       └── body wrapper (flex:1, overflowY:auto) ← screen 內容在這滾
+  //
+  // body wrapper 才 scroll，header 釘在 viewport 頂；
+  // 這樣 screen 內 position:absolute bottom:0 的元素（BottomSearchBar / CalculatorKeypad）
+  // 對齊 body wrapper bottom = viewport 底（sticky 感對齊真實 iOS 行為）。
   return (
     <div style={{
       width: '100%', height: '100%', position: 'relative',
@@ -434,10 +182,15 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
       fontFamily: '-apple-system, "SF Pro", "PingFang TC", "Noto Sans TC", system-ui, sans-serif',
       overflow: 'hidden',
     }} data-screen-label={pinned}>
-      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', overflowX: 'hidden' }}>
+      <div style={{
+        position: 'absolute', inset: 0,
+        display: 'flex', flexDirection: 'column',
+      }}>
         {isModal && <ModalHeader title={meta.title} onClose={pop} onSave={meta.save ? pop : undefined}/>}
         {isPush && <PushHeader title={meta.title} leadingText={leadingText} leadingAction={stack.length > 1 ? pop : undefined} trailing={headerRight}/>}
-        {body}
+        <div style={{ flex: 1, position: 'relative', overflowY: 'auto', overflowX: 'hidden' }}>
+          {body}
+        </div>
       </div>
       {(PINNED_WITH_FAB.has(top) || meta.hasFAB) && (
         <FloatingActionBar mode="actions"
@@ -483,6 +236,9 @@ const FOUNDATIONS_GROUPS = [
       { id: 'header-icon-button',    label: 'Header Icon Button',    render: () => <FoundationsCTHeaderIconButtonSection/> },
       { id: 'switch',                label: 'Switch',                render: () => <FoundationsCTSwitchSection/> },
       { id: 'list-empty-transition', label: 'List Empty Transition', render: () => <FoundationsCTListEmptyTransitionSection/> },
+      { id: 'amount-field',          label: 'Amount Field',          render: () => <FoundationsCTAmountFieldSection/> },
+      { id: 'static-wheel-picker',   label: 'Static Wheel Picker',   render: () => <FoundationsCTStaticWheelPickerSection/> },
+      { id: 'recurring-options',     label: 'Recurring Options',     render: () => <FoundationsCTRecurringOptionsSection/> },
     ],
   },
   {

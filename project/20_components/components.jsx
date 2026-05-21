@@ -515,17 +515,23 @@ function SelectionGridItem({ title, selected, onPress, children, style = {} }) {
 }
 
 // ─── ListEmptyState ─── 對齊 src/components/list/ListEmptyState.tsx
-// 預設 icon: MCI "magnify"
-function ListEmptyState({ iconName = 'magnify', title, description }) {
+// 預設 icon: MCI "magnify"；caller 可傳 icon React 節點覆蓋預設 Glyph 渲染。
+// icon === null 時不渲染 iconWrapper（與 impl 對齊：{iconNode ? <View>...</View> : null}）。
+function ListEmptyState({ icon, iconName = 'magnify', title, description }) {
+  const iconNode = icon !== undefined
+    ? icon
+    : <Glyph name={iconName} size={LIST_TOKENS.EMPTY_STATE_ICON_SIZE} color={TOKENS.ink3} stroke={1.5}/>;
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       paddingLeft: LIST_TOKENS.EMPTY_STATE_PADDING_HORIZONTAL,
       paddingRight: LIST_TOKENS.EMPTY_STATE_PADDING_HORIZONTAL,
     }}>
-      <div style={{ marginBottom: LIST_TOKENS.EMPTY_STATE_ICON_GAP }}>
-        <Glyph name={iconName} size={LIST_TOKENS.EMPTY_STATE_ICON_SIZE} color={TOKENS.ink3} stroke={1.5}/>
-      </div>
+      {iconNode ? (
+        <div style={{ marginBottom: LIST_TOKENS.EMPTY_STATE_ICON_GAP }}>
+          {iconNode}
+        </div>
+      ) : null}
       <div style={{
         fontSize: LIST_TOKENS.EMPTY_STATE_TITLE_SIZE,
         color: TOKENS.ink2, textAlign: 'center',
@@ -559,7 +565,7 @@ function ListEmptyTransition({
     transition: `opacity ${duration}ms ${LIST_EMPTY_TRANSITION.EASING}`,
   };
   return (
-    <div style={{ position: 'relative', flex: 1, minHeight: 200 }}>
+    <div style={{ position: 'relative', flex: 1 }}>
       <div style={{
         ...layerStyle,
         opacity: isEmpty ? 0 : 1,
@@ -584,9 +590,19 @@ function ListEmptyTransition({
 // 或 screens 引用。視覺規格已搬遷到 Components · Navigation 的「Native Header
 // Configuration」政策卡片。保留函式本體僅為歷史視覺參考，未來可移除。
 function NavHeader({ title, leadingText, leadingAction, trailing }) {
+  // iOS 26 系統在 navigation native header 內自動為 bar button 渲染 Liquid Glass pill。
+  // design canvas 為反映 device 真實視覺，leading（back）採 MockBackButtonPill，
+  // trailing 則由 caller 用 HeaderButtonPill 傳入。
+  //
+  // Layout：
+  //   - paddingLeft/Right: 16（iOS system margin）
+  //   - leading / trailing 兩段 flex:1 各靠左/右，內含 button minHeight 32 居中
+  //   - title 用 absolute 覆蓋整 nav bar 內容區（top: 60 + height: 32）+ flex center
+  //     →  與 button vertical center 對齊；水平 viewport 中央；button 撞到時 ellipsis
+  //   - pointerEvents:none 讓 title 不擋 button 點擊
   return (
     <div style={{
-      paddingTop: 60, paddingBottom: 8, paddingLeft: 8, paddingRight: 8,
+      paddingTop: 60, paddingBottom: 8, paddingLeft: 16, paddingRight: 16,
       display: 'flex', alignItems: 'center',
       background: 'transparent',
       position: 'relative', zIndex: 5,
@@ -595,19 +611,24 @@ function NavHeader({ title, leadingText, leadingAction, trailing }) {
         {leadingText !== undefined && (
           <button onClick={leadingAction} style={{
             background: 'none', border: 'none', cursor: 'pointer',
-            color: TOKENS.p500, fontSize: 17, fontWeight: 400,
-            padding: '8px 4px', display: 'flex', alignItems: 'center', gap: 2,
+            padding: 0, display: 'flex', alignItems: 'center',
             fontFamily: 'inherit',
           }}>
-            <Glyph name="chevron-left" size={ICON_SIZE.xs} color={TOKENS.p500} stroke={2.4}/>
-            {leadingText && <span>{leadingText}</span>}
+            <MockBackButtonPill/>
           </button>
         )}
       </div>
       <div style={{
-        position: 'absolute', left: '50%', top: 60, transform: 'translateX(-50%)',
-        fontSize: 17, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, whiteSpace: 'nowrap',
-      }}>{title}</div>
+        position: 'absolute', left: 0, right: 0, top: 60, height: 32,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <span style={{
+          fontSize: 17, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink,
+          whiteSpace: 'nowrap', maxWidth: '60%',
+          overflow: 'hidden', textOverflow: 'ellipsis',
+        }}>{title}</span>
+      </div>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4, minHeight: 32 }}>
         {trailing}
       </div>
@@ -620,21 +641,37 @@ function NavHeader({ title, leadingText, leadingAction, trailing }) {
 // （Editor Modal 加 headerRight = HeaderCheckmarkButton）。視覺規格搬遷到 Components ·
 // Navigation 的「Native Header Configuration」政策卡片。
 function ModalHeader({ title, onClose, onSave, saveDisabled }) {
+  // iOS 26 系統在 navigation native modal header 內自動為 bar button 渲染 Liquid Glass pill。
+  // design canvas 為反映 device 真實視覺，close 與 save 都包進 HeaderButtonPill。
+  // Layout 規則同 NavHeader：padding-x 16、title absolute 覆蓋 nav bar 區 + flex center 與 button 對齊。
   return (
     <div style={{
-      paddingTop: 60, paddingBottom: 8, paddingLeft: 8, paddingRight: 8,
+      paddingTop: 60, paddingBottom: 8, paddingLeft: 16, paddingRight: 16,
       display: 'flex', alignItems: 'center',
       background: 'transparent', position: 'relative', zIndex: 5,
     }}>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', minHeight: 32 }}>
-        <ModalCloseButton onPress={onClose}/>
+        <HeaderButtonPill symbols={['xmark']} intent="dismiss" onPress={onClose}/>
       </div>
       <div style={{
-        position: 'absolute', left: '50%', top: 60, transform: 'translateX(-50%)',
-        fontSize: 17, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, whiteSpace: 'nowrap',
-      }}>{title}</div>
+        position: 'absolute', left: 0, right: 0, top: 60, height: 32,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <span style={{
+          fontSize: 17, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink,
+          whiteSpace: 'nowrap', maxWidth: '60%',
+          overflow: 'hidden', textOverflow: 'ellipsis',
+        }}>{title}</span>
+      </div>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', minHeight: 32 }}>
-        {onSave && <HeaderCheckmarkButton onPress={onSave} disabled={saveDisabled}/>}
+        {onSave && (
+          <HeaderButtonPill
+            symbols={['checkmark']}
+            intent="commit"
+            color={saveDisabled ? TOKENS.ink3 : undefined}
+            onPress={!saveDisabled ? onSave : undefined}/>
+        )}
       </div>
     </div>
   );
@@ -712,10 +749,10 @@ function HeaderIconButton({ symbol, onPress, color }) {
 //       · 預設 HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX (41 = SYMBOL_SIZE + SPACING.md × 2)
 //       · 三個 button 元件（HeaderIconButton / HeaderCheckmarkButton / ModalCloseButton）
 //         以及 AppNavigator screenOptions 覆寫的系統返回鍵，統一靠此 token 拿到 41×41 customView
-function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSize }) {
+function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSize, onPress }) {
   const c = color || HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT[intent] || TOKENS.ink;
   const cv = customViewSize ?? HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX;
-  return (
+  const pill = (
     <GlassView pill style={{
       display: 'inline-flex',
       flexDirection: 'row',
@@ -737,6 +774,16 @@ function HeaderButtonPill({ symbols = [], intent = 'action', color, customViewSi
         </div>
       ))}
     </GlassView>
+  );
+  // 無 onPress 時直接渲染 pill（保留既有 components-showcase 等 caller 行為）；
+  // 有 onPress 時自動 wrap button 以利 SCREEN_META 等真實互動使用。
+  if (!onPress) return pill;
+  return (
+    <button onClick={onPress} style={{
+      border: 'none', background: 'transparent', cursor: 'pointer', padding: 0,
+    }}>
+      {pill}
+    </button>
   );
 }
 
@@ -1118,6 +1165,186 @@ const iconBtn = {
   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
 };
 
+// ─── AmountField ─── 對齊 src/screens/Transactions/TransferEditorScreen.tsx 內 AmountField
+// 雙 editor 共用：TransferEditor 雙欄、TransactionEditor 單欄。
+// active 時 primary border + bg.base 背景 + 右側 backspace；disabled 時去框架透明化。
+// 視覺參數由 AMOUNT_FIELD_TOKENS 提供。
+function AmountField({ active, value, currency, disabled, onPress }) {
+  const T = AMOUNT_FIELD_TOKENS;
+  return (
+    <div onClick={onPress} style={{
+      position: 'relative',
+      display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+      background: disabled ? TOKENS.bg : (active ? TOKENS.bg : TOKENS.surface),
+      padding: T.PADDING,
+      borderRadius: T.RADIUS,
+      borderWidth: active ? T.BORDER_WIDTH : (disabled ? 0 : T.BORDER_WIDTH),
+      borderStyle: 'solid',
+      borderColor: active ? TOKENS.p500 : TOKENS.border,
+      height: T.HEIGHT,
+      cursor: disabled ? 'default' : 'pointer',
+      opacity: disabled ? T.DISABLED_OPACITY : 1,
+    }}>
+      {/* impl amountColumn = { flex: 1 } 純 flex 容器；amount 與 currency 各自用 textAlign center 自身水平置中 */}
+      <div style={{ flex: 1 }}>
+        <div style={{
+          fontSize: T.AMOUNT_SIZE, fontWeight: T.AMOUNT_WEIGHT,
+          color: disabled ? TOKENS.ink2 : (value ? TOKENS.ink : TOKENS.ink3),
+          textAlign: 'center', fontVariantNumeric: 'tabular-nums',
+        }}>{value || '0.00'}</div>
+        {currency && (
+          <div style={{
+            fontSize: T.CURRENCY_SIZE, color: TOKENS.ink2,
+            textAlign: 'center', marginTop: T.CURRENCY_MARGIN_TOP,
+          }}>{currency}</div>
+        )}
+      </div>
+      {active && !disabled && (
+        <div style={{
+          position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
+          padding: T.BACKSPACE_PADDING,
+        }}>
+          <Glyph name="backspace-outline" size={T.BACKSPACE_ICON_SIZE} color={TOKENS.ink2} stroke={T.BACKSPACE_ICON_STROKE}/>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── StaticWheelPicker ─── design canvas 專用視覺 stub
+// impl 對應為 src/components/WheelPickerModal.tsx 的 native Picker，design canvas 無法
+// 渲染 RN Picker，故以中央 label + 上下淡色占位行模擬 wheel 視覺，供 PickerRow 並排使用。
+// 視覺參數由 STATIC_WHEEL_PICKER_TOKENS 提供。
+function StaticWheelPicker({ label, subLabel, accent }) {
+  const T = STATIC_WHEEL_PICKER_TOKENS;
+  return (
+    <div style={{
+      flex: 1,
+      height: T.HEIGHT,
+      background: TOKENS.surface,
+      borderRadius: T.RADIUS, borderWidth: T.BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
+      overflow: 'hidden', display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', padding: T.PADDING,
+    }}>
+      <div style={{
+        fontSize: T.PLACEHOLDER_SIZE, color: TOKENS.ink3, opacity: T.PLACEHOLDER_OPACITY,
+      }}>{subLabel ? `(${subLabel})` : ''}</div>
+      <div style={{
+        fontSize: T.LABEL_SIZE, fontWeight: T.LABEL_WEIGHT,
+        color: accent || TOKENS.ink,
+        marginTop: T.LABEL_VERTICAL_MARGIN, marginBottom: T.LABEL_VERTICAL_MARGIN,
+      }}>{label}</div>
+      <div style={{
+        fontSize: T.PLACEHOLDER_SIZE, color: TOKENS.ink3, opacity: T.PLACEHOLDER_OPACITY,
+      }}/>
+    </div>
+  );
+}
+
+// ─── AccountSelector ─── 對齊 src/components/AccountSelector.tsx
+// design canvas 預設只實作 mode='static'（picker 常駐顯示），對齊 impl TxEditor/TransferEditor 用法。
+// modal mode 在 sandbox 無真實 modal 互動意義，省略。
+function AccountSelector({ account, mode = 'static' }) {
+  // mode 預留參數對齊 impl 介面，static 模式為 design canvas 唯一實作
+  return (
+    <StaticWheelPicker label={account.name} subLabel={account.currency}/>
+  );
+}
+
+// ─── CategorySelector ─── 對齊 src/components/CategorySelector.tsx
+// design canvas 預設只實作 mode='static'。type color 透過 accent 注入 StaticWheelPicker。
+function CategorySelector({ category, mode = 'static' }) {
+  const accent = category.type === 'expense' ? TOKENS.error : TOKENS.success;
+  const typeLabel = category.type === 'expense' ? '支出' : '收入';
+  return (
+    <StaticWheelPicker label={category.name} subLabel={typeLabel} accent={accent}/>
+  );
+}
+
+// ─── RecurringOptions ─── 對齊 src/components/RecurringOptions.tsx
+// container bg surface radius lg padding lg margin sm/lg border 1px
+// headerRow: title「定期設定」primary medium + Switch
+// 內容（enabled=true 時）：頻率 4 chip / 每隔 input + unit / 結束於 2 chip
+// design canvas 版為 self-contained state，方便 sandbox 即看即試。
+function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' }) {
+  const R = RECURRING_OPTIONS_TOKENS;
+  const [enabled, setEnabled] = React.useState(initialEnabled);
+  const [frequency, setFrequency] = React.useState(initialFrequency);
+  const [endCondition, setEndCondition] = React.useState('NEVER');
+  const freqs = [
+    { v: 'DAILY',   label: '每日' },
+    { v: 'WEEKLY',  label: '每週' },
+    { v: 'MONTHLY', label: '每月' },
+    { v: 'YEARLY',  label: '每年' },
+  ];
+  const unitText = { DAILY: '天', WEEKLY: '週', MONTHLY: '月', YEARLY: '年' }[frequency];
+  const optionBtn = (label, selected, onClick) => (
+    <button onClick={onClick} style={{
+      paddingTop:    CHIP_TOKENS.PADDING_VERTICAL,
+      paddingBottom: CHIP_TOKENS.PADDING_VERTICAL,
+      paddingLeft:   CHIP_TOKENS.PADDING_HORIZONTAL,
+      paddingRight:  CHIP_TOKENS.PADDING_HORIZONTAL,
+      borderRadius:  CHIP_TOKENS.RADIUS,
+      borderWidth:   CHIP_TOKENS.BORDER_WIDTH, borderStyle: 'solid',
+      borderColor:   selected ? TOKENS.p500 : TOKENS.border,
+      marginRight:   CHIP_TOKENS.GAP_HORIZONTAL,
+      marginBottom:  CHIP_TOKENS.GAP_VERTICAL,
+      background:    selected ? TOKENS.p500 : TOKENS.bg,
+      cursor: 'pointer', fontFamily: 'inherit',
+      color:    selected ? '#fff' : TOKENS.ink,
+      fontSize: CHIP_TOKENS.TEXT_SIZE,
+      fontWeight: selected ? CHIP_TOKENS.TEXT_WEIGHT_SELECTED : TYPOGRAPHY.weight.regular,
+    }}>{label}</button>
+  );
+  const labelRow = (txt) => (
+    <div style={{
+      fontSize: R.LABEL_SIZE, color: TOKENS.ink2,
+      marginTop: R.LABEL_VERTICAL_MARGIN, marginBottom: R.LABEL_VERTICAL_MARGIN,
+    }}>{txt}</div>
+  );
+  return (
+    <div style={{
+      background: TOKENS.surface,
+      borderRadius: R.CONTAINER_RADIUS,
+      padding: R.CONTAINER_PADDING,
+      marginTop: R.CONTAINER_MARGIN_TOP, marginBottom: R.CONTAINER_MARGIN_BOTTOM,
+      borderWidth: R.CONTAINER_BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
+    }}>
+      <div style={{
+        display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+        marginBottom: R.HEADER_BOTTOM_MARGIN,
+      }}>
+        <span style={{ fontSize: R.TITLE_SIZE, fontWeight: R.TITLE_WEIGHT, color: TOKENS.p500 }}>定期設定</span>
+        <Switch value={enabled} onChange={setEnabled} trackColorOn={TOKENS.p500}/>
+      </div>
+      <div style={{ opacity: enabled ? 1 : R.DISABLED_OPACITY, pointerEvents: enabled ? 'auto' : 'none' }}>
+        {labelRow('頻率')}
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginBottom: R.ROW_BOTTOM_MARGIN }}>
+          {freqs.map(f => optionBtn(f.label, frequency === f.v, () => setFrequency(f.v)))}
+        </div>
+        {labelRow('每隔')}
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: R.ROW_BOTTOM_MARGIN }}>
+          <input defaultValue="1" style={{
+            background: TOKENS.bg, padding: R.INTERVAL_INPUT_PADDING,
+            borderRadius: R.INTERVAL_INPUT_RADIUS,
+            borderWidth: R.INTERVAL_INPUT_BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
+            fontSize: R.INTERVAL_INPUT_SIZE,
+            width: R.INTERVAL_INPUT_WIDTH,
+            textAlign: 'center',
+            marginRight: R.INTERVAL_INPUT_RIGHT_GAP, color: TOKENS.ink, fontFamily: 'inherit', outline: 'none',
+          }}/>
+          <span style={{ fontSize: R.UNIT_TEXT_SIZE, color: TOKENS.ink }}>{unitText}</span>
+        </div>
+        {labelRow('結束於')}
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+          {optionBtn('永不',       endCondition === 'NEVER',   () => setEndCondition('NEVER'))}
+          {optionBtn('特定日期',   endCondition === 'ON_DATE', () => setEndCondition('ON_DATE'))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 Object.assign(window, {
   Glyph, DynamicIconById, IconOutline,
   ListGroupCard, GroupCard, ListSection, ListSeparator,
@@ -1127,5 +1354,6 @@ Object.assign(window, {
   MockBackButtonPill, MockNavBar, HeaderMockFrame,
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
+  AmountField, StaticWheelPicker, AccountSelector, CategorySelector, RecurringOptions,
   iconBtn,
 });
