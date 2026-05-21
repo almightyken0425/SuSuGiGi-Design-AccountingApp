@@ -1,21 +1,29 @@
 // ─────────────────────────────────────────────────────────────
 // HEADER_ICON_BUTTON_TOKENS · Navigation header 上 icon-only 動作鍵
 //
-// 對齊 iOS 26 Liquid Glass bar button item 自動 pill 行為：customView intrinsic
-// size 為正方形 → 自動套圓 pill；多 icon 共用 customView → 自動套膠囊 pill。
-// 為達成「單 icon 正圓 / 多 icon 內 icon 均勻置中」，customView 必須是固定正方形容器。
+// **此 token group 僅供 design canvas mock 視覺校準參考**。
+// impl 端已將 header button 完全下放給 react-navigation 7 + UIKit：
+//   - 採用 `unstable_headerLeftItems / unstable_headerRightItems` + `type: 'button'`
+//   - UIKit UIBarButtonItem 接管尺寸 / 圓角 / 背景 / press 動畫 / haptic / Liquid Glass
+//   - tintColor 統一用 theme.primary.main
 //
-// 三個 button 元件統一靠本 token 拿到 41×41 customView：
-//   - HeaderIconButton（多用途，dashboard / list 右側 action）
-//   - HeaderCheckmarkButton（送出 / 確認，Form modal headerRight）
-//   - ModalCloseButton（關閉，Modal headerLeft）
-// 系統返回鍵亦透過 AppNavigator screenOptions 統一覆寫為 HeaderIconButton + chevron.left。
+// 放棄「在 RN 端控制 customView 視覺」的理由：
+//   1. iOS 26 對 customView 套的 shared background pill dimension 由 UIKit 決定，
+//      leftBarButtonItems 帶 leading edge inset 變橢圓、單一 rightBarButtonItem 維持
+//      正圓，視覺左右不對稱
+//   2. 自畫 borderRadius + hidesSharedBackground 雖能恢復對稱，但失去 iOS 原生 press
+//      高光與 Liquid Glass 動畫，使用者感受不到「iOS 原生」
+//   3. 最終決議：採 UIKit 原生 button item，把視覺與互動完全交給 OS
+//
+// 本 token group 的尺寸值（41 / 17 / 8 / 1.5 / 0.97 / 100ms）保留在 design canvas 中
+// 作為 HeaderButtonPill mock 元件與 visualizer 卡片的視覺校準依據，impl 不消費。
 // ─────────────────────────────────────────────────────────────
 
 const HEADER_ICON_BUTTON_TOKENS = {
-  CONTENT_BOX:        TYPE_STYLES.body.size + SPACING.md * 2,              // 41，customView 正方形邊長（17pt symbol + 12 padding × 2）；Liquid Glass hug 後 → 正圓 41 直徑
+  CONTENT_BOX:        TYPE_STYLES.body.size + SPACING.md * 2,              // 41，pill 正方形邊長（17pt symbol + 12 padding × 2）
+  BORDER_RADIUS:      (TYPE_STYLES.body.size + SPACING.md * 2) / 2,        // 20.5，pill 半徑：CONTENT_BOX / 2
   SYMBOL_SIZE:        TYPE_STYLES.body.size,                               // 17，SF Symbol point size，對齊 Apple bar button 慣用 body 級
-  MULTI_ICON_GAP:     SPACING.sm,                                          // 8，多 icon pill 內間距，與 SEARCH_BAR_TOKENS.ICON_GAP 對齊
+  MULTI_ICON_GAP:     SPACING.sm,                                          // 8，多 icon header 內 button 間距，與 SEARCH_BAR_TOKENS.ICON_GAP 對齊
   HIT_TARGET_EXPAND:  (HIT_TARGET.min - (TYPE_STYLES.body.size + SPACING.md * 2)) / 2, // 1.5，hitSlop 各方向外擴：視覺 41×41、可點 44×44 達 HIG。對齊 Apple UIBarButtonItem「視覺小、hit 大」慣例
   PRESS_ANIMATION: {
     scale:    0.97,                       // (literal: 視覺校準值，對齊 BRAND.md universal button rule 與 iOS 系統 bar button tap 反饋；非 atomic 階梯項目)
@@ -32,10 +40,6 @@ const HEADER_ICON_BUTTON_TOKENS = {
     commit:  'impactMedium',              // 送出 / 確認動作有後果，反饋稍強
     action:  'impactLight',               // 主動觸發但無破壞性後果，反饋輕觸
     dismiss: 'impactLight',               // 離開動作無後果，反饋輕觸
-  },
-  GLASS_CONTEXT: {                        // 政策聲明：何時靠系統、何時自己包
-    native: 'rely-on-uikit',              // 在 React Navigation native header 內，UIKit 自動套 Liquid Glass pill（不可覆寫）
-    sheet:  'wrap-glassview',             // 在 sheet 自繪 header 內（如 pageSheet 內部 currency 選擇器），button 自帶 <GlassView pill>
   },
 };
 

@@ -3,26 +3,30 @@
 // ─────────────────────────────────────────────────────────────
 
 const HEADER_ICON_BUTTON_TOKEN_DESC = {
-  CONTENT_BOX:       'customView 正方形邊長（symbol + 上下左右 padding；Liquid Glass hug 後自動成正圓 pill）',
+  CONTENT_BOX:       'pill 正方形邊長（symbol + 上下左右 padding）。自帶 borderRadius，不依賴 UIKit auto-hug',
+  BORDER_RADIUS:     'pill 圓角半徑 = CONTENT_BOX / 2，使 41×41 容器渲染為正圓',
   SYMBOL_SIZE:       'SF Symbol point size，對齊 iOS bar button 慣用 body 級',
-  MULTI_ICON_GAP:    '多 icon 共用 customView 時 icon 之間的水平 gap',
+  MULTI_ICON_GAP:    '多 icon header 內 button 之間的水平 gap（impl 端用 react-navigation type:spacing item）',
   HIT_TARGET_EXPAND: 'hitSlop 各方向外擴量。視覺維持 41×41 pill，實際可點區擴至 44×44 達 HIG 標準；對齊 Apple UIBarButtonItem「視覺小、hit 大」慣例',
-  PRESS_ANIMATION:   '按壓回饋：scale 縮放比例 + duration + easing。三個 button 元件 + 覆寫返回鍵統一套用',
+  PRESS_ANIMATION:   '按壓回饋：scale 縮放比例 + duration + easing。HeaderButton 三 variant + 覆寫返回鍵統一套用',
   COLOR_BY_INTENT:   '依按鈕語意分派 icon 顏色；本波三 intent 統一主題色（impl 端 theme.primary.main）。保留 map 結構以便未來分化（如 destructive 改紅）；disabled 一律覆寫為 ink3',
   HAPTIC_BY_INTENT:  '依按鈕語意分派 expo-haptics ImpactFeedbackStyle：commit 有後果（medium）、action 與 dismiss 無破壞性（light）',
-  GLASS_CONTEXT:     '政策聲明——navigation native header 內按鈕由 UIKit 自動套 Liquid Glass pill（不可覆寫）；sheet 自繪 header 內按鈕需自帶 <GlassView pill> 包裝',
 };
 
 const HEADER_ICON_BUTTON_TOKEN_SOURCE = {
   CONTENT_BOX:       'TYPE_STYLES.body.size + SPACING.md * 2',
+  BORDER_RADIUS:     'CONTENT_BOX / 2',
   SYMBOL_SIZE:       'TYPE_STYLES.body.size',
   MULTI_ICON_GAP:    'SPACING.sm',
   HIT_TARGET_EXPAND: '(HIT_TARGET.min - CONTENT_BOX) / 2',
   PRESS_ANIMATION:   '{ scale: 0.97, duration: MOTION.duration.instant, easing: MOTION.easing.standard }',
   COLOR_BY_INTENT:   '{ commit: TOKENS.p500, action: TOKENS.p500, dismiss: TOKENS.p500 }',
   HAPTIC_BY_INTENT:  '{ commit: impactMedium, action: impactLight, dismiss: impactLight }',
-  GLASS_CONTEXT:     '{ native: rely-on-uikit, sheet: wrap-glassview }',
 };
+
+// design canvas mock 顏色，對齊 components.jsx HeaderButtonPill 的 HEADER_BUTTON_MOCK_BG。
+// iOS 26 navigation bar systemFill 淡灰半透明近似值，非設計 token。
+const HEADER_BTN_MOCK_BG = 'rgba(118,118,128,0.12)';
 
 // ─── Hit area 視覺化 ─────────────────────────────────────────
 function HeaderIconBtnHitAreaCard() {
@@ -44,7 +48,9 @@ function HeaderIconBtnHitAreaCard() {
           }}/>
           <div style={{
             width: cb, height: cb, borderRadius: '50%',
-            background: GLASS.tint, border: `1px solid ${GLASS.border}`,
+            background: HEADER_BTN_MOCK_BG,
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Glyph name="checkmark" size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE} color={TOKENS.p500} stroke={2.4}/>
@@ -69,7 +75,9 @@ function HeaderIconBtnPressAnimationCard() {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
         <div style={{
           width: cb, height: cb, borderRadius: '50%',
-          background: TOKENS.glass_tint, border: `1px solid ${TOKENS.hairline}`,
+          background: HEADER_BTN_MOCK_BG,
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           transform: scaled ? `scale(${anim.scale})` : 'scale(1)',
           transition: `transform ${anim.duration}ms ${anim.easing}`,
@@ -92,7 +100,7 @@ function HeaderIconBtnPressAnimationCard() {
         <Pill scaled={true} label={`ACTIVE · scale ${anim.scale}`}/>
       </div>
       <div style={{ fontSize: 10.5, color: TOKENS.ink3, textAlign: 'center', marginTop: -8 }}>
-        三個 header button 元件統一套用；haptic 由 HAPTIC_BY_INTENT 分派
+        HeaderButton 三 variant 統一套用；haptic 由 HAPTIC_BY_INTENT 分派
       </div>
     </FoundCard>
   );
@@ -101,9 +109,9 @@ function HeaderIconBtnPressAnimationCard() {
 // ─── Intent 矩陣 · color + haptic + icon 範例 ────────────────
 function HeaderIconBtnIntentMatrixCard() {
   const rows = [
-    { intent: 'commit',  icon: 'checkmark',          users: 'HeaderCheckmarkButton' },
-    { intent: 'action',  icon: 'magnifyingglass',    users: 'HeaderIconButton（search / settings / filter / merge / 返回鍵）' },
-    { intent: 'dismiss', icon: 'xmark',              users: 'ModalCloseButton' },
+    { intent: 'commit',  icon: 'checkmark',          users: 'HeaderButton variant="checkmark"' },
+    { intent: 'action',  icon: 'magnifyingglass',    users: 'HeaderButton variant="icon"（search / settings / filter / merge / 返回鍵）' },
+    { intent: 'dismiss', icon: 'xmark',              users: 'HeaderButton variant="close"' },
   ];
   const cb = HEADER_ICON_BUTTON_TOKENS.CONTENT_BOX;
   const cellStyle = { fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6, padding: '6px 8px' };
@@ -123,7 +131,9 @@ function HeaderIconBtnIntentMatrixCard() {
             <div style={{ padding: '6px 8px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
               <div style={{
                 width: cb, height: cb, borderRadius: '50%',
-                background: GLASS.tint, border: `1px solid ${GLASS.border}`,
+                background: HEADER_BTN_MOCK_BG,
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <Glyph name={r.icon} size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE} color={HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT[r.intent]} stroke={2.4}/>
@@ -149,46 +159,20 @@ function HeaderIconBtnIntentMatrixCard() {
   );
 }
 
-// ─── Glass context 對比 ──────────────────────────────────────
-function HeaderIconBtnGlassContextCard() {
-  return (
-    <FoundCard>
-      <FoundLabel>GLASS CONTEXT · pill 渲染來源</FoundLabel>
-      <div style={{ display: 'flex', gap: 24, padding: '16px 8px', justifyContent: 'space-around' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-          <SectionMini>NATIVE · rely-on-uikit</SectionMini>
-          <HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>
-          <div style={{ fontSize: 10.5, color: TOKENS.ink2, textAlign: 'center', lineHeight: 1.5, maxWidth: 200 }}>
-            在 React Navigation native header 內。<br/>UIKit 自動套 Liquid Glass pill，<strong>impl 端 glass prop 保持 false</strong>。
-          </div>
-        </div>
-        <div style={{ width: 1, background: TOKENS.hairline }}/>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-          <SectionMini>SHEET · wrap-glassview</SectionMini>
-          <HeaderButtonPill symbols={["xmark"]} color={TOKENS.ink}/>
-          <div style={{ fontSize: 10.5, color: TOKENS.ink2, textAlign: 'center', lineHeight: 1.5, maxWidth: 200 }}>
-            在 sheet 自繪 header 內（如 currency 選擇器 pageSheet）。<br/>系統不畫，<strong>impl 端設 glass=true</strong> 由元件自帶 GlassView pill。
-          </div>
-        </div>
-      </div>
-    </FoundCard>
-  );
-}
-
 function FoundationsCTHeaderIconButtonSection() {
   return (
     <DCSection
       id="found-ct-header-icon-button"
       title="Component Tokens · Header Icon Button"
-      subtitle="Navigation header / sheet header 上 icon-only 動作鍵。對齊 iOS 26 Liquid Glass bar button item 自動 pill 行為。三個 button 元件 + 系統返回鍵覆寫共用本 token 群。"
+      subtitle="Navigation header 上 icon-only 動作鍵。impl 端已下放 react-navigation 7 + UIKit（unstable_headerLeftItems / RightItems + type:'button' + SF Symbol icon-only），由 UIKit 接管尺寸 / 圓角 / 背景 / press 動畫 / Liquid Glass shared background pill / haptic。本 token 群保留為 design canvas mock 視覺校準參考，impl 不消費。"
     >
-      <DCFamily id="header-icon-button-tokens-family" title="Tokens" subtitle="HEADER_ICON_BUTTON_TOKENS 完整表格（含 hit area 外擴、按壓動畫、haptic 對應、glass context 政策）。">
-        <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation / sheet header icon-only 鍵" width="auto" height="auto">
+      <DCFamily id="header-icon-button-tokens-family" title="Tokens" subtitle="HEADER_ICON_BUTTON_TOKENS 完整表格（含 hit area 外擴、按壓動畫、haptic 對應）。">
+        <DCArtboard id="header-icon-button-tokens" label="HEADER_ICON_BUTTON_TOKENS · Navigation header icon-only 鍵" width="auto" height="auto">
           <TokenTableCard tokens={HEADER_ICON_BUTTON_TOKENS} title="HEADER_ICON_BUTTON_TOKENS" descriptions={HEADER_ICON_BUTTON_TOKEN_DESC} sources={HEADER_ICON_BUTTON_TOKEN_SOURCE}/>
         </DCArtboard>
       </DCFamily>
 
-      <DCFamily id="header-icon-button-interaction-family" title="Interaction Details" subtitle="hit area 外擴、按壓動畫視覺化，三個 button 元件統一套用。">
+      <DCFamily id="header-icon-button-interaction-family" title="Interaction Details" subtitle="hit area 外擴、按壓動畫視覺化，HeaderButton 三 variant 統一套用。">
         <DCArtboard id="header-icon-button-hit-area" label="Hit area · 視覺 41 / 可點 44" width={420} height={200}>
           <HeaderIconBtnHitAreaCard/>
         </DCArtboard>
@@ -202,18 +186,12 @@ function FoundationsCTHeaderIconButtonSection() {
           <HeaderIconBtnIntentMatrixCard/>
         </DCArtboard>
       </DCFamily>
-
-      <DCFamily id="header-icon-button-glass-context-family" title="Glass Context" subtitle="按使用場景分派 glass 渲染來源：navigation header 靠系統、sheet header 自帶 GlassView。">
-        <DCArtboard id="header-icon-button-glass-context" label="GLASS_CONTEXT · native vs sheet" width={520} height={220}>
-          <HeaderIconBtnGlassContextCard/>
-        </DCArtboard>
-      </DCFamily>
     </DCSection>
   );
 }
 
 Object.assign(window, {
   HEADER_ICON_BUTTON_TOKEN_DESC, HEADER_ICON_BUTTON_TOKEN_SOURCE,
-  HeaderIconBtnHitAreaCard, HeaderIconBtnPressAnimationCard, HeaderIconBtnIntentMatrixCard, HeaderIconBtnGlassContextCard,
+  HeaderIconBtnHitAreaCard, HeaderIconBtnPressAnimationCard, HeaderIconBtnIntentMatrixCard,
   FoundationsCTHeaderIconButtonSection,
 });
