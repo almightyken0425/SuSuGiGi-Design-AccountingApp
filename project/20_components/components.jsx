@@ -987,6 +987,16 @@ const fabBtn = {
 // ─── BottomSearchBar ─── 對齊 src/components/BottomSearchBar.tsx
 // GlassView pill, MCI "magnify" 20px secondary, no X button (native clearButtonMode)
 function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoFocus }) {
+  // HTML autoFocus 會觸發瀏覽器 scrollIntoView，把 design canvas 的 vp 容器
+  // 程式化捲到 input 位置（overflow:hidden 不擋程式化 scroll），導致整個 canvas
+  // 定錨在 input、後續頁面切換也繼承這個 scroll 偏移。改用 ref.focus({ preventScroll: true })
+  // 取得 focus 但抑制自動捲動。
+  const inputRef = React.useRef(null);
+  React.useLayoutEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus({ preventScroll: true });
+    }
+  }, [autoFocus]);
   return (
     <div style={{
       position: 'absolute', left: 0, right: 0, bottom: 0,
@@ -1005,8 +1015,8 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
           gap: SEARCH_BAR_TOKENS.ICON_GAP,
         }}>
           <Glyph name="magnify" size={SEARCH_BAR_TOKENS.ICON_SIZE} color={TOKENS.ink2} stroke={2}/>
-          <input value={value || ''} onChange={(e) => onChangeText && onChangeText(e.target.value)}
-            placeholder={placeholder} autoFocus={autoFocus}
+          <input ref={inputRef} value={value || ''} onChange={(e) => onChangeText && onChangeText(e.target.value)}
+            placeholder={placeholder}
             style={{
               flex: 1, border: 'none', outline: 'none',
               background: 'transparent',

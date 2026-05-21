@@ -242,9 +242,19 @@ function DCViewport({ children, minScale = 0.1, maxScale = 8, style = {}, resetK
 
   // route 切換時把 viewport 拉回原點，避免前一個 sub-tab 累積的 pan/zoom
   // 把新內容推離可視範圍（小 sub-tab 內容塞不下大偏移）。
-  React.useEffect(() => {
+  // useLayoutEffect 而非 useEffect：必須在 paint 前同步寫入 transform，
+  // 否則新 children 的第一幀會用舊 transform 畫，當 pan 偏移到 10 萬級時
+  // 新內容會被推到螢幕外，視覺感受為「卡在原位」。
+  // 同時 reset vp 的 native scrollLeft/scrollTop：autoFocus 之類的元素會
+  // 觸發瀏覽器 scrollIntoView，overflow:hidden 擋不住程式化 scroll，
+  // 留著會讓後續 transform 計算錨點偏掉。
+  React.useLayoutEffect(() => {
     tf.current = { x: 0, y: 0, scale: 1 };
     apply();
+    if (vpRef.current) {
+      vpRef.current.scrollLeft = 0;
+      vpRef.current.scrollTop = 0;
+    }
   }, [resetKey, apply]);
 
   React.useEffect(() => {
