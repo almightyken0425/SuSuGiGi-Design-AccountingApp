@@ -37,7 +37,7 @@ function FoundationsCTAmountFieldSection() {
     <DCSection
       id="found-ct-amount-field"
       title="Component Tokens · Amount Field"
-      subtitle="金額輸入欄（TransferEditor 雙欄、TxEditor 單欄）。active / disabled 三態切換視覺。"
+      subtitle="金額輸入欄（TransferEditor 雙欄、TransactionEditor 單欄）。active / disabled 三態切換視覺。"
     >
       <DCFamily id="amount-field-tokens-family" title="Tokens" subtitle="AMOUNT_FIELD_TOKENS 完整表格。">
         <DCArtboard id="amount-field-tokens" label="AMOUNT_FIELD_TOKENS 表格" width="auto" height="auto">

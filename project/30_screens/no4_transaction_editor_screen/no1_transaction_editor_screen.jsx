@@ -29,7 +29,7 @@ function TransactionEditorScreen({
   initialRecurring = false,
   showScheduleModeDialog = false,
 }) {
-  const T = TX_EDITOR_SCREEN_TOKENS;
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
 
   const [amount, setAmount] = React.useState('185');
   const [note, setNote] = React.useState('路易莎咖啡');
@@ -55,13 +55,13 @@ function TransactionEditorScreen({
 
         {recurring && <RecurringOptions/>}
 
-        <TxAmountContainer
+        <TransactionAmountContainer
           symbol={symbol}
           amount={amount}
           amountFocused={amountFocused}
           onFocus={() => setAmountFocused(true)}/>
 
-        <TxPickerRow accountId={accountId} categoryId={categoryId}/>
+        <TransactionPickerRow accountId={accountId} categoryId={categoryId}/>
 
         <EditorNoteField
           value={note}

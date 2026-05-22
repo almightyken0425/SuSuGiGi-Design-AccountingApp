@@ -1,12 +1,12 @@
 // ─────────────────────────────────────────────────────────────
-// TX_EDITOR_SCREEN_TOKENS · TransactionEditorScreen 內部 composition 參數
+// TRANSACTION_EDITOR_SCREEN_TOKENS · TransactionEditorScreen 內部 composition 參數
 //
 // Modal screen，含 ErrorBanner / DateContainer / AmountContainer / PickerRow /
 // NoteField / DeleteButton + AnimatedKeypad（CalculatorKeypad absolute bottom）。
 // 消費 atomic + FORM_PICKER_TOKENS（透過 AccountSelector / CategorySelector wrapper）。
 // ─────────────────────────────────────────────────────────────
 
-const TX_EDITOR_SCREEN_TOKENS = {
+const TRANSACTION_EDITOR_SCREEN_TOKENS = {
   // ── 各 section 通用間距（mb）
   SECTION_GAP:                       SPACING.xl,
 
@@ -55,4 +55,4 @@ const TX_EDITOR_SCREEN_TOKENS = {
   SCROLL_SPACER_HEIGHT_INACTIVE:     100,                                     // (literal: 對齊 impl else 分支 paddingBottom)
 };
 
-Object.assign(window, { TX_EDITOR_SCREEN_TOKENS });
+Object.assign(window, { TRANSACTION_EDITOR_SCREEN_TOKENS });

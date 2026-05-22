@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
-// Editor form helpers · TxEditor + TransferEditor 共用的 design canvas form 元件
+// Editor form helpers · TransactionEditor + TransferEditor 共用的 design canvas form 元件
 //
-// impl 端 TxEditorScreen 與 TransferEditorScreen 內各自 inline 實作這幾個結構，
+// impl 端 TransactionEditorScreen 與 TransferEditorScreen 內各自 inline 實作這幾個結構，
 // 沒有抽共用元件（沒列入 src/components/）。
 // design canvas 因 global namespace 限制無法兩 screen 各自定義同名 sub-section，
 // 故於此 promote 共用，視覺上兩 screen 仍維持完全一致（impl-aligned）。
@@ -11,7 +11,7 @@
 
 // ─── EditorErrorBanner ─── 視覺對應 impl Alert.alert（inline banner 對齊 design canvas）
 function EditorErrorBanner({ title = '錯誤', message = '請輸入有效金額' }) {
-  const T = TX_EDITOR_SCREEN_TOKENS;
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
       background: `${TOKENS.error}${T.ERROR_BANNER_BG_OPACITY}`,
@@ -36,9 +36,9 @@ function EditorErrorBanner({ title = '錯誤', message = '請輸入有效金額'
 
 // ─── EditorDateContainer ─── 日期 pill + recurring toggle button
 function EditorDateContainer({ dateLabel = '2026/05/14  14:30', recurring, onToggleRecurring }) {
-  // 樣式參數以 TxEditor / TransferEditor 各自 SCREEN_TOKENS 提供的接口為準；
-  // 此處取 TX_EDITOR_SCREEN_TOKENS 為 anchor（兩 screen 視覺一致，不另複製）。
-  const T = TX_EDITOR_SCREEN_TOKENS;
+  // 樣式參數以 TransactionEditor / TransferEditor 各自 SCREEN_TOKENS 提供的接口為準；
+  // 此處取 TRANSACTION_EDITOR_SCREEN_TOKENS 為 anchor（兩 screen 視覺一致，不另複製）。
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
       display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
@@ -84,7 +84,7 @@ function EditorDateContainer({ dateLabel = '2026/05/14  14:30', recurring, onTog
 // design canvas 為純 HTML <input>，inline style 不支援 ::placeholder，
 // 改在 caller scope inject 一段 scoped CSS（className 唯一）。
 function EditorNoteField({ value, onChange, onFocus, placeholder = '新增備註' }) {
-  const T = TX_EDITOR_SCREEN_TOKENS;
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{ marginBottom: T.SECTION_GAP }}>
       <style>{`.editor-note-input::placeholder { color: ${TOKENS.ink3}; }`}</style>
@@ -109,7 +109,7 @@ function EditorNoteField({ value, onChange, onFocus, placeholder = '新增備註
 
 // ─── EditorDeleteButton ─── isEdit=true 時顯示
 function EditorDeleteButton({ label = '刪除' }) {
-  const T = TX_EDITOR_SCREEN_TOKENS;
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
       marginTop: T.DELETE_BUTTON_TOP_MARGIN,

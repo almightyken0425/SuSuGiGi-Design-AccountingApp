@@ -2,22 +2,22 @@
 // TransactionEditorScreen sub-sections · 私有 sub-section 元件
 //
 // 鏡射 impl src/screens/Transactions/TransactionEditorScreen.tsx 拆分：
-//   TxAmountContainer / TxPickerRow
+//   TransactionAmountContainer / TransactionPickerRow
 //
 // 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField /
 //   EditorDeleteButton）住在 30_screens/shared/no2_editor_form_helpers.jsx
 // （design canvas global namespace 限制使然，兩 editor 視覺一致時共用 helper，
 //   視覺差異時才各自實作）。
 //
-// 消費 TX_EDITOR_SCREEN_TOKENS + atomic
+// 消費 TRANSACTION_EDITOR_SCREEN_TOKENS + atomic
 // + 20_components/（AccountSelector / CategorySelector / Glyph）。
 // ─────────────────────────────────────────────────────────────
 
-// ─── TxAmountContainer ─── 金額輸入欄（symbol + amount text + backspace）
+// ─── TransactionAmountContainer ─── 金額輸入欄（symbol + amount text + backspace）
 // 與 20_components/AmountField 不同：AmountField 為通用兩態欄（TransferEditor 用），
-// TxAmountContainer 含 currency symbol prefix 與 tap-to-focus 開鍵盤行為。
-function TxAmountContainer({ symbol = 'NT$', amount, amountFocused, onFocus }) {
-  const T = TX_EDITOR_SCREEN_TOKENS;
+// TransactionAmountContainer 含 currency symbol prefix 與 tap-to-focus 開鍵盤行為。
+function TransactionAmountContainer({ symbol = 'NT$', amount, amountFocused, onFocus }) {
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{ marginBottom: T.SECTION_GAP }}>
       <div onClick={onFocus} style={{
@@ -46,9 +46,9 @@ function TxAmountContainer({ symbol = 'NT$', amount, amountFocused, onFocus }) {
   );
 }
 
-// ─── TxPickerRow ─── account + category picker 並排
-function TxPickerRow({ accountId, categoryId }) {
-  const T = TX_EDITOR_SCREEN_TOKENS;
+// ─── TransactionPickerRow ─── account + category picker 並排
+function TransactionPickerRow({ accountId, categoryId }) {
+  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
       display: 'flex', flexDirection: 'row',
@@ -62,5 +62,5 @@ function TxPickerRow({ accountId, categoryId }) {
 }
 
 Object.assign(window, {
-  TxAmountContainer, TxPickerRow,
+  TransactionAmountContainer, TransactionPickerRow,
 });
