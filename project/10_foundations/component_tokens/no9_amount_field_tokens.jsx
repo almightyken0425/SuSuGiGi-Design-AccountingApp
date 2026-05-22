@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// AMOUNT_FIELD_TOKENS · 金額輸入欄（TransferEditor 雙欄、TxEditor 單欄）
+// AMOUNT_FIELD_TOKENS · 金額輸入欄（TransferEditor 雙欄、TransactionEditor 單欄）
 //
 // 對齊 impl src/screens/Transactions/TransferEditorScreen.tsx 內 amountContainer 樣式。
 // active 時 primary border + bg.base 背景；disabled 時 borderWidth=0 + opacity 0.7。

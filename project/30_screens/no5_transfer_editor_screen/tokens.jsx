@@ -8,7 +8,7 @@
 // ─────────────────────────────────────────────────────────────
 
 const TRANSFER_EDITOR_SCREEN_TOKENS = {
-  // ── 各 section 通用間距（與 TX_EDITOR_SCREEN_TOKENS.SECTION_GAP 對齊）
+  // ── 各 section 通用間距（與 TRANSACTION_EDITOR_SCREEN_TOKENS.SECTION_GAP 對齊）
   SECTION_GAP:                     SPACING.xl,
 
   // ── DualAmountRow（from amount + arrow + to amount）
@@ -23,7 +23,7 @@ const TRANSFER_EDITOR_SCREEN_TOKENS = {
   KEYPAD_BOTTOM_PADDING:           SPACING.xl,
 
   // ── Scroll spacer
-  SCROLL_SPACER_HEIGHT:            400,                                       // (literal: 與 TX_EDITOR_SCREEN_TOKENS.SCROLL_SPACER_HEIGHT 對齊)
+  SCROLL_SPACER_HEIGHT:            400,                                       // (literal: 與 TRANSACTION_EDITOR_SCREEN_TOKENS.SCROLL_SPACER_HEIGHT 對齊)
 };
 
 Object.assign(window, { TRANSFER_EDITOR_SCREEN_TOKENS });

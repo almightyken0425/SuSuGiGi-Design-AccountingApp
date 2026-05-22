@@ -72,19 +72,19 @@ const SCREEN_META = {
   },
   // ─── Transaction Editor ─── default / income / recurring 展開 / edit recurring dialog
   // 無 error variant：impl 守 save 在 header checkmark disabled，無 invalid-amount inline banner
-  'tx-editor': {
+  'transaction-editor': {
     title: '新增支出', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="expense"/>,
   },
-  'tx-editor-income': {
+  'transaction-editor-income': {
     title: '新增收入', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="income"/>,
   },
-  'tx-editor-recurring': {
+  'transaction-editor-recurring': {
     title: '新增支出', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="expense" initialRecurring/>,
   },
-  'tx-editor-edit-recurring-dialog': {
+  'transaction-editor-edit-recurring-dialog': {
     title: '編輯交易', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="expense" isEdit initialRecurring showScheduleModeDialog/>,
   },
@@ -341,14 +341,14 @@ const SCREEN_GROUPS = [
     ],
   },
   {
-    id: 'tx-editor',
+    id: 'transaction-editor',
     title: 'Transaction Editor · 記一筆交易',
     subtitle: '記一筆支出 / 收入 modal（src/screens/Transactions/TransactionEditorScreen.tsx）。impl 守 save 在 header checkmark disabled（無 amount 或 account 時灰掉），無 invalid-amount inline banner；真實 error（save / delete 失敗）走 Alert.alert runtime 彈窗。Recurring 展開態鏡射 impl `showRecurringOptions=true`；編輯態 dialog 鏡射 `showRecurringModeDialog`。',
     screens: [
-      { id: 'tx-editor',                       label: 'Default · 新增支出' },
-      { id: 'tx-editor-income',                label: '新增收入' },
-      { id: 'tx-editor-recurring',             label: 'Recurring · 展開定期選項' },
-      { id: 'tx-editor-edit-recurring-dialog', label: 'Edit recurring · 本次／未來對話框' },
+      { id: 'transaction-editor',                       label: 'Default · 新增支出' },
+      { id: 'transaction-editor-income',                label: '新增收入' },
+      { id: 'transaction-editor-recurring',             label: 'Recurring · 展開定期選項' },
+      { id: 'transaction-editor-edit-recurring-dialog', label: 'Edit recurring · 本次／未來對話框' },
     ],
   },
   {
@@ -599,9 +599,9 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
       </div>
       {(PINNED_WITH_FAB.has(top) || meta.hasFAB) && (
         <FloatingActionBar mode="actions"
-          onExpensePress={() => push('tx-editor')}
+          onExpensePress={() => push('transaction-editor')}
           onTransferPress={() => push('transfer')}
-          onIncomePress={() => push('tx-editor-income')}/>
+          onIncomePress={() => push('transaction-editor-income')}/>
       )}
     </div>
   );

@@ -14,7 +14,7 @@
 ├── no1_home_screen/                    HomeScreen（PeriodPage host + variant routing）
 ├── no2_home_filter_screen/             HomeFilterScreen（時間粒度/分組 + 帳戶多選）
 ├── no3_search_screen/                  SearchScreen（底部 BottomSearchBar + 結果列表）
-├── no4_tx_editor_screen/               TransactionEditorScreen（計算機 + 多 picker）
+├── no4_transaction_editor_screen/      TransactionEditorScreen（計算機 + 多 picker）
 ├── no5_transfer_editor_screen/         TransferEditorScreen（雙幣別轉帳）
 ├── no6_settings_screen/                SettingsScreen（設定主入口 hub；default / subscribed variants）
 ├── no7_account_list_screen/            AccountListScreen（拖拉排序 + 新增）
@@ -82,7 +82,7 @@ Variant 不憑空設計，照 impl 該 screen 的實際 state 與 navigation par
 | 30_screens/shared/ | 跨 screen 共用 **但** 僅 design canvas 用（無 impl 對應），或 design canvas 環境限制無法各 screen 重複實作 | `30_screens/shared/noN_*.jsx` |
 | Inline | 單 screen 用 | 該 screen 子目錄內 `noN_subsections.jsx` 或 entry inline |
 
-**註 1：** 本目錄的 `shared/no2_editor_form_helpers.jsx`（TxEditor / TransferEditor 共用）與 `shared/no3_editor_field_helpers.jsx`（AccountEditor / CategoryEditor 共用）皆為「design canvas 環境限制」促升的例外。impl 端 Editor 類各自 inline 實作 DateContainer / NoteField / DeleteButton 與 FormFieldLabel / TextInput / PickerCollapsed，但 design canvas 採 global namespace 無法同名 sub-section 共存，故 promote 共用。視覺上仍與 impl 完全對齊。
+**註 1：** 本目錄的 `shared/no2_editor_form_helpers.jsx`（TransactionEditor / TransferEditor 共用）與 `shared/no3_editor_field_helpers.jsx`（AccountEditor / CategoryEditor 共用）皆為「design canvas 環境限制」促升的例外。impl 端 Editor 類各自 inline 實作 DateContainer / NoteField / DeleteButton 與 FormFieldLabel / TextInput / PickerCollapsed，但 design canvas 採 global namespace 無法同名 sub-section 共存，故 promote 共用。視覺上仍與 impl 完全對齊。
 
 **註 2：** 將來若 impl 重構抽出共用元件（如 EditorDateRow、EditorFormField），可改升入 `20_components/`。
 

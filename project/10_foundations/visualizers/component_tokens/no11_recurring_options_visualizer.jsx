@@ -65,7 +65,7 @@ function FoundationsCTRecurringOptionsSection() {
     <DCSection
       id="found-ct-recurring-options"
       title="Component Tokens · Recurring Options"
-      subtitle="定期設定卡片（TxEditor / TransferEditor 用）。container + headerRow + 頻率/每隔/結束於三段。內部 chip 視覺由 CHIP_TOKENS 提供。"
+      subtitle="定期設定卡片（TransactionEditor / TransferEditor 用）。container + headerRow + 頻率/每隔/結束於三段。內部 chip 視覺由 CHIP_TOKENS 提供。"
     >
       <DCFamily id="recurring-options-tokens-family" title="Tokens" subtitle="RECURRING_OPTIONS_TOKENS 完整表格。">
         <DCArtboard id="recurring-options-tokens" label="RECURRING_OPTIONS_TOKENS 表格" width="auto" height="auto">
