@@ -281,7 +281,7 @@ const SCREEN_GROUPS = [
   },
   {
     id: 'home-filter',
-    title: '顯示設定 · Home Filter',
+    title: 'Home Filter · 顯示設定',
     subtitle: 'Home 的篩選 modal（src/screens/Home/HomeFilterScreen.tsx）。',
     screens: [
       { id: 'filter',             label: 'Default · 有帳戶' },
