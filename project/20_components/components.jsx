@@ -411,6 +411,64 @@ function ListItem({ leftIcon, title, titleColor, subtitle, value, showChevron, t
   );
 }
 
+// ─── DataListItem ─── 對齊 src/components/list/DataListItem.tsx
+// 與 ListItem 差異：trailing 為 value + valueSubtext 垂直堆疊（顯示資料數值與輔助文字）
+// 無 chevron / titleColor / disabled，主要用於「左 icon + 中 title/subtitle + 右 value/valueSubtext」資料列
+function DataListItem({ leftIcon, title, subtitle, value, valueColor, valueSubtext, onPress, onLongPress, style = {} }) {
+  const [pressed, setPressed] = React.useState(false);
+  const interactive = !!(onPress || onLongPress);
+  return (
+    <div
+      onClick={onPress}
+      onPointerDown={() => interactive && setPressed(true)}
+      onPointerUp={() => setPressed(false)}
+      onPointerLeave={() => setPressed(false)}
+      style={{
+        display: 'flex', alignItems: 'center',
+        minHeight: LIST_TOKENS.ITEM_MIN_HEIGHT,
+        paddingTop: LIST_TOKENS.ITEM_PADDING_VERTICAL,
+        paddingBottom: LIST_TOKENS.ITEM_PADDING_VERTICAL,
+        paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
+        paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
+        background: pressed && interactive ? TOKENS.surface2 : TOKENS.surface,
+        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
+        cursor: interactive ? 'pointer' : 'default',
+        userSelect: 'none',
+        ...style,
+      }}>
+      {leftIcon && (
+        <div style={{ marginRight: LIST_TOKENS.ITEM_GAP_HORIZONTAL, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {leftIcon}
+        </div>
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          fontSize: LIST_TOKENS.ITEM_TITLE_SIZE,
+          fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT,
+          color: TOKENS.ink,
+          letterSpacing: -0.43,
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+        }}>{title}</div>
+        {subtitle && (
+          <div style={{ fontSize: 13, color: TOKENS.ink2, marginTop: SPACING['2xs'], whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{subtitle}</div>
+        )}
+      </div>
+      {value !== undefined && (
+        <div style={{ marginLeft: LIST_TOKENS.ITEM_GAP_HORIZONTAL, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <span style={{
+            fontSize: LIST_TOKENS.TRAILING_VALUE_SIZE,
+            color: valueColor || TOKENS.ink,
+            whiteSpace: 'nowrap',
+          }}>{value}</span>
+          {valueSubtext && (
+            <span style={{ fontSize: 13, color: TOKENS.ink2, marginTop: SPACING['2xs'], whiteSpace: 'nowrap' }}>{valueSubtext}</span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── SelectionListItem ─── 對齊 src/components/list/SelectionListItem.tsx
 // 右側 FontAwesome "check" 16px primary，selected 才出現
 function SelectionListItem({ leftIcon, title, subtitle, selected, onPress, disabled, style = {} }) {
@@ -1362,7 +1420,7 @@ function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' 
 Object.assign(window, {
   Glyph, DynamicIconById, IconOutline,
   ListGroupCard, GroupCard, ListSection, ListSeparator,
-  ListItem, SelectionListItem, ReorderableListItem, SelectionGridItem,
+  ListItem, DataListItem, SelectionListItem, ReorderableListItem, SelectionGridItem,
   ListEmptyState, EmptyState, ListEmptyTransition,
   ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton, HeaderButtonPill,
   MockBackButtonPill, MockNavBar, HeaderMockFrame,
