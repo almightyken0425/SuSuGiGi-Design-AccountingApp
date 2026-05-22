@@ -1333,16 +1333,137 @@ function CategorySelector({ category, mode = 'static' }) {
   );
 }
 
+// ─── DatePill ─── RecurringOptions「結束於＝特定日期」時的日期欄
+// 對齊 impl src/components/RecurringOptions.tsx：endCondition === 'ON_DATE' 時下方接 DateTimePicker。
+// design canvas 為靜態 mock，呈現為 surface 圓角 pill + calendar icon + 日期文字。
+// Token 由 RECURRING_OPTIONS_TOKENS.END_DATE_PILL_* 提供（內嵌於 no11，因唯一用戶為 RecurringOptions）。
+function DatePill({ date = '2026/12/31', onClick }) {
+  const R = RECURRING_OPTIONS_TOKENS;
+  return (
+    <button onClick={onClick} style={{
+      display: 'inline-flex', alignItems: 'center', gap: R.END_DATE_PILL_ICON_GAP,
+      paddingTop:    R.END_DATE_PILL_PADDING_VERTICAL,
+      paddingBottom: R.END_DATE_PILL_PADDING_VERTICAL,
+      paddingLeft:   R.END_DATE_PILL_PADDING_HORIZONTAL,
+      paddingRight:  R.END_DATE_PILL_PADDING_HORIZONTAL,
+      background: TOKENS.bg,
+      borderRadius: R.END_DATE_PILL_RADIUS,
+      borderWidth: R.END_DATE_PILL_BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
+      marginTop: R.END_DATE_PILL_MARGIN_TOP,
+      cursor: 'pointer', fontFamily: 'inherit',
+    }}>
+      <Glyph name="calendar" size={ICON_SIZE.sm} color={TOKENS.ink2} stroke={2}/>
+      <span style={{
+        fontSize: R.END_DATE_PILL_TEXT_SIZE, color: TOKENS.ink,
+        fontWeight: TYPOGRAPHY.weight.medium,
+      }}>{date}</span>
+    </button>
+  );
+}
+
+// ─── ConfirmDialog ─── iOS Alert 風格的 native dialog 視覺
+// 對齊 impl 透過 React Native `Alert.alert(title, message, [{ text, style, onPress }, ...])`
+// 呼叫的對話框（例：src/screens/Transactions/showRecurringModeDialog.ts）。
+// design canvas 為靜態 mock，actions 接收 `[{ label, style }]`，style 為
+//   'default'     — 一般按鈕（primary 色）
+//   'cancel'      — bold 強調（iOS 慣例置於最下）
+//   'destructive' — 紅色強調（iOS 慣例置於 default 之上）
+//
+// 視覺：fixed overlay backdrop（半透明黑）+ 圓角白卡（surface） + 標題 + 訊息 + 分隔線 + 按鈕。
+// 按鈕排版：≤2 按鈕水平並排、3+ 按鈕垂直堆疊（對齊 iOS）。
+// Token 由 CONFIRM_DIALOG_TOKENS 提供（no12）。
+function ConfirmDialog({ title, message, actions = [] }) {
+  const D = CONFIRM_DIALOG_TOKENS;
+  const stackVertical = actions.length >= 3;
+
+  const renderBtn = (a, i) => (
+    <button key={i} onClick={a.onClick} style={{
+      flex: 1, border: 'none', background: 'transparent',
+      padding: D.BUTTON_PADDING, cursor: 'pointer', fontFamily: 'inherit',
+      fontSize: D.BUTTON_TEXT_SIZE,
+      fontWeight: a.style === 'cancel' ? TYPOGRAPHY.weight.semibold : TYPOGRAPHY.weight.regular,
+      color: a.style === 'destructive' ? TOKENS.error : TOKENS.p500,
+    }}>{a.label}</button>
+  );
+
+  return (
+    <div style={{
+      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+      background: D.BACKDROP_BG,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: D.CARD_OUTER_PADDING,
+      animation: 'fadeIn 200ms ease',
+    }}>
+      <div style={{
+        width: D.CARD_WIDTH,
+        background: TOKENS.surface,
+        borderRadius: D.CARD_RADIUS,
+        overflow: 'hidden',
+        boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
+      }}>
+        <div style={{
+          padding: D.CARD_BODY_PADDING,
+          textAlign: 'center',
+        }}>
+          {title && (
+            <div style={{
+              fontSize: D.TITLE_SIZE, fontWeight: D.TITLE_WEIGHT,
+              color: TOKENS.ink, marginBottom: D.TITLE_BOTTOM_MARGIN,
+            }}>{title}</div>
+          )}
+          {message && (
+            <div style={{
+              fontSize: D.MESSAGE_SIZE, color: TOKENS.ink2,
+              lineHeight: D.MESSAGE_LINE_HEIGHT,
+            }}>{message}</div>
+          )}
+        </div>
+        <div style={{
+          display: 'flex',
+          flexDirection: stackVertical ? 'column' : 'row',
+          borderTop: `1px solid ${TOKENS.border}`,
+        }}>
+          {actions.map((a, i) => (
+            <React.Fragment key={i}>
+              {i > 0 && (
+                <div style={stackVertical
+                  ? { height: 1, background: TOKENS.border }
+                  : { width: 1, background: TOKENS.border }}/>
+              )}
+              {renderBtn(a, i)}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── RecurringOptions ─── 對齊 src/components/RecurringOptions.tsx
 // container bg surface radius lg padding lg margin sm/lg border 1px
 // headerRow: title「定期設定」primary medium + Switch
-// 內容（enabled=true 時）：頻率 4 chip / 每隔 input + unit / 結束於 2 chip
+// 內容（enabled=true 時）：頻率 4 chip / 每隔 input + unit / 結束於 2 chip（+ ON_DATE 時 DatePill）
 // design canvas 版為 self-contained state，方便 sandbox 即看即試。
-function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' }) {
+//
+// Variants：
+//   initialEnabled        — 預設 true，false 時內容區半透明 + pointerEvents:none
+//   initialFrequency      — 'DAILY' / 'WEEKLY' / 'MONTHLY' / 'YEARLY'
+//   initialEndCondition   — 'NEVER' / 'ON_DATE'
+//   initialEndDate        — endCondition === 'ON_DATE' 時 DatePill 顯示的日期文字
+//
+// 註：impl 的 onPremiumCheck 對未付費使用者採 Silent Deny（toggle 自動回 off，無提示），
+//     元件本身無 inline lock 視覺。design 端不複製此 silent 行為，亦不主動加 affordance。
+function RecurringOptions({
+  initialEnabled = true,
+  initialFrequency = 'MONTHLY',
+  initialEndCondition = 'NEVER',
+  initialEndDate = '2026/12/31',
+}) {
   const R = RECURRING_OPTIONS_TOKENS;
   const [enabled, setEnabled] = React.useState(initialEnabled);
   const [frequency, setFrequency] = React.useState(initialFrequency);
-  const [endCondition, setEndCondition] = React.useState('NEVER');
+  const [endCondition, setEndCondition] = React.useState(initialEndCondition);
+  const [endDate, setEndDate] = React.useState(initialEndDate);
   const freqs = [
     { v: 'DAILY',   label: '每日' },
     { v: 'WEEKLY',  label: '每週' },
@@ -1350,8 +1471,8 @@ function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' 
     { v: 'YEARLY',  label: '每年' },
   ];
   const unitText = { DAILY: '天', WEEKLY: '週', MONTHLY: '月', YEARLY: '年' }[frequency];
-  const optionBtn = (label, selected, onClick) => (
-    <button onClick={onClick} style={{
+  const optionBtn = (key, label, selected, onClick) => (
+    <button key={key} onClick={onClick} style={{
       paddingTop:    CHIP_TOKENS.PADDING_VERTICAL,
       paddingBottom: CHIP_TOKENS.PADDING_VERTICAL,
       paddingLeft:   CHIP_TOKENS.PADDING_HORIZONTAL,
@@ -1374,6 +1495,8 @@ function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' 
       marginTop: R.LABEL_VERTICAL_MARGIN, marginBottom: R.LABEL_VERTICAL_MARGIN,
     }}>{txt}</div>
   );
+  const contentOpacity = enabled ? 1 : R.DISABLED_OPACITY;
+  const contentInteractive = enabled;
   return (
     <div style={{
       background: TOKENS.surface,
@@ -1389,10 +1512,10 @@ function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' 
         <span style={{ fontSize: R.TITLE_SIZE, fontWeight: R.TITLE_WEIGHT, color: TOKENS.p500 }}>定期設定</span>
         <Switch value={enabled} onChange={setEnabled} trackColorOn={TOKENS.p500}/>
       </div>
-      <div style={{ opacity: enabled ? 1 : R.DISABLED_OPACITY, pointerEvents: enabled ? 'auto' : 'none' }}>
+      <div style={{ opacity: contentOpacity, pointerEvents: contentInteractive ? 'auto' : 'none' }}>
         {labelRow('頻率')}
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginBottom: R.ROW_BOTTOM_MARGIN }}>
-          {freqs.map(f => optionBtn(f.label, frequency === f.v, () => setFrequency(f.v)))}
+          {freqs.map(f => optionBtn(f.v, f.label, frequency === f.v, () => setFrequency(f.v)))}
         </div>
         {labelRow('每隔')}
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: R.ROW_BOTTOM_MARGIN }}>
@@ -1409,9 +1532,10 @@ function RecurringOptions({ initialEnabled = true, initialFrequency = 'MONTHLY' 
         </div>
         {labelRow('結束於')}
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-          {optionBtn('永不',       endCondition === 'NEVER',   () => setEndCondition('NEVER'))}
-          {optionBtn('特定日期',   endCondition === 'ON_DATE', () => setEndCondition('ON_DATE'))}
+          {optionBtn('NEVER',   '永不',     endCondition === 'NEVER',   () => setEndCondition('NEVER'))}
+          {optionBtn('ON_DATE', '特定日期', endCondition === 'ON_DATE', () => setEndCondition('ON_DATE'))}
         </div>
+        {endCondition === 'ON_DATE' && <DatePill date={endDate}/>}
       </div>
     </div>
   );
@@ -1427,5 +1551,6 @@ Object.assign(window, {
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
   AmountField, StaticWheelPicker, AccountSelector, CategorySelector, RecurringOptions,
+  DatePill, ConfirmDialog,
   iconBtn,
 });

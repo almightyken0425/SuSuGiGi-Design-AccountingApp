@@ -205,10 +205,23 @@ function ComponentsFormSection() {
         </DCArtboard>
       </DCFamily>
 
-      <DCFamily id="comp-form-recurring" title="Recurring Settings" subtitle="impl src/components/RecurringOptions.tsx 對應卡片，含 Switch + 頻率 chip + interval input + 結束條件。design canvas 版自包 state，即看即試。">
+      <DCFamily id="comp-form-recurring" title="Recurring Settings" subtitle="impl src/components/RecurringOptions.tsx 對應卡片，含 Switch + 頻率 chip + interval input + 結束條件。design canvas 版自包 state，即看即試。兩個 variant 鏡射 impl 行為（default / ON_DATE）。">
         <DCArtboard id="comp-recurring-options" label="RecurringOptions · 完整定期設定卡片 (live)" width={402} height={520}>
           <CompFrame style={{ padding: SPACING.lg }}>
             <RecurringOptions/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-recurring-options-on-date" label="RecurringOptions · 結束於＝特定日期（鏡射 impl ON_DATE 接 DateTimePicker）" width={402} height={580}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <RecurringOptions initialEndCondition="ON_DATE"/>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="comp-form-recurring-helpers" title="Recurring Helpers" subtitle="RecurringOptions 內嵌的子元件，可單獨展示。DatePill 對應 impl ON_DATE 接的 DateTimePicker。">
+        <DCArtboard id="comp-date-pill" label="DatePill · ON_DATE 日期欄" width={300} height={140}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <DatePill date="2026/12/31"/>
           </CompFrame>
         </DCArtboard>
       </DCFamily>
@@ -389,6 +402,31 @@ function ComponentsNavigationSection() {
         <DCArtboard id="comp-search-pill" label="BottomSearchBar · GlassView pill (live)" width={402} height={140}>
           <CompFrame style={{ position: 'relative', background: TOKENS.bg }}>
             <BottomSearchBar value="" onChangeText={()=>{}} placeholder="搜尋..."/>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="nav-dialog" title="Confirm Dialog" subtitle="iOS native Alert 風格的 overlay dialog，對齊 impl React Native `Alert.alert(title, message, [{ text, style, onPress }, ...])`。按鈕排版：≤2 水平、3+ 垂直。實際渲染依 actions 數量自動切換。">
+        <DCArtboard id="comp-confirm-dialog-2btn" label="ConfirmDialog · 2 按鈕水平排（destructive 範例）" width={402} height={300}>
+          <CompFrame style={{ position: 'relative', height: 300, background: TOKENS.bg }}>
+            <ConfirmDialog
+              title="刪除交易"
+              message="確定要刪除這筆交易？此動作無法復原。"
+              actions={[
+                { label: '取消', style: 'cancel' },
+                { label: '刪除', style: 'destructive' },
+              ]}/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-confirm-dialog-3btn" label="ConfirmDialog · 3 按鈕垂直堆疊（recurring mode）" width={402} height={380}>
+          <CompFrame style={{ position: 'relative', height: 380, background: TOKENS.bg }}>
+            <ConfirmDialog
+              message="此交易屬於週期交易。要套用變更至？"
+              actions={[
+                { label: '取消',     style: 'cancel' },
+                { label: '僅本次',   style: 'default' },
+                { label: '未來所有', style: 'default' },
+              ]}/>
           </CompFrame>
         </DCArtboard>
       </DCFamily>
