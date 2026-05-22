@@ -1215,11 +1215,24 @@ function AmountField({ active, value, currency, disabled, onPress }) {
 }
 
 // ─── StaticWheelPicker ─── design canvas 專用視覺 stub
-// impl 對應為 src/components/WheelPickerModal.tsx 的 native Picker，design canvas 無法
-// 渲染 RN Picker，故以中央 label + 上下淡色占位行模擬 wheel 視覺，供 PickerRow 並排使用。
-// 視覺參數由 STATIC_WHEEL_PICKER_TOKENS 提供。
-function StaticWheelPicker({ label, subLabel, accent }) {
+// impl 對應 src/components/AccountSelector.tsx / CategorySelector.tsx 的 mode='static'：
+// 內含 RN native iOS Picker（5 行 wheel：上 2 行 dim 鄰近選項 + 中央 highlighted + 下 2 行 dim 鄰近選項），
+// 所有 wheel item fontSize 同 TYPOGRAPHY.size.lg、color 同 theme.text.primary，
+// iOS Picker UI 自動把非選中行 visual dim。
+//
+// design canvas 無法渲染 RN Picker，以三行 div 模擬：
+//   - 上 dummy row：fontSize LABEL_SIZE, color TOKENS.ink, opacity DIM_OPACITY
+//   - 中 highlighted row：fontSize LABEL_SIZE, color TOKENS.ink, weight medium, opacity 1
+//   - 下 dummy row：同上 dummy
+// 完全對齊 impl static mode wheel 視覺，無 subLabel 補充資訊（impl static mode 不顯示）。
+function StaticWheelPicker({ label }) {
   const T = STATIC_WHEEL_PICKER_TOKENS;
+  const dimRowStyle = {
+    fontSize: T.LABEL_SIZE,
+    color: TOKENS.ink,
+    opacity: T.DIM_OPACITY,
+    height: T.LABEL_SIZE,
+  };
   return (
     <div style={{
       flex: 1,
@@ -1229,17 +1242,13 @@ function StaticWheelPicker({ label, subLabel, accent }) {
       overflow: 'hidden', display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center', padding: T.PADDING,
     }}>
-      <div style={{
-        fontSize: T.PLACEHOLDER_SIZE, color: TOKENS.ink3, opacity: T.PLACEHOLDER_OPACITY,
-      }}>{subLabel ? `(${subLabel})` : ''}</div>
+      <div style={dimRowStyle}/>
       <div style={{
         fontSize: T.LABEL_SIZE, fontWeight: T.LABEL_WEIGHT,
-        color: accent || TOKENS.ink,
+        color: TOKENS.ink,
         marginTop: T.LABEL_VERTICAL_MARGIN, marginBottom: T.LABEL_VERTICAL_MARGIN,
       }}>{label}</div>
-      <div style={{
-        fontSize: T.PLACEHOLDER_SIZE, color: TOKENS.ink3, opacity: T.PLACEHOLDER_OPACITY,
-      }}/>
+      <div style={dimRowStyle}/>
     </div>
   );
 }
@@ -1247,20 +1256,22 @@ function StaticWheelPicker({ label, subLabel, accent }) {
 // ─── AccountSelector ─── 對齊 src/components/AccountSelector.tsx
 // design canvas 預設只實作 mode='static'（picker 常駐顯示），對齊 impl TxEditor/TransferEditor 用法。
 // modal mode 在 sandbox 無真實 modal 互動意義，省略。
+// impl static mode 內 native Picker 只顯示 category/account name（pickerItems label，subLabel removed），
+// 不顯示 currency code / type label 補充資訊。
 function AccountSelector({ account, mode = 'static' }) {
   // mode 預留參數對齊 impl 介面，static 模式為 design canvas 唯一實作
   return (
-    <StaticWheelPicker label={account.name} subLabel={account.currency}/>
+    <StaticWheelPicker label={account.name}/>
   );
 }
 
 // ─── CategorySelector ─── 對齊 src/components/CategorySelector.tsx
-// design canvas 預設只實作 mode='static'。type color 透過 accent 注入 StaticWheelPicker。
+// design canvas 預設只實作 mode='static'。
+// impl static mode 不顯示 type accent 視覺（getTypeColor() 只用於 modal/inline mode 的 subText）；
+// pickerItems 只給 category name，無 type 區分。design 對齊不注入 typeColor。
 function CategorySelector({ category, mode = 'static' }) {
-  const accent = category.type === 'expense' ? TOKENS.error : TOKENS.success;
-  const typeLabel = category.type === 'expense' ? '支出' : '收入';
   return (
-    <StaticWheelPicker label={category.name} subLabel={typeLabel} accent={accent}/>
+    <StaticWheelPicker label={category.name}/>
   );
 }
 

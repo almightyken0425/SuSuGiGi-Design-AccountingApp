@@ -53,10 +53,16 @@ function EditorDateContainer({ dateLabel = '2026/05/14  14:30', recurring, onTog
         borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
         marginLeft: T.DATE_PILL_MARGIN_HORIZONTAL, marginRight: T.DATE_PILL_MARGIN_HORIZONTAL,
       }}>
-        <span style={{
-          fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink,
-          fontWeight: TYPOGRAPHY.weight.medium,
-        }}>{dateLabel}</span>
+        {/* inner height 對齊 impl DateTimePicker style.height=40，由 T.DATE_PILL_INNER_HEIGHT 表達 */}
+        <div style={{
+          height: T.DATE_PILL_INNER_HEIGHT,
+          display: 'flex', alignItems: 'center',
+        }}>
+          <span style={{
+            fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink,
+            fontWeight: TYPOGRAPHY.weight.medium,
+          }}>{dateLabel}</span>
+        </div>
       </div>
       <button onClick={onToggleRecurring} style={{
         width: T.RECURRING_TOGGLE_FRAME, height: T.RECURRING_TOGGLE_FRAME,
@@ -74,11 +80,16 @@ function EditorDateContainer({ dateLabel = '2026/05/14  14:30', recurring, onTog
 }
 
 // ─── EditorNoteField ─── 備註輸入欄
+// placeholder color 對齊 impl placeholderTextColor={theme.state.disabled.fg} → TOKENS.ink3
+// design canvas 為純 HTML <input>，inline style 不支援 ::placeholder，
+// 改在 caller scope inject 一段 scoped CSS（className 唯一）。
 function EditorNoteField({ value, onChange, onFocus, placeholder = '新增備註' }) {
   const T = TX_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{ marginBottom: T.SECTION_GAP }}>
+      <style>{`.editor-note-input::placeholder { color: ${TOKENS.ink3}; }`}</style>
       <input
+        className="editor-note-input"
         value={value || ''}
         onChange={(e) => onChange && onChange(e.target.value)}
         onFocus={onFocus}

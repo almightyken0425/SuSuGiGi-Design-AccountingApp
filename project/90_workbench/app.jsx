@@ -68,7 +68,8 @@ const SCREEN_META = {
     title: '搜尋', present: 'modal',
     render: () => <SearchScreen variant="no-results"/>,
   },
-  // ─── Transaction Editor ─── default / income / error
+  // ─── Transaction Editor ─── default / income
+  // 無 error variant：impl 守 save 在 header checkmark disabled，無 invalid-amount inline banner
   'tx-editor': {
     title: '新增支出', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="expense"/>,
@@ -77,13 +78,9 @@ const SCREEN_META = {
     title: '新增收入', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="income"/>,
   },
-  'tx-editor-error': {
-    title: '新增支出', present: 'modal', save: true,
-    render: () => <TransactionEditorScreen type="expense" variant="error"/>,
-  },
   // ─── Transfer Editor ─── default / recurring
   // 無 error variant：impl 的 save disabled 條件攔死「amountFrom 為空」場景，
-  // inline error banner 在 transfer 路徑跑不到（TxEditor 仍保留）。
+  // inline error banner 在 transfer 路徑跑不到（TxEditor 也已砍除 error variant）。
   transfer: {
     title: '新增轉帳', present: 'modal', save: true,
     render: () => <TransferEditorScreen/>,
@@ -304,11 +301,10 @@ const SCREEN_GROUPS = [
   {
     id: 'tx-editor',
     title: 'Transaction Editor · 記一筆交易',
-    subtitle: '記一筆支出 / 收入 modal（src/screens/Transactions/TransactionEditorScreen.tsx）。驗證錯誤對應 impl Alert（畫成 inline banner）。',
+    subtitle: '記一筆支出 / 收入 modal（src/screens/Transactions/TransactionEditorScreen.tsx）。impl 守 save 在 header checkmark disabled（無 amount 或 account 時灰掉），無 invalid-amount inline banner；真實 error（save / delete 失敗）走 Alert.alert runtime 彈窗。',
     screens: [
       { id: 'tx-editor',        label: 'Default · 新增支出' },
       { id: 'tx-editor-income', label: '新增收入' },
-      { id: 'tx-editor-error',  label: 'Error · 驗證錯誤' },
     ],
   },
   {

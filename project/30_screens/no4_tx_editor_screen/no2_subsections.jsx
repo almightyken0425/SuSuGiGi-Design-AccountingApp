@@ -37,7 +37,6 @@ function TxAmountContainer({ symbol = 'NT$', amount, amountFocused, onFocus }) {
           flex: 1,
           fontSize: T.AMOUNT_FONT_SIZE, fontWeight: TYPOGRAPHY.weight.medium,
           color: amount ? TOKENS.ink : TOKENS.ink3,
-          fontVariantNumeric: 'tabular-nums',
         }}>{amount || '0.00'}</span>
         <div style={{ padding: T.AMOUNT_BACKSPACE_PADDING }}>
           <Glyph name="backspace-outline" size={ICON_SIZE.md} color={TOKENS.ink2} stroke={1.6}/>
