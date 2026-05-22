@@ -3,27 +3,25 @@
 // ─────────────────────────────────────────────────────────────
 
 const STATIC_WHEEL_PICKER_TOKEN_DESC = {
-  HEIGHT:                'picker 固定高度（模擬 wheel 5 行可見）',
+  HEIGHT:                'picker 固定高度（對齊 impl staticPickerContainer 110）',
   PADDING:               'picker 內 padding',
   RADIUS:                'picker 圓角',
   BORDER_WIDTH:          'picker 邊框',
-  LABEL_SIZE:            '中央 label 字級',
-  LABEL_WEIGHT:          '中央 label 字重',
-  LABEL_VERTICAL_MARGIN: 'label 上下與 placeholder 行間距',
-  PLACEHOLDER_SIZE:      '上下淡化選項字級',
-  PLACEHOLDER_OPACITY:   '上下淡化選項透明度',
+  LABEL_SIZE:            'wheel 全行字級（中央 highlighted 與上下 dim 鄰近選項共用）',
+  LABEL_WEIGHT:          '中央 highlighted 字重（上下 dim 行不加 weight）',
+  LABEL_VERTICAL_MARGIN: 'highlighted label 上下與 dim 行間距',
+  DIM_OPACITY:           '上下 dim 鄰近選項透明度（模擬 iOS Picker wheel 自動視覺淡化）',
 };
 
 const STATIC_WHEEL_PICKER_TOKEN_SOURCE = {
-  HEIGHT:                '110 (literal: 模擬 wheel × 5 行)',
+  HEIGHT:                '110 (literal: 對齊 impl staticPickerContainer style.height)',
   PADDING:               'SPACING.sm',
   RADIUS:                'RADIUS.md',
   BORDER_WIDTH:          '1 (literal: hairlineWidth)',
   LABEL_SIZE:            'TYPOGRAPHY.size.lg',
   LABEL_WEIGHT:          'TYPOGRAPHY.weight.medium',
   LABEL_VERTICAL_MARGIN: 'SPACING.xs',
-  PLACEHOLDER_SIZE:      'TYPOGRAPHY.size.sm',
-  PLACEHOLDER_OPACITY:   '0.6 (literal)',
+  DIM_OPACITY:           '0.4 (literal)',
 };
 
 function FoundationsCTStaticWheelPickerSection() {

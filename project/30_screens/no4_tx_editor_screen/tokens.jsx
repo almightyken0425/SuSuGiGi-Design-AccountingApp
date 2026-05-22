@@ -15,6 +15,7 @@ const TX_EDITOR_SCREEN_TOKENS = {
   DATE_PILL_PADDING_VERTICAL:        SPACING.sm,
   DATE_PILL_PADDING_HORIZONTAL:      SPACING.lg,
   DATE_PILL_MARGIN_HORIZONTAL:       SPACING.lg,
+  DATE_PILL_INNER_HEIGHT:            40,                                      // (literal: 對齊 impl TransactionEditorScreen.tsx 內 DateTimePicker style.height=40)
   RECURRING_TOGGLE_FRAME:            40,                                      // (literal: 40 圓形 toggle，比 HIT_TARGET.min=44 略小，對齊 impl recurringTrigger width/height)
   RECURRING_TOGGLE_RADIUS:           RADIUS['2xl'],                           // 20（= RECURRING_TOGGLE_FRAME / 2，對齊 impl borderRadius: RADIUS['2xl']）
 
@@ -47,7 +48,11 @@ const TX_EDITOR_SCREEN_TOKENS = {
   KEYPAD_BOTTOM_PADDING:             SPACING.xl,
 
   // ── Scroll spacer（為 keypad 預留空間，避免內容被遮）
-  SCROLL_SPACER_HEIGHT:              400,                                     // (literal: keypad + recurring panel 估算高度，design canvas mock 用)
+  // 對齊 impl ScrollView contentContainerStyle.paddingBottom 的 conditional：
+  //   amountFocused === true → SCROLL_SPACER_HEIGHT (對齊 impl KEYPAD_HEIGHT)
+  //   amountFocused === false → SCROLL_SPACER_HEIGHT_INACTIVE
+  SCROLL_SPACER_HEIGHT:              400,                                     // (literal: 對齊 impl const KEYPAD_HEIGHT = 400)
+  SCROLL_SPACER_HEIGHT_INACTIVE:     100,                                     // (literal: 對齊 impl else 分支 paddingBottom)
 };
 
 Object.assign(window, { TX_EDITOR_SCREEN_TOKENS });

@@ -142,10 +142,10 @@ function ComponentsFormSection() {
       <DCFamily id="comp-form-pickers" title="Form Pickers" subtitle="impl AccountSelector / CategorySelector 在 TxEditor / TransferEditor 採 mode='static' 常駐顯示；design canvas 對應 StaticWheelPicker 視覺 stub。">
         <DCArtboard id="comp-static-wheel" label="StaticWheelPicker · 通用 wheel 視覺 stub (live)" width={402} height={180}>
           <CompFrame style={{ padding: SPACING.lg }}>
-            <CompLabel>單欄 wheel-style 顯示，中央 label + 括弧 subLabel</CompLabel>
+            <CompLabel>對齊 impl native iOS Picker static mode：3 行 wheel（中央 highlighted + 上下 dim 鄰近選項）；所有行同 LABEL_SIZE / TOKENS.ink，上下行套 DIM_OPACITY</CompLabel>
             <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
-              <StaticWheelPicker label="玉山活儲" subLabel="TWD"/>
-              <StaticWheelPicker label="飲食" subLabel="支出" accent={TOKENS.error}/>
+              <StaticWheelPicker label="玉山活儲"/>
+              <StaticWheelPicker label="飲食"/>
             </div>
           </CompFrame>
         </DCArtboard>
@@ -158,9 +158,9 @@ function ComponentsFormSection() {
             </div>
           </CompFrame>
         </DCArtboard>
-        <DCArtboard id="comp-category-selector" label="CategorySelector · expense / income 配色 (live)" width={402} height={180}>
+        <DCArtboard id="comp-category-selector" label="CategorySelector · category name (live)" width={402} height={180}>
           <CompFrame style={{ padding: SPACING.lg }}>
-            <CompLabel>type='expense' 用 status.error；type='income' 用 status.success</CompLabel>
+            <CompLabel>對齊 impl static mode：只顯示 category name，無 type 配色（type accent 僅用於 modal/inline mode 的 subText）</CompLabel>
             <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
               <CategorySelector category={CAT_BY_ID.food}/>
               <CategorySelector category={CAT_BY_ID.salary}/>
