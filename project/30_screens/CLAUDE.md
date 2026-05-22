@@ -1,6 +1,6 @@
 # CLAUDE.md · `30_screens/`
 
-本目錄為 SuSuGiGi accounting app 25 個目標 screen 的設計工件，每個 screen 對應 impl 的 `src/screens/<Name>/`，作為設計標準仲裁端。
+本目錄為 SuSuGiGi accounting app 26 個目標 screen 的設計工件，每個 screen 對應 impl 的 `src/screens/<Name>/`，作為設計標準仲裁端。
 
 ## 內部分層
 
@@ -35,7 +35,8 @@
 ├── no22_import_screen/                 ImportScreen（5 step wizard）
 ├── no23_login_screen/                  LoginScreen（Branding + Google SSO）
 ├── no24_paywall_screen/                PaywallScreen（年費/月費 plan 選擇）
-└── no25_merge_editor_screen/           MergeEditorScreen（account/category；source→target 視覺化）
+├── no25_merge_editor_screen/           MergeEditorScreen（account/category；source→target 視覺化）
+└── no26_localization_settings_screen/  LocalizationSettingsScreen（4 入口 hub：基礎幣別 / 幣別設定 / 時區 / 語言）
 ```
 
 每個 `noN_<name>_screen/` 子目錄內含三件套：`tokens.jsx` + `noN_subsections.jsx` + entry `noN_<name>_screen.jsx`。HomeScreen 額外含 `noN_period_page.jsx`。
@@ -124,7 +125,7 @@ Variant 不憑空設計，照 impl 該 screen 的實際 state 與 navigation par
 
 ## Follow-up
 
-本目錄已含 25 個 screen，覆蓋 impl 端 navigation 上所有有設計工件需要的 route（除 DebugInfo / DebugInfoByCategory / MockDataSettings 三個 debug 工具屬 dev-only 不還原）。
+本目錄已含 26 個 screen，覆蓋 impl 端 navigation 上所有有設計工件需要的 route（除 DebugInfo / DebugInfoByCategory / MockDataSettings 三個 debug 工具屬 dev-only 不還原）。
 
 尚待後續處理：
 

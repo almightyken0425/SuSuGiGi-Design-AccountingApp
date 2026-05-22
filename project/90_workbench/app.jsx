@@ -298,6 +298,11 @@ const SCREEN_META = {
     title: '合併分類', present: 'modal', save: true,
     render: () => <MergeEditorScreen variant="category"/>,
   },
+  // ─── Localization Settings ─── default (4-entry hub: Base Currency / Currency Format / Timezone / Language)
+  'localization-settings': {
+    title: '地區設定', present: 'push', headerLeftText: '設定',
+    render: () => <LocalizationSettingsScreen/>,
+  },
 };
 
 // SCREEN_GROUPS — Screens tab 顯示結構
@@ -453,6 +458,14 @@ const SCREEN_GROUPS = [
     subtitle: '4 section hub（主題/啟動 · 幣別 · 語言/時區 · 登出）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/PreferenceScreen.tsx）。',
     screens: [
       { id: 'preference', label: 'Default · 偏好設定主頁' },
+    ],
+  },
+  {
+    id: 'localization-settings',
+    title: 'Localization Settings · 地區設定',
+    subtitle: '4 入口 hub（基礎幣別 · 幣別設定 · 時區 · 語言）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/LocalizationSettingsScreen.tsx）。',
+    screens: [
+      { id: 'localization-settings', label: 'Default · 地區設定主頁' },
     ],
   },
   {
