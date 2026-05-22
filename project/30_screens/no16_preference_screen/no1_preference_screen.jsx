@@ -1,0 +1,53 @@
+// ─────────────────────────────────────────────────────────────
+// PreferenceScreen · 對齊 impl src/screens/Settings/PreferenceScreen.tsx
+//
+// Push screen（從 Settings 主入口進入）。4 個 ListSection（無 title）：
+//   1. 主題 + 啟動模式（value + chevron）
+//   2. 基礎幣別 + 幣別設定 + 匯率管理
+//   3. 語言 + 時區（value + chevron）
+//   4. 登出（destructive，紅色文字）
+//
+// Variants：default only。
+// ─────────────────────────────────────────────────────────────
+
+function PreferenceScreen() {
+  const T = PREFERENCE_SCREEN_TOKENS;
+  const v = PREFERENCE_PREVIEW_VALUES;
+
+  return (
+    <div style={{
+      padding: T.SCREEN_PADDING,
+      background: TOKENS.bg, minHeight: '100%',
+    }}>
+      <ListSection>
+        <ListGroupCard>
+          <ListItem title="主題"     value={v.theme}      showChevron/>
+          <ListItem title="啟動模式" value={v.launchMode} showChevron/>
+        </ListGroupCard>
+      </ListSection>
+
+      <ListSection>
+        <ListGroupCard>
+          <ListItem title="基礎幣別" value={v.baseCurrency} showChevron/>
+          <ListItem title="幣別格式設定" showChevron/>
+          <ListItem title="匯率管理"   showChevron/>
+        </ListGroupCard>
+      </ListSection>
+
+      <ListSection>
+        <ListGroupCard>
+          <ListItem title="語言" value={v.language} showChevron/>
+          <ListItem title="時區" value={v.timeZone} showChevron/>
+        </ListGroupCard>
+      </ListSection>
+
+      <ListSection>
+        <ListGroupCard>
+          <ListItem title="登出" titleColor={TOKENS.error}/>
+        </ListGroupCard>
+      </ListSection>
+    </div>
+  );
+}
+
+Object.assign(window, { PreferenceScreen });

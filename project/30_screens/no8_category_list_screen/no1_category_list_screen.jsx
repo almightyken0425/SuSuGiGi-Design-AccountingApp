@@ -1,0 +1,50 @@
+// ─────────────────────────────────────────────────────────────
+// CategoryListScreen · 對齊 impl src/screens/Categories/CategoryListScreen.tsx
+//
+// Push screen。兩個 section（支出 / 收入），每 section 含：
+//   1. ListSection title="支出" / "收入"
+//   2. ListGroupCard 含列表（impl 用 AutoDragSortableView 拖拉，design canvas 視覺示意）
+//   3. ListGroupCard 含「新增支出 / 收入分類」入口
+//
+// Variants：
+//   default — 8 支出 + 2 收入（CATEGORIES fixture）
+//   empty   — 兩 section 列表 ListGroupCard 為空 border，「新增」row 仍在
+// ─────────────────────────────────────────────────────────────
+
+function CategoryListScreen({ variant = 'default' }) {
+  const T = CATEGORY_LIST_SCREEN_TOKENS;
+  const all = variant === 'empty' ? [] : CATEGORIES;
+  const expense = all.filter(c => c.type === 'expense');
+  const income  = all.filter(c => c.type === 'income');
+
+  return (
+    <div style={{
+      paddingTop: T.SCREEN_PADDING_TOP,
+      paddingLeft: T.SCREEN_PADDING_HORIZONTAL,
+      paddingRight: T.SCREEN_PADDING_HORIZONTAL,
+      paddingBottom: T.SCREEN_PADDING_BOTTOM,
+      background: TOKENS.bg,
+      minHeight: '100%',
+    }}>
+      <ListSection title="支出">
+        <ListGroupCard>
+          {expense.map(c => <CategoryReorderRow key={c.id} category={c}/>)}
+        </ListGroupCard>
+        <ListGroupCard>
+          <AddCategoryRow type="expense"/>
+        </ListGroupCard>
+      </ListSection>
+
+      <ListSection title="收入">
+        <ListGroupCard>
+          {income.map(c => <CategoryReorderRow key={c.id} category={c}/>)}
+        </ListGroupCard>
+        <ListGroupCard>
+          <AddCategoryRow type="income"/>
+        </ListGroupCard>
+      </ListSection>
+    </div>
+  );
+}
+
+Object.assign(window, { CategoryListScreen });

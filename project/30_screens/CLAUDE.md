@@ -1,6 +1,6 @@
 # CLAUDE.md · `30_screens/`
 
-本目錄為 SuSuGiGi accounting app 5 個目標 screen 的設計工件，每個 screen 對應 impl 的 `src/screens/<Name>/`，作為設計標準仲裁端。
+本目錄為 SuSuGiGi accounting app 25 個目標 screen 的設計工件，每個 screen 對應 impl 的 `src/screens/<Name>/`，作為設計標準仲裁端。
 
 ## 內部分層
 
@@ -9,29 +9,36 @@
 ├── CLAUDE.md
 ├── shared/
 │   ├── no1_screen_layout.jsx           Spinner / ScreenScroll（design canvas 對應 RN 的 helper）
-│   └── no2_editor_form_helpers.jsx     EditorErrorBanner / EditorDateContainer / EditorNoteField / EditorDeleteButton
-├── no1_home_screen/
-│   ├── tokens.jsx                      HOME_SCREEN_TOKENS
-│   ├── no3_subsections.jsx             PeriodSwitcher / DonutHero / FocusRow / TxSectionList / ...
-│   ├── no2_period_page.jsx             PeriodPage（鏡射 impl HomeScreen / PeriodPage 拆分）
-│   └── no1_home_screen.jsx             HomeScreen（shell + variant routing；offset prop 預備）
-├── no2_home_filter_screen/
-│   ├── tokens.jsx                      HOME_FILTER_SCREEN_TOKENS
-│   ├── no2_subsections.jsx             FilterTileRow / AccountSelectorCard / CurrencyGroupBlock
-│   └── no1_home_filter_screen.jsx
-├── no3_search_screen/
-│   ├── tokens.jsx                      SEARCH_SCREEN_TOKENS
-│   ├── no2_subsections.jsx             SearchResultRow / SearchLoadingState / highlightInText
-│   └── no1_search_screen.jsx
-├── no4_tx_editor_screen/
-│   ├── tokens.jsx                      TX_EDITOR_SCREEN_TOKENS
-│   ├── no2_subsections.jsx             TxAmountContainer / TxPickerRow
-│   └── no1_tx_editor_screen.jsx
-└── no5_transfer_editor_screen/
-    ├── tokens.jsx                      TRANSFER_EDITOR_SCREEN_TOKENS
-    ├── no2_subsections.jsx             ExchangeArrow / DualAmountRow / DualPickerRow
-    └── no1_transfer_editor_screen.jsx
+│   ├── no2_editor_form_helpers.jsx     EditorErrorBanner / EditorDateContainer / EditorNoteField / EditorDeleteButton
+│   └── no3_editor_field_helpers.jsx    EditorFieldLabel / EditorTextInput / EditorPickerCollapsed / EditorSwitchRow / EditorDestructiveTextButton
+├── no1_home_screen/                    HomeScreen（PeriodPage host + variant routing）
+├── no2_home_filter_screen/             HomeFilterScreen（時間粒度/分組 + 帳戶多選）
+├── no3_search_screen/                  SearchScreen（底部 BottomSearchBar + 結果列表）
+├── no4_tx_editor_screen/               TransactionEditorScreen（計算機 + 多 picker）
+├── no5_transfer_editor_screen/         TransferEditorScreen（雙幣別轉帳）
+├── no6_settings_screen/                SettingsScreen（設定主入口 hub）
+├── no7_account_list_screen/            AccountListScreen（拖拉排序 + 新增）
+├── no8_category_list_screen/           CategoryListScreen（收/支兩 section）
+├── no9_currency_list_screen/           CurrencyListScreen（幣別清單 + 搜尋）
+├── no10_currency_rate_list_screen/     CurrencyRateListScreen（匯率對清單 + 搜尋）
+├── no11_language_setting_screen/       LanguageSettingScreen（2 選 1 SelectionList）
+├── no12_time_zone_setting_screen/      TimeZoneSettingScreen（SelectionList + 搜尋）
+├── no13_theme_settings_screen/         ThemeSettingsScreen（2 欄 SelectionGrid + 三色預覽）
+├── no14_base_currency_setting_screen/  BaseCurrencySettingScreen（SelectionList + 搜尋）
+├── no15_launch_mode_setting_screen/    LaunchModeSettingScreen（4 選 1 SelectionList）
+├── no16_preference_screen/             PreferenceScreen（4 section hub）
+├── no17_data_management_screen/        DataManagementScreen（匯入/匯出/重設）
+├── no18_account_editor_screen/         AccountEditorScreen（new/edit；幣別/類型/圖示 picker）
+├── no19_category_editor_screen/        CategoryEditorScreen（new-expense/new-income/edit；映射 + 圖示 picker）
+├── no20_currency_detail_config_screen/ CurrencyDetailConfigScreen（千位省略 + 小數位數）
+├── no21_currency_rate_editor_screen/   CurrencyRateEditorScreen（add/update；雙金額 = 公式）
+├── no22_import_screen/                 ImportScreen（5 step wizard）
+├── no23_login_screen/                  LoginScreen（Branding + Google SSO）
+├── no24_paywall_screen/                PaywallScreen（年費/月費 plan 選擇）
+└── no25_merge_editor_screen/           MergeEditorScreen（account/category；source→target 視覺化）
 ```
+
+每個 `noN_<name>_screen/` 子目錄內含三件套：`tokens.jsx` + `noN_subsections.jsx` + entry `noN_<name>_screen.jsx`。HomeScreen 額外含 `noN_period_page.jsx`。
 
 ## Granularity 規則
 
@@ -62,6 +69,8 @@ HomeScreen 額外含 `noN_period_page.jsx`（鏡射 impl 的 `HomeScreen.tsx` / 
 
 例：`<HomeScreen variant="empty"/>` vs `<HomeScreen/>`。
 
+Variant 不憑空設計，照 impl 該 screen 的實際 state 與 navigation parameter：default、empty（impl render ListEmptyState 時必還原）、with-results / no-results（含搜尋互動）、error（impl 端有專屬 error UI 時）、new vs edit（Editor 類照 route.params.id 區分）。
+
 ## Helper extraction 規則（三桶）
 
 跨 screen 共用、單 screen 用、提升到 components 三桶分流：
@@ -72,9 +81,9 @@ HomeScreen 額外含 `noN_period_page.jsx`（鏡射 impl 的 `HomeScreen.tsx` / 
 | 30_screens/shared/ | 跨 screen 共用 **但** 僅 design canvas 用（無 impl 對應），或 design canvas 環境限制無法各 screen 重複實作 | `30_screens/shared/noN_*.jsx` |
 | Inline | 單 screen 用 | 該 screen 子目錄內 `noN_subsections.jsx` 或 entry inline |
 
-**註 1：** 本目錄 v1 的 `shared/no2_editor_form_helpers.jsx` 為「design canvas 環境限制」促升的例外。impl 端 TxEditor / TransferEditor 各自 inline 實作 DateContainer / NoteField / DeleteButton，但 design canvas 採 global namespace 無法同名 sub-section 共存，故 promote 共用。視覺上仍與 impl 完全對齊。
+**註 1：** 本目錄的 `shared/no2_editor_form_helpers.jsx`（TxEditor / TransferEditor 共用）與 `shared/no3_editor_field_helpers.jsx`（AccountEditor / CategoryEditor 共用）皆為「design canvas 環境限制」促升的例外。impl 端 Editor 類各自 inline 實作 DateContainer / NoteField / DeleteButton 與 FormFieldLabel / TextInput / PickerCollapsed，但 design canvas 採 global namespace 無法同名 sub-section 共存，故 promote 共用。視覺上仍與 impl 完全對齊。
 
-**註 2：** 將來若 impl 重構抽出共用元件（如 EditorDateRow），可改升入 `20_components/`。
+**註 2：** 將來若 impl 重構抽出共用元件（如 EditorDateRow、EditorFormField），可改升入 `20_components/`。
 
 ## Router 註冊規則
 
@@ -88,7 +97,7 @@ HomeScreen 額外含 `noN_period_page.jsx`（鏡射 impl 的 `HomeScreen.tsx` / 
 
 - Screen component：PascalCase + `Screen` 後綴（`HomeScreen` / `TransactionEditorScreen`）
 - Sub-section：PascalCase 描述性名稱（`DonutHero` / `FilterTileRow`），不加檔案編號前綴
-- 跨 screen 同名衝突時加 screen-namespace prefix（`TxAmountContainer` vs 將來可能的 `TransferAmountContainer`），或 promote 到 shared/ 取共用名（`EditorDateContainer`）
+- 跨 screen 同名衝突時加 screen-namespace prefix（`TxAmountContainer` vs 將來可能的 `TransferAmountContainer`），或 promote 到 shared/ 取共用名（`EditorDateContainer` / `EditorFieldLabel`）
 - Screen token：`<UPPER_SNAKE>_SCREEN_TOKENS`
 - 檔案編號 `noN_` 同 `10_foundations/component_tokens/` 規
 
@@ -98,6 +107,8 @@ HomeScreen 額外含 `noN_period_page.jsx`（鏡射 impl 的 `HomeScreen.tsx` / 
 2. `shared/` 必在所有 screen 子目錄之前
 3. 同 screen 子目錄內 `tokens.jsx` → `noN_subsections.jsx` → `period_page`（如有）→ entry
 4. 整段必在 `90_workbench/app.jsx` 之前
+
+特別約束：no14_base_currency_setting_screen 消費 no9_currency_list_screen 的 `CURRENCY_LIST_MOCK`，no9 必須在 no14 之前載入（自然遵守數字順序）。
 
 ## Object.assign 規範
 
@@ -113,6 +124,10 @@ HomeScreen 額外含 `noN_period_page.jsx`（鏡射 impl 的 `HomeScreen.tsx` / 
 
 ## Follow-up
 
-本目錄 v1 僅含 5 個 screen。其餘 17 個 screen（Settings / Preference / Login / Paywall / Accounts / AccountEditor / Categories / CategoryEditor / Theme / Language / Timezone / LaunchMode / BaseCurrency / CurrencyList / CurrencyRateList / DataMgmt / Debug）已於本次重構移除，待逐步 follow 本目錄前例重做。
+本目錄已含 25 個 screen，覆蓋 impl 端 navigation 上所有有設計工件需要的 route（除 DebugInfo / DebugInfoByCategory / MockDataSettings 三個 debug 工具屬 dev-only 不還原）。
 
-新升 5 個 helper（AmountField / StaticWheelPicker / AccountSelector / CategorySelector / RecurringOptions）尚未建立專屬 `component_tokens/noN_*_tokens.jsx`，為另一個 follow-up。
+尚待後續處理：
+
+- 新升 5 個 helper（AmountField / StaticWheelPicker / AccountSelector / CategorySelector / RecurringOptions）尚未建立專屬 `component_tokens/noN_*_tokens.jsx`
+- 新還原 19 個 screen 對應的 spec（`no4_product_specs/no2_accounting_app/no2_screens/`）尚未建立
+- 部分 screen 的進階 variant 待補：CurrencyRateEditor 的 cross-currency（from ≠ base 的 To 鎖定來源 visualization）、Login loading state、Paywall purchase processing state

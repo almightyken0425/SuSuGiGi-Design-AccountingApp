@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-TW">
 <head>
   <meta charset="utf-8"/>
@@ -73,9 +73,10 @@
   <script type="text/babel" src="20_components/components.jsx"></script>
 
   <!-- Production screens · 30_screens/ -->
-  <!-- screen-level shared helpers（Spinner / ScreenScroll / Editor form helpers） -->
+  <!-- screen-level shared helpers（Spinner / ScreenScroll / Editor form helpers / Editor field helpers） -->
   <script type="text/babel" src="30_screens/shared/no1_screen_layout.jsx"></script>
   <script type="text/babel" src="30_screens/shared/no2_editor_form_helpers.jsx"></script>
+  <script type="text/babel" src="30_screens/shared/no3_editor_field_helpers.jsx"></script>
 
   <!-- Home -->
   <script type="text/babel" src="30_screens/no1_home_screen/tokens.jsx"></script>
@@ -102,6 +103,101 @@
   <script type="text/babel" src="30_screens/no5_transfer_editor_screen/tokens.jsx"></script>
   <script type="text/babel" src="30_screens/no5_transfer_editor_screen/no2_subsections.jsx"></script>
   <script type="text/babel" src="30_screens/no5_transfer_editor_screen/no1_transfer_editor_screen.jsx"></script>
+
+  <!-- AccountList -->
+  <script type="text/babel" src="30_screens/no7_account_list_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no7_account_list_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no7_account_list_screen/no1_account_list_screen.jsx"></script>
+
+  <!-- CategoryList -->
+  <script type="text/babel" src="30_screens/no8_category_list_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no8_category_list_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no8_category_list_screen/no1_category_list_screen.jsx"></script>
+
+  <!-- CurrencyList -->
+  <script type="text/babel" src="30_screens/no9_currency_list_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no9_currency_list_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no9_currency_list_screen/no1_currency_list_screen.jsx"></script>
+
+  <!-- CurrencyRateList -->
+  <script type="text/babel" src="30_screens/no10_currency_rate_list_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no10_currency_rate_list_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no10_currency_rate_list_screen/no1_currency_rate_list_screen.jsx"></script>
+
+  <!-- LanguageSetting -->
+  <script type="text/babel" src="30_screens/no11_language_setting_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no11_language_setting_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no11_language_setting_screen/no1_language_setting_screen.jsx"></script>
+
+  <!-- TimeZoneSetting -->
+  <script type="text/babel" src="30_screens/no12_time_zone_setting_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no12_time_zone_setting_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no12_time_zone_setting_screen/no1_time_zone_setting_screen.jsx"></script>
+
+  <!-- ThemeSettings -->
+  <script type="text/babel" src="30_screens/no13_theme_settings_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no13_theme_settings_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no13_theme_settings_screen/no1_theme_settings_screen.jsx"></script>
+
+  <!-- BaseCurrencySetting（消費 CURRENCY_LIST_MOCK，必須在 no8 之後） -->
+  <script type="text/babel" src="30_screens/no14_base_currency_setting_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no14_base_currency_setting_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no14_base_currency_setting_screen/no1_base_currency_setting_screen.jsx"></script>
+
+  <!-- LaunchModeSetting -->
+  <script type="text/babel" src="30_screens/no15_launch_mode_setting_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no15_launch_mode_setting_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no15_launch_mode_setting_screen/no1_launch_mode_setting_screen.jsx"></script>
+
+  <!-- Preference (hub) -->
+  <script type="text/babel" src="30_screens/no16_preference_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no16_preference_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no16_preference_screen/no1_preference_screen.jsx"></script>
+
+  <!-- DataManagement (hub) -->
+  <script type="text/babel" src="30_screens/no17_data_management_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no17_data_management_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no17_data_management_screen/no1_data_management_screen.jsx"></script>
+
+  <!-- AccountEditor -->
+  <script type="text/babel" src="30_screens/no18_account_editor_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no18_account_editor_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no18_account_editor_screen/no1_account_editor_screen.jsx"></script>
+
+  <!-- CategoryEditor -->
+  <script type="text/babel" src="30_screens/no19_category_editor_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no19_category_editor_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no19_category_editor_screen/no1_category_editor_screen.jsx"></script>
+
+  <!-- CurrencyDetailConfig -->
+  <script type="text/babel" src="30_screens/no20_currency_detail_config_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no20_currency_detail_config_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no20_currency_detail_config_screen/no1_currency_detail_config_screen.jsx"></script>
+
+  <!-- CurrencyRateEditor -->
+  <script type="text/babel" src="30_screens/no21_currency_rate_editor_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no21_currency_rate_editor_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no21_currency_rate_editor_screen/no1_currency_rate_editor_screen.jsx"></script>
+
+  <!-- ImportScreen (wizard) -->
+  <script type="text/babel" src="30_screens/no22_import_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no22_import_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no22_import_screen/no1_import_screen.jsx"></script>
+
+  <!-- LoginScreen -->
+  <script type="text/babel" src="30_screens/no23_login_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no23_login_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no23_login_screen/no1_login_screen.jsx"></script>
+
+  <!-- PaywallScreen -->
+  <script type="text/babel" src="30_screens/no24_paywall_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no24_paywall_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no24_paywall_screen/no1_paywall_screen.jsx"></script>
+
+  <!-- MergeEditorScreen -->
+  <script type="text/babel" src="30_screens/no25_merge_editor_screen/tokens.jsx"></script>
+  <script type="text/babel" src="30_screens/no25_merge_editor_screen/no2_subsections.jsx"></script>
+  <script type="text/babel" src="30_screens/no25_merge_editor_screen/no1_merge_editor_screen.jsx"></script>
 
   <!-- Visualizers · shared kit + atomic + component_tokens + brand + icon_library -->
   <script type="text/babel" src="10_foundations/visualizers/no0_shared_card_kit.jsx"></script>
