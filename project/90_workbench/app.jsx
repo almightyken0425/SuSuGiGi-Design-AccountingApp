@@ -78,16 +78,39 @@ const SCREEN_META = {
     title: '新增收入', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="income"/>,
   },
-  // ─── Transfer Editor ─── default / recurring
+  // ─── Transfer Editor ─── default / recurring / same-currency / same-currency-recurring
+  //                         + edit / edit-recurring / edit-same-currency
   // 無 error variant：impl 的 save disabled 條件攔死「amountFrom 為空」場景，
   // inline error banner 在 transfer 路徑跑不到（TxEditor 也已砍除 error variant）。
+  // edit-schedule-instance 不獨立列出：impl 的 mode dialog 差異需新 ConfirmDialog 元件，
+  // RecurringOptions 本身渲染跟 edit-recurring 一致（rule 從 schedule 載入），無獨立視覺。
   transfer: {
     title: '新增轉帳', present: 'modal', save: true,
-    render: () => <TransferEditorScreen/>,
+    render: () => <TransferEditorScreen variant="default"/>,
   },
   'transfer-recurring': {
     title: '新增轉帳', present: 'modal', save: true,
-    render: () => <TransferEditorScreen initialRecurring/>,
+    render: () => <TransferEditorScreen variant="recurring"/>,
+  },
+  'transfer-same-currency': {
+    title: '新增轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="same-currency"/>,
+  },
+  'transfer-same-currency-recurring': {
+    title: '新增轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="same-currency-recurring"/>,
+  },
+  'transfer-edit': {
+    title: '編輯轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="edit"/>,
+  },
+  'transfer-edit-recurring': {
+    title: '編輯轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="edit-recurring"/>,
+  },
+  'transfer-edit-same-currency': {
+    title: '編輯轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="edit-same-currency"/>,
   },
   // ─── Settings ─── default（未訂閱）/ subscribed（已訂閱，隱藏升級組）
   settings: {
@@ -312,8 +335,13 @@ const SCREEN_GROUPS = [
     title: 'Transfer Editor · 轉帳',
     subtitle: '跨帳戶 / 跨幣別轉帳 modal（src/screens/Transactions/TransferEditorScreen.tsx）。',
     screens: [
-      { id: 'transfer',           label: 'Default · Recurring 收起' },
-      { id: 'transfer-recurring', label: 'Recurring · 展開定期選項' },
+      { id: 'transfer',                         label: 'Default · 新增、跨幣別、Recurring 收起' },
+      { id: 'transfer-recurring',               label: 'Recurring · 新增、跨幣別、展開定期選項' },
+      { id: 'transfer-same-currency',           label: 'Same currency · 新增、同幣別、to 欄位 disabled' },
+      { id: 'transfer-same-currency-recurring', label: 'Same currency + Recurring · 同幣別 + 展開' },
+      { id: 'transfer-edit',                    label: 'Edit · 編輯既有 transfer，Delete button 顯示' },
+      { id: 'transfer-edit-recurring',          label: 'Edit + Recurring · 編輯 + 展開' },
+      { id: 'transfer-edit-same-currency',      label: 'Edit + Same currency · 編輯 + 同幣別' },
     ],
   },
   {
