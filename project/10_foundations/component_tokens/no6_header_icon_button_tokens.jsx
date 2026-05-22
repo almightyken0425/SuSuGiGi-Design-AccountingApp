@@ -5,7 +5,7 @@
 // impl 端已將 header button 完全下放給 react-navigation 7 + UIKit：
 //   - 採用 `unstable_headerLeftItems / unstable_headerRightItems` + `type: 'button'`
 //   - UIKit UIBarButtonItem 接管尺寸 / 圓角 / 背景 / press 動畫 / haptic / Liquid Glass
-//   - tintColor 統一用 theme.primary.main
+//   - tintColor 預設用 theme.text.primary（對齊 iOS UIColor.label 黑灰；與 header title 同色）
 //
 // 放棄「在 RN 端控制 customView 視覺」的理由：
 //   1. iOS 26 對 customView 套的 shared background pill dimension 由 UIKit 決定，
@@ -30,10 +30,10 @@ const HEADER_ICON_BUTTON_TOKENS = {
     duration: MOTION.duration.instant,    // 100，按壓回饋短促；阻尼結束視覺與 haptic 同步
     easing:   MOTION.easing.standard,
   },
-  COLOR_BY_INTENT: {                      // icon 顏色語意分派；impl 端對應 theme.primary.main（三 intent 統一主題色）
-    commit:  TOKENS.p500,                 // 送出 / 確認（checkmark）
-    action:  TOKENS.p500,                 // 主動觸發功能（search / settings / filter / merge / 返回）
-    dismiss: TOKENS.p500,                 // 關閉當前畫面（xmark）。本波決議統一主題色；保留 map 結構以便未來分化（如 destructive 改紅）
+  COLOR_BY_INTENT: {                      // icon 顏色語意分派；impl 端對應 theme.text.primary（三 intent 統一 ink 黑灰，對齊 iOS UIColor.label 視覺，與 header title 同色）
+    commit:  TOKENS.ink,                  // 送出 / 確認（checkmark）
+    action:  TOKENS.ink,                  // 主動觸發功能（search / settings / filter / merge / 返回）
+    dismiss: TOKENS.ink,                  // 關閉當前畫面（xmark）。本波決議統一 ink 黑灰（前一波 p500 主題色實機驗證視覺過重）；保留 map 結構以便未來分化（如 destructive 改紅）
     // 任一 intent 在 disabled 狀態下覆寫為 TOKENS.ink3（impl 對應 theme.state.disabled.fg）
   },
   HAPTIC_BY_INTENT: {                     // expo-haptics ImpactFeedbackStyle 常數名稱；intent 對應 COLOR_BY_INTENT

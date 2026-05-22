@@ -9,7 +9,7 @@ const HEADER_ICON_BUTTON_TOKEN_DESC = {
   MULTI_ICON_GAP:    '多 icon header 內 button 之間的水平 gap（impl 端用 react-navigation type:spacing item）',
   HIT_TARGET_EXPAND: 'hitSlop 各方向外擴量。視覺維持 41×41 pill，實際可點區擴至 44×44 達 HIG 標準；對齊 Apple UIBarButtonItem「視覺小、hit 大」慣例',
   PRESS_ANIMATION:   '按壓回饋：scale 縮放比例 + duration + easing。HeaderButton 三 variant + 覆寫返回鍵統一套用',
-  COLOR_BY_INTENT:   '依按鈕語意分派 icon 顏色；本波三 intent 統一主題色（impl 端 theme.primary.main）。保留 map 結構以便未來分化（如 destructive 改紅）；disabled 一律覆寫為 ink3',
+  COLOR_BY_INTENT:   '依按鈕語意分派 icon 顏色；本波三 intent 統一 ink 黑灰（impl 端 theme.text.primary，對齊 iOS UIColor.label 視覺，與 header title 同色）。保留 map 結構以便未來分化（如 destructive 改紅）；disabled 一律覆寫為 ink3',
   HAPTIC_BY_INTENT:  '依按鈕語意分派 expo-haptics ImpactFeedbackStyle：commit 有後果（medium）、action 與 dismiss 無破壞性（light）',
 };
 
@@ -20,7 +20,7 @@ const HEADER_ICON_BUTTON_TOKEN_SOURCE = {
   MULTI_ICON_GAP:    'SPACING.sm',
   HIT_TARGET_EXPAND: '(HIT_TARGET.min - CONTENT_BOX) / 2',
   PRESS_ANIMATION:   '{ scale: 0.97, duration: MOTION.duration.instant, easing: MOTION.easing.standard }',
-  COLOR_BY_INTENT:   '{ commit: TOKENS.p500, action: TOKENS.p500, dismiss: TOKENS.p500 }',
+  COLOR_BY_INTENT:   '{ commit: TOKENS.ink, action: TOKENS.ink, dismiss: TOKENS.ink }',
   HAPTIC_BY_INTENT:  '{ commit: impactMedium, action: impactLight, dismiss: impactLight }',
 };
 
@@ -53,7 +53,7 @@ function HeaderIconBtnHitAreaCard() {
             WebkitBackdropFilter: 'blur(20px) saturate(180%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <Glyph name="checkmark" size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE} color={TOKENS.p500} stroke={2.4}/>
+            <Glyph name="checkmark" size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE} color={HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT.commit} stroke={2.4}/>
           </div>
         </div>
         <div style={{ fontSize: 11, color: TOKENS.ink2, lineHeight: 1.6 }}>
@@ -82,7 +82,7 @@ function HeaderIconBtnPressAnimationCard() {
           transform: scaled ? `scale(${anim.scale})` : 'scale(1)',
           transition: `transform ${anim.duration}ms ${anim.easing}`,
         }}>
-          <Glyph name="checkmark" size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE} color={TOKENS.p500} stroke={2.4}/>
+          <Glyph name="checkmark" size={HEADER_ICON_BUTTON_TOKENS.SYMBOL_SIZE} color={HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT.commit} stroke={2.4}/>
         </div>
         <div style={{ fontSize: 10, color: TOKENS.ink3, letterSpacing: 0.3 }}>{label}</div>
       </div>
@@ -145,7 +145,7 @@ function HeaderIconBtnIntentMatrixCard() {
                 background: HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT[r.intent],
                 border: `1px solid ${TOKENS.hairline}`,
               }}/>
-              <code style={{ fontSize: 10, color: TOKENS.ink2 }}>p500</code>
+              <code style={{ fontSize: 10, color: TOKENS.ink2 }}>ink</code>
             </div>
             <code style={{ ...cellStyle, fontSize: 10.5 }}>{HEADER_ICON_BUTTON_TOKENS.HAPTIC_BY_INTENT[r.intent]}</code>
             <span style={{ ...cellStyle, fontSize: 10.5 }}>{r.users}</span>
