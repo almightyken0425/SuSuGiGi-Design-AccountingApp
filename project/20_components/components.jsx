@@ -287,15 +287,15 @@ function GlassView({ children, style = {}, blurAmount, tint, border = true, pill
 }
 
 // ─── ListGroupCard ─── 對齊 src/components/list/ListGroupCard.tsx
-// overflow: hidden 會把第一個 ListItem 的 borderTop hairline 切掉
+// overflow: hidden 會把第一個 ListItem 的 borderTop hairline 切掉。
+// 不畫外框：impl 端 borderWidth = StyleSheet.hairlineWidth + 淡色 hairline，
+// 真機渲染下幾乎不可見；design canvas 在 React Web 無法解析 hairlineWidth，
+// 若硬寫 1px 反而呈現視覺上不存在的黑邊，故 canvas 端一律不畫。
 function ListGroupCard({ children, style = {} }) {
   return (
     <div style={{
       background: TOKENS.surface,
       borderRadius: LIST_TOKENS.GROUP_CARD_RADIUS,
-      borderWidth: LIST_TOKENS.GROUP_CARD_BORDER_WIDTH,
-      borderStyle: 'solid',
-      borderColor: TOKENS.divider.hairline,
       overflow: 'hidden',
       marginBottom: LIST_TOKENS.GROUP_CARD_MARGIN_BOTTOM,
       ...style,

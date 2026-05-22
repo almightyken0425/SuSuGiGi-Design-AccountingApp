@@ -1,6 +1,6 @@
 # CLAUDE.md · `30_screens/`
 
-本目錄為 SuSuGiGi accounting app 5 個目標 screen 的設計工件，每個 screen 對應 impl 的 `src/screens/<Name>/`，作為設計標準仲裁端。
+本目錄為 SuSuGiGi accounting app 6 個目標 screen 的設計工件，每個 screen 對應 impl 的 `src/screens/<Name>/`，作為設計標準仲裁端。
 
 ## 內部分層
 
@@ -27,10 +27,14 @@
 │   ├── tokens.jsx                      TX_EDITOR_SCREEN_TOKENS
 │   ├── no2_subsections.jsx             TxAmountContainer / TxPickerRow
 │   └── no1_tx_editor_screen.jsx
-└── no5_transfer_editor_screen/
-    ├── tokens.jsx                      TRANSFER_EDITOR_SCREEN_TOKENS
-    ├── no2_subsections.jsx             ExchangeArrow / DualAmountRow / DualPickerRow
-    └── no1_transfer_editor_screen.jsx
+├── no5_transfer_editor_screen/
+│   ├── tokens.jsx                      TRANSFER_EDITOR_SCREEN_TOKENS
+│   ├── no2_subsections.jsx             ExchangeArrow / DualAmountRow / DualPickerRow
+│   └── no1_transfer_editor_screen.jsx
+└── no6_settings_screen/
+    ├── tokens.jsx                      SETTINGS_SCREEN_TOKENS
+    ├── no2_subsections.jsx             SettingsListRow
+    └── no1_settings_screen.jsx         SettingsScreen（default / subscribed variants）
 ```
 
 ## Granularity 規則
@@ -113,6 +117,6 @@ HomeScreen 額外含 `noN_period_page.jsx`（鏡射 impl 的 `HomeScreen.tsx` / 
 
 ## Follow-up
 
-本目錄 v1 僅含 5 個 screen。其餘 17 個 screen（Settings / Preference / Login / Paywall / Accounts / AccountEditor / Categories / CategoryEditor / Theme / Language / Timezone / LaunchMode / BaseCurrency / CurrencyList / CurrencyRateList / DataMgmt / Debug）已於本次重構移除，待逐步 follow 本目錄前例重做。
+本目錄 v1 已含 6 個 screen（Home / HomeFilter / Search / TxEditor / TransferEditor / Settings）。其餘 16 個 screen（Preference / Login / Paywall / Accounts / AccountEditor / Categories / CategoryEditor / Theme / Language / Timezone / LaunchMode / BaseCurrency / CurrencyList / CurrencyRateList / DataMgmt / Debug）已於本次重構移除，待逐步 follow 本目錄前例重做。
 
 新升 5 個 helper（AmountField / StaticWheelPicker / AccountSelector / CategorySelector / RecurringOptions）尚未建立專屬 `component_tokens/noN_*_tokens.jsx`，為另一個 follow-up。

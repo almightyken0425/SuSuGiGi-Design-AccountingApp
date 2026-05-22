@@ -26,10 +26,11 @@ function PushHeader({ title, leadingText, leadingAction, trailing }) {
   return <NavHeader title={title} leadingText={leadingText} leadingAction={leadingAction} trailing={trailing}/>;
 }
 
-// SCREEN_META — 本目錄 v1 僅含 5 個重做完成的 screen。
-// 其餘 17 個（Settings / Login / Paywall / Accounts / Categories / Theme / Language /
-// Timezone / LaunchMode / BaseCurrency / CurrencyList / RateList / DataMgmt / Debug 等）
-// 已於本次重構移除，待逐步 follow 30_screens/ 新前例重做後再補回。
+// SCREEN_META — 本目錄 v1 已含 6 個重做完成的 screen（Home / HomeFilter /
+// Search / TxEditor / TransferEditor / Settings）。
+// 其餘 16 個（Preference / Login / Paywall / Accounts / Categories / Theme /
+// Language / Timezone / LaunchMode / BaseCurrency / CurrencyList / RateList /
+// DataMgmt / Debug 等）已於本次重構移除，待逐步 follow 30_screens/ 新前例重做後再補回。
 const SCREEN_META = {
   // ─── Home ─── default / empty
   home: {
@@ -89,6 +90,15 @@ const SCREEN_META = {
     title: '新增轉帳', present: 'modal', save: true,
     render: () => <TransferEditorScreen variant="error"/>,
   },
+  // ─── Settings ─── default（未訂閱）/ subscribed（已訂閱，隱藏升級組）
+  settings: {
+    title: '設定', present: 'push',
+    render: () => <SettingsScreen/>,
+  },
+  'settings-subscribed': {
+    title: '設定', present: 'push',
+    render: () => <SettingsScreen variant="subscribed"/>,
+  },
 };
 
 // SCREEN_GROUPS — Screens tab 顯示結構
@@ -143,6 +153,15 @@ const SCREEN_GROUPS = [
     screens: [
       { id: 'transfer',       label: 'Default · 跨幣別' },
       { id: 'transfer-error', label: 'Error · 驗證錯誤' },
+    ],
+  },
+  {
+    id: 'settings',
+    title: 'Settings · 設定',
+    subtitle: '設定總頁（src/screens/Settings/SettingsScreen.tsx）。未訂閱顯示升級組，已訂閱隱藏。不含 impl 端的 Debug Tools section（dev 工具，spec 未定義為產品行為）。',
+    screens: [
+      { id: 'settings',            label: 'Default · 未訂閱' },
+      { id: 'settings-subscribed', label: 'Subscribed · 已訂閱' },
     ],
   },
 ];
