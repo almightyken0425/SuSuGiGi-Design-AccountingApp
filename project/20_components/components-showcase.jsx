@@ -41,6 +41,29 @@ function ComponentsListSection() {
         </CompFrame>
       </DCArtboard>
 
+      <DCArtboard id="comp-data-list-item" label="DataListItem · 資料數值列 (live)" width={402} height={500}>
+        <CompFrame>
+          <CompLabel>用於 AccountList / CategoryList — 左 icon + title/subtitle + 右 value/valueSubtext</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="title + value（最簡）" value="NT$1,200"/>
+              <DataListItem leftIcon={<Glyph name="wallet-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="現金錢包" subtitle="TWD" value="NT$12,540"/>
+              <DataListItem leftIcon={<Glyph name="credit-card-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="信用卡" subtitle="USD"
+                value="US$320.00" valueSubtext="≈ NT$10,240"/>
+              <DataListItem leftIcon={<Glyph name="food-outline" size={ICON_SIZE.sm} color={TOKENS.error} stroke={1.8}/>}
+                title="餐飲" subtitle="支出分類"
+                value="-NT$3,250" valueColor={TOKENS.error} valueSubtext="本月 ▲ 12%"/>
+              <DataListItem leftIcon={<Glyph name="trending-up" size={ICON_SIZE.sm} color={TOKENS.success} stroke={1.8}/>}
+                title="薪資" subtitle="收入分類"
+                value="+NT$58,000" valueColor={TOKENS.success} valueSubtext="本月 ▼ 0%"/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
       <DCArtboard id="comp-selection-list" label="SelectionListItem · 選擇列 (live)" width={402} height={500}>
         <CompFrame>
           <CompLabel>用於 ThemeSettings / Language / Timezone</CompLabel>
