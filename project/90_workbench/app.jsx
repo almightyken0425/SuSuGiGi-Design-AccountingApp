@@ -265,13 +265,17 @@ const FOUNDATIONS_GROUPS = [
   },
 ];
 
-// Explorations topics — 每個 entry 對應 50_explorations/<dir>/variants.jsx 註冊的 Section component
-const EXPLORATION_TOPICS = [
-  { id: 'color-and-mood',    label: 'Axis 1 · Color & Mood',              render: () => <ColorAndMoodSection/> },
-  { id: 'surface-material',  label: 'Axis 2 · Surface & Material',        render: () => <SurfaceMaterialSection/> },
-  { id: 'iconography',       label: 'Axis 3 · Iconography & Embellishment', render: () => <IconographySection/> },
-  { id: 'personality',       label: 'Axis 4 · Personality (packaged)',    render: () => <PersonalityPackagedSection/> },
-  { id: 'transaction-editor', label: 'Transaction Editor',                render: () => <TransactionEditorSection/> },
+// EXPLORATION_GROUPS — 每個 group 對應一個 screen，group 下的 topic 為各 exploration 軸
+const EXPLORATION_GROUPS = [
+  {
+    id: 'homescreen', label: 'Home Screen',
+    topics: [
+      { id: 'color-and-mood',   label: 'Axis 1 · Color & Mood',               render: () => <ColorAndMoodSection/> },
+      { id: 'surface-material', label: 'Axis 2 · Surface & Material',          render: () => <SurfaceMaterialSection/> },
+      { id: 'iconography',      label: 'Axis 3 · Iconography & Embellishment', render: () => <IconographySection/> },
+      { id: 'personality',      label: 'Axis 4 · Personality (packaged)',      render: () => <PersonalityPackagedSection/> },
+    ],
+  },
 ];
 
 // 找 Foundations group / topic 的 helper。沒命中時回 fallback（atomic/type）。
@@ -285,15 +289,35 @@ function resolveFoundationsRoute(rawGroup, rawTopic) {
   return { group: group.id, topic: topic ? topic.id : group.topics[0].id };
 }
 
+// 找 Explorations group / topic 的 helper。沒命中時回 fallback（homescreen/color-and-mood）。
+function resolveExplorationsRoute(rawGroup, rawTopic) {
+  const group = EXPLORATION_GROUPS.find(g => g.id === rawGroup);
+  if (!group) {
+    const fallback = EXPLORATION_GROUPS[0];
+    return { group: fallback.id, topic: fallback.topics[0].id };
+  }
+  const topic = group.topics.find(t => t.id === rawTopic);
+  return { group: group.id, topic: topic ? topic.id : group.topics[0].id };
+}
+
+const groupsFor = (view) => {
+  if (view === 'foundations') return FOUNDATIONS_GROUPS;
+  if (view === 'explorations') return EXPLORATION_GROUPS;
+  return null;
+};
+
 const subsFor = (view) => {
-  if (view === 'screens')      return SCREEN_GROUPS.map(g => ({ id: g.id, label: g.title }));
-  if (view === 'explorations') return EXPLORATION_TOPICS.map(t => ({ id: t.id, label: t.label }));
+  if (view === 'screens') return SCREEN_GROUPS.map(g => ({ id: g.id, label: g.title }));
   return null;
 };
 
 const defaultSubFor = (view) => {
   if (view === 'foundations') {
     const g = FOUNDATIONS_GROUPS[0];
+    return { group: g.id, topic: g.topics[0].id };
+  }
+  if (view === 'explorations') {
+    const g = EXPLORATION_GROUPS[0];
     return { group: g.id, topic: g.topics[0].id };
   }
   const subs = subsFor(view);
@@ -311,6 +335,11 @@ const LEGACY_HASH_ALIASES = {
   'recurring':      { view: 'screens' },
   'row-height':     { view: 'screens' },
   'design_system':  { view: 'foundations' },
+  // 舊 explorations 兩段 hash → 新三段（加 group 層）
+  'explorations/color-and-mood':   { view: 'explorations', group: 'homescreen', topic: 'color-and-mood' },
+  'explorations/surface-material': { view: 'explorations', group: 'homescreen', topic: 'surface-material' },
+  'explorations/iconography':      { view: 'explorations', group: 'homescreen', topic: 'iconography' },
+  'explorations/personality':      { view: 'explorations', group: 'homescreen', topic: 'personality' },
   // 舊兩段 hash → 三段
   'foundations/type':       { view: 'foundations', group: 'atomic',       topic: 'type' },
   'foundations/colors':     { view: 'foundations', group: 'atomic',       topic: 'colors' },
@@ -330,9 +359,11 @@ function parseRoute() {
   if (!h) return { view: 'intro', group: null, topic: null, sub: null };
   if (LEGACY_HASH_ALIASES[h]) {
     const alias = LEGACY_HASH_ALIASES[h];
-    if (alias.view === 'foundations') {
-      const f = alias.group ? { group: alias.group, topic: alias.topic } : defaultSubFor('foundations');
-      return { view: 'foundations', group: f.group, topic: f.topic, sub: null };
+    if (alias.view === 'foundations' || alias.view === 'explorations') {
+      const resolver = alias.view === 'foundations' ? resolveFoundationsRoute : resolveExplorationsRoute;
+      const f = alias.group ? { group: alias.group, topic: alias.topic } : defaultSubFor(alias.view);
+      const resolved = alias.group ? f : resolver(f.group, f.topic);
+      return { view: alias.view, group: resolved.group, topic: resolved.topic, sub: null };
     }
     return { view: alias.view, group: null, topic: null, sub: alias.sub ?? defaultSubFor(alias.view) };
   }
@@ -343,6 +374,10 @@ function parseRoute() {
     const f = resolveFoundationsRoute(parts[1], parts[2]);
     return { view, group: f.group, topic: f.topic, sub: null };
   }
+  if (view === 'explorations') {
+    const e = resolveExplorationsRoute(parts[1], parts[2]);
+    return { view, group: e.group, topic: e.topic, sub: null };
+  }
   const subs = subsFor(view);
   if (!subs) return { view, group: null, topic: null, sub: null };
   const rawSub = parts[1];
@@ -351,7 +386,7 @@ function parseRoute() {
 }
 
 function buildHash(view, payload) {
-  if (view === 'foundations') {
+  if (view === 'foundations' || view === 'explorations') {
     if (payload && payload.group && payload.topic) return `${view}/${payload.group}/${payload.topic}`;
     return view;
   }
@@ -405,11 +440,12 @@ function SideTOC({ route, onNavigate }) {
   const [expandedGroups, setExpandedGroups] = React.useState(() => {
     const init = {};
     FOUNDATIONS_GROUPS.forEach(g => { init[g.id] = view === 'foundations' && g.id === activeGroup; });
+    EXPLORATION_GROUPS.forEach(g => { init[g.id] = view === 'explorations' && g.id === activeGroup; });
     return init;
   });
   // 路由變化時自動展開選中 group（其餘維持手動狀態）。
   React.useEffect(() => {
-    if (view === 'foundations' && activeGroup) {
+    if ((view === 'foundations' || view === 'explorations') && activeGroup) {
       setExpandedGroups(prev => prev[activeGroup] ? prev : { ...prev, [activeGroup]: true });
     }
   }, [view, activeGroup]);
@@ -452,7 +488,7 @@ function SideTOC({ route, onNavigate }) {
               level={0}
               onClick={() => onNavigate(t.id, null)}
             />
-            {active && t.id === 'foundations' && FOUNDATIONS_GROUPS.map(g => {
+            {active && groupsFor(t.id) && groupsFor(t.id).map(g => {
               const groupActive = activeGroup === g.id;
               const groupExpanded = !!expandedGroups[g.id];
               return (
@@ -471,13 +507,13 @@ function SideTOC({ route, onNavigate }) {
                       label={tp.label}
                       active={groupActive && activeTopic === tp.id}
                       level={2}
-                      onClick={() => onNavigate('foundations', { group: g.id, topic: tp.id })}
+                      onClick={() => onNavigate(t.id, { group: g.id, topic: tp.id })}
                     />
                   ))}
                 </div>
               );
             })}
-            {active && t.id !== 'foundations' && t.hasSubs && subsFor(t.id).map(s => (
+            {active && !groupsFor(t.id) && t.hasSubs && subsFor(t.id).map(s => (
               <TocRow
                 key={s.id}
                 label={s.label}
@@ -528,10 +564,21 @@ function App() {
       })()
     : null;
 
+  const explorationsTopicEntry = view === 'explorations'
+    ? (() => {
+        const g = EXPLORATION_GROUPS.find(grp => grp.id === foundationsGroup);
+        return g ? g.topics.find(tp => tp.id === foundationsTopic) : null;
+      })()
+    : null;
+
   return (
     <>
       <SideTOC route={route} onNavigate={navigate}/>
-      <DesignCanvas resetKey={view === 'foundations' ? `foundations/${foundationsGroup ?? ''}/${foundationsTopic ?? ''}` : `${view}/${sub ?? ''}`}>
+      <DesignCanvas resetKey={
+        view === 'foundations'  ? `foundations/${foundationsGroup ?? ''}/${foundationsTopic ?? ''}` :
+        view === 'explorations' ? `explorations/${foundationsGroup ?? ''}/${foundationsTopic ?? ''}` :
+        `${view}/${sub ?? ''}`
+      }>
         {view === 'intro'        && <IntroSection/>}
         {view === 'foundations' && foundationsTopicEntry && (
           <React.Fragment>{foundationsTopicEntry.render()}</React.Fragment>
@@ -547,14 +594,14 @@ function App() {
             ))}
           </DCSection>
         ))}
-        {view === 'explorations' && EXPLORATION_TOPICS.filter(t => t.id === sub).map(t => (
-          <React.Fragment key={t.id}>{t.render()}</React.Fragment>
-        ))}
+        {view === 'explorations' && explorationsTopicEntry && (
+          <React.Fragment>{explorationsTopicEntry.render()}</React.Fragment>
+        )}
       </DesignCanvas>
     </>
   );
 }
 
-Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, FOUNDATIONS_GROUPS, EXPLORATION_TOPICS });
+Object.assign(window, { SCREEN_META, SCREEN_GROUPS, ScreenFrame, FOUNDATIONS_GROUPS, EXPLORATION_GROUPS });
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
