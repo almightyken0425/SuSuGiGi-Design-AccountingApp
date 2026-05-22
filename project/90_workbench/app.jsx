@@ -80,14 +80,16 @@ const SCREEN_META = {
     title: '新增支出', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="expense" variant="error"/>,
   },
-  // ─── Transfer Editor ─── default / error
+  // ─── Transfer Editor ─── default / recurring
+  // 無 error variant：impl 的 save disabled 條件攔死「amountFrom 為空」場景，
+  // inline error banner 在 transfer 路徑跑不到（TxEditor 仍保留）。
   transfer: {
     title: '新增轉帳', present: 'modal', save: true,
     render: () => <TransferEditorScreen/>,
   },
-  'transfer-error': {
+  'transfer-recurring': {
     title: '新增轉帳', present: 'modal', save: true,
-    render: () => <TransferEditorScreen variant="error"/>,
+    render: () => <TransferEditorScreen initialRecurring/>,
   },
 };
 
@@ -141,8 +143,8 @@ const SCREEN_GROUPS = [
     title: 'Transfer Editor · 轉帳',
     subtitle: '跨帳戶 / 跨幣別轉帳 modal（src/screens/Transactions/TransferEditorScreen.tsx）。',
     screens: [
-      { id: 'transfer',       label: 'Default · 跨幣別' },
-      { id: 'transfer-error', label: 'Error · 驗證錯誤' },
+      { id: 'transfer',           label: 'Default · Recurring 收起' },
+      { id: 'transfer-recurring', label: 'Recurring · 展開定期選項' },
     ],
   },
 ];
