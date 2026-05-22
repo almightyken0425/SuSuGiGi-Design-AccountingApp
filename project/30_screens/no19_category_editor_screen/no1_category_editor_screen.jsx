@@ -1,14 +1,15 @@
 // ─────────────────────────────────────────────────────────────
 // CategoryEditorScreen · 對齊 impl src/screens/Categories/CategoryEditorScreen.tsx
 //
-// Modal save form。Type 由 navigation params 決定（不可在 form 內切換）。
-// 表單 3 欄：名稱 / 標準分類映射 / 圖示。Edit mode 多顯示啟用 Switch + 刪除。
+// Modal save form。Type 由 form 內 CategoryTypeSelector 兩按鈕橫排決定。
+// 表單 4 欄：類型 / 名稱 / 標準分類映射 / 圖示。Edit mode 多顯示啟用 Switch + 刪除。
+// 編輯模式 type selector disabled，避免破壞已有交易紀錄分類一致性。
 // 共用 form helper 由 30_screens/shared/no3_editor_field_helpers.jsx 提供。
 //
 // Variants：
 //   new-expense — 新增支出分類（type=expense）
 //   new-income  — 新增收入分類（type=income）
-//   edit        — 編輯模式，預填「飲食」，含啟用 Switch 與刪除按鈕
+//   edit        — 編輯模式，預填「飲食」，含啟用 Switch 與刪除按鈕；type selector 鎖死
 // ─────────────────────────────────────────────────────────────
 
 function CategoryEditorScreen({ variant = 'new-expense' }) {
@@ -23,6 +24,8 @@ function CategoryEditorScreen({ variant = 'new-expense' }) {
       padding: T.SCREEN_PADDING,
       background: TOKENS.bg, minHeight: '100%',
     }}>
+      <CategoryTypeSelector value={sample.type} disabled={isEdit}/>
+
       <div style={{ marginBottom: T.FIELD_GAP }}>
         <EditorFieldLabel required>分類名稱</EditorFieldLabel>
         <EditorTextInput value={sample.name} placeholder="例如：飲食、薪資"/>

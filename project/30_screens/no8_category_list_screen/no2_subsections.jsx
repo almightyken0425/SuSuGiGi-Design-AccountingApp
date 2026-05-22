@@ -2,7 +2,9 @@
 // CategoryListScreen sub-sections · 私有 sub-section 元件
 //
 // 鏡射 impl src/screens/Categories/CategoryListScreen.tsx 拆分：
-//   CategoryReorderRow / AddCategoryRow
+//   CategoryReorderRow
+//
+// 新增入口已上移至 navbar 右上 [+]，inline AddCategoryRow 已移除。
 //
 // 消費 CATEGORY_LIST_SCREEN_TOKENS + LIST_TOKENS + atomic。
 // ─────────────────────────────────────────────────────────────
@@ -26,19 +28,4 @@ function CategoryReorderRow({ category, disabled = false }) {
   );
 }
 
-// ─── AddCategoryRow ─── 「新增支出 / 收入分類」row
-// impl 用 ListItem + titleColor={theme.primary.main} + plus icon。
-function AddCategoryRow({ type, onPress }) {
-  const label = type === 'expense' ? '新增支出分類' : '新增收入分類';
-  return (
-    <ListItem
-      leftIcon={
-        <Glyph name="plus" size={LIST_TOKENS.ICON_SIZE_SMALL} color={TOKENS.p500} stroke={2.5}/>
-      }
-      title={label}
-      titleColor={TOKENS.p500}
-      onPress={onPress}/>
-  );
-}
-
-Object.assign(window, { CategoryReorderRow, AddCategoryRow });
+Object.assign(window, { CategoryReorderRow });

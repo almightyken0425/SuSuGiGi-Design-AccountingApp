@@ -33,17 +33,19 @@ function PushHeader({ title, leadingText, leadingAction, trailing }) {
 // DataMgmt / Debug 等）已於本次重構移除，待逐步 follow 30_screens/ 新前例重做後再補回。
 const SCREEN_META = {
   // ─── Home ─── default / empty
+  // headerRight 兩 symbol 共用 shared background pill；
+  // 對齊 impl 端 unstable_headerRightItems = [search, spacing:0, settings] 的 iOS 26 渲染結果。
   home: {
     title: 'SuSuGiGi', present: 'push', hasFAB: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter}/>,
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
-    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass']} intent="action" onPress={() => ctx.push('search')}/>,
+    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
   },
   'home-empty': {
     title: 'SuSuGiGi', present: 'push', hasFAB: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter} variant="empty"/>,
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
-    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass']} intent="action" onPress={() => ctx.push('search')}/>,
+    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
   },
   // ─── Filter ─── default / no-accounts
   filter: {
@@ -99,26 +101,30 @@ const SCREEN_META = {
     render: () => <SettingsScreen variant="subscribed"/>,
   },
   // ─── Account List ─── default / empty
+  // navbar 右上 merge + plus 共用 shared background pill；
+  // plus 觸發 AccountEditor 新增模式（design canvas 無互動 mock）
   'account-list': {
     title: '帳戶', present: 'push', headerLeftText: '設定',
     render: () => <AccountListScreen/>,
-    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
   },
   'account-list-empty': {
     title: '帳戶', present: 'push', headerLeftText: '設定',
     render: () => <AccountListScreen variant="empty"/>,
-    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
   },
   // ─── Category List ─── default / empty
+  // navbar 右上 merge + plus 共用 shared background pill；
+  // plus 觸發 CategoryEditor 新增模式（不帶 type 參數，由 Editor 內 CategoryTypeSelector 預設 expense 決定）
   'category-list': {
     title: '分類', present: 'push', headerLeftText: '設定',
     render: () => <CategoryListScreen/>,
-    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
   },
   'category-list-empty': {
     title: '分類', present: 'push', headerLeftText: '設定',
     render: () => <CategoryListScreen variant="empty"/>,
-    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
   },
   // ─── Currency List ─── default / no-results
   'currency-list': {
@@ -328,7 +334,7 @@ const SCREEN_GROUPS = [
   {
     id: 'account-list',
     title: 'Account List · 帳戶列表',
-    subtitle: '帳戶列表 + 拖拉排序 + 新增入口（src/screens/Accounts/AccountListScreen.tsx）。Header 右側為合併工具入口。',
+    subtitle: '帳戶列表 + 拖拉排序（src/screens/Accounts/AccountListScreen.tsx）。Header 右側 [merge][+] 兩 pill：合併工具入口 + 新增帳戶入口。',
     screens: [
       { id: 'account-list',       label: 'Default · 有帳戶' },
       { id: 'account-list-empty', label: 'Empty · 尚無帳戶' },
@@ -337,7 +343,7 @@ const SCREEN_GROUPS = [
   {
     id: 'category-list',
     title: 'Category List · 分類列表',
-    subtitle: '收 / 支兩 section，各含拖拉排序列表 + 新增入口（src/screens/Categories/CategoryListScreen.tsx）。Header 右側為合併工具入口。',
+    subtitle: '收 / 支兩 section，各含拖拉排序列表（src/screens/Categories/CategoryListScreen.tsx）。Header 右側 [merge][+] 兩 pill：合併工具入口 + 新增分類入口（type 由 CategoryEditor 內 selector 決定）。',
     screens: [
       { id: 'category-list',       label: 'Default · 有分類' },
       { id: 'category-list-empty', label: 'Empty · 尚無分類' },
