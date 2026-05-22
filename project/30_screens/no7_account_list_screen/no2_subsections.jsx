@@ -2,7 +2,9 @@
 // AccountListScreen sub-sections · 私有 sub-section 元件
 //
 // 鏡射 impl src/screens/Accounts/AccountListScreen.tsx 拆分：
-//   AccountReorderRow / AddAccountRow
+//   AccountReorderRow
+//
+// 新增入口已上移至 navbar 右上 [+]，inline AddAccountRow 已移除。
 //
 // 消費 ACCOUNT_LIST_SCREEN_TOKENS + LIST_TOKENS + atomic。
 // ─────────────────────────────────────────────────────────────
@@ -25,18 +27,4 @@ function AccountReorderRow({ account, disabled = false }) {
   );
 }
 
-// ─── AddAccountRow ─── 「新增帳戶」入口 row（primary 色文字 + plus icon）
-// impl 用 ListItem + titleColor={theme.primary.main}，leftIcon 為 MaterialCommunityIcons plus。
-function AddAccountRow({ onPress }) {
-  return (
-    <ListItem
-      leftIcon={
-        <Glyph name="plus" size={LIST_TOKENS.ICON_SIZE_SMALL} color={TOKENS.p500} stroke={2.5}/>
-      }
-      title="新增帳戶"
-      titleColor={TOKENS.p500}
-      onPress={onPress}/>
-  );
-}
-
-Object.assign(window, { AccountReorderRow, AddAccountRow });
+Object.assign(window, { AccountReorderRow });
