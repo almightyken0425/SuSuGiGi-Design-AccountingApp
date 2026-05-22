@@ -7,7 +7,7 @@
 //
 // Variants：
 //   default      — 有帳戶可選
-//   no-accounts  — 無可用帳戶，顯示「無可用帳戶」disabled ListItem
+//   no-accounts  — 無可用帳戶，account 區塊空白
 // ─────────────────────────────────────────────────────────────
 
 function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) {
@@ -50,12 +50,6 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
       minHeight: '100%',
     }}>
       <FilterTileRow filterState={filterState} setFilterState={setFilterState}/>
-
-      {noAccounts && (
-        <ListGroupCard>
-          <ListItem title="無可用帳戶" disabled/>
-        </ListGroupCard>
-      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: T.CURRENCY_GROUP_GAP }}>
         {groups.map(g => (
