@@ -628,6 +628,12 @@ const EXPLORATION_GROUPS = [
       { id: 'personality',      label: 'Axis 4 · Personality (packaged)',      render: () => <PersonalityPackagedSection/> },
     ],
   },
+  {
+    id: 'searchscreen', label: 'Search Screen',
+    topics: [
+      { id: 'list-treatment', label: 'Axis · List Treatment', render: () => <SearchListTreatmentSection/> },
+    ],
+  },
 ];
 
 // 找 Foundations group / topic 的 helper。沒命中時回 fallback（atomic/type）。

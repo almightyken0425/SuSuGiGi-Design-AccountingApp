@@ -52,10 +52,20 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
               description={hasSearched ? `「${q}」` : undefined}/>
           </div>
         ) : (
-          <div style={{ paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + T.RESULT_LIST_BOTTOM_GAP }}>
-            {baseResults.map(tx => (
-              <SearchResultRow key={tx.id} tx={tx} query={q}/>
-            ))}
+          <div style={{
+            paddingTop: SPACING.md,
+            paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
+            paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + T.RESULT_LIST_BOTTOM_GAP,
+          }}>
+            <ListGroupCard>
+              {baseResults.map((tx, i) => (
+                <div key={tx.id} style={{
+                  borderTop: i === 0 ? 'none' : `0.5px solid ${TOKENS.hairline}`,
+                }}>
+                  <SearchResultRow tx={tx} query={q}/>
+                </div>
+              ))}
+            </ListGroupCard>
           </div>
         )}
       </div>
