@@ -2,23 +2,25 @@
 // TransferEditorScreen · 對齊 impl src/screens/Transactions/TransferEditorScreen.tsx
 //
 // Modal screen。跨帳戶 / 跨幣別轉帳。
-// 內容順序：[EditorErrorBanner?] → EditorDateContainer → [RecurringOptions?]
+// 內容順序：EditorDateContainer → [RecurringOptions?]
 //          → DualAmountRow → DualPickerRow → EditorNoteField → [EditorDeleteButton?]
 //          → SCROLL_SPACER → CalculatorKeypad(absolute)
 //
 // Variants：
-//   default  — 跨幣別轉帳（TWD → USD），預設 from 為 active
-//   error    — 含 EditorErrorBanner（與 TxEditor 對稱）
+//   default                — 跨幣別轉帳（TWD → USD），預設 from 為 active、Recurring 收起
+//   initialRecurring=true  — RecurringOptions 預設展開（對應 impl showRecurringOptions=true）
+//
+// 無 error variant：impl 的 save button disabled 條件已攔死「amountFrom 為空」場景，
+// 「請輸入有效金額」這條 Alert 在 transfer 路徑跑不到；TxEditor 仍保留 error variant。
 // ─────────────────────────────────────────────────────────────
 
-function TransferEditorScreen({ isEdit = false, variant = 'default' }) {
+function TransferEditorScreen({ isEdit = false, initialRecurring = false }) {
   const T = TRANSFER_EDITOR_SCREEN_TOKENS;
-  const isError = variant === 'error';
 
   const [fromAccount] = React.useState('bank');
   const [toAccount]   = React.useState('usd_cash');
   const [activeField, setActiveField] = React.useState('from');
-  const [recurring, setRecurring] = React.useState(false);
+  const [recurring, setRecurring] = React.useState(initialRecurring);
   const [note, setNote] = React.useState('');
 
   const fromAcc = ACC_BY_ID[fromAccount];
@@ -31,8 +33,6 @@ function TransferEditorScreen({ isEdit = false, variant = 'default' }) {
       background: TOKENS.bg,
     }}>
       <div style={{ flex: 1, overflowY: 'auto', padding: SPACING.lg }}>
-        {isError && <EditorErrorBanner/>}
-
         <EditorDateContainer
           recurring={recurring}
           onToggleRecurring={() => setRecurring(!recurring)}/>
