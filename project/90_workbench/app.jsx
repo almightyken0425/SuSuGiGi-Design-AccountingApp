@@ -101,6 +101,169 @@ const SCREEN_META = {
     title: '設定', present: 'push',
     render: () => <SettingsScreen variant="subscribed"/>,
   },
+  // ─── Account List ─── default / empty
+  'account-list': {
+    title: '帳戶', present: 'push', headerLeftText: '設定',
+    render: () => <AccountListScreen/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+  },
+  'account-list-empty': {
+    title: '帳戶', present: 'push', headerLeftText: '設定',
+    render: () => <AccountListScreen variant="empty"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+  },
+  // ─── Category List ─── default / empty
+  'category-list': {
+    title: '分類', present: 'push', headerLeftText: '設定',
+    render: () => <CategoryListScreen/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+  },
+  'category-list-empty': {
+    title: '分類', present: 'push', headerLeftText: '設定',
+    render: () => <CategoryListScreen variant="empty"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge']} intent="action"/>,
+  },
+  // ─── Currency List ─── default / no-results
+  'currency-list': {
+    title: '幣別', present: 'push', headerLeftText: '設定',
+    render: () => <CurrencyListScreen/>,
+  },
+  'currency-list-no-results': {
+    title: '幣別', present: 'push', headerLeftText: '設定',
+    render: () => <CurrencyListScreen variant="no-results"/>,
+  },
+  // ─── Currency Rate List ─── default / empty
+  'currency-rate-list': {
+    title: '匯率', present: 'push', headerLeftText: '設定',
+    render: () => <CurrencyRateListScreen/>,
+  },
+  'currency-rate-list-empty': {
+    title: '匯率', present: 'push', headerLeftText: '設定',
+    render: () => <CurrencyRateListScreen variant="empty"/>,
+  },
+  // ─── Language Setting ─── default（Modal save form）
+  'language-setting': {
+    title: '語言', present: 'modal', save: true,
+    render: () => <LanguageSettingScreen/>,
+  },
+  // ─── Time Zone Setting ─── default / no-results
+  'time-zone-setting': {
+    title: '時區', present: 'modal', save: true,
+    render: () => <TimeZoneSettingScreen/>,
+  },
+  'time-zone-setting-no-results': {
+    title: '時區', present: 'modal', save: true,
+    render: () => <TimeZoneSettingScreen variant="no-results"/>,
+  },
+  // ─── Theme Settings ─── default
+  'theme-settings': {
+    title: '主題', present: 'modal', save: true,
+    render: () => <ThemeSettingsScreen/>,
+  },
+  // ─── Base Currency Setting ─── default / no-results
+  'base-currency-setting': {
+    title: '基礎幣別', present: 'modal', save: true,
+    render: () => <BaseCurrencySettingScreen/>,
+  },
+  'base-currency-setting-no-results': {
+    title: '基礎幣別', present: 'modal', save: true,
+    render: () => <BaseCurrencySettingScreen variant="no-results"/>,
+  },
+  // ─── Launch Mode Setting ─── default
+  'launch-mode-setting': {
+    title: '啟動模式', present: 'modal', save: true,
+    render: () => <LaunchModeSettingScreen/>,
+  },
+  // ─── Preference ─── default
+  'preference': {
+    title: '偏好設定', present: 'push', headerLeftText: '設定',
+    render: () => <PreferenceScreen/>,
+  },
+  // ─── Data Management ─── default
+  'data-management': {
+    title: '資料管理', present: 'push', headerLeftText: '設定',
+    render: () => <DataManagementScreen/>,
+  },
+  // ─── Account Editor ─── new / edit
+  'account-editor': {
+    title: '新增帳戶', present: 'modal', save: true,
+    render: () => <AccountEditorScreen/>,
+  },
+  'account-editor-edit': {
+    title: '編輯帳戶', present: 'modal', save: true,
+    render: () => <AccountEditorScreen variant="edit"/>,
+  },
+  // ─── Category Editor ─── new-expense / new-income / edit
+  'category-editor': {
+    title: '新增支出分類', present: 'modal', save: true,
+    render: () => <CategoryEditorScreen variant="new-expense"/>,
+  },
+  'category-editor-income': {
+    title: '新增收入分類', present: 'modal', save: true,
+    render: () => <CategoryEditorScreen variant="new-income"/>,
+  },
+  'category-editor-edit': {
+    title: '編輯分類', present: 'modal', save: true,
+    render: () => <CategoryEditorScreen variant="edit"/>,
+  },
+  // ─── Currency Detail Config ─── default
+  'currency-detail-config': {
+    title: 'USD', present: 'modal', save: true,
+    render: () => <CurrencyDetailConfigScreen/>,
+  },
+  // ─── Currency Rate Editor ─── add / update
+  'currency-rate-editor': {
+    title: '設定匯率', present: 'modal', save: true,
+    render: () => <CurrencyRateEditorScreen variant="add"/>,
+  },
+  'currency-rate-editor-update': {
+    title: '設定匯率', present: 'modal', save: true,
+    render: () => <CurrencyRateEditorScreen variant="update"/>,
+  },
+  // ─── Import ─── 5 steps
+  'import-step-0': {
+    title: '模板與時區', present: 'modal',
+    render: () => <ImportScreen variant="step-0"/>,
+  },
+  'import-step-1': {
+    title: '選擇檔案', present: 'modal',
+    render: () => <ImportScreen variant="step-1"/>,
+  },
+  'import-step-2': {
+    title: '欄位對應', present: 'modal',
+    render: () => <ImportScreen variant="step-2"/>,
+  },
+  'import-step-3': {
+    title: '內容比對', present: 'modal',
+    render: () => <ImportScreen variant="step-3"/>,
+  },
+  'import-step-4': {
+    title: '預覽', present: 'modal',
+    render: () => <ImportScreen variant="step-4"/>,
+  },
+  // ─── Login ─── default
+  'login': {
+    title: '登入', present: 'none',
+    render: () => <LoginScreen/>,
+  },
+  // ─── Paywall ─── default (yearly) / monthly
+  'paywall': {
+    title: '升級', present: 'modal',
+    render: () => <PaywallScreen/>,
+  },
+  'paywall-monthly': {
+    title: '升級', present: 'modal',
+    render: () => <PaywallScreen variant="monthly"/>,
+  },
+  // ─── Merge Editor ─── account / category
+  'merge-account': {
+    title: '合併帳戶', present: 'modal', save: true,
+    render: () => <MergeEditorScreen variant="account"/>,
+  },
+  'merge-category': {
+    title: '合併分類', present: 'modal', save: true,
+    render: () => <MergeEditorScreen variant="category"/>,
+  },
 };
 
 // SCREEN_GROUPS — Screens tab 顯示結構
@@ -164,6 +327,174 @@ const SCREEN_GROUPS = [
     screens: [
       { id: 'settings',            label: 'Default · 未訂閱' },
       { id: 'settings-subscribed', label: 'Subscribed · 已訂閱' },
+    ],
+  },
+  {
+    id: 'account-list',
+    title: 'Account List · 帳戶列表',
+    subtitle: '帳戶列表 + 拖拉排序 + 新增入口（src/screens/Accounts/AccountListScreen.tsx）。Header 右側為合併工具入口。',
+    screens: [
+      { id: 'account-list',       label: 'Default · 有帳戶' },
+      { id: 'account-list-empty', label: 'Empty · 尚無帳戶' },
+    ],
+  },
+  {
+    id: 'category-list',
+    title: 'Category List · 分類列表',
+    subtitle: '收 / 支兩 section，各含拖拉排序列表 + 新增入口（src/screens/Categories/CategoryListScreen.tsx）。Header 右側為合併工具入口。',
+    screens: [
+      { id: 'category-list',       label: 'Default · 有分類' },
+      { id: 'category-list-empty', label: 'Empty · 尚無分類' },
+    ],
+  },
+  {
+    id: 'currency-list',
+    title: 'Currency List · 幣別列表',
+    subtitle: '標準幣別列表 + 底部 BottomSearchBar，點 row 進入 CurrencyDetailConfig（src/screens/Settings/CurrencyListScreen.tsx）。',
+    screens: [
+      { id: 'currency-list',            label: 'Default · 完整清單' },
+      { id: 'currency-list-no-results', label: 'No results · 搜尋無結果' },
+    ],
+  },
+  {
+    id: 'currency-rate-list',
+    title: 'Currency Rate List · 匯率列表',
+    subtitle: '匯率對列表 + 底部 BottomSearchBar，點 row 進入 CurrencyRateEditor（src/screens/Settings/CurrencyRateListScreen.tsx）。',
+    screens: [
+      { id: 'currency-rate-list',       label: 'Default · 有匯率' },
+      { id: 'currency-rate-list-empty', label: 'Empty · 尚無匯率設定' },
+    ],
+  },
+  {
+    id: 'language-setting',
+    title: 'Language Setting · 語言',
+    subtitle: '2 選 1 SelectionListItem，selected 排頂（src/screens/Settings/LanguageSettingScreen.tsx）。Modal save form。',
+    screens: [
+      { id: 'language-setting', label: 'Default · 已選繁體中文' },
+    ],
+  },
+  {
+    id: 'time-zone-setting',
+    title: 'Time Zone Setting · 時區',
+    subtitle: 'SelectionListItem 列表 + 底部 BottomSearchBar，selected 排頂（src/screens/Settings/TimeZoneSettingScreen.tsx）。',
+    screens: [
+      { id: 'time-zone-setting',            label: 'Default · 已選 Taipei' },
+      { id: 'time-zone-setting-no-results', label: 'No results · 搜尋無結果' },
+    ],
+  },
+  {
+    id: 'theme-settings',
+    title: 'Theme Settings · 主題',
+    subtitle: '2 欄 SelectionGridItem，每 cell 為三色預覽（src/screens/Settings/ThemeSettingsScreen.tsx）。Modal save form。',
+    screens: [
+      { id: 'theme-settings', label: 'Default · 已選經典紫' },
+    ],
+  },
+  {
+    id: 'base-currency-setting',
+    title: 'Base Currency Setting · 基礎幣別',
+    subtitle: 'SelectionListItem 列表 + 底部 BottomSearchBar，selected 排頂（src/screens/Settings/BaseCurrencySettingScreen.tsx）。',
+    screens: [
+      { id: 'base-currency-setting',            label: 'Default · 已選 TWD' },
+      { id: 'base-currency-setting-no-results', label: 'No results · 搜尋無結果' },
+    ],
+  },
+  {
+    id: 'launch-mode-setting',
+    title: 'Launch Mode Setting · 啟動模式',
+    subtitle: '4 選 1 SelectionListItem（src/screens/Settings/LaunchModeSettingScreen.tsx）。Modal save form。',
+    screens: [
+      { id: 'launch-mode-setting', label: 'Default · 已選首頁' },
+    ],
+  },
+  {
+    id: 'preference',
+    title: 'Preference · 偏好設定',
+    subtitle: '4 section hub（主題/啟動 · 幣別 · 語言/時區 · 登出）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/PreferenceScreen.tsx）。',
+    screens: [
+      { id: 'preference', label: 'Default · 偏好設定主頁' },
+    ],
+  },
+  {
+    id: 'data-management',
+    title: 'Data Management · 資料管理',
+    subtitle: '3 section（匯入 · 匯出 · 重設資料庫）。重設為 destructive 紅色（src/screens/Settings/DataManagementScreen.tsx）。',
+    screens: [
+      { id: 'data-management', label: 'Default · 資料管理主頁' },
+    ],
+  },
+  {
+    id: 'account-editor',
+    title: 'Account Editor · 帳戶編輯',
+    subtitle: '帳戶 4 欄表單（名稱/幣別/類型/圖示）。Edit mode 多顯示啟用 Switch + 刪除（src/screens/Accounts/AccountEditorScreen.tsx）。',
+    screens: [
+      { id: 'account-editor',      label: 'New · 新增模式' },
+      { id: 'account-editor-edit', label: 'Edit · 編輯模式（含刪除）' },
+    ],
+  },
+  {
+    id: 'category-editor',
+    title: 'Category Editor · 分類編輯',
+    subtitle: '分類 3 欄表單（名稱/映射/圖示）。Type 由 navigation 決定不可切換（src/screens/Categories/CategoryEditorScreen.tsx）。',
+    screens: [
+      { id: 'category-editor',        label: 'New Expense · 新增支出' },
+      { id: 'category-editor-income', label: 'New Income · 新增收入' },
+      { id: 'category-editor-edit',   label: 'Edit · 編輯模式（含刪除）' },
+    ],
+  },
+  {
+    id: 'currency-detail-config',
+    title: 'Currency Detail Config · 幣別格式設定',
+    subtitle: '單一幣別的千位省略與小數位數設定。從 CurrencyList 進入（src/screens/Settings/CurrencyDetailConfigScreen.tsx）。',
+    screens: [
+      { id: 'currency-detail-config', label: 'Default · USD（小數 2 位）' },
+    ],
+  },
+  {
+    id: 'currency-rate-editor',
+    title: 'Currency Rate Editor · 匯率編輯',
+    subtitle: '兩 surface card：幣別對 + 金額。To 永遠鎖為 base currency；Update mode 中 From 也鎖（src/screens/Settings/CurrencyRateEditorScreen.tsx）。',
+    screens: [
+      { id: 'currency-rate-editor',        label: 'Add · 新增匯率' },
+      { id: 'currency-rate-editor-update', label: 'Update · 更新匯率' },
+    ],
+  },
+  {
+    id: 'import',
+    title: 'Import · 匯入 Wizard',
+    subtitle: '5 步驟 wizard（模板說明 / 檔案選擇 / 欄位對應 / 內容比對 / 預覽）。底部 Back/Next bar（src/screens/Settings/ImportScreen.tsx）。',
+    screens: [
+      { id: 'import-step-0', label: 'Step 0 · 模板與時區' },
+      { id: 'import-step-1', label: 'Step 1 · 選擇檔案' },
+      { id: 'import-step-2', label: 'Step 2 · 欄位對應' },
+      { id: 'import-step-3', label: 'Step 3 · 內容比對' },
+      { id: 'import-step-4', label: 'Step 4 · 預覽' },
+    ],
+  },
+  {
+    id: 'login',
+    title: 'Login · 登入',
+    subtitle: '全螢幕登入頁。Branding + Google SSO 按鈕 + disclaimer + footer（src/screens/Auth/LoginScreen.tsx）。',
+    screens: [
+      { id: 'login', label: 'Default · 登入入口' },
+    ],
+  },
+  {
+    id: 'paywall',
+    title: 'Paywall · 升級',
+    subtitle: 'Modal info。Title + 4 benefits + Yearly/Monthly 兩選項 + CTA + 還原 + 暫不升級（src/screens/Paywall/PaywallScreen.tsx）。',
+    screens: [
+      { id: 'paywall',         label: 'Default · 已選年費' },
+      { id: 'paywall-monthly', label: 'Monthly · 已選月費' },
+    ],
+  },
+  {
+    id: 'merge-editor',
+    title: 'Merge Editor · 合併',
+    subtitle: 'Modal save form。source → target 視覺化 + 警告 banner + 兩 selector。mode 由 navigation 決定（src/screens/Merge/MergeEditorScreen.tsx）。',
+    screens: [
+      { id: 'merge-account',  label: 'Account · 合併帳戶' },
+      { id: 'merge-category', label: 'Category · 合併分類' },
     ],
   },
 ];
