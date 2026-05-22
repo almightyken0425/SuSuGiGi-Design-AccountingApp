@@ -68,7 +68,7 @@ const SCREEN_META = {
     title: '搜尋', present: 'modal',
     render: () => <SearchScreen variant="no-results"/>,
   },
-  // ─── Transaction Editor ─── default / income
+  // ─── Transaction Editor ─── default / income / recurring 展開 / edit recurring dialog
   // 無 error variant：impl 守 save 在 header checkmark disabled，無 invalid-amount inline banner
   'tx-editor': {
     title: '新增支出', present: 'modal', save: true,
@@ -77,6 +77,14 @@ const SCREEN_META = {
   'tx-editor-income': {
     title: '新增收入', present: 'modal', save: true,
     render: () => <TransactionEditorScreen type="income"/>,
+  },
+  'tx-editor-recurring': {
+    title: '新增支出', present: 'modal', save: true,
+    render: () => <TransactionEditorScreen type="expense" initialRecurring/>,
+  },
+  'tx-editor-edit-recurring-dialog': {
+    title: '編輯交易', present: 'modal', save: true,
+    render: () => <TransactionEditorScreen type="expense" isEdit initialRecurring showScheduleModeDialog/>,
   },
   // ─── Transfer Editor ─── default / recurring
   // 無 error variant：impl 的 save disabled 條件攔死「amountFrom 為空」場景，
@@ -301,10 +309,12 @@ const SCREEN_GROUPS = [
   {
     id: 'tx-editor',
     title: 'Transaction Editor · 記一筆交易',
-    subtitle: '記一筆支出 / 收入 modal（src/screens/Transactions/TransactionEditorScreen.tsx）。impl 守 save 在 header checkmark disabled（無 amount 或 account 時灰掉），無 invalid-amount inline banner；真實 error（save / delete 失敗）走 Alert.alert runtime 彈窗。',
+    subtitle: '記一筆支出 / 收入 modal（src/screens/Transactions/TransactionEditorScreen.tsx）。impl 守 save 在 header checkmark disabled（無 amount 或 account 時灰掉），無 invalid-amount inline banner；真實 error（save / delete 失敗）走 Alert.alert runtime 彈窗。Recurring 展開態鏡射 impl `showRecurringOptions=true`；編輯態 dialog 鏡射 `showRecurringModeDialog`。',
     screens: [
-      { id: 'tx-editor',        label: 'Default · 新增支出' },
-      { id: 'tx-editor-income', label: '新增收入' },
+      { id: 'tx-editor',                       label: 'Default · 新增支出' },
+      { id: 'tx-editor-income',                label: '新增收入' },
+      { id: 'tx-editor-recurring',             label: 'Recurring · 展開定期選項' },
+      { id: 'tx-editor-edit-recurring-dialog', label: 'Edit recurring · 本次／未來對話框' },
     ],
   },
   {
@@ -587,6 +597,7 @@ const FOUNDATIONS_GROUPS = [
       { id: 'amount-field',          label: 'Amount Field',          render: () => <FoundationsCTAmountFieldSection/> },
       { id: 'static-wheel-picker',   label: 'Static Wheel Picker',   render: () => <FoundationsCTStaticWheelPickerSection/> },
       { id: 'recurring-options',     label: 'Recurring Options',     render: () => <FoundationsCTRecurringOptionsSection/> },
+      { id: 'confirm-dialog',        label: 'Confirm Dialog',        render: () => <FoundationsCTConfirmDialogSection/> },
     ],
   },
   {

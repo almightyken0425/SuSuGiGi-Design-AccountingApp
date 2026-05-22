@@ -23,7 +23,8 @@ visualizers/
 │   ├── no8_list_empty_transition_visualizer.jsx FoundationsCTListEmptyTransitionSection
 │   ├── no9_amount_field_visualizer.jsx      FoundationsCTAmountFieldSection
 │   ├── no10_static_wheel_picker_visualizer.jsx FoundationsCTStaticWheelPickerSection
-│   └── no11_recurring_options_visualizer.jsx FoundationsCTRecurringOptionsSection
+│   ├── no11_recurring_options_visualizer.jsx FoundationsCTRecurringOptionsSection
+│   └── no12_confirm_dialog_visualizer.jsx   FoundationsCTConfirmDialogSection
 ├── brand/                                   對應 Foundations > Brand group
 │   └── no1_ui_glyphs.jsx                    FoundationsBrandUIGlyphsSection
 └── icon_library/                            對應 Foundations > Icon Library group

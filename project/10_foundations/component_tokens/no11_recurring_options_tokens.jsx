@@ -33,6 +33,16 @@ const RECURRING_OPTIONS_TOKENS = {
   INTERVAL_INPUT_SIZE:         TYPOGRAPHY.size.lg,
   INTERVAL_INPUT_RIGHT_GAP:    SPACING.md,
   UNIT_TEXT_SIZE:              TYPOGRAPHY.size.base,
+
+  // ── End-date pill（結束於＝特定日期時下方接的 DatePill）
+  // 對齊 impl src/components/RecurringOptions.tsx ON_DATE 分支接的 DateTimePicker。
+  END_DATE_PILL_PADDING_VERTICAL:   SPACING.sm,
+  END_DATE_PILL_PADDING_HORIZONTAL: SPACING.md,
+  END_DATE_PILL_RADIUS:             RADIUS.md,
+  END_DATE_PILL_BORDER_WIDTH:       1,                                          // (literal: 同上 hairline)
+  END_DATE_PILL_MARGIN_TOP:         SPACING.sm,
+  END_DATE_PILL_TEXT_SIZE:          TYPOGRAPHY.size.base,
+  END_DATE_PILL_ICON_GAP:           SPACING.sm,
 };
 
 Object.assign(window, { RECURRING_OPTIONS_TOKENS });

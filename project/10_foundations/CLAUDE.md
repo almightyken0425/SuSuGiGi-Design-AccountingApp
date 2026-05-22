@@ -49,6 +49,7 @@ Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 g
 | Component Tokens | Amount Field | `visualizers/component_tokens/no9_amount_field_visualizer.jsx` |
 | Component Tokens | Static Wheel Picker | `visualizers/component_tokens/no10_static_wheel_picker_visualizer.jsx` |
 | Component Tokens | Recurring Options | `visualizers/component_tokens/no11_recurring_options_visualizer.jsx` |
+| Component Tokens | Confirm Dialog | `visualizers/component_tokens/no12_confirm_dialog_visualizer.jsx` |
 | Components | List | `20_components/components-showcase.jsx`（`ComponentsListSection`） |
 | Components | Form | `20_components/components-showcase.jsx`（`ComponentsFormSection`） |
 | Components | Navigation | `20_components/components-showcase.jsx`（`ComponentsNavigationSection`） |
