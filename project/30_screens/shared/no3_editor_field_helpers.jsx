@@ -51,7 +51,6 @@ function EditorPickerCollapsed({ value, leftIcon, disabled }) {
       background: TOKENS.surface,
       padding: SPACING.md,
       borderRadius: RADIUS.md,
-      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.divider.hairline,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.sm }}>
         {leftIcon}

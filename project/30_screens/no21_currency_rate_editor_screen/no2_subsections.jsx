@@ -14,7 +14,6 @@ function RateCurrencyButton({ code, disabled }) {
     <div style={{
       padding: T.PAIR_BUTTON_PADDING,
       borderRadius: T.PAIR_BUTTON_RADIUS,
-      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.divider.hairline,
       background: TOKENS.bg,
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       fontSize: T.PAIR_BUTTON_FONT_SIZE,
@@ -33,7 +32,6 @@ function RateAmountInput({ value, code }) {
     <div style={{
       display: 'flex', flexDirection: 'row', alignItems: 'center',
       borderRadius: T.AMOUNT_INPUT_RADIUS,
-      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.divider.hairline,
       paddingLeft: T.AMOUNT_INPUT_PADDING_H, paddingRight: T.AMOUNT_INPUT_PADDING_H,
       background: TOKENS.bg,
     }}>
