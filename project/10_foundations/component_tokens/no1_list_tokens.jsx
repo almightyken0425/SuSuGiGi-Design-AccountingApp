@@ -32,7 +32,6 @@ const LIST_TOKENS = {
   TRAILING_CHEVRON_SIZE:     TYPE_STYLES.footnote.size,     // 13
   TRAILING_CHEVRON_WEIGHT:   'semibold',                    // (literal: SF Symbols semibold enum)
   TRAILING_VALUE_SIZE:       TYPE_STYLES.body.size,         // 17
-  PRESS_BG_HIGHLIGHT_OPACITY: 0.5,                          // (literal: press 態高亮)
   GRID_COLUMNS:              2,                             // (literal: SelectionGridItem 預設欄數)
   GRID_GAP:                  SPACING.md,
   EMPTY_STATE_ICON_SIZE:     ICON_SIZE['2xl'],

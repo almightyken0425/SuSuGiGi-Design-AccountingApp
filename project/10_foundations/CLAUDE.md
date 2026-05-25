@@ -28,6 +28,16 @@
 - 在 `visualizers/` 內定義 token（visualizer 只能讀活 token 渲染卡片）
 - 改動 export 名稱（會打到 impl 對齊；新增名稱可，重命名不可）
 
+## 互動狀態政策
+
+任何元件按下、停用、選取的視覺反饋一律走 token，不另起 opacity 路線。
+
+- **Pressed**: 背景換成 `TOKENS.surface2`，即 atomic 層的 `surface_hover`。不要用 `activeOpacity` 把整列淡掉——opacity 法會與拖拉列表 lifted 狀態的 opacity 視覺打架，也跟 iOS native list 的底色變化不一致
+- **Disabled**: 文字色從 `TOKENS.ink` 降到 `TOKENS.ink3`；背景維持 `TOKENS.surface`，不另變色
+- **Selected**: 靠 trailing checkmark 或右上 check-circle 表達，不改背景；selected + pressed 同時發生時 pressed 視覺優先
+
+新增 row 級元件依此 pattern 補 pressed 內部 state，搭配 `onPointerDown` / `onPointerUp` / `onPointerLeave` 切換，背景三元式寫成 `pressed && !disabled ? TOKENS.surface2 : TOKENS.surface`。受外層手勢容器拘束的元件——例如 `ReorderableListItem` 在 `AutoDragSortableView` 內——按相同視覺結果處理，僅 impl 端用 `onTouch*` 替代 `Pressable` 避免搶 responder lock。實際展示見 Foundations > Components > List 的 Interaction States family。
+
 ## TOC 對應
 
 Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 group × 22 leaf：
