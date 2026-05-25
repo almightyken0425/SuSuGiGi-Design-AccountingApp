@@ -57,6 +57,8 @@ const GLYPH_ALIASES = {
   'bank-transfer': 'exchange',
   'arrow-right': 'arrow-right',
   'arrow-left': 'arrow-left',
+  'arrow-down': 'arrow-down',
+  'arrow-up': 'arrow-up',
   'chevron-up': 'chevron-up',
   'chevron-down': 'chevron-down',
   'chevron-left': 'chevron-left',
@@ -149,6 +151,8 @@ function Glyph({ name, size = 16, color = TOKENS.ink, stroke = 2 }) {
     case 'chevron-down':   return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M3 6L8 11L13 6" stroke={c} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"/></svg>);
     case 'arrow-right':    return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke={c} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"/></svg>);
     case 'arrow-left':     return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke={c} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"/></svg>);
+    case 'arrow-down':     return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke={c} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"/></svg>);
+    case 'arrow-up':       return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M8 13V3M4 7l4-4 4 4" stroke={c} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"/></svg>);
     case 'x':              return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke={c} strokeWidth={sw} strokeLinecap="round"/></svg>);
     case 'check':          return (<svg width={s} height={s} viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke={c} strokeWidth={sw + 0.5} strokeLinecap="round" strokeLinejoin="round"/></svg>);
     case 'check-circle':   return (<svg width={s} height={s} viewBox="0 0 16 16" fill={c}><circle cx="8" cy="8" r="7" fill={c}/><path d="M4.5 8L7 10.5L11.5 6" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>);
@@ -1149,61 +1153,89 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
 // ─── CalculatorKeypad ─── 對齊 src/components/CalculatorKeypad.tsx
 // 4×4 grid: 1 2 3 + / 4 5 6 - / 7 8 9 * / . 0 = /
 // 字元用 ASCII 不用 Unicode（impl 用 +, -, *, /）
+// 左區 4 row × 3 col 數字；右側 operator column 5 鍵（⌫ + - * /），
+// operator 鍵均分左區 4 row 總高度，每鍵 ≈ 數字鍵 × 0.8（不對稱 grid）。
 // container: padding SPACING.sm, bg surface, borderTop 1px border.base
-// row marginBottom SPACING.sm, key flex 1 height 60 marginHorizontal SPACING.xs
+// number key: flex 1 height 60 marginHorizontal SPACING.xs
 // operator keys: GlassView with primary[100]*0.5 tint
 function CalculatorKeypad({ onPress }) {
-  const KEYS = [
-    ['1', '2', '3', '+'],
-    ['4', '5', '6', '-'],
-    ['7', '8', '9', '*'],
-    ['.', '0', '=', '/'],
+  const NUMBER_ROWS = [
+    ['1', '2', '3'],
+    ['4', '5', '6'],
+    ['7', '8', '9'],
+    ['.', '0', '='],
   ];
-  const OPERATORS = new Set(['+', '-', '*', '/', '=']);
+  // ⌫ 放 operator column 最上鍵，染紫色跟其他 operator 一致
+  const OPS = ['⌫', '+', '-', '*', '/'];
+  const N_HEIGHT = 60;
+  const ROW_GAP = SPACING.sm;
+  const TOTAL_H = N_HEIGHT * NUMBER_ROWS.length + ROW_GAP * (NUMBER_ROWS.length - 1);
+
+  const keyVisual = (isOp) => ({
+    position: 'absolute', inset: 0,
+    borderRadius: RADIUS.md,
+    background: isOp ? `${TOKENS.p100}80` : GLASS.tint,
+    backdropFilter: 'blur(28px) saturate(180%)',
+    WebkitBackdropFilter: 'blur(28px) saturate(180%)',
+    border: `1px solid ${GLASS.border}`,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
+  });
+  const keyLabel = (isOp) => ({
+    position: 'relative', zIndex: 1,
+    fontSize: TYPOGRAPHY.size.xl,
+    fontWeight: TYPOGRAPHY.weight.medium,
+    color: isOp ? TOKENS.p500 : TOKENS.ink,
+  });
+
   return (
     <div style={{
       padding: SPACING.sm,
       background: TOKENS.surface,
       borderTop: `1px solid ${TOKENS.border}`,
+      display: 'flex', flexDirection: 'row',
     }}>
-      {KEYS.map((row, ri) => (
-        <div key={ri} style={{
-          display: 'flex', flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: ri === KEYS.length - 1 ? 0 : SPACING.sm,
-        }}>
-          {row.map(k => {
-            const isOp = OPERATORS.has(k);
-            return (
+      {/* 數字區 · flex 3 */}
+      <div style={{ flex: 3 }}>
+        {NUMBER_ROWS.map((row, ri) => (
+          <div key={ri} style={{
+            display: 'flex', flexDirection: 'row',
+            marginBottom: ri === NUMBER_ROWS.length - 1 ? 0 : ROW_GAP,
+          }}>
+            {row.map(k => (
               <button key={k} onClick={() => onPress && onPress(k)} style={{
-                flex: 1, height: 60,
+                flex: 1, height: N_HEIGHT,
                 marginLeft: SPACING.xs, marginRight: SPACING.xs,
-                border: 'none',
-                position: 'relative', overflow: 'hidden',
-                borderRadius: RADIUS.md,
-                cursor: 'pointer', fontFamily: 'inherit',
+                border: 'none', position: 'relative', overflow: 'hidden',
+                borderRadius: RADIUS.md, cursor: 'pointer', fontFamily: 'inherit',
                 background: 'transparent', padding: 0,
               }}>
-                <div style={{
-                  position: 'absolute', inset: 0,
-                  borderRadius: RADIUS.md,
-                  background: isOp ? `${TOKENS.p100}80` : GLASS.tint,
-                  backdropFilter: 'blur(28px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-                  border: `1px solid ${GLASS.border}`,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
-                }}/>
-                <span style={{
-                  position: 'relative', zIndex: 1,
-                  fontSize: TYPOGRAPHY.size.xl,
-                  fontWeight: TYPOGRAPHY.weight.medium,
-                  color: isOp ? TOKENS.p500 : TOKENS.ink,
-                }}>{k}</span>
+                <div style={keyVisual(false)}/>
+                <span style={keyLabel(false)}>{k}</span>
               </button>
-            );
-          })}
-        </div>
-      ))}
+            ))}
+          </div>
+        ))}
+      </div>
+      {/* operator column · flex 1 · 5 鍵均分 TOTAL_H */}
+      <div style={{
+        flex: 1, marginLeft: SPACING.xs, marginRight: SPACING.xs,
+        height: TOTAL_H,
+        display: 'flex', flexDirection: 'column',
+      }}>
+        {OPS.map((op, oi) => (
+          <button key={op} onClick={() => onPress && onPress(op)} style={{
+            flex: 1, width: '100%',
+            marginTop: oi === 0 ? 0 : ROW_GAP / 2,
+            marginBottom: oi === OPS.length - 1 ? 0 : ROW_GAP / 2,
+            border: 'none', position: 'relative', overflow: 'hidden',
+            borderRadius: RADIUS.md, cursor: 'pointer', fontFamily: 'inherit',
+            background: 'transparent', padding: 0,
+          }}>
+            <div style={keyVisual(true)}/>
+            <span style={keyLabel(true)}>{op}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -1236,45 +1268,35 @@ const iconBtn = {
 
 // ─── AmountField ─── 對齊 src/screens/Transactions/TransferEditorScreen.tsx 內 AmountField
 // 雙 editor 共用：TransferEditor 雙欄、TransactionEditor 單欄。
-// active 時 primary border + bg.base 背景 + 右側 backspace；disabled 時去框架透明化。
+// 改版：active 用 amount 文字色（紫）表達，無 border / no surface / no inline backspace。
+// 外層 grouping box 由 caller（TransferEditor 的 DualAmountRow、TransactionEditor 的 AmountRow）提供。
+// backspace 由 CalculatorKeypad 的 ⌫ 鍵承接（C-1 排法）。
 // 視覺參數由 AMOUNT_FIELD_TOKENS 提供。
 function AmountField({ active, value, currency, disabled, onPress }) {
   const T = AMOUNT_FIELD_TOKENS;
   return (
-    <div onClick={onPress} style={{
-      position: 'relative',
-      display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-      background: disabled ? TOKENS.bg : (active ? TOKENS.bg : TOKENS.surface),
+    <div onClick={disabled ? undefined : onPress} style={{
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
       padding: T.PADDING,
-      borderRadius: T.RADIUS,
-      borderWidth: active ? T.BORDER_WIDTH : (disabled ? 0 : T.BORDER_WIDTH),
-      borderStyle: 'solid',
-      borderColor: active ? TOKENS.p500 : TOKENS.border,
       height: T.HEIGHT,
+      flex: 1,
       cursor: disabled ? 'default' : 'pointer',
       opacity: disabled ? T.DISABLED_OPACITY : 1,
     }}>
-      {/* impl amountColumn = { flex: 1 } 純 flex 容器；amount 與 currency 各自用 textAlign center 自身水平置中 */}
-      <div style={{ flex: 1 }}>
+      <div style={{
+        fontSize: T.AMOUNT_SIZE, fontWeight: T.AMOUNT_WEIGHT,
+        color: disabled ? TOKENS.ink2
+             : active   ? TOKENS.p500
+             : value    ? TOKENS.ink
+                        : TOKENS.ink3,
+        textAlign: 'center', fontVariantNumeric: 'tabular-nums',
+      }}>{value || '0.00'}</div>
+      {currency && (
         <div style={{
-          fontSize: T.AMOUNT_SIZE, fontWeight: T.AMOUNT_WEIGHT,
-          color: disabled ? TOKENS.ink2 : (value ? TOKENS.ink : TOKENS.ink3),
-          textAlign: 'center', fontVariantNumeric: 'tabular-nums',
-        }}>{value || '0.00'}</div>
-        {currency && (
-          <div style={{
-            fontSize: T.CURRENCY_SIZE, color: TOKENS.ink2,
-            textAlign: 'center', marginTop: T.CURRENCY_MARGIN_TOP,
-          }}>{currency}</div>
-        )}
-      </div>
-      {active && !disabled && (
-        <div style={{
-          position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
-          padding: T.BACKSPACE_PADDING,
-        }}>
-          <Glyph name="backspace-outline" size={T.BACKSPACE_ICON_SIZE} color={TOKENS.ink2} stroke={T.BACKSPACE_ICON_STROKE}/>
-        </div>
+          fontSize: T.CURRENCY_SIZE, color: TOKENS.ink2,
+          textAlign: 'center', marginTop: T.CURRENCY_MARGIN_TOP,
+        }}>{currency}</div>
       )}
     </div>
   );
@@ -1291,7 +1313,9 @@ function AmountField({ active, value, currency, disabled, onPress }) {
 //   - 中 highlighted row：fontSize LABEL_SIZE, color TOKENS.ink, weight medium, opacity 1
 //   - 下 dummy row：同上 dummy
 // 完全對齊 impl static mode wheel 視覺，無 subLabel 補充資訊（impl static mode 不顯示）。
-function StaticWheelPicker({ label }) {
+// noBorder=true：拿掉外框（surface bg / border），保留 wheel 3 行內容與高度。
+// 用於 outer-grouping-box 內（如 TransferEditor amount/account 包進外 box，內部 wheel 不再自帶 box）。
+function StaticWheelPicker({ label, noBorder = false }) {
   const T = STATIC_WHEEL_PICKER_TOKENS;
   const dimRowStyle = {
     fontSize: T.LABEL_SIZE,
@@ -1303,8 +1327,10 @@ function StaticWheelPicker({ label }) {
     <div style={{
       flex: 1,
       height: T.HEIGHT,
-      background: TOKENS.surface,
-      borderRadius: T.RADIUS, borderWidth: T.BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
+      background: noBorder ? 'transparent' : TOKENS.surface,
+      borderRadius: noBorder ? 0 : T.RADIUS,
+      borderWidth: noBorder ? 0 : T.BORDER_WIDTH,
+      borderStyle: 'solid', borderColor: TOKENS.border,
       overflow: 'hidden', display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center', padding: T.PADDING,
     }}>
@@ -1324,10 +1350,10 @@ function StaticWheelPicker({ label }) {
 // modal mode 在 sandbox 無真實 modal 互動意義，省略。
 // impl static mode 內 native Picker 只顯示 category/account name（pickerItems label，subLabel removed），
 // 不顯示 currency code / type label 補充資訊。
-function AccountSelector({ account, mode = 'static' }) {
-  // mode 預留參數對齊 impl 介面，static 模式為 design canvas 唯一實作
+// noBorder：見 StaticWheelPicker
+function AccountSelector({ account, mode = 'static', noBorder = false }) {
   return (
-    <StaticWheelPicker label={account.name}/>
+    <StaticWheelPicker label={account.name} noBorder={noBorder}/>
   );
 }
 
@@ -1335,9 +1361,9 @@ function AccountSelector({ account, mode = 'static' }) {
 // design canvas 預設只實作 mode='static'。
 // impl static mode 不顯示 type accent 視覺（getTypeColor() 只用於 modal/inline mode 的 subText）；
 // pickerItems 只給 category name，無 type 區分。design 對齊不注入 typeColor。
-function CategorySelector({ category, mode = 'static' }) {
+function CategorySelector({ category, mode = 'static', noBorder = false }) {
   return (
-    <StaticWheelPicker label={category.name}/>
+    <StaticWheelPicker label={category.name} noBorder={noBorder}/>
   );
 }
 

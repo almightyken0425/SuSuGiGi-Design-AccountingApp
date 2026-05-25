@@ -1,23 +1,19 @@
 // ─────────────────────────────────────────────────────────────
 // TRANSFER_EDITOR_SCREEN_TOKENS · TransferEditorScreen 內部 composition 參數
 //
-// Modal screen，含 EditorDateContainer / DualAmountRow / DualPickerRow /
+// Modal screen，含 EditorDateContainer / AmountGroupBox / PickerGroupBox /
 // EditorNoteField / EditorDeleteButton + CalculatorKeypad（absolute bottom）。
 // 大部分 form helper 從 30_screens/shared/no2_editor_form_helpers.jsx 共用。
 // 消費 atomic + 20_components/（AmountField / StaticWheelPicker / AccountSelector）。
+//
+// box 視覺（surface + solid grey border + md radius）直接使用 atomic SPACING / RADIUS / TOKENS，
+// 不另設 token；group box 與 V0 內元素 box 樣式一致。
+// ExchangeArrow 內 padding / arrow icon size 由 atomic SPACING / ICON_SIZE 表達，無 screen-level token。
 // ─────────────────────────────────────────────────────────────
 
 const TRANSFER_EDITOR_SCREEN_TOKENS = {
   // ── 各 section 通用間距（與 TRANSACTION_EDITOR_SCREEN_TOKENS.SECTION_GAP 對齊）
   SECTION_GAP:                     SPACING.xl,
-
-  // ── DualAmountRow（from amount + arrow + to amount）
-  AMOUNT_ARROW_FRAME_WIDTH:        ICON_SIZE.xl,                              // 40：arrow column 寬
-  AMOUNT_ARROW_TOP_PADDING:        SPACING.xl,                                // 24：對齊 impl arrowColumn.paddingTop = SPACING.xl
-
-  // ── DualPickerRow（from picker + arrow + to picker）
-  PICKER_ROW_GAP:                  SPACING.lg,
-  PICKER_ARROW_TOP_OFFSET:         SPACING['2xl'],                            // 32：對齊 impl pickerSpacer.paddingTop = SPACING['2xl']
 
   // ── Keypad area
   KEYPAD_BOTTOM_PADDING:           SPACING.xl,
