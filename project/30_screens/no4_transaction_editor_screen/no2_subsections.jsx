@@ -13,34 +13,36 @@
 // + 20_components/（AccountSelector / CategorySelector / Glyph）。
 // ─────────────────────────────────────────────────────────────
 
-// ─── TransactionAmountContainer ─── 金額輸入欄（symbol + amount text + backspace）
-// 與 20_components/AmountField 不同：AmountField 為通用兩態欄（TransferEditor 用），
-// TransactionAmountContainer 含 currency symbol prefix 與 tap-to-focus 開鍵盤行為。
+// ─── TransactionAmountContainer ─── 金額輸入欄（symbol + amount text）
+// 改版：active 用 amount 文字色（紫）表達，不再切 border / bg；
+// inline backspace icon 拿掉（移到 CalculatorKeypad ⌫ 鍵）。
+// 仍保留外框（surface + border）作為視覺 grouping，因為 transaction 只有單一 amount，
+// 沒有 from/to 結構不需要 outer-grouping-box；保留框讓 amount 區跟下方 picker/note 分隔。
 function TransactionAmountContainer({ symbol = 'NT$', amount, amountFocused, onFocus }) {
   const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{ marginBottom: T.SECTION_GAP }}>
       <div onClick={onFocus} style={{
         display: 'flex', alignItems: 'center',
-        background: amountFocused ? TOKENS.bg : TOKENS.surface,
+        background: TOKENS.surface,
         padding: T.AMOUNT_PADDING,
         borderRadius: RADIUS.md,
         borderWidth: 1, borderStyle: 'solid',
-        borderColor: amountFocused ? TOKENS.p500 : TOKENS.border,
+        borderColor: TOKENS.border,
         cursor: 'pointer',
       }}>
         <span style={{
           fontSize: T.AMOUNT_FONT_SIZE, fontWeight: TYPOGRAPHY.weight.medium,
-          color: TOKENS.ink, marginRight: T.AMOUNT_SYMBOL_GAP,
+          color: amountFocused ? TOKENS.p500 : TOKENS.ink,
+          marginRight: T.AMOUNT_SYMBOL_GAP,
         }}>{symbol}</span>
         <span style={{
           flex: 1,
           fontSize: T.AMOUNT_FONT_SIZE, fontWeight: TYPOGRAPHY.weight.medium,
-          color: amount ? TOKENS.ink : TOKENS.ink3,
+          color: amountFocused ? TOKENS.p500
+               : amount        ? TOKENS.ink
+                               : TOKENS.ink3,
         }}>{amount || '0.00'}</span>
-        <div style={{ padding: T.AMOUNT_BACKSPACE_PADDING }}>
-          <Glyph name="backspace-outline" size={ICON_SIZE.md} color={TOKENS.ink2} stroke={1.6}/>
-        </div>
       </div>
     </div>
   );

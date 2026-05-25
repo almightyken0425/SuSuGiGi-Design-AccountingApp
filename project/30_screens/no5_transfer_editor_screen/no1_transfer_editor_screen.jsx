@@ -3,7 +3,7 @@
 //
 // Modal screen。跨帳戶 / 跨幣別轉帳。
 // 內容順序：EditorDateContainer → [RecurringOptions?]
-//          → DualAmountRow → DualPickerRow → EditorNoteField → [EditorDeleteButton?]
+//          → AmountGroupBox → PickerGroupBox → EditorNoteField → [EditorDeleteButton?]
 //          → SCROLL_SPACER → CalculatorKeypad(absolute)
 //
 // Variants（對齊 impl 進入點狀態 route.params.id / recurringRule / 兩 account currency）：
@@ -54,7 +54,7 @@ function TransferEditorScreen({ variant = 'default' }) {
 
         {recurring && <RecurringOptions/>}
 
-        <DualAmountRow
+        <AmountGroupBox
           activeField={activeField}
           setActiveField={setActiveField}
           fromAmount="15,000"
@@ -63,7 +63,7 @@ function TransferEditorScreen({ variant = 'default' }) {
           toAcc={toAcc}
           isCrossCurrency={isCrossCurrency}/>
 
-        <DualPickerRow fromAcc={fromAcc} toAcc={toAcc}/>
+        <PickerGroupBox fromAcc={fromAcc} toAcc={toAcc}/>
 
         <EditorNoteField value={note} onChange={setNote}/>
 
