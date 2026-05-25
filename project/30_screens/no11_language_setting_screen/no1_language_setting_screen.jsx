@@ -1,40 +1,66 @@
 // ─────────────────────────────────────────────────────────────
 // LanguageSettingScreen · 對齊 impl src/screens/Settings/LanguageSettingScreen.tsx
 //
-// Modal screen（header 含 close + checkmark）。
-// 單一 ListGroupCard 含 2 個 SelectionListItem。selected 項排序到頂。
+// Modal screen（header 含 close + checkmark）。SelectionListItem 列表 + 底部 BottomSearchBar。
+// selected 排頂，其餘照 nativeName localeCompare 字母序。
+// 搜尋依語系代碼或原生名稱即時篩選。
 //
 // Variants：
-//   default — 已選「繁體中文」（zh-Hant 排頂）
+//   default    — 已選「繁體中文」（zh-Hant 排頂，列出全 20 語系）
+//   no-results — 搜尋無命中
 // ─────────────────────────────────────────────────────────────
 
-function LanguageSettingScreen({ selectedValue = 'zh-Hant' }) {
+function LanguageSettingScreen({ variant = 'default', selectedValue = 'zh-Hant' }) {
   const T = LANGUAGE_SETTING_SCREEN_TOKENS;
-  // impl 端 selected 排頂；design 端用 useMemo sort 模擬
+  const isNoResults = variant === 'no-results';
+  const query = isNoResults ? 'xyz' : '';
+  const list = isNoResults ? [] : LANGUAGE_OPTIONS;
+
+  // impl 端 selected 排頂；其餘照 nativeName localeCompare 字母序
   const sorted = React.useMemo(() => {
-    return [...LANGUAGE_OPTIONS].sort((a, b) => {
+    return [...list].sort((a, b) => {
       if (a.value === selectedValue) return -1;
       if (b.value === selectedValue) return 1;
-      return 0;
+      return a.nativeName.localeCompare(b.nativeName);
     });
-  }, [selectedValue]);
+  }, [list, selectedValue]);
+
+  const showEmpty = sorted.length === 0;
 
   return (
     <div style={{
-      paddingTop: T.SCREEN_PADDING_TOP,
-      paddingLeft: T.SCREEN_PADDING_HORIZONTAL,
-      paddingRight: T.SCREEN_PADDING_HORIZONTAL,
-      paddingBottom: T.SCREEN_PADDING_BOTTOM,
-      background: TOKENS.bg, minHeight: '100%',
+      display: 'flex', flexDirection: 'column', height: '100%',
+      position: 'relative', background: TOKENS.bg,
     }}>
-      <ListGroupCard>
-        {sorted.map(opt => (
-          <SelectionListItem
-            key={opt.value}
-            title={opt.label}
-            selected={opt.value === selectedValue}/>
-        ))}
-      </ListGroupCard>
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+        {showEmpty ? (
+          <div style={{
+            paddingTop: T.EMPTY_PADDING_TOP,
+            display: 'flex', justifyContent: 'center',
+          }}>
+            <ListEmptyState
+              iconName="magnify"
+              title="找不到結果"
+              description={query ? `「${query}」` : undefined}/>
+          </div>
+        ) : (
+          <div style={{
+            marginLeft: T.LIST_MARGIN_HORIZONTAL,
+            marginRight: T.LIST_MARGIN_HORIZONTAL,
+            paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + T.LIST_BOTTOM_PADDING,
+          }}>
+            <ListGroupCard>
+              {sorted.map(opt => (
+                <LanguageRow
+                  key={opt.value}
+                  option={opt}
+                  selected={opt.value === selectedValue}/>
+              ))}
+            </ListGroupCard>
+          </div>
+        )}
+      </div>
+      <BottomSearchBar value={query} onChangeText={() => {}} placeholder="搜尋"/>
     </div>
   );
 }

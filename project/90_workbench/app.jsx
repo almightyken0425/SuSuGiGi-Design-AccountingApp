@@ -175,10 +175,14 @@ const SCREEN_META = {
     title: '匯率', present: 'push', headerLeftText: '設定',
     render: () => <CurrencyRateListScreen variant="empty"/>,
   },
-  // ─── Language Setting ─── default（Modal save form）
+  // ─── Language Setting ─── default / no-results（Modal save form）
   'language-setting': {
     title: '語言', present: 'modal', save: true,
     render: () => <LanguageSettingScreen/>,
+  },
+  'language-setting-no-results': {
+    title: '語言', present: 'modal', save: true,
+    render: () => <LanguageSettingScreen variant="no-results"/>,
   },
   // ─── Time Zone Setting ─── default / no-results
   'time-zone-setting': {
@@ -413,9 +417,10 @@ const SCREEN_GROUPS = [
   {
     id: 'language-setting',
     title: 'Language Setting · 語言',
-    subtitle: '2 選 1 SelectionListItem，selected 排頂（src/screens/Settings/LanguageSettingScreen.tsx）。Modal save form。',
+    subtitle: 'SelectionListItem 列表 + 底部 BottomSearchBar，selected 排頂；20 個語系以原生名稱呈現（src/screens/Settings/LanguageSettingScreen.tsx）。Modal save form。',
     screens: [
-      { id: 'language-setting', label: 'Default · 已選繁體中文' },
+      { id: 'language-setting',            label: 'Default · 已選繁體中文' },
+      { id: 'language-setting-no-results', label: 'No results · 搜尋無結果' },
     ],
   },
   {
