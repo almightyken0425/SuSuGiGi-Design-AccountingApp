@@ -513,16 +513,24 @@ function SelectionListItem({ leftIcon, title, subtitle, selected, onPress, disab
 // ─── ReorderableListItem ─── 對齊 src/components/list/ReorderableListItem.tsx
 // NO drag handle icon — 整列拖拉，靠手勢觸發
 // height 由 caller style 控制
+// Pressed 視覺與其他 list 元件一致（surface_hover）；impl 受外層 AutoDragSortableView
+// 拘束，用 onTouchStart/onTouchEnd 而非 Pressable 觸發 pressed，避免搶 responder lock
 function ReorderableListItem({ leftIcon, title, subtitle, trailing, style = {} }) {
+  const [pressed, setPressed] = React.useState(false);
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center',
-      paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
-      paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
-      background: TOKENS.surface,
-      borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
-      userSelect: 'none', ...style,
-    }}>
+    <div
+      onPointerDown={() => setPressed(true)}
+      onPointerUp={() => setPressed(false)}
+      onPointerLeave={() => setPressed(false)}
+      style={{
+        display: 'flex', alignItems: 'center',
+        paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
+        paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
+        background: pressed ? TOKENS.surface2 : TOKENS.surface,
+        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
+        cursor: 'pointer',
+        userSelect: 'none', ...style,
+      }}>
       {leftIcon && (
         <div style={{ marginRight: LIST_TOKENS.ITEM_GAP_HORIZONTAL, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{leftIcon}</div>
       )}

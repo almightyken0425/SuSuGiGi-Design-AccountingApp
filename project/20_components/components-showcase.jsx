@@ -155,6 +155,59 @@ function ComponentsListSection() {
         </CompFrame>
       </DCArtboard>
       </DCFamily>
+
+      <DCFamily id="comp-list-interaction-states" title="Interaction States" subtitle="四個 list row 元件的互動狀態階梯：default / pressed / disabled 並排比較。Pressed 統一採 surface_hover（不用 opacity 法），背景由 TOKENS.surface2 提供。新增 list row 元件依此 pattern。">
+      <DCArtboard id="comp-list-state-default" label="Default" width={402} height={420}>
+        <CompFrame>
+          <CompLabel>預設狀態 · 背景 TOKENS.surface</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="ListItem" showChevron/>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="DataListItem" value="NT$1,200"/>
+              <SelectionListItem title="SelectionListItem" selected/>
+              <ReorderableListItem leftIcon={<Glyph name="drag-vertical" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ReorderableListItem" style={{ height: 60 }}/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="comp-list-state-pressed" label="Pressed · surface_hover" width={402} height={420}>
+        <CompFrame>
+          <CompLabel>按下狀態 · 統一覆寫 background 為 TOKENS.surface2（= surface_hover）</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="ListItem" showChevron style={{ background: TOKENS.surface2 }}/>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="DataListItem" value="NT$1,200" style={{ background: TOKENS.surface2 }}/>
+              <SelectionListItem title="SelectionListItem" selected style={{ background: TOKENS.surface2 }}/>
+              <ReorderableListItem leftIcon={<Glyph name="drag-vertical" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ReorderableListItem" style={{ height: 60, background: TOKENS.surface2 }}/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="comp-list-state-disabled" label="Disabled" width={402} height={420}>
+        <CompFrame>
+          <CompLabel>停用狀態 · ListItem / SelectionListItem 有 disabled prop（標題轉 ink3）；DataListItem / ReorderableListItem 無 disabled 概念，留 default 視覺</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ListItem (disabled)" showChevron disabled/>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="DataListItem (無 disabled prop)" value="NT$1,200"/>
+              <SelectionListItem title="SelectionListItem (disabled)" disabled/>
+              <ReorderableListItem leftIcon={<Glyph name="drag-vertical" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ReorderableListItem (無 disabled prop)" style={{ height: 60 }}/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
