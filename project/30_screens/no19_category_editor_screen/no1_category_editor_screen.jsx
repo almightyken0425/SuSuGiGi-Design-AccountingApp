@@ -1,16 +1,25 @@
 // ─────────────────────────────────────────────────────────────
 // CategoryEditorScreen · 對齊 impl src/screens/Categories/CategoryEditorScreen.tsx
 //
-// Modal save form。Type 由 form 內 CategoryTypeSelector 兩按鈕橫排決定。
-// 表單 4 欄：類型 / 名稱 / 標準分類映射 / 圖示。Edit mode 多顯示啟用 Switch + 刪除。
-// 編輯模式 type selector disabled，避免破壞已有交易紀錄分類一致性。
-// 共用 form helper 由 30_screens/shared/no3_editor_field_helpers.jsx 提供。
+// Modal save form。本 canon 採 Form Structure V2 (Settings style) 定案：
+//   1. 大字置中 name field（取代普通 TextInput + 上方標籤）
+//   2. 類型欄走 searchable dropdown（取代雙按鈕橫排的 segmented control，
+//      原本 segmented 內塞 chevron-down 是視覺 bug，整片改為 dropdown 後消除）
+//   3. 標準對照欄走 searchable dropdown（50+ 選項不適合 button group）
+//   4. 圖示欄走 inline 4col grid 常駐（Icon Picker V1）
+//   5. Footer 走 Footer Zone V1（Switch card + surface 底紅字 delete）
+//
+// 編輯模式 type selector 為 disabled，避免破壞已建立交易紀錄分類一致性。
+//
+// 共用 form helper 由 shared/no3_editor_field_helpers.jsx 提供。
 //
 // Variants：
-//   new-expense — 新增支出分類（type=expense）
-//   new-income  — 新增收入分類（type=income）
-//   edit        — 編輯模式，預填「飲食」，含啟用 Switch 與刪除按鈕；type selector 鎖死
+//   new-expense — 新增支出分類
+//   new-income  — 新增收入分類
+//   edit        — 編輯模式，預填「飲食」；類型欄鎖死 disabled；含啟用 Switch 與刪除按鈕
 // ─────────────────────────────────────────────────────────────
+
+const CATEGORY_ICON_IDS = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
 function CategoryEditorScreen({ variant = 'new-expense' }) {
   const T = CATEGORY_EDITOR_SCREEN_TOKENS;
@@ -18,22 +27,26 @@ function CategoryEditorScreen({ variant = 'new-expense' }) {
   const sample = variant === 'edit'        ? CATEGORY_EDITOR_SAMPLES.edit
               : variant === 'new-income'   ? CATEGORY_EDITOR_SAMPLES.newIncome
               :                              CATEGORY_EDITOR_SAMPLES.newExpense;
+  const typeLabel = sample.type === 'income' ? '收入' : '支出';
 
   return (
     <div style={{
       padding: T.SCREEN_PADDING,
       background: TOKENS.bg, minHeight: '100%',
     }}>
-      <CategoryTypeSelector value={sample.type} disabled={isEdit}/>
-
       <div style={{ marginBottom: T.FIELD_GAP }}>
         <EditorFieldLabel required>分類名稱</EditorFieldLabel>
-        <EditorTextInput value={sample.name} placeholder="例如：飲食、薪資"/>
+        <EditorNameField value={sample.name} placeholder="輸入分類名稱" active={!isEdit && !sample.name}/>
+      </div>
+
+      <div style={{ marginBottom: T.FIELD_GAP }}>
+        <EditorFieldLabel required>類型</EditorFieldLabel>
+        <EditorSearchableDropdownCollapsed value={typeLabel} disabled={isEdit}/>
       </div>
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
         <EditorFieldLabel>標準分類對應</EditorFieldLabel>
-        <EditorPickerCollapsed value={sample.mapping}/>
+        <EditorSearchableDropdownCollapsed value={sample.mapping}/>
         <div style={{
           fontSize: T.HELPER_FONT_SIZE,
           color: TOKENS.ink3,
@@ -45,9 +58,7 @@ function CategoryEditorScreen({ variant = 'new-expense' }) {
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
         <EditorFieldLabel required>圖示</EditorFieldLabel>
-        <EditorPickerCollapsed
-          leftIcon={<DynamicIconById iconId={sample.iconId} size={ICON_SIZE.md} color={TOKENS.ink}/>}
-          value={isEdit ? 'ph-coffee' : (sample.type === 'income' ? 'ph-bus' : 'ph-bread')}/>
+        <EditorInlineIconGrid icons={CATEGORY_ICON_IDS} selectedId={sample.iconId}/>
       </div>
 
       {isEdit && <EditorSwitchRow label="啟用" value={true}/>}

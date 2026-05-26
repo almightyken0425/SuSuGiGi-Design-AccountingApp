@@ -4,12 +4,19 @@
 // iOS 原生元件的色彩政策與 SF Symbol 對應；不參與 theme 切換。
 // ─────────────────────────────────────────────────────────────
 
-// IOS_SYSTEM_COLOR — RN 原生 Switch 等 iOS 元件的視覺一致性需求收斂在此命名空間。
-// 屬平台元件原色，非主題色、不參與 theme 切換。
+// IOS_SYSTEM_COLOR — iOS 平台元件原色（非主題色、不參與 theme 切換）。
+//
+// Switch 政策修訂（2026-05-26 採用 Footer Zone V1）：
+//   - thumbColor 不再寫死值。Impl 端 <Switch> 不傳 thumbColor，讓 iOS UISwitch 跑
+//     系統原生外觀（含 iOS 26 Liquid Glass 材質）。原 switchThumbOn / switchThumbOff
+//     兩個常數移除。
+//   - ios_backgroundColor 由 caller 從 theme.bg.surface_hover 動態取值，不再固定深灰
+//     `#3E3E3E`。原本固定值在淺色模式下會導致 off 狀態 track 顯示深灰，與系統 toggle
+//     的淺灰背景不一致。switchTrackBg 常數移除。
+//
+// 本檔目前不再持有 Switch 相關 token。SF Symbol 對應仍保留在下方 ACTION_ICON_MAP。
 const IOS_SYSTEM_COLOR = {
-  switchThumbOn:  '#FFFFFF',
-  switchThumbOff: '#F4F3F4',
-  switchTrackBg:  '#3E3E3E',
+  // (intentionally empty — see Switch 政策修訂註解)
 };
 
 // ─────────────────────────────────────────────────────────────
