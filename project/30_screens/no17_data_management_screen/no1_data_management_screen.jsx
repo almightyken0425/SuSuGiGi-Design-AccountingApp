@@ -31,7 +31,7 @@ function DataManagementScreen() {
       <ListSection>
         <ListGroupCard>
           {DM_EXPORT_ROWS.map(r => (
-            <ListItem key={r.id} leftIcon={renderIcon(r.icon)} title={r.title} showChevron/>
+            <ListItem key={r.id} leftIcon={renderIcon(r.icon)} title={r.title}/>
           ))}
         </ListGroupCard>
       </ListSection>
