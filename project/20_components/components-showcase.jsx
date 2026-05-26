@@ -155,6 +155,59 @@ function ComponentsListSection() {
         </CompFrame>
       </DCArtboard>
       </DCFamily>
+
+      <DCFamily id="comp-list-interaction-states" title="Interaction States" subtitle="四個 list row 元件的互動狀態階梯：default / pressed / disabled 並排比較。Pressed 統一採 surface_hover（不用 opacity 法），背景由 TOKENS.surface2 提供。新增 list row 元件依此 pattern。">
+      <DCArtboard id="comp-list-state-default" label="Default" width={402} height={420}>
+        <CompFrame>
+          <CompLabel>預設狀態 · 背景 TOKENS.surface</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="ListItem" showChevron/>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="DataListItem" value="NT$1,200"/>
+              <SelectionListItem title="SelectionListItem" selected/>
+              <ReorderableListItem leftIcon={<Glyph name="drag-vertical" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ReorderableListItem" style={{ height: 60 }}/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="comp-list-state-pressed" label="Pressed · surface_hover" width={402} height={420}>
+        <CompFrame>
+          <CompLabel>按下狀態 · 統一覆寫 background 為 TOKENS.surface2（= surface_hover）</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="ListItem" showChevron style={{ background: TOKENS.surface2 }}/>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="DataListItem" value="NT$1,200" style={{ background: TOKENS.surface2 }}/>
+              <SelectionListItem title="SelectionListItem" selected style={{ background: TOKENS.surface2 }}/>
+              <ReorderableListItem leftIcon={<Glyph name="drag-vertical" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ReorderableListItem" style={{ height: 60, background: TOKENS.surface2 }}/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="comp-list-state-disabled" label="Disabled" width={402} height={420}>
+        <CompFrame>
+          <CompLabel>停用狀態 · ListItem / SelectionListItem 有 disabled prop（標題轉 ink3）；DataListItem / ReorderableListItem 無 disabled 概念，留 default 視覺</CompLabel>
+          <div style={{ padding: SPACING.lg }}>
+            <ListGroupCard>
+              <ListItem leftIcon={<Glyph name="tag-outline" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ListItem (disabled)" showChevron disabled/>
+              <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
+                title="DataListItem (無 disabled prop)" value="NT$1,200"/>
+              <SelectionListItem title="SelectionListItem (disabled)" disabled/>
+              <ReorderableListItem leftIcon={<Glyph name="drag-vertical" size={ICON_SIZE.sm} color={TOKENS.ink3} stroke={1.8}/>}
+                title="ReorderableListItem (無 disabled prop)" style={{ height: 60 }}/>
+            </ListGroupCard>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
@@ -187,6 +240,40 @@ function ComponentsFormSection() {
             <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
               <CategorySelector category={CAT_BY_ID.food}/>
               <CategorySelector category={CAT_BY_ID.salary}/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
+      <DCFamily id="comp-form-editor-fields" title="Editor Form Fields (V2)" subtitle="AccountEditor / CategoryEditor 採 Form Structure V2 後共用的四個 form helper。實作位於 30_screens/shared/no3_editor_field_helpers.jsx，未來 impl 重構時可升入 20_components 正式元件。">
+        <DCArtboard id="comp-editor-name-field" label="EditorNameField · 大字置中名稱輸入（default / filled / active）" width={402} height={320}>
+          <CompFrame style={{ padding: SPACING.lg, display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
+            <CompLabel>高 80、24px 字、中對齊。active 為紫色 border + bg 切換到 bg base，呈現「進入輸入狀態」。對應 impl src/components/EditorNameField 或於 screen 內 inline 實作。</CompLabel>
+            <EditorNameField value="" placeholder="輸入帳戶名稱"/>
+            <EditorNameField value="玉山活儲"/>
+            <EditorNameField value="飲食" active/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-editor-button-group" label="EditorButtonGroup · 短選項 chip 群組" width={402} height={180}>
+          <CompFrame style={{ padding: SPACING.lg, display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
+            <CompLabel>5 個以下選項常駐展開，active 反 primary 紫底白字。AccountEditor 類型欄採此 pattern。對應 impl src/components/ButtonGroup。</CompLabel>
+            <EditorButtonGroup options={['現金', '銀行帳戶', '信用卡', '投資', '其他']} selected="銀行帳戶"/>
+            <EditorButtonGroup options={['支出', '收入']} selected="支出"/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-editor-searchable-dropdown" label="EditorSearchableDropdown · 可搜尋下拉（collapsed / disabled）" width={402} height={220}>
+          <CompFrame style={{ padding: SPACING.lg, display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
+            <CompLabel>collapsed 狀態：input 顯示當前值 + chevron-down。disabled 狀態：opacity 0.5，無 chevron（編輯模式幣別/類型鎖定）。expanded 狀態（含搜尋 + 清單）由 impl SearchableDropdown 提供互動。</CompLabel>
+            <EditorSearchableDropdownCollapsed value="TWD - New Taiwan Dollar"/>
+            <EditorSearchableDropdownCollapsed value="TWD - New Taiwan Dollar" disabled/>
+            <EditorSearchableDropdownCollapsed value="" placeholder="點擊選擇..."/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-editor-inline-icon-grid" label="EditorInlineIconGrid · 4col 常駐圖示網格" width={402} height={360}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>Icon Picker V1 結論：移除 header 與 maxHeight，4 列全展開常駐。選中格反 primary 紫底白 icon。對應 impl src/components/EditorInlineIconGrid 或 screen 內 inline 實作。</CompLabel>
+            <div style={{ marginTop: SPACING.md }}>
+              <EditorInlineIconGrid icons={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]} selectedId={11}/>
             </div>
           </CompFrame>
         </DCArtboard>

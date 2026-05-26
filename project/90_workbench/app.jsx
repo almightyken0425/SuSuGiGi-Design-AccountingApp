@@ -695,6 +695,16 @@ const EXPLORATION_GROUPS = [
     ],
   },
   {
+    id: 'accountcategoryeditor', label: 'Account / Category Editor',
+    topics: [
+      { id: 'form-structure',    label: 'Axis · Form Structure',    render: () => <AccountCategoryEditorFormStructureSection/> },
+      { id: 'icon-picker',       label: 'Axis · Icon Picker',       render: () => <AccountCategoryEditorIconPickerSection/> },
+      { id: 'footer-zone',       label: 'Axis · Footer Zone',       render: () => <AccountCategoryEditorFooterZoneSection/> },
+      { id: 'type-currency',     label: 'Axis · Type & Currency',   render: () => <AccountCategoryEditorTypeCurrencySection/> },
+      { id: 'mapping-acctype',   label: 'Axis · Mapping & AccType', render: () => <AccountCategoryEditorMappingAccTypeSection/> },
+    ],
+  },
+  {
     id: 'transfereditor', label: 'Transfer Editor',
     topics: [
       { id: 'box-framing', label: 'Axis · Box Framing', render: () => <TransferBoxFramingSection/> },

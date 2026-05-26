@@ -1,10 +1,14 @@
 // ─────────────────────────────────────────────────────────────
 // ACCOUNT_EDITOR_SCREEN_TOKENS · AccountEditorScreen 內部 composition 參數
 //
-// Modal save form。表單欄位：Name、Currency picker、Type picker、Icon picker。
-// Edit mode 多顯示啟用 Switch + 刪除按鈕。
-// impl src/screens/Accounts/AccountEditorScreen.tsx 結構鏡射，picker 由手刻 inline
-// collapse/expand pattern 構成，design canvas 顯示 collapsed 狀態示意。
+// Modal save form。Form Structure V2 採用後：
+//   - 名稱：大字置中 name field
+//   - 幣別：searchable dropdown（編輯模式 disabled）
+//   - 類型：button group（5 選項常駐展開）
+//   - 圖示：inline 4col grid 常駐
+//   - Footer：Switch row + surface 底紅字 delete（Footer Zone V1）
+//
+// impl src/screens/Accounts/AccountEditorScreen.tsx 結構鏡射。
 // ─────────────────────────────────────────────────────────────
 
 const ACCOUNT_EDITOR_SCREEN_TOKENS = {

@@ -2,7 +2,12 @@
 // TransferEditorScreen sub-sections · 私有 sub-section 元件
 //
 // 鏡射 impl src/screens/Transactions/TransferEditorScreen.tsx 拆分：
-//   ExchangeArrow / DualAmountRow / DualPickerRow
+//   AmountGroupBox / PickerGroupBox + 內 ExchangeArrow
+//
+// 改版：from / to 不再各自有獨立 box，外層一個 grouping box 包住整 row。
+// box 樣式（surface + solid grey border + md radius）對齊既有 V0 內元素 box，
+// 讓視覺風格延續。內部 AmountField / AccountSelector 拿掉自帶 border。
+// active 改用 amount 文字色（紫）；backspace 改由 CalculatorKeypad ⌫ 鍵承接（不再 inline icon）。
 //
 // 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField /
 //   EditorDeleteButton）住在 30_screens/shared/no2_editor_form_helpers.jsx。
@@ -11,12 +16,12 @@
 // + 20_components/（AmountField / AccountSelector / Glyph）。
 // ─────────────────────────────────────────────────────────────
 
-// ─── ExchangeArrow ─── 兩欄之間的右向箭頭，width / topOffset 由 caller 決定
-function ExchangeArrow({ width, topOffset = 0 }) {
+// ─── ExchangeArrow ─── group box 內 from / to 中間的右向箭頭
+function ExchangeArrow({ topOffset = 0 }) {
   return (
     <div style={{
-      width,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
+      paddingLeft: SPACING.sm, paddingRight: SPACING.sm,
       paddingTop: topOffset,
     }}>
       <Glyph name="arrow-right" size={ICON_SIZE.md} color={TOKENS.ink2}/>
@@ -24,59 +29,62 @@ function ExchangeArrow({ width, topOffset = 0 }) {
   );
 }
 
-// ─── DualAmountRow ─── from AmountField + ExchangeArrow + to AmountField
+// ─── AmountGroupBox ─── 外層 box 包 from AmountField + → + to AmountField
 // 同幣別轉帳時，to AmountField 為 disabled（金額自動跟隨 from）。
-function DualAmountRow({ activeField, setActiveField, fromAmount, toAmount, fromAcc, toAcc, isCrossCurrency }) {
+function AmountGroupBox({ activeField, setActiveField, fromAmount, toAmount, fromAcc, toAcc, isCrossCurrency }) {
   const T = TRANSFER_EDITOR_SCREEN_TOKENS;
   return (
-    <div style={{ marginBottom: T.SECTION_GAP }}>
+    <div style={{
+      background: TOKENS.surface,
+      borderRadius: RADIUS.md,
+      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
+      marginBottom: T.SECTION_GAP,
+      paddingLeft: SPACING.md, paddingRight: SPACING.md,
+    }}>
       <div style={{
         display: 'flex', flexDirection: 'row',
         alignItems: 'center', justifyContent: 'space-between',
       }}>
-        <div style={{ flex: 1 }}>
-          <AmountField
-            active={activeField === 'from'}
-            value={fromAmount}
-            currency={fromAcc.currency}
-            onPress={() => setActiveField('from')}/>
-        </div>
-        <ExchangeArrow
-          width={T.AMOUNT_ARROW_FRAME_WIDTH}
-          topOffset={T.AMOUNT_ARROW_TOP_PADDING}/>
-        <div style={{ flex: 1 }}>
-          <AmountField
-            active={activeField === 'to' && isCrossCurrency}
-            disabled={!isCrossCurrency}
-            value={toAmount}
-            currency={toAcc.currency}
-            onPress={() => isCrossCurrency && setActiveField('to')}/>
-        </div>
+        <AmountField
+          active={activeField === 'from'}
+          value={fromAmount}
+          currency={fromAcc.currency}
+          onPress={() => setActiveField('from')}/>
+        <ExchangeArrow/>
+        <AmountField
+          active={activeField === 'to' && isCrossCurrency}
+          disabled={!isCrossCurrency}
+          value={toAmount}
+          currency={toAcc.currency}
+          onPress={() => isCrossCurrency && setActiveField('to')}/>
       </div>
     </div>
   );
 }
 
-// ─── DualPickerRow ─── from AccountSelector + ExchangeArrow + to AccountSelector
-// impl pickerCol 為 { flex: 1, overflow: 'hidden' }，AccountSelector 需在該 wrapper 內。
-function DualPickerRow({ fromAcc, toAcc }) {
+// ─── PickerGroupBox ─── 外層 box 包 from AccountSelector + → + to AccountSelector
+// AccountSelector 傳 noBorder=true 拿掉自帶外框，由本 group box 統一表達 grouping
+function PickerGroupBox({ fromAcc, toAcc }) {
   const T = TRANSFER_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
+      background: TOKENS.surface,
+      borderRadius: RADIUS.md,
+      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
+      marginBottom: T.SECTION_GAP,
+      paddingLeft: SPACING.md, paddingRight: SPACING.md,
       display: 'flex', flexDirection: 'row',
-      marginBottom: T.SECTION_GAP, alignItems: 'flex-start',
+      alignItems: 'center',
     }}>
       <div style={{ flex: 1, overflow: 'hidden' }}>
-        <AccountSelector account={fromAcc}/>
+        <AccountSelector account={fromAcc} noBorder/>
       </div>
-      <ExchangeArrow
-        width={T.PICKER_ROW_GAP}
-        topOffset={T.PICKER_ARROW_TOP_OFFSET}/>
+      <ExchangeArrow/>
       <div style={{ flex: 1, overflow: 'hidden' }}>
-        <AccountSelector account={toAcc}/>
+        <AccountSelector account={toAcc} noBorder/>
       </div>
     </div>
   );
 }
 
-Object.assign(window, { ExchangeArrow, DualAmountRow, DualPickerRow });
+Object.assign(window, { ExchangeArrow, AmountGroupBox, PickerGroupBox });
