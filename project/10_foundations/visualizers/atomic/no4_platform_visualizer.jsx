@@ -10,11 +10,11 @@ function IosSystemColorCard() {
     <FoundCard>
       <FoundLabel>IOS_SYSTEM_COLOR · RN 原生元件固定色</FoundLabel>
       <div style={{ fontSize: 11, color: TOKENS.ink3, marginBottom: 12, lineHeight: 1.5 }}>
-        平台元件原色，非主題色、不參與 theme 切換。RN 原生 Switch 的視覺一致性需求收斂在此命名空間。
+        平台元件原色命名空間。Switch 政策修訂後（2026-05-26）原本的 switchThumbOn / switchThumbOff /
+        switchTrackBg 三個常數已移除——impl 端 thumbColor 不傳值讓 iOS UISwitch 跑系統原生外觀
+        （含 iOS 26 Liquid Glass），ios_backgroundColor 從 theme.bg.surface_hover 動態取值。
+        本表目前無 token（未來如需收新平台色再加回）。
       </div>
-      <Swatch hex={IOS_SYSTEM_COLOR.switchThumbOn}  name="switchThumbOn"  note="Switch 開啟態 thumb"/>
-      <Swatch hex={IOS_SYSTEM_COLOR.switchThumbOff} name="switchThumbOff" note="Switch 關閉態 thumb"/>
-      <Swatch hex={IOS_SYSTEM_COLOR.switchTrackBg}  name="switchTrackBg"  note="Switch 容器背景"/>
     </FoundCard>
   );
 }
