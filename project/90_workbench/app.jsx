@@ -90,6 +90,7 @@ const SCREEN_META = {
   },
   // ─── Transfer Editor ─── default / recurring / same-currency / same-currency-recurring
   //                         + edit / edit-recurring / edit-same-currency
+  //                         + note-focused（備註聚焦，CalculatorKeypad 滑下隱藏）
   // 無 error variant：impl 的 save disabled 條件攔死「amountFrom 為空」場景，
   // inline error banner 在 transfer 路徑跑不到（TxEditor 也已砍除 error variant）。
   // edit-schedule-instance 不獨立列出：impl 的 mode dialog 差異需新 ConfirmDialog 元件，
@@ -121,6 +122,10 @@ const SCREEN_META = {
   'transfer-edit-same-currency': {
     title: '編輯轉帳', present: 'modal', save: true,
     render: () => <TransferEditorScreen variant="edit-same-currency"/>,
+  },
+  'transfer-note-focused': {
+    title: '新增轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="note-focused"/>,
   },
   // ─── Settings ─── default（未訂閱）/ subscribed（已訂閱，隱藏升級組）
   settings: {
@@ -363,6 +368,7 @@ const SCREEN_GROUPS = [
       { id: 'transfer-edit',                    label: 'Edit · 編輯既有 transfer，Delete button 顯示' },
       { id: 'transfer-edit-recurring',          label: 'Edit + Recurring · 編輯 + 展開' },
       { id: 'transfer-edit-same-currency',      label: 'Edit + Same currency · 編輯 + 同幣別' },
+      { id: 'transfer-note-focused',            label: 'Note focused · 備註聚焦，keypad 滑下' },
     ],
   },
   {
@@ -686,6 +692,12 @@ const EXPLORATION_GROUPS = [
     id: 'searchscreen', label: 'Search Screen',
     topics: [
       { id: 'list-treatment', label: 'Axis · List Treatment', render: () => <SearchListTreatmentSection/> },
+    ],
+  },
+  {
+    id: 'transfereditor', label: 'Transfer Editor',
+    topics: [
+      { id: 'box-framing', label: 'Axis · Box Framing', render: () => <TransferBoxFramingSection/> },
     ],
   },
 ];

@@ -15,6 +15,9 @@
 //   edit                     — 編輯既有 transfer（route.params.id 存在），title 改「編輯轉帳」+ Delete button
 //   edit-recurring           — 編輯 + RecurringOptions 預設展開
 //   edit-same-currency       — 編輯 + 同幣別 + Delete button
+//   note-focused             — 備註欄聚焦狀態（對齊 impl activeField === 'note'）。
+//                              CalculatorKeypad 滑下隱藏，系統 keyboard 上來（系統提供視覺，design canvas 留空）。
+//                              可疊加其他 variant（如 'edit-note-focused'）。
 //
 // 不包含 edit-schedule-instance variant：impl `id + scheduleId + scheduleRecurrence` 觸發的差異
 // 在 save / delete 時跳 Alert.alert mode dialog（「本次 / 未來」）；RecurringOptions 本身渲染
@@ -31,6 +34,7 @@ function TransferEditorScreen({ variant = 'default' }) {
   const isSameCurrency = variant.includes('same-currency');
   const isEdit         = variant.startsWith('edit');
   const initialRecur   = variant.includes('recurring');
+  const isNoteFocused  = variant.includes('note-focused');
 
   const [fromAccount] = React.useState('bank');
   const [toAccount]   = React.useState(isSameCurrency ? 'cash' : 'usd_cash');
@@ -72,14 +76,16 @@ function TransferEditorScreen({ variant = 'default' }) {
         <div style={{ height: T.SCROLL_SPACER_HEIGHT }}/>
       </div>
 
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        background: TOKENS.surface,
-        borderTop: `1px solid ${TOKENS.border}`,
-        paddingBottom: T.KEYPAD_BOTTOM_PADDING,
-      }}>
-        <CalculatorKeypad/>
-      </div>
+      {!isNoteFocused && (
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          background: TOKENS.surface,
+          borderTop: `1px solid ${TOKENS.border}`,
+          paddingBottom: T.KEYPAD_BOTTOM_PADDING,
+        }}>
+          <CalculatorKeypad/>
+        </div>
+      )}
     </div>
   );
 }

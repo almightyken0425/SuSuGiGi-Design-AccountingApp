@@ -13,9 +13,11 @@
 //   showScheduleModeDialog=true   — 編輯既有週期交易時的「本次 / 未來所有」對話框
 //                                   （對齊 impl src/screens/Transactions/showRecurringModeDialog.ts）
 //
-// impl 無 invalid-amount 的 inline error banner：金額輸入只能透過 keypad（限定 0-9 與 .），
-// 且 save 守門靠 header checkmark `disabled: !amount || !accountId`（line 463），無法觸發無效 save。
-// 真實 error 場景（save 失敗 / delete 失敗）走 Alert.alert runtime 彈窗，非 screen 視覺。
+// impl 無 invalid-amount 的 inline error banner：金額輸入透過 CalculatorKeypad
+// （支援 0-9 / . / + - * / / =，由 impl `src/hooks/useCalculator.ts` 解析計算式），
+// save 守門靠 header checkmark `disabled: !amount || !accountId`（line 463），
+// 即使按下 operator 也因 displayValue 仍存在而不會 disable。真實 error 場景
+// （save 失敗 / delete 失敗）走 Alert.alert runtime 彈窗，非 screen 視覺。
 // 故 design 端不保留 error variant 與 EditorErrorBanner 渲染。
 //
 // 註：曾考慮加 locked / LEVEL_2 鎖定態 variant，但盤點 impl 後確認其
@@ -81,10 +83,9 @@ function TransactionEditorScreen({
           paddingBottom: T.KEYPAD_BOTTOM_PADDING,
         }}>
           <CalculatorKeypad onPress={(k) => {
-            if (k === '=') return;
-            if (k === '.' || /^\d$/.test(k)) {
-              setAmount(prev => (prev === '0' ? k : prev + k));
-            }
+            // Design canvas demo only。所有按鍵 echo 到 amount 字串以呈現「按下有反應」；
+            // impl 計算機邏輯（operator 暫存 / `=` 求值 / 小數位限制）在 src/hooks/useCalculator.ts。
+            setAmount(prev => (prev === '0' ? k : prev + k));
           }}/>
         </div>
       )}
