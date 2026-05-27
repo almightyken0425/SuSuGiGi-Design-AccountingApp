@@ -20,10 +20,9 @@ const TRANSACTION_EDITOR_SCREEN_TOKENS = {
   RECURRING_TOGGLE_RADIUS:           RADIUS['2xl'],                           // 20（= RECURRING_TOGGLE_FRAME / 2，對齊 impl borderRadius: RADIUS['2xl']）
 
   // ── AmountContainer（金額輸入欄）
-  AMOUNT_PADDING:                    SPACING.lg,
-  AMOUNT_FONT_SIZE:                  TYPOGRAPHY.size.xl,
-  AMOUNT_SYMBOL_GAP:                 SPACING.sm,
-  AMOUNT_BACKSPACE_PADDING:          SPACING.sm,
+  // 改採共用 AmountField（20_components/）+ outer grouping box 模式（鏡射 TransferEditor 的 AmountGroupBox）。
+  // 視覺參數由 AMOUNT_FIELD_TOKENS 提供，box 樣式直接引用 atomic SPACING / RADIUS / TOKENS，
+  // 不再 screen-level token 化。
 
   // ── PickerRow（account picker + category picker 並排）
   PICKER_ROW_GAP:                    SPACING.lg,

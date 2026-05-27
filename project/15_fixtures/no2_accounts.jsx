@@ -13,4 +13,13 @@ const ACCOUNTS = [
 ];
 const ACC_BY_ID = Object.fromEntries(ACCOUNTS.map(a => [a.id, a]));
 
-Object.assign(window, { ACCOUNTS, ACC_BY_ID });
+// 對齊 impl src/utils/currencyUtils.ts 的 getCurrencySymbol（讀 Currency.json symbol 欄位）。
+// design canvas 無 JSON import 機制，硬編常見幣別映射；未列入者直出 code。
+// TransactionEditor / TransferEditor 共用，讓兩 editor 幣別顯示形式一致為 symbol。
+function currencySymbolFor(code) {
+  if (code === 'TWD') return 'NT$';
+  if (code === 'USD') return 'US$';
+  return code;
+}
+
+Object.assign(window, { ACCOUNTS, ACC_BY_ID, currencySymbolFor });

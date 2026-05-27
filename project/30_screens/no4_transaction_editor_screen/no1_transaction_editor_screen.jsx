@@ -41,9 +41,7 @@ function TransactionEditorScreen({
   const [amountFocused, setAmountFocused] = React.useState(true);
 
   const acc = ACC_BY_ID[accountId];
-  const symbol = acc.currency === 'TWD' ? 'NT$'
-              : acc.currency === 'USD' ? 'US$'
-              : acc.currency;
+  const symbol = currencySymbolFor(acc.currency);
 
   return (
     <div style={{

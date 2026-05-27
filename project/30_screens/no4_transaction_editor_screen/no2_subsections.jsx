@@ -10,40 +10,31 @@
 //   視覺差異時才各自實作）。
 //
 // 消費 TRANSACTION_EDITOR_SCREEN_TOKENS + atomic
-// + 20_components/（AccountSelector / CategorySelector / Glyph）。
+// + 20_components/（AmountField / AccountSelector / CategorySelector / Glyph）。
 // ─────────────────────────────────────────────────────────────
 
-// ─── TransactionAmountContainer ─── 金額輸入欄（symbol + amount text）
-// 改版：active 用 amount 文字色（紫）表達，不再切 border / bg；
-// inline backspace icon 拿掉（移到 CalculatorKeypad ⌫ 鍵）。
-// 仍保留外框（surface + border）作為視覺 grouping，因為 transaction 只有單一 amount，
-// 沒有 from/to 結構不需要 outer-grouping-box；保留框讓 amount 區跟下方 picker/note 分隔。
+// ─── TransactionAmountContainer ─── 金額輸入欄（outer box + 單一 AmountField）
+// 對齊 TransferEditor 的 AmountGroupBox 視覺結構：surface + border + md radius 外框，
+// 內含 column 佈局的 AmountField（2xl 金額置中 + xs 幣別在金額下方 secondary 色）。
+// 與 TransferEditor 差異：本 editor 只有單一金額（無 from/to），box 內僅放一個 AmountField，
+// 無箭頭、無第二個 AmountField。
+// 幣別顯示形式：caller 傳入已映射的 symbol 字串（NT$ / US$），透過 AmountField 的 `currency` prop
+// render；AmountField 不關心 symbol vs code，誰傳什麼就顯示什麼。
 function TransactionAmountContainer({ symbol = 'NT$', amount, amountFocused, onFocus }) {
   const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
-    <div style={{ marginBottom: T.SECTION_GAP }}>
-      <div onClick={onFocus} style={{
-        display: 'flex', alignItems: 'center',
-        background: TOKENS.surface,
-        padding: T.AMOUNT_PADDING,
-        borderRadius: RADIUS.md,
-        borderWidth: 1, borderStyle: 'solid',
-        borderColor: TOKENS.border,
-        cursor: 'pointer',
-      }}>
-        <span style={{
-          fontSize: T.AMOUNT_FONT_SIZE, fontWeight: TYPOGRAPHY.weight.medium,
-          color: amountFocused ? TOKENS.p500 : TOKENS.ink,
-          marginRight: T.AMOUNT_SYMBOL_GAP,
-        }}>{symbol}</span>
-        <span style={{
-          flex: 1,
-          fontSize: T.AMOUNT_FONT_SIZE, fontWeight: TYPOGRAPHY.weight.medium,
-          color: amountFocused ? TOKENS.p500
-               : amount        ? TOKENS.ink
-                               : TOKENS.ink3,
-        }}>{amount || '0.00'}</span>
-      </div>
+    <div style={{
+      background: TOKENS.surface,
+      borderRadius: RADIUS.md,
+      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
+      marginBottom: T.SECTION_GAP,
+      paddingLeft: SPACING.md, paddingRight: SPACING.md,
+    }}>
+      <AmountField
+        active={amountFocused}
+        value={amount}
+        currency={symbol}
+        onPress={onFocus}/>
     </div>
   );
 }
