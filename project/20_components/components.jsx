@@ -1259,8 +1259,8 @@ function CalculatorKeypad({ onPress }) {
 }
 
 // ─── Switch ─── 對齊 RN Switch（iOS 樣式）
-// impl 用 trackColor false=bg.surface_hover true=primary.main 或 status.success
-function Switch({ value, onChange, trackColorOn = TOKENS.success }) {
+// impl 用 trackColor false=bg.surface_hover true=primary.main（統一主題色）
+function Switch({ value, onChange, trackColorOn = TOKENS.p500 }) {
   return (
     <button onClick={() => onChange && onChange(!value)} style={{
       width: 52, height: 32, borderRadius: 16, border: 'none',
@@ -1562,7 +1562,7 @@ function RecurringOptions({
         marginBottom: R.HEADER_BOTTOM_MARGIN,
       }}>
         <span style={{ fontSize: R.TITLE_SIZE, fontWeight: R.TITLE_WEIGHT, color: TOKENS.p500 }}>定期設定</span>
-        <Switch value={enabled} onChange={setEnabled} trackColorOn={TOKENS.p500}/>
+        <Switch value={enabled} onChange={setEnabled}/>
       </div>
       <div style={{ opacity: contentOpacity, pointerEvents: contentInteractive ? 'auto' : 'none' }}>
         {labelRow('頻率')}
