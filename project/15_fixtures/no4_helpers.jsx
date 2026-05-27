@@ -59,6 +59,65 @@ function pieData(items) {
   }));
 }
 
+// _assignChartColors · 對齊 spec no13_home_report_logic.md assignChartColors
+// 輸入: 已金額大→小排序的 [{ id, value, cat }]
+// 規則: top-N (N<=2) 取 CHART_COLORS[0..N-1]，截止為「累積達 5/6」或「第 2 個」先達者
+//       截止外的合併為 _other，色為 TOKENS.p300
+function _assignChartColors(items) {
+  if (items.length === 0) return [];
+  const total = items.reduce((s, x) => s + x.value, 0);
+  if (total <= 0) return [];
+  const threshold = total * 5 / 6;
+  let cumulative = 0;
+  let cutoff = 0;
+  for (let i = 0; i < items.length && i < 2; i++) {
+    cumulative += items[i].value;
+    cutoff = i + 1;
+    if (cumulative >= threshold) break;
+  }
+  const top = items.slice(0, cutoff).map((x, i) => ({
+    ...x,
+    color: CHART_COLORS[i],
+  }));
+  const rest = items.slice(cutoff);
+  if (rest.length > 0) {
+    const restValue = rest.reduce((s, x) => s + x.value, 0);
+    top.push({
+      id: '_other',
+      value: restValue,
+      cat: null,
+      color: TOKENS.p300,
+    });
+  }
+  return top;
+}
+
+function expensePieData(items) {
+  const m = new Map();
+  for (const t of items) {
+    const a = baseAmount(t);
+    if (a >= 0) continue;
+    m.set(t.cat, (m.get(t.cat) || 0) + (-a));
+  }
+  const arr = Array.from(m.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, value]) => ({ id, value, cat: CAT_BY_ID[id] }));
+  return _assignChartColors(arr);
+}
+
+function incomePieData(items) {
+  const m = new Map();
+  for (const t of items) {
+    const a = baseAmount(t);
+    if (a <= 0) continue;
+    m.set(t.cat, (m.get(t.cat) || 0) + a);
+  }
+  const arr = Array.from(m.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, value]) => ({ id, value, cat: CAT_BY_ID[id] }));
+  return _assignChartColors(arr);
+}
+
 function fmt(n, code = 'TWD') {
   const sign = n < 0 ? '-' : '';
   const abs = Math.abs(n);
@@ -68,4 +127,5 @@ function fmt(n, code = 'TWD') {
 
 Object.assign(window, {
   baseAmount, periodTotals, groupByDate, groupByCategory, pieData, fmt,
+  expensePieData, incomePieData,
 });

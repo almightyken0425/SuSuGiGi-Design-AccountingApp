@@ -124,6 +124,7 @@ box-shadow:      0 4px 12px rgba(0,0,0,0.10);
 - **Intent 系統。** Header button 三件套 + 覆寫返回鍵以三種 intent 區分語意：`commit`（送出 / 確認，如 checkmark）、`action`（主動觸發功能，如 search / settings / filter / merge / 返回）、`dismiss`（離開當前畫面，如 xmark）。同一 intent 同時驅動 icon 顏色與 expo-haptics 觸覺反饋。本波三 intent **icon 顏色統一用主題色**（commit / action / dismiss 都是 `p500`），保留 map 結構以便未來分化（如 destructive 動作改紅）；haptic 維持差異化（commit 用 `impactMedium`、action 與 dismiss 用 `impactLight`）。對應 token：`HEADER_ICON_BUTTON_TOKENS.COLOR_BY_INTENT` 與 `HAPTIC_BY_INTENT`。
 - **Hover。** 行動優先——hover 效果最小。Row 變淡背景到 `surface_hover`，hover 上不動其他東西。
 - **沒有 fade、沒有 bounce、沒有慶祝動畫。** Donut chart slice 不會彈進、新交易就是直接出現，沒戲。
+- **Donut chart 進場 reveal。** 唯一允許的 donut 動畫例外，且只在 chart-level（整體），不在 per-slice。期間頁面從不可見變為可見時——首次進入首頁、向過去左滑、滑回看過的期間皆然——環形圖從 12 點起點同時往兩側線性 reveal 到完整長度：支出弧 CCW 推進到 `-TAU × rExpense`、收入弧 CW 推進到 `+TAU × rIncome`，兩弧在底部交會點接上。期間頁面變為不可見時不展示退場——頁面隨水平分頁滑出視野時 donut 維持完整顯示，下次再可見時重新 reveal。Duration 對齊 `MOTION.duration.slow (500ms)` 或更短，easing 用 `--ease-standard`。Slice 本身仍遵守上一條「不彈進、不 fade in」規則。
 
 ### Layout rules
 

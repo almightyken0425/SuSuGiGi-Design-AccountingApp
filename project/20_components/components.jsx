@@ -950,32 +950,60 @@ function HeaderMockFrame({ children, contentTail }) {
 
 // ─── DonutChart ─── 對齊 src/components/DonutChart.tsx
 // SIZE 260, OUTER 100 INNER 76 thickness 24, CORNER 6, PAD_ANGLE 1deg
-function DonutChart({ data, size = 260, outerRadius = 100, innerRadius = 76, cornerRadius = 6, padAngleDeg = 1, children }) {
+//
+// 兩種輸入接口：
+//   slices (new, 雙向)：[{ startAngle, endAngle, color, key }]
+//     - 由 caller pre-compute；可含負角度（支出側）
+//     - 假設 endAngle > startAngle、且 endAngle - startAngle < 2π
+//     - 若 slices 提供且 length > 0，優先用這個
+//   data (legacy, 單向)：[{ key, value, color }]
+//     - 由 DonutChart 內部從 0 順時針累加
+//     - 探索 sub-page 仍用此接口
+function DonutChart({ data, slices, size = 260, outerRadius = 100, innerRadius = 76, cornerRadius = 6, padAngleDeg = 1, children }) {
   const cx = size / 2, cy = size / 2;
   const padAngleRad = (padAngleDeg * Math.PI) / 180;
-  const total = data.reduce((s, d) => s + d.value, 0);
 
-  // SVG arc path with rounded corners
+  // SVG arc path with 12 點 = 0、CW 為正
   const polar = (r, a) => [cx + r * Math.sin(a), cy - r * Math.cos(a)];
 
   function arcPath(startAngle, endAngle) {
     if (endAngle <= startAngle) return '';
     const ro = outerRadius, ri = innerRadius;
-    const cr = Math.min(cornerRadius, (ro - ri) / 2);
     const a0 = startAngle, a1 = endAngle;
-    // outer arc points
     const [x0, y0] = polar(ro, a0);
     const [x1, y1] = polar(ro, a1);
-    // inner arc points
     const [x2, y2] = polar(ri, a1);
     const [x3, y3] = polar(ri, a0);
     const largeArc = (a1 - a0) > Math.PI ? 1 : 0;
-    // simplified path without corner radius for fidelity-vs-complexity tradeoff
-    // 但加 padAngle gap 視覺對齊
     return `M ${x0} ${y0} A ${ro} ${ro} 0 ${largeArc} 1 ${x1} ${y1} L ${x2} ${y2} A ${ri} ${ri} 0 ${largeArc} 0 ${x3} ${y3} Z`;
   }
 
-  if (total <= 0 || data.length === 0) {
+  // 統一產出 renderableSlices: [{ start, end, color, key }]
+  let renderableSlices = [];
+  if (slices && slices.length > 0) {
+    // new 接口
+    renderableSlices = slices.map(s => ({
+      start: s.startAngle + padAngleRad / 2,
+      end: s.endAngle - padAngleRad / 2,
+      color: s.color,
+      key: s.key,
+    })).filter(s => s.end - s.start > 0);
+  } else if (data && data.length > 0) {
+    // legacy 接口：從 0 順時針累加
+    const total = data.reduce((s, d) => s + d.value, 0);
+    if (total > 0) {
+      let acc = 0;
+      renderableSlices = data.map(d => {
+        const sweep = (d.value / total) * 2 * Math.PI;
+        const start = acc + padAngleRad / 2;
+        const end = acc + sweep - padAngleRad / 2;
+        acc += sweep;
+        return { start, end, color: d.color, key: d.key };
+      }).filter(s => s.end - s.start > 0);
+    }
+  }
+
+  if (renderableSlices.length === 0) {
     return (
       <div style={{ width: size, height: size, borderRadius: size / 2, background: TOKENS.surface2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {children}
@@ -983,22 +1011,12 @@ function DonutChart({ data, size = 260, outerRadius = 100, innerRadius = 76, cor
     );
   }
 
-  let acc = 0;
-  const slices = data.map(d => {
-    const sweep = (d.value / total) * 2 * Math.PI;
-    const start = acc + padAngleRad / 2;
-    const end = acc + sweep - padAngleRad / 2;
-    acc += sweep;
-    return { start, end, color: d.color, key: d.key };
-  });
-
   return (
     <div style={{ position: 'relative', width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ position: 'absolute', inset: 0 }}>
-        {slices.map((s, i) => {
-          if (s.end - s.start <= 0) return null;
-          return <path key={s.key + '_' + i} d={arcPath(s.start, s.end)} fill={s.color} stroke={s.color} strokeWidth={cornerRadius * 0.6} strokeLinejoin="round"/>;
-        })}
+        {renderableSlices.map((s, i) => (
+          <path key={s.key + '_' + i} d={arcPath(s.start, s.end)} fill={s.color} stroke={s.color} strokeWidth={cornerRadius * 0.6} strokeLinejoin="round"/>
+        ))}
       </svg>
       <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
     </div>
