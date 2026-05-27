@@ -48,14 +48,14 @@ function AmountGroupBox({ activeField, setActiveField, fromAmount, toAmount, fro
         <AmountField
           active={activeField === 'from'}
           value={fromAmount}
-          currency={fromAcc.currency}
+          currency={currencySymbolFor(fromAcc.currency)}
           onPress={() => setActiveField('from')}/>
         <ExchangeArrow/>
         <AmountField
           active={activeField === 'to' && isCrossCurrency}
           disabled={!isCrossCurrency}
           value={toAmount}
-          currency={toAcc.currency}
+          currency={currencySymbolFor(toAcc.currency)}
           onPress={() => isCrossCurrency && setActiveField('to')}/>
       </div>
     </div>
