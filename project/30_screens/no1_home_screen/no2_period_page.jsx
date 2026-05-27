@@ -21,7 +21,8 @@ function PeriodPage({ filterState, variant = 'default', monthLabel = '2026å¹´5æœ
   const isEmpty = variant === 'empty';
   const dataSource = isEmpty ? [] : TX;
   const totals = periodTotals(dataSource);
-  const pData = pieData(dataSource);
+  const expensePie = expensePieData(dataSource);
+  const incomePie = incomePieData(dataSource);
   const sections = groupMode === 'date'
     ? groupByDate(dataSource)
     : groupByCategory(dataSource, chartMode);
@@ -42,7 +43,7 @@ function PeriodPage({ filterState, variant = 'default', monthLabel = '2026å¹´5æœ
         paddingBottom: HOME_SCREEN_TOKENS.PAGE_HEADER_PADDING_BOTTOM,
       }}>
         <PeriodSwitcher label={monthLabel}/>
-        <DonutHero pieData={pData} totals={totals}/>
+        <DonutHero expenseData={expensePie} incomeData={incomePie} totals={totals}/>
         <FocusRow totals={totals} chartMode={chartMode} onChartModeChange={setChartMode}/>
       </div>
       <TxSectionList sections={sections} collapsed={collapsed} onToggle={toggle} mode={groupMode}/>

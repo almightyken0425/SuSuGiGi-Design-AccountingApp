@@ -251,14 +251,49 @@ function PeriodSwitcher({ label }) {
 // 對齊 impl src/screens/Home/PeriodPage.tsx PageHeaderContent：empty data 時
 // impl 不換中央內容，仍是「餘額 / $0」（balance=0 走原 layout 不分支）；loading
 // 在 impl 為整頁 Text，不在 donut 中央，所以本 component 也不處理 loading。
-function DonutHero({ pieData, totals }) {
+//
+// 雙向 donut：同時呈現 expense + income 兩段弧，起點皆位於 12 點。
+//   - 收入弧：從 12 點往右 (CW)，金額大者鄰近交會點
+//   - 支出弧：從 12 點往左 (CCW)，金額大者鄰近交會點
+//   - 兩弧在底部某點交會，比例 = expenseTotal : incomeTotal
+function DonutHero({ expenseData, incomeData, totals }) {
   const T = HOME_SCREEN_TOKENS;
+  const TAU = 2 * Math.PI;
+  const expenseTotal = expenseData.reduce((s, x) => s + x.value, 0);
+  const incomeTotal = incomeData.reduce((s, x) => s + x.value, 0);
+  const totalAll = expenseTotal + incomeTotal;
+
+  let slices = [];
+  if (totalAll > 0) {
+    const rExpense = expenseTotal / totalAll;
+    // 收入側：reverse 後正向累加，從 0 走到 +TAU × rIncome
+    const incomeReversed = [...incomeData].reverse();
+    let accIncome = 0;
+    const incomeSlices = incomeReversed.map(d => {
+      const sweep = (d.value / totalAll) * TAU;
+      const start = accIncome;
+      const end = accIncome + sweep;
+      accIncome += sweep;
+      return { startAngle: start, endAngle: end, color: d.color, key: 'in_' + d.id };
+    });
+    // 支出側：不 reverse，正向累加，最後整體平移 -TAU × rExpense
+    let accExpense = 0;
+    const expenseSlices = expenseData.map(d => {
+      const sweep = (d.value / totalAll) * TAU;
+      const start = accExpense - TAU * rExpense;
+      const end = accExpense + sweep - TAU * rExpense;
+      accExpense += sweep;
+      return { startAngle: start, endAngle: end, color: d.color, key: 'ex_' + d.id };
+    });
+    slices = [...expenseSlices, ...incomeSlices];
+  }
+
   return (
     <div style={{
       display: 'flex', justifyContent: 'center',
       marginBottom: T.DONUT_BOTTOM_GAP,
     }}>
-      <DonutChart data={pieData.map(d => ({ key: d.id, value: d.value, color: d.color }))}>
+      <DonutChart slices={slices}>
         <div style={{ textAlign: 'center', width: T.DONUT_CENTER_TEXT_WIDTH }}>
           <div style={{
             fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,
