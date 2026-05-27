@@ -555,22 +555,15 @@ function ComponentsInputSection() {
   return (
     <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色。對應 SWITCH_TOKENS 表見 Foundations > Component Tokens > Switch。">
       <DCFamily id="comp-input-family" title="Input Surfaces" subtitle="iOS 風格輸入相關元件：Switch、Calculator、Glass pill。">
-        <DCArtboard id="comp-switch" label="Switch · default / brand 兩變體 (live)" width={402} height={260}>
+        <DCArtboard id="comp-switch" label="Switch · active 走主題色 (live)" width={402} height={200}>
           <CompFrame style={{ padding: SPACING.xl }}>
-            <CompLabel>採 RN 原生 Switch。trackColor 由 SWITCH_TOKENS 提供兩變體</CompLabel>
+            <CompLabel>採 RN 原生 Switch。active track 統一走主題色 primary.main</CompLabel>
             <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.lg, marginTop: SPACING.md }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
-                <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
-                <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.default}/>
+                <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON}/>
+                <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON}/>
                 <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
-                  default · status.success（AccountEditor / CategoryEditor 用）
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.md }}>
-                <SwitchDemo defaultValue={true} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
-                <SwitchDemo defaultValue={false} trackColorOn={SWITCH_TOKENS.TRACK_COLOR_ON.brand}/>
-                <span style={{ fontSize: TYPE_STYLES.footnote.size, color: TOKENS.ink2 }}>
-                  brand · primary.main（RecurringOptions / CurrencyDetailConfig 用）
+                  active · primary.main（所有 toggle 使用點共用）
                 </span>
               </div>
             </div>
