@@ -1385,11 +1385,13 @@ function CategorySelector({ category, mode = 'static', noBorder = false }) {
   );
 }
 
-// ─── DatePill ─── RecurringOptions「結束於＝特定日期」時的日期欄
-// 對齊 impl src/components/RecurringOptions.tsx：endCondition === 'ON_DATE' 時下方接 DateTimePicker。
-// design canvas 為靜態 mock，呈現為 surface 圓角 pill + calendar icon + 日期文字。
+// ─── DatePill ─── RecurringOptions「結束於」區段與兩顆 chip 同行的日期欄
+// 對齊 impl src/components/RecurringOptions.tsx：與「永不 / 特定日期」chip 並排展示。
+// active=false（永不選中時）pill 留在原位置淡出停用，opacity 漸變避免整列寬度跳動。
+// 高度透過 PADDING_VERTICAL 與 CHIP_TOKENS.PADDING_VERTICAL 一致（皆 SPACING.sm = 8），
+// 與 chip 等高 30pt，在 flex row 內 alignItems:center 並排對齊。
 // Token 由 RECURRING_OPTIONS_TOKENS.END_DATE_PILL_* 提供（內嵌於 no11，因唯一用戶為 RecurringOptions）。
-function DatePill({ date = '2026/12/31', onClick }) {
+function DatePill({ date = '2026/12/31', active = true, onClick }) {
   const R = RECURRING_OPTIONS_TOKENS;
   return (
     <button onClick={onClick} style={{
@@ -1401,8 +1403,10 @@ function DatePill({ date = '2026/12/31', onClick }) {
       background: TOKENS.bg,
       borderRadius: R.END_DATE_PILL_RADIUS,
       borderWidth: R.END_DATE_PILL_BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
-      marginTop: R.END_DATE_PILL_MARGIN_TOP,
-      cursor: 'pointer', fontFamily: 'inherit',
+      cursor: active ? 'pointer' : 'default', fontFamily: 'inherit',
+      opacity: active ? 1 : R.END_DATE_PILL_DISABLED_OPACITY,
+      pointerEvents: active ? 'auto' : 'none',
+      transition: `opacity ${R.END_DATE_PILL_FADE_DURATION}ms ease`,
     }}>
       <Glyph name="calendar" size={ICON_SIZE.sm} color={TOKENS.ink2} stroke={2}/>
       <span style={{
@@ -1494,7 +1498,9 @@ function ConfirmDialog({ title, message, actions = [] }) {
 // ─── RecurringOptions ─── 對齊 src/components/RecurringOptions.tsx
 // container bg surface radius lg padding lg margin sm/lg border 1px
 // headerRow: title「定期設定」primary medium + Switch
-// 內容（enabled=true 時）：頻率 4 chip / 每隔 input + unit / 結束於 2 chip（+ ON_DATE 時 DatePill）
+// 內容（enabled=true 時）：頻率 4 chip / 每隔 input + unit / 結束於 [永不 chip][特定日期 chip][DatePill]
+// 結束於三者同行（flex row alignItems:center），DatePill 永遠 render；
+// 永不選中時 DatePill 留位置淡出停用（END_DATE_PILL_DISABLED_OPACITY + FADE_DURATION）。
 // design canvas 版為 self-contained state，方便 sandbox 即看即試。
 //
 // Variants：
@@ -1583,11 +1589,11 @@ function RecurringOptions({
           <span style={{ fontSize: R.UNIT_TEXT_SIZE, color: TOKENS.ink }}>{unitText}</span>
         </div>
         {labelRow('結束於')}
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }}>
           {optionBtn('NEVER',   '永不',     endCondition === 'NEVER',   () => setEndCondition('NEVER'))}
           {optionBtn('ON_DATE', '特定日期', endCondition === 'ON_DATE', () => setEndCondition('ON_DATE'))}
+          <DatePill date={endDate} active={endCondition === 'ON_DATE'}/>
         </div>
-        {endCondition === 'ON_DATE' && <DatePill date={endDate}/>}
       </div>
     </div>
   );
