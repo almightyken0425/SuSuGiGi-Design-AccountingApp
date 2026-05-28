@@ -34,15 +34,19 @@ const RECURRING_OPTIONS_TOKENS = {
   INTERVAL_INPUT_RIGHT_GAP:    SPACING.md,
   UNIT_TEXT_SIZE:              TYPOGRAPHY.size.base,
 
-  // ── End-date pill（結束於＝特定日期時下方接的 DatePill）
-  // 對齊 impl src/components/RecurringOptions.tsx ON_DATE 分支接的 DateTimePicker。
-  END_DATE_PILL_PADDING_VERTICAL:   SPACING.sm,
+  // ── End-date pill（與「永不 / 特定日期」chip 同行的 DatePill）
+  // 對齊 impl src/components/RecurringOptions.tsx 中與兩顆 chip 同行的 DateTimePicker。
+  // 永不時 pill 留在原位置淡出停用，避免整列寬度跳動。
+  // 高度透過 PADDING_VERTICAL 與 CHIP_TOKENS.PADDING_VERTICAL 一致（皆 SPACING.sm = 8），
+  // 與 chip 等高 30pt，可在 flex row 內並排對齊。
+  END_DATE_PILL_PADDING_VERTICAL:   SPACING.sm,                                  // (literal: 與 CHIP_TOKENS.PADDING_VERTICAL 綁定，確保 pill 與 chip 等高)
   END_DATE_PILL_PADDING_HORIZONTAL: SPACING.md,
   END_DATE_PILL_RADIUS:             RADIUS.md,
   END_DATE_PILL_BORDER_WIDTH:       1,                                          // (literal: 同上 hairline)
-  END_DATE_PILL_MARGIN_TOP:         SPACING.sm,
   END_DATE_PILL_TEXT_SIZE:          TYPOGRAPHY.size.base,
   END_DATE_PILL_ICON_GAP:           SPACING.sm,
+  END_DATE_PILL_DISABLED_OPACITY:   0.5,                                        // (literal: 永不時的淡出停用透明度，沿用 DISABLED_OPACITY 值)
+  END_DATE_PILL_FADE_DURATION:      MOTION.duration.fast + 20,                  // 220ms，對齊 ListEmptyTransition 慣例
 };
 
 Object.assign(window, { RECURRING_OPTIONS_TOKENS });

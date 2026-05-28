@@ -22,13 +22,14 @@ const RECURRING_OPTIONS_TOKEN_DESC = {
   INTERVAL_INPUT_SIZE:               '數字輸入欄字級',
   INTERVAL_INPUT_RIGHT_GAP:          '數字欄與 unit 文字間距',
   UNIT_TEXT_SIZE:                    '「天 / 週 / 月 / 年」單位文字字級',
-  END_DATE_PILL_PADDING_VERTICAL:    'ON_DATE 日期 pill 上下 padding',
-  END_DATE_PILL_PADDING_HORIZONTAL:  'ON_DATE 日期 pill 左右 padding',
-  END_DATE_PILL_RADIUS:              'ON_DATE 日期 pill 圓角',
-  END_DATE_PILL_BORDER_WIDTH:        'ON_DATE 日期 pill 邊框',
-  END_DATE_PILL_MARGIN_TOP:          'ON_DATE 日期 pill 上方間距（與「結束於」chip 列分離）',
-  END_DATE_PILL_TEXT_SIZE:           'ON_DATE 日期 pill 文字字級',
-  END_DATE_PILL_ICON_GAP:            'ON_DATE 日期 pill 圖示與文字間距',
+  END_DATE_PILL_PADDING_VERTICAL:    '日期 pill 上下 padding（與 CHIP_TOKENS.PADDING_VERTICAL 綁定，確保與 chip 等高 30pt）',
+  END_DATE_PILL_PADDING_HORIZONTAL:  '日期 pill 左右 padding',
+  END_DATE_PILL_RADIUS:              '日期 pill 圓角',
+  END_DATE_PILL_BORDER_WIDTH:        '日期 pill 邊框',
+  END_DATE_PILL_TEXT_SIZE:           '日期 pill 文字字級',
+  END_DATE_PILL_ICON_GAP:            '日期 pill 圖示與文字間距',
+  END_DATE_PILL_DISABLED_OPACITY:    '永不選中時日期 pill 的淡出停用透明度',
+  END_DATE_PILL_FADE_DURATION:       '日期 pill opacity 切換的 transition 時間（220ms）',
 };
 
 const RECURRING_OPTIONS_TOKEN_SOURCE = {
@@ -51,13 +52,14 @@ const RECURRING_OPTIONS_TOKEN_SOURCE = {
   INTERVAL_INPUT_SIZE:               'TYPOGRAPHY.size.lg',
   INTERVAL_INPUT_RIGHT_GAP:          'SPACING.md',
   UNIT_TEXT_SIZE:                    'TYPOGRAPHY.size.base',
-  END_DATE_PILL_PADDING_VERTICAL:    'SPACING.sm',
+  END_DATE_PILL_PADDING_VERTICAL:    'SPACING.sm (literal: 綁定 CHIP_TOKENS.PADDING_VERTICAL)',
   END_DATE_PILL_PADDING_HORIZONTAL:  'SPACING.md',
   END_DATE_PILL_RADIUS:              'RADIUS.md',
   END_DATE_PILL_BORDER_WIDTH:        '1 (literal)',
-  END_DATE_PILL_MARGIN_TOP:          'SPACING.sm',
   END_DATE_PILL_TEXT_SIZE:           'TYPOGRAPHY.size.base',
   END_DATE_PILL_ICON_GAP:            'SPACING.sm',
+  END_DATE_PILL_DISABLED_OPACITY:    '0.5 (literal)',
+  END_DATE_PILL_FADE_DURATION:       'MOTION.duration.fast + 20',
 };
 
 function FoundationsCTRecurringOptionsSection() {
