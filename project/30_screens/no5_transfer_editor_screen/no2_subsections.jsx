@@ -64,13 +64,15 @@ function AmountGroupBox({ activeField, setActiveField, fromAmount, toAmount, fro
 
 // ─── PickerGroupBox ─── 外層 box 包 from AccountSelector + → + to AccountSelector
 // AccountSelector 傳 noBorder=true 拿掉自帶外框，由本 group box 統一表達 grouping
-function PickerGroupBox({ fromAcc, toAcc }) {
+// hasConflict=true 時 borderColor 轉 TOKENS.error，表達 from === to 的衝突狀態
+function PickerGroupBox({ fromAcc, toAcc, hasConflict = false }) {
   const T = TRANSFER_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
       background: TOKENS.surface,
       borderRadius: RADIUS.md,
-      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
+      borderWidth: 1, borderStyle: 'solid',
+      borderColor: hasConflict ? TOKENS.error : TOKENS.border,
       marginBottom: T.SECTION_GAP,
       paddingLeft: SPACING.md, paddingRight: SPACING.md,
       display: 'flex', flexDirection: 'row',

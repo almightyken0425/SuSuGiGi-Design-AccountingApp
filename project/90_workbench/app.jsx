@@ -91,8 +91,9 @@ const SCREEN_META = {
   // ─── Transfer Editor ─── default / recurring / same-currency / same-currency-recurring
   //                         + edit / edit-recurring / edit-same-currency
   //                         + note-focused（備註聚焦，CalculatorKeypad 滑下隱藏）
-  // 無 error variant：impl 的 save disabled 條件攔死「amountFrom 為空」場景，
-  // inline error banner 在 transfer 路徑跑不到（TxEditor 也已砍除 error variant）。
+  //                         + account-conflict（from === to，PickerGroupBox 外框轉錯誤色）
+  // account-conflict 為唯一 error variant：impl 的 save disabled 條件已含 fromAccountId === toAccountId，
+  // 衝突時完成按鈕灰、外框轉紅；其餘 error 情境（amountFrom 為空）由 save disabled 攔死，不需 variant。
   // edit-schedule-instance 不獨立列出：impl 的 mode dialog 差異需新 ConfirmDialog 元件，
   // RecurringOptions 本身渲染跟 edit-recurring 一致（rule 從 schedule 載入），無獨立視覺。
   transfer: {
@@ -126,6 +127,10 @@ const SCREEN_META = {
   'transfer-note-focused': {
     title: '新增轉帳', present: 'modal', save: true,
     render: () => <TransferEditorScreen variant="note-focused"/>,
+  },
+  'transfer-account-conflict': {
+    title: '新增轉帳', present: 'modal', save: true,
+    render: () => <TransferEditorScreen variant="account-conflict"/>,
   },
   // ─── Settings ─── default（未訂閱）/ subscribed（已訂閱，隱藏升級組）
   settings: {
@@ -369,6 +374,7 @@ const SCREEN_GROUPS = [
       { id: 'transfer-edit-recurring',          label: 'Edit + Recurring · 編輯 + 展開' },
       { id: 'transfer-edit-same-currency',      label: 'Edit + Same currency · 編輯 + 同幣別' },
       { id: 'transfer-note-focused',            label: 'Note focused · 備註聚焦，keypad 滑下' },
+      { id: 'transfer-account-conflict',        label: 'Account conflict · from === to，PickerGroupBox 外框轉紅' },
     ],
   },
   {
