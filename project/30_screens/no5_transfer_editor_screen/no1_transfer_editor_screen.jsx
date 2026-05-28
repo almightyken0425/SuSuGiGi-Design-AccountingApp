@@ -18,13 +18,15 @@
 //   note-focused             — 備註欄聚焦狀態（對齊 impl activeField === 'note'）。
 //                              CalculatorKeypad 滑下隱藏，系統 keyboard 上來（系統提供視覺，design canvas 留空）。
 //                              可疊加其他 variant（如 'edit-note-focused'）。
+//   account-conflict         — from === to（兩個 selector 暫時選到同一個帳戶）。
+//                              PickerGroupBox 外框轉 TOKENS.error 表達衝突；impl 端完成按鈕 disable。
 //
 // 不包含 edit-schedule-instance variant：impl `id + scheduleId + scheduleRecurrence` 觸發的差異
 // 在 save / delete 時跳 Alert.alert mode dialog（「本次 / 未來」）；RecurringOptions 本身渲染
 // 跟 edit-recurring 一致（rule 從 schedule 載入、isEnabled=true）。mode dialog 需新增
 // ConfirmDialog 元件不在本次 scope。
 //
-// 無 error variant：impl 的 save button disabled 條件已攔死「amountFrom 為空」場景，
+// account-conflict 為唯一 error variant：impl 的 save button disabled 條件已攔死「amountFrom 為空」場景，
 // 「請輸入有效金額」這條 Alert 在 transfer 路徑跑不到；TxEditor 仍保留 error variant。
 // ─────────────────────────────────────────────────────────────
 
@@ -37,7 +39,10 @@ function TransferEditorScreen({ variant = 'default' }) {
   const isNoteFocused  = variant.includes('note-focused');
 
   const [fromAccount] = React.useState('bank');
-  const [toAccount]   = React.useState(isSameCurrency ? 'cash' : 'usd_cash');
+  const [toAccount]   = React.useState(
+    variant === 'account-conflict' ? 'bank' :
+    isSameCurrency                  ? 'cash' : 'usd_cash'
+  );
   const [activeField, setActiveField] = React.useState('from');
   const [recurring, setRecurring] = React.useState(initialRecur);
   const [note, setNote] = React.useState('');
@@ -67,7 +72,7 @@ function TransferEditorScreen({ variant = 'default' }) {
           toAcc={toAcc}
           isCrossCurrency={isCrossCurrency}/>
 
-        <PickerGroupBox fromAcc={fromAcc} toAcc={toAcc}/>
+        <PickerGroupBox fromAcc={fromAcc} toAcc={toAcc} hasConflict={fromAccount === toAccount}/>
 
         <EditorNoteField value={note} onChange={setNote}/>
 
