@@ -182,7 +182,7 @@ function TxSectionCard({ section, collapsed, onToggle, mode }) {
             </div>
           );
         const acc = ACC_BY_ID[tx.acc];
-        const primary = tx.note || '無備註';
+        const primary = tx.note || '';
         const secondary = mode === 'category' ? null : (acc ? acc.name : '');
         return (
           <div key={tx.id} style={{ borderTop: i === 0 ? 'none' : `0.5px solid ${TOKENS.hairline}` }}>

@@ -22,7 +22,6 @@
 | 餘額 | "balance" | donut center |
 | 尚無交易紀錄 | "no transactions yet" | 空狀態 |
 | 載入中... | "loading…" | 載入狀態 |
-| 無備註 | "no note" | 列備援 |
 | 已刪除 | "deleted" | undo toast |
 | 搜尋... | "search…" | BottomSearchBar placeholder |
 
