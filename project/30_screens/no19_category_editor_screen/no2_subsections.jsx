@@ -2,7 +2,7 @@
 // CategoryEditorScreen sub-sections · 預設值 + helper text
 //
 // 共用表單 helper 來自 `shared/no3_editor_field_helpers.jsx`。
-// Form Structure V2 採用後，類型欄改 searchable dropdown，原 CategoryTypeSelector
+// Form Structure V2 採用後，收支欄改 searchable dropdown，原 CategoryTypeSelector
 // （雙按鈕橫排）已移除——該 component 內塞 chevron-down 的視覺 bug 一併消除。
 //
 // 本 screen 專屬：
@@ -12,7 +12,7 @@
 
 const CATEGORY_EDITOR_SAMPLES = {
   // edit preview：「飲食」expense（iconId 13 ph-coffee）
-  edit:        { name: '飲食',    type: 'expense', mapping: '飲食 (其他)', iconId: 13 },
+  edit:        { name: '飲食',    type: 'expense', mapping: '餐飲',         iconId: 13 },
   newExpense:  { name: '',        type: 'expense', mapping: '其他',         iconId: 12 }, // ph-bread
   newIncome:   { name: '',        type: 'income',  mapping: '其他',         iconId: 55 }, // (literal: impl default income icon)
 };
