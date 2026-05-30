@@ -708,6 +708,7 @@ const EXPLORATION_GROUPS = [
       { id: 'footer-zone',       label: 'Axis · Footer Zone',       render: () => <AccountCategoryEditorFooterZoneSection/> },
       { id: 'type-currency',     label: 'Axis · Type & Currency',   render: () => <AccountCategoryEditorTypeCurrencySection/> },
       { id: 'mapping-acctype',   label: 'Axis · Mapping & AccType', render: () => <AccountCategoryEditorMappingAccTypeSection/> },
+      { id: 'currency-weight',   label: 'Axis · Currency Symbol',   render: () => <AccountCategoryEditorCurrencyWeightSection/> },
     ],
   },
   {

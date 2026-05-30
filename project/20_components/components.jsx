@@ -235,9 +235,29 @@ function Glyph({ name, size = 16, color = TOKENS.ink, stroke = 2 }) {
 // CSS mask 把單色 svg 視為 mask，backgroundColor 套色，等效於 impl react-native-svg
 // 的 fill 行為。impl 端 DynamicIconById 內部則交給 DynamicIcon 透過 PHOSPHOR_SVG_MAP
 // 渲染同一份 Phosphor SVG 資產。
+// 幣別符號 icon：glyph = 幣別代碼，symbol 由 CURRENCY_SYMBOLS_ALL 推導，用文字排版。
+// 字重 400（design 定案）；多字元（NT$ / CHF / kr…）自動縮小。對齊 impl renderCurrencyIcon。
+function CurrencyGlyph({ code, size = 24, color = TOKENS.ink }) {
+  const list = (typeof window !== 'undefined' && window.CURRENCY_SYMBOLS_ALL) || [];
+  const found = list.find(c => c.code === code);
+  const symbol = found ? found.symbol : code;
+  const len = [...symbol].length;
+  const fontSize = Math.round(size * (len <= 1 ? 0.94 : len === 2 ? 0.62 : 0.46));
+  return (
+    <div style={{
+      width: size, height: size, flexShrink: 0,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: '-apple-system, "SF Pro Text", system-ui, sans-serif',
+      fontSize, fontWeight: 400, lineHeight: 1, color,
+      letterSpacing: len > 2 ? '-0.04em' : 0,
+    }}>{symbol}</div>
+  );
+}
+
 function DynamicIconById({ iconId, size = 24, color = TOKENS.ink }) {
   const def = ICON_BY_ID[iconId];
   if (!def) return <Glyph name="help" size={size} color={color}/>;
+  if (def.library === 'currency') return <CurrencyGlyph code={def.glyph} size={size} color={color}/>;
   return <PhosphorIcon glyph={def.glyph} size={size} color={color}/>;
 }
 
