@@ -35,22 +35,22 @@ function AccountEditorScreen({ variant = 'new' }) {
       background: TOKENS.bg, minHeight: '100%',
     }}>
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel required>名稱</EditorFieldLabel>
-        <EditorNameField value={isEdit ? sample.name : ''} placeholder="輸入帳戶名稱" active={!isEdit}/>
+        <EditorFieldLabel>名稱</EditorFieldLabel>
+        <EditorNameField value={isEdit ? sample.name : ''} placeholder="" active={!isEdit}/>
       </div>
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel required>幣別</EditorFieldLabel>
+        <EditorFieldLabel>幣別</EditorFieldLabel>
         <EditorSearchableDropdownCollapsed value={currencyLabel} disabled={isEdit}/>
       </div>
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel required>類型</EditorFieldLabel>
+        <EditorFieldLabel>類型</EditorFieldLabel>
         <EditorButtonGroup options={ACCOUNT_TYPE_OPTIONS} selected={typeLabel}/>
       </div>
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel required>圖示</EditorFieldLabel>
+        <EditorFieldLabel>圖示</EditorFieldLabel>
         <EditorInlineIconGrid icons={ACCOUNT_ICON_IDS} selectedId={iconId}/>
       </div>
 
