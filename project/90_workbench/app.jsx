@@ -657,6 +657,7 @@ const FOUNDATIONS_GROUPS = [
       { id: 'static-wheel-picker',   label: 'Static Wheel Picker',   render: () => <FoundationsCTStaticWheelPickerSection/> },
       { id: 'recurring-options',     label: 'Recurring Options',     render: () => <FoundationsCTRecurringOptionsSection/> },
       { id: 'confirm-dialog',        label: 'Confirm Dialog',        render: () => <FoundationsCTConfirmDialogSection/> },
+      { id: 'calendar-dialog',       label: 'Calendar Dialog',       render: () => <FoundationsCTCalendarDialogSection/> },
     ],
   },
   {

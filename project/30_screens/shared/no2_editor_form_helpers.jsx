@@ -34,35 +34,18 @@ function EditorErrorBanner({ title = '錯誤', message = '請輸入有效金額'
   );
 }
 
-// ─── EditorDateContainer ─── 日期 pill + recurring toggle button
-function EditorDateContainer({ dateLabel = '2026/05/14  14:30', recurring, onToggleRecurring }) {
-  // 樣式參數以 TransactionEditor / TransferEditor 各自 SCREEN_TOKENS 提供的接口為準；
-  // 此處取 TRANSACTION_EDITOR_SCREEN_TOKENS 為 anchor（兩 screen 視覺一致，不另複製）。
+// ─── EditorDateContainer ─── CalendarDialog 觸發 pill + recurring toggle button
+// 日期改用自研 CalendarDialog（Spec 模式代號 Calendar Dialog · Datetime）：單一 pill 點開月曆 dialog。
+// dialog 為 absolute 蓋滿最近 positioned 祖先（screen frame），浮在畫面上。
+function EditorDateContainer({ recurring, onToggleRecurring }) {
   const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
       display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
       marginBottom: T.SECTION_GAP,
     }}>
-      <div style={{
-        display: 'flex', alignItems: 'center',
-        background: TOKENS.surface,
-        paddingTop: T.DATE_PILL_PADDING_VERTICAL, paddingBottom: T.DATE_PILL_PADDING_VERTICAL,
-        paddingLeft: T.DATE_PILL_PADDING_HORIZONTAL, paddingRight: T.DATE_PILL_PADDING_HORIZONTAL,
-        borderRadius: T.DATE_PILL_RADIUS,
-        borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
-        marginLeft: T.DATE_PILL_MARGIN_HORIZONTAL, marginRight: T.DATE_PILL_MARGIN_HORIZONTAL,
-      }}>
-        {/* inner height 對齊 impl DateTimePicker style.height=40，由 T.DATE_PILL_INNER_HEIGHT 表達 */}
-        <div style={{
-          height: T.DATE_PILL_INNER_HEIGHT,
-          display: 'flex', alignItems: 'center',
-        }}>
-          <span style={{
-            fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink,
-            fontWeight: TYPOGRAPHY.weight.medium,
-          }}>{dateLabel}</span>
-        </div>
+      <div style={{ marginLeft: T.DATE_PILL_MARGIN_HORIZONTAL, marginRight: T.DATE_PILL_MARGIN_HORIZONTAL }}>
+        <CalendarDialog mode="datetime"/>
       </div>
       <button onClick={onToggleRecurring} style={{
         width: T.RECURRING_TOGGLE_FRAME, height: T.RECURRING_TOGGLE_FRAME,

@@ -312,6 +312,21 @@ function ComponentsFormSection() {
           </CompFrame>
         </DCArtboard>
       </DCFamily>
+
+      <DCFamily id="comp-form-date-picker" title="Date Picker" subtitle="自研日期選擇器（Spec 模式代號 Calendar Dialog，對應 date_picker_policy.md）。單一 pill 點開置中 dialog，日/月雙子模式可切換、即時生效點外關閉。即看即試：點 pill 開 → 點標題列(YYYY/MM)切月模式 → 點日/月選定 → 點 dialog 外關閉。Datetime 含時間滾輪、Date-only 純日期無滾輪。">
+        <DCArtboard id="comp-calendar-dialog-datetime" label="CalendarDialog · Datetime (live：點 pill 開 dialog)" width={402} height={640}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>模式 Datetime — 交易/轉帳記錄日期。點 pill 開月曆 dialog；標題列可切日↔月模式；底部時間滾輪。</CompLabel>
+            <CalendarDialog mode="datetime"/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-calendar-dialog-date" label="CalendarDialog · Date-only (live)" width={402} height={560}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>模式 Date-only — 定期結束日期。無時間滾輪。</CompLabel>
+            <CalendarDialog mode="date"/>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
     </DCSection>
   );
 }
