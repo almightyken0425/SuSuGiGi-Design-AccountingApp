@@ -1599,6 +1599,177 @@ function RecurringOptions({
   );
 }
 
+// ─── CalendarDialog ─── 自研日期選擇器（Spec 模式代號 Calendar Dialog）
+// 對齊 Spec date_picker_policy.md：單一觸發 pill → 置中 dialog，日/月雙子模式可切換。
+// 即看即試：自包 state。mode='datetime' 含時間滾輪、mode='date' 純日期無滾輪。
+// 月曆計算為純 JS（給定 year/month 推星期與天數），初始值固定 2026/5/30 12:47 對齊 spec 範例。
+// dialog 用 absolute 蓋滿 artboard frame（沿用 ConfirmDialog 慣例，frame 需 relative）。
+// 翻頁互動（design 仲裁）：月份／年份採縱向單頁 native snap 分頁——日模式上下滑切月、月模式上下滑切年，
+//   放手吸附整頁、後一個月在下方。impl 端為 vertical FlatList pagingEnabled，沿用 home screen
+//   period paging 的 FlatList 分頁機制、方向改縱向；canvas 無法 mock 真實 swipe，僅鏡射單月結構。
+//   本決議同步記於 no13_calendar_dialog_tokens.jsx。
+const CAL_DOW = ['日','一','二','三','四','五','六'];
+const CAL_MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+
+function calMonthGrid(year, month) {
+  const firstDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const prevDays = new Date(year, month, 0).getDate();
+  const cells = [];
+  for (let i = 0; i < firstDow; i++) cells.push({ d: prevDays - firstDow + 1 + i, outside: true });
+  for (let d = 1; d <= daysInMonth; d++) cells.push({ d, outside: false });
+  let nx = 1;
+  while (cells.length < 42) cells.push({ d: nx++, outside: true });
+  return cells;
+}
+
+function CalendarDialog({ mode = 'datetime' }) {
+  const C = CALENDAR_DIALOG_TOKENS;
+  const { useState } = React;
+  const [open, setOpen] = useState(false);
+  const [view, setView] = useState('day');     // 'day' | 'month'
+  const [year, setYear] = useState(2026);
+  const [month, setMonth] = useState(4);        // 0-indexed：4 = 5月
+  const [day, setDay] = useState(30);
+  const [hh] = useState(12);
+  const [mm] = useState(47);
+
+  const p2 = (n) => String(n).padStart(2, '0');
+  const pillText = mode === 'datetime'
+    ? `${year}/${month + 1}/${day}   ${p2(hh)}:${p2(mm)}`
+    : `${year}/${month + 1}/${day}`;
+
+  const pill = (
+    <button onClick={() => setOpen(true)} style={{
+      display: 'inline-flex', alignItems: 'center', gap: C.PILL_ICON_GAP,
+      paddingTop: C.PILL_PADDING_VERTICAL, paddingBottom: C.PILL_PADDING_VERTICAL,
+      paddingLeft: C.PILL_PADDING_HORIZONTAL, paddingRight: C.PILL_PADDING_HORIZONTAL,
+      background: TOKENS.surface, borderRadius: C.PILL_RADIUS,
+      borderWidth: C.PILL_BORDER_WIDTH, borderStyle: 'solid', borderColor: TOKENS.border,
+      cursor: 'pointer', fontFamily: 'inherit',
+    }}>
+      <Glyph name="calendar" size={ICON_SIZE.sm} color={TOKENS.ink2} stroke={2}/>
+      <span style={{ fontSize: C.PILL_TEXT_SIZE, fontWeight: C.PILL_TEXT_WEIGHT, color: TOKENS.ink }}>{pillText}</span>
+    </button>
+  );
+
+  const dayCell = (cell, i) => {
+    const selected = !cell.outside && cell.d === day;
+    return (
+      <button key={i} onClick={() => { if (!cell.outside) setDay(cell.d); }} style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        border: 'none', background: 'transparent', padding: 0,
+        cursor: cell.outside ? 'default' : 'pointer', fontFamily: 'inherit',
+        opacity: cell.outside ? C.DAY_OUTSIDE_MONTH_OPACITY : 1,
+      }}>
+        <span style={{
+          width: C.DAY_SELECTED_SIZE, height: C.DAY_SELECTED_SIZE,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          borderRadius: C.DAY_SELECTED_RADIUS,
+          background: selected ? TOKENS.p500 : 'transparent',
+          fontSize: C.DAY_CELL_TEXT_SIZE,
+          fontWeight: selected ? C.SELECTED_TEXT_WEIGHT : TYPOGRAPHY.weight.regular,
+          color: selected ? TOKENS.surface : TOKENS.ink,
+        }}>{cell.d}</span>
+      </button>
+    );
+  };
+
+  const monthCell = (label, idx) => {
+    const selected = idx === month;
+    return (
+      <button key={idx} onClick={() => setMonth(idx)} style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        border: 'none', background: 'transparent', padding: 0,
+        cursor: 'pointer', fontFamily: 'inherit',
+      }}>
+        <span style={{
+          height: C.MONTH_SELECTED_HEIGHT,
+          paddingLeft: C.MONTH_SELECTED_PADDING_H, paddingRight: C.MONTH_SELECTED_PADDING_H,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          borderRadius: C.MONTH_SELECTED_RADIUS,
+          background: selected ? TOKENS.p500 : 'transparent',
+          fontSize: C.MONTH_CELL_TEXT_SIZE,
+          fontWeight: selected ? C.SELECTED_TEXT_WEIGHT : TYPOGRAPHY.weight.regular,
+          color: selected ? TOKENS.surface : TOKENS.ink,
+        }}>{label}</span>
+      </button>
+    );
+  };
+
+  const wheelCol = (val) => (
+    <div style={{
+      flex: 1, height: 96, background: TOKENS.surface, borderRadius: RADIUS.md,
+      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
+      overflow: 'hidden', display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+    }}>
+      <div style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, opacity: 0.3, height: 24 }}/>
+      <div style={{ fontSize: TYPOGRAPHY.size.lg, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, marginTop: 4, marginBottom: 4 }}>{p2(val)}</div>
+      <div style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, opacity: 0.3, height: 24 }}/>
+    </div>
+  );
+
+  const cells = calMonthGrid(year, month);
+
+  const dialog = open ? (
+    <div onClick={() => setOpen(false)} style={{
+      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10,
+      background: C.BACKDROP_BG, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: C.CARD_OUTER_PADDING, animation: `fadeIn ${C.BACKDROP_FADE_DURATION}ms ease`,
+    }}>
+      <div onClick={(e) => e.stopPropagation()} style={{
+        width: C.CARD_WIDTH, background: TOKENS.surface, borderRadius: C.CARD_RADIUS, padding: C.CARD_PADDING,
+      }}>
+        <button onClick={() => setView(view === 'day' ? 'month' : 'day')} style={{
+          width: '100%', height: C.HEADER_HEIGHT,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit',
+          marginBottom: C.HEADER_BOTTOM_MARGIN, padding: 0,
+        }}>
+          <span style={{ fontSize: C.HEADER_TEXT_SIZE, fontWeight: C.HEADER_TEXT_WEIGHT, color: TOKENS.ink }}>
+            {view === 'day' ? `${year}/${month + 1}` : `${year}`}
+          </span>
+        </button>
+
+        {view === 'day' && (
+          <div style={{ height: C.MIDDLE_AREA_HEIGHT, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', marginBottom: C.WEEKDAY_ROW_BOTTOM_MARGIN }}>
+              {CAL_DOW.map((w, i) => (
+                <div key={i} style={{ textAlign: 'center', fontSize: C.WEEKDAY_TEXT_SIZE, fontWeight: C.WEEKDAY_TEXT_WEIGHT, color: TOKENS.ink2 }}>{w}</div>
+              ))}
+            </div>
+            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridTemplateRows: 'repeat(6, 1fr)', columnGap: C.GRID_COL_GAP, justifyItems: 'center' }}>
+              {cells.map(dayCell)}
+            </div>
+          </div>
+        )}
+
+        {view === 'month' && (
+          <div style={{ height: C.MIDDLE_AREA_HEIGHT, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gridTemplateRows: 'repeat(3, 1fr)', columnGap: C.GRID_COL_GAP, justifyItems: 'center' }}>
+            {CAL_MONTHS.map(monthCell)}
+          </div>
+        )}
+
+        {mode === 'datetime' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: C.WHEEL_GROUP_GAP, marginTop: C.WHEEL_TOP_MARGIN }}>
+            {wheelCol(hh)}
+            <span style={{ fontSize: TYPOGRAPHY.size.lg, color: TOKENS.ink }}>{C.WHEEL_SEPARATOR_TEXT}</span>
+            {wheelCol(mm)}
+          </div>
+        )}
+      </div>
+    </div>
+  ) : null;
+
+  return (
+    <React.Fragment>
+      {pill}
+      {dialog}
+    </React.Fragment>
+  );
+}
+
 Object.assign(window, {
   Glyph, DynamicIconById, IconOutline,
   ListGroupCard, GroupCard, ListSection, ListSeparator,
@@ -1609,6 +1780,6 @@ Object.assign(window, {
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
   AmountField, StaticWheelPicker, AccountSelector, CategorySelector, RecurringOptions,
-  DatePill, ConfirmDialog,
+  DatePill, ConfirmDialog, CalendarDialog,
   iconBtn,
 });
