@@ -1719,14 +1719,14 @@ function CalendarDialog({ mode = 'datetime' }) {
 
   const wheelCol = (val) => (
     <div style={{
-      flex: 1, height: 96, background: TOKENS.surface, borderRadius: RADIUS.md,
+      flex: 1, height: C.WHEEL_ROW_HEIGHT * C.WHEEL_VISIBLE_ROWS, background: TOKENS.surface, borderRadius: RADIUS.md,
       borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.border,
       overflow: 'hidden', display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
     }}>
-      <div style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, opacity: 0.3, height: 24 }}/>
+      <div style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, opacity: C.WHEEL_DIM_OPACITY, height: C.WHEEL_ROW_HEIGHT }}/>
       <div style={{ fontSize: TYPOGRAPHY.size.lg, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, marginTop: 4, marginBottom: 4 }}>{p2(val)}</div>
-      <div style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, opacity: 0.3, height: 24 }}/>
+      <div style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink, opacity: C.WHEEL_DIM_OPACITY, height: C.WHEEL_ROW_HEIGHT }}/>
     </div>
   );
 

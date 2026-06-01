@@ -19,7 +19,7 @@ const CALENDAR_DIALOG_TOKENS = {
   PILL_ICON_GAP:                SPACING.sm,
 
   // ── Backdrop（半透明黑遮罩，沿用 iOS Alert 慣例）
-  BACKDROP_BG:                  'rgba(0,0,0,0.4)',                              // (literal: iOS 慣例 40% 黑)
+  BACKDROP_BG:                  'rgba(0,0,0,0.4)',                              // (literal: iOS 慣例 40% 黑；impl 取 theme.scrim.medium，per-theme 同值 0.40)
   BACKDROP_FADE_DURATION:       200,                                           // (literal: 對齊既有 dialog fadeIn 200ms)
 
   // ── Dialog Card（置中圓角卡，裝月曆＋時間）
@@ -38,7 +38,8 @@ const CALENDAR_DIALOG_TOKENS = {
   // ── Weekday Row 星期列（日一二三四五六）
   WEEKDAY_TEXT_SIZE:            TYPOGRAPHY.size.xs,
   WEEKDAY_TEXT_WEIGHT:          TYPOGRAPHY.weight.medium,
-  WEEKDAY_ROW_BOTTOM_MARGIN:    SPACING.xs,
+  WEEKDAY_ROW_BOTTOM_MARGIN:    SPACING.xs,                                    // (canvas mock 用：星期列 text + 下間距版)
+  WEEKDAY_ROW_HEIGHT:           24,                                            // (literal: impl 用：星期列改固定行高，把原 bottom margin 折進)
 
   // ── 中段 Grid 區（日/月共用固定總高，確保日↔月切換 dialog 高度不變）
   // 日模式中段 = 星期列 + 6 列日格；月模式中段 = 3 列月格；兩者撐同一 MIDDLE_AREA_HEIGHT。
@@ -70,6 +71,10 @@ const CALENDAR_DIALOG_TOKENS = {
 
   // ── Time Wheel 時間滾輪（沿用 StaticWheelPicker 3 行視覺；僅 Datetime 模式）
   WHEEL_TOP_MARGIN:             SPACING.lg,
+  WHEEL_ROW_HEIGHT:             32,                                            // (literal: 每行高＝數字間距；WHEEL_VISIBLE_ROWS 行總高 96)
+  WHEEL_VISIBLE_ROWS:           3,                                             // (literal: 中央選中 + 上下各一淡化行)
+  WHEEL_COLUMN_WIDTH:           72,                                            // (literal: 時/分各一欄固定寬)
+  WHEEL_DIM_OPACITY:            0.3,                                           // (literal: 非選中行淡化，與 DAY_OUTSIDE_MONTH_OPACITY 同階)
   WHEEL_SEPARATOR_TEXT:         ':',                                           // (literal: 時分分隔符)
   WHEEL_GROUP_GAP:              SPACING.md,
 };
