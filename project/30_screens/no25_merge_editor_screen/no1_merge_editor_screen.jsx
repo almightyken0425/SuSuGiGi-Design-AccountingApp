@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // MergeEditorScreen · 對齊 impl src/screens/Merge/MergeEditorScreen.tsx
 //
-// Modal save form。三段：source → target 視覺化 / 警告 banner / 兩 selector。
-// mode='account' 用 AccountSelector，mode='category' 用 CategorySelector。
-// impl 端有 filterCurrency 限制（account mode 合併只允許同幣別），design canvas
-// 不演示 filter，僅以預設 sample 示意。
+// Modal save form。三段：source → target 視覺化 / 警告 banner / 橫向 dual picker box。
+// 來源 / 目標兩 selector 收進一個橫向 box（MergePickerBox），取代現況的 modal-in-modal。
+// 互動模型：來源列全部、可任選；目標只列與來源相容子集（類別同 type、帳戶同幣別），
+// 相同則完成停用 + box 轉紅。design canvas 不演示 filter / 互動，僅以預設 sample 示意。
 //
 // Variants：
 //   account  — 帳戶模式（source: 現金 / target: 玉山活儲）
@@ -27,22 +27,7 @@ function MergeEditorScreen({ variant = 'account' }) {
 
       <MergeWarningBanner/>
 
-      <div style={{
-        display: 'flex', flexDirection: 'column',
-        gap: T.SELECTOR_GAP,
-      }}>
-        {isAccount ? (
-          <>
-            <AccountSelector account={source} mode="from"/>
-            <AccountSelector account={target} mode="to"/>
-          </>
-        ) : (
-          <>
-            <CategorySelector category={source} mode="from"/>
-            <CategorySelector category={target} mode="to"/>
-          </>
-        )}
-      </div>
+      <MergePickerBox sourceLabel={source.name} targetLabel={target.name}/>
     </div>
   );
 }
