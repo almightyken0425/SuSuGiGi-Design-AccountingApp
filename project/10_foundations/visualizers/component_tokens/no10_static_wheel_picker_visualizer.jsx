@@ -11,6 +11,8 @@ const STATIC_WHEEL_PICKER_TOKEN_DESC = {
   LABEL_WEIGHT:          '中央 highlighted 字重（上下 dim 行不加 weight）',
   LABEL_VERTICAL_MARGIN: 'highlighted label 上下與 dim 行間距',
   DIM_OPACITY:           '上下 dim 鄰近選項透明度（模擬 iOS Picker wheel 自動視覺淡化）',
+  PICKER_NATIVE_HEIGHT:     'impl RN <Picker> 元件高度（> 容器 110 以露出上下鄰近選項；canvas stub 不渲染）',
+  PICKER_NATIVE_MARGIN_TOP: 'impl 把 native Picker 上移使選中列置中於容器的負 margin（canvas stub 不渲染）',
 };
 
 const STATIC_WHEEL_PICKER_TOKEN_SOURCE = {
@@ -22,6 +24,8 @@ const STATIC_WHEEL_PICKER_TOKEN_SOURCE = {
   LABEL_WEIGHT:          'TYPOGRAPHY.weight.medium',
   LABEL_VERTICAL_MARGIN: 'SPACING.xs',
   DIM_OPACITY:           '0.4 (literal)',
+  PICKER_NATIVE_HEIGHT:     '200 (literal: impl RN Picker 高度)',
+  PICKER_NATIVE_MARGIN_TOP: '-45 (literal: impl 選中列置中負 margin)',
 };
 
 function FoundationsCTStaticWheelPickerSection() {

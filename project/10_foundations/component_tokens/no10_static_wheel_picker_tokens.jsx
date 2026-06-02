@@ -19,6 +19,9 @@ const STATIC_WHEEL_PICKER_TOKENS = {
   LABEL_WEIGHT:              TYPOGRAPHY.weight.medium,
   LABEL_VERTICAL_MARGIN:     SPACING.xs,
   DIM_OPACITY:               0.4,                                              // (literal: 模擬 iOS Picker wheel 上下鄰近選項自動視覺淡化，對齊 impl native picker dim 程度)
+  // impl-only native picker 內部校準（design canvas 三行 stub 不渲染，僅作 impl 對齊權威）
+  PICKER_NATIVE_HEIGHT:      200,                                              // (literal: impl RN <Picker> 元件高度，> 容器 110 以露出上下鄰近選項)
+  PICKER_NATIVE_MARGIN_TOP:  -45,                                             // (literal: impl 把 native Picker 上移使選中列置中於 110 容器)
 };
 
 Object.assign(window, { STATIC_WHEEL_PICKER_TOKENS });

@@ -718,6 +718,12 @@ const EXPLORATION_GROUPS = [
       { id: 'box-framing', label: 'Axis · Box Framing', render: () => <TransferBoxFramingSection/> },
     ],
   },
+  {
+    id: 'mergeeditor', label: 'Merge Editor',
+    topics: [
+      { id: 'dual-picker-layout', label: 'Axis · Dual Picker Layout', render: () => <MergeDualPickerLayoutSection/> },
+    ],
+  },
 ];
 
 // 找 Foundations group / topic 的 helper。沒命中時回 fallback（atomic/type）。
