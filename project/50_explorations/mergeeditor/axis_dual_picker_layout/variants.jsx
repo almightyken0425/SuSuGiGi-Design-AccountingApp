@@ -112,7 +112,6 @@ function MDP_ConflictNote() {
 function MDP_Horizontal() {
   return (
     <MDP_Shell>
-      <MergeWarningBanner/>
       <MDP_PickerBox direction="horizontal" sourceLabel={MDP_SOURCE.name} targetLabel={MDP_TARGET.name}/>
     </MDP_Shell>
   );
@@ -122,7 +121,6 @@ function MDP_Horizontal() {
 function MDP_Vertical() {
   return (
     <MDP_Shell>
-      <MergeWarningBanner/>
       <MDP_PickerBox direction="vertical" sourceLabel={MDP_SOURCE.name} targetLabel={MDP_TARGET.name}/>
     </MDP_Shell>
   );
@@ -133,7 +131,6 @@ function MDP_HorizontalWithViz() {
   return (
     <MDP_Shell>
       <MergeVisualizationRow source={MDP_SOURCE} target={MDP_TARGET}/>
-      <MergeWarningBanner/>
       <MDP_PickerBox direction="horizontal" sourceLabel={MDP_SOURCE.name} targetLabel={MDP_TARGET.name}/>
     </MDP_Shell>
   );
@@ -143,7 +140,6 @@ function MDP_HorizontalWithViz() {
 function MDP_Conflict() {
   return (
     <MDP_Shell saveDisabled>
-      <MergeWarningBanner/>
       <MDP_PickerBox direction="horizontal" conflict sourceLabel={MDP_SOURCE.name} targetLabel={MDP_SOURCE.name}/>
       <MDP_ConflictNote/>
     </MDP_Shell>
