@@ -19,9 +19,8 @@ const HOME_FILTER_SCREEN_TOKENS = {
   TILE_LETTER_SPACING:                  -0.2,                                  // (literal: HIG body letter-spacing 視覺校準)
   TILE_SHADOW:                          '0 1px 2px rgba(0,0,0,0.04)',          // (literal: 比 SHADOW_ELEVATION.level1 更輕，tile 區與背景區分用)
 
-  // ── Currency group block 間距
-  CURRENCY_GROUP_GAP:                   SPACING.lg,                            // 跨 currency group 垂直間距
-  ACCOUNT_CARD_INTRA_GAP:               SPACING.sm,                            // group 內 wrap gap
+  // ── Account grid wrap 間距
+  ACCOUNT_CARD_INTRA_GAP:               SPACING.sm,                            // 帳戶 grid wrap gap，橫向欄距與縱向列距共用
 
   // ── Account selector card
   ACCOUNT_CARD_PADDING_VERTICAL:        SPACING.md,
