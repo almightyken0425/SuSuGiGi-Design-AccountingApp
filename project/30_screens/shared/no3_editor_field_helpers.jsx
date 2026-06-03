@@ -83,23 +83,7 @@ function EditorSwitchRow({ label, value }) {
   );
 }
 
-// ─── EditorDestructiveTextButton ─── 「刪除」按鈕（Footer Zone V1：surface 底紅字無框）
-// 修訂：原本純紅字無 surface 底，現對齊 Footer Zone V1 採用結論，包 surface 底。
-function EditorDestructiveTextButton({ label }) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-      background: TOKENS.surface,
-      padding: SPACING.lg,
-      borderRadius: RADIUS.md,
-      fontSize: TYPOGRAPHY.size.base,
-      color: TOKENS.error,
-      fontWeight: TYPOGRAPHY.weight.medium,
-    }}>
-      {label}
-    </div>
-  );
-}
+// 刪除鈕已收斂為共用元件 DeleteButton（20_components/components.jsx），不再由本 helper 提供。
 
 // ─── EditorNameField ─── 大字置中名稱輸入（V2 form structure 採用：高 80、24px 字、中對齊）
 // 對齊 TransactionEditor 的 AmountField 視覺語彙，讓 editor 入口的名稱欄成為視覺焦點。
@@ -203,7 +187,7 @@ function EditorInlineIconGrid({ icons, selectedId }) {
 
 Object.assign(window, {
   EditorFieldLabel, EditorTextInput, EditorPickerCollapsed,
-  EditorSwitchRow, EditorDestructiveTextButton,
+  EditorSwitchRow,
   EditorNameField, EditorButtonGroup,
   EditorSearchableDropdownCollapsed, EditorInlineIconGrid,
 });

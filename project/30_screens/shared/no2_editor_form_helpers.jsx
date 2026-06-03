@@ -90,23 +90,8 @@ function EditorNoteField({ value, onChange, onFocus, placeholder = '新增備註
   );
 }
 
-// ─── EditorDeleteButton ─── isEdit=true 時顯示
-function EditorDeleteButton({ label = '刪除' }) {
-  const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
-  return (
-    <div style={{
-      marginTop: T.DELETE_BUTTON_TOP_MARGIN,
-      display: 'flex', justifyContent: 'center',
-    }}>
-      <button style={{
-        padding: T.DELETE_BUTTON_PADDING, background: 'transparent',
-        border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-        color: TOKENS.error, fontSize: TYPOGRAPHY.size.base,
-      }}>{label}</button>
-    </div>
-  );
-}
+// 刪除鈕已收斂為共用元件 DeleteButton（20_components/components.jsx），不再由本 helper 提供。
 
 Object.assign(window, {
-  EditorErrorBanner, EditorDateContainer, EditorNoteField, EditorDeleteButton,
+  EditorErrorBanner, EditorDateContainer, EditorNoteField,
 });

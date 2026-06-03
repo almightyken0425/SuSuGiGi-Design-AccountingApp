@@ -68,7 +68,7 @@ function TransactionEditorScreen({
           onChange={(v) => { setNote(v); setAmountFocused(false); }}
           onFocus={() => setAmountFocused(false)}/>
 
-        {isEdit && <EditorDeleteButton label="刪除交易"/>}
+        {isEdit && <DeleteButton/>}
 
         <div style={{ height: amountFocused ? T.SCROLL_SPACER_HEIGHT : T.SCROLL_SPACER_HEIGHT_INACTIVE }}/>
       </div>

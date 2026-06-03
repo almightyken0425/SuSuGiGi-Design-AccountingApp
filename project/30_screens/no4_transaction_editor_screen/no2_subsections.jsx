@@ -4,8 +4,8 @@
 // 鏡射 impl src/screens/Transactions/TransactionEditorScreen.tsx 拆分：
 //   TransactionAmountContainer / TransactionPickerRow
 //
-// 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField /
-//   EditorDeleteButton）住在 30_screens/shared/no2_editor_form_helpers.jsx
+// 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField）住在
+//   30_screens/shared/no2_editor_form_helpers.jsx；刪除鈕改用共用元件 DeleteButton（20_components）。
 // （design canvas global namespace 限制使然，兩 editor 視覺一致時共用 helper，
 //   視覺差異時才各自實作）。
 //

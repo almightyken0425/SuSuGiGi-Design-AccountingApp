@@ -55,7 +55,7 @@ function AccountEditorScreen({ variant = 'new' }) {
       </div>
 
       {isEdit && <EditorSwitchRow label="啟用" value={true}/>}
-      {isEdit && <EditorDestructiveTextButton label="刪除帳戶"/>}
+      {isEdit && <DeleteButton/>}
     </div>
   );
 }

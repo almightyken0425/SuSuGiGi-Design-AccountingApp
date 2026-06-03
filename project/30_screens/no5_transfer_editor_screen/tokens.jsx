@@ -2,7 +2,7 @@
 // TRANSFER_EDITOR_SCREEN_TOKENS · TransferEditorScreen 內部 composition 參數
 //
 // Modal screen，含 EditorDateContainer / AmountGroupBox / PickerGroupBox /
-// EditorNoteField / EditorDeleteButton + CalculatorKeypad（absolute bottom）。
+// EditorNoteField / DeleteButton（20_components）+ CalculatorKeypad（absolute bottom）。
 // 大部分 form helper 從 30_screens/shared/no2_editor_form_helpers.jsx 共用。
 // 消費 atomic + 20_components/（AmountField / StaticWheelPicker / AccountSelector）。
 //

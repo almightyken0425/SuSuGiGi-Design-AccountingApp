@@ -65,7 +65,7 @@ function CategoryEditorScreen({ variant = 'new-expense' }) {
       </div>
 
       {isEdit && <EditorSwitchRow label="啟用" value={true}/>}
-      {isEdit && <EditorDestructiveTextButton label="刪除分類"/>}
+      {isEdit && <DeleteButton/>}
     </div>
   );
 }
