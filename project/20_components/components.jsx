@@ -1515,6 +1515,27 @@ function ConfirmDialog({ title, message, actions = [] }) {
   );
 }
 
+// ─── DeleteButton ─── 對齊 src/components/DeleteButton.tsx
+// 跨 editor 共用刪除鈕（Footer Zone：surface 底紅字無框）。Transaction / Transfer /
+// Account / Category editor 編輯模式 footer 共用，文字一律「刪除」，按下觸發各 screen
+// 的刪除 action。由原 30_screens/shared 的 EditorDestructiveTextButton（白底）與
+// EditorDeleteButton（透明底）兩套收斂而來，統一採白底 surface 樣式。
+function DeleteButton({ label = '刪除' }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      background: TOKENS.surface,
+      padding: SPACING.lg,
+      borderRadius: RADIUS.md,
+      fontSize: TYPOGRAPHY.size.base,
+      color: TOKENS.error,
+      fontWeight: TYPOGRAPHY.weight.medium,
+    }}>
+      {label}
+    </div>
+  );
+}
+
 // ─── RecurringOptions ─── 對齊 src/components/RecurringOptions.tsx
 // container bg surface radius lg padding lg margin sm/lg border 1px
 // headerRow: title「定期設定」primary medium + Switch
@@ -1800,6 +1821,6 @@ Object.assign(window, {
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
   AmountField, StaticWheelPicker, AccountSelector, CategorySelector, RecurringOptions,
-  DatePill, ConfirmDialog, CalendarDialog,
+  DatePill, ConfirmDialog, DeleteButton, CalendarDialog,
   iconBtn,
 });

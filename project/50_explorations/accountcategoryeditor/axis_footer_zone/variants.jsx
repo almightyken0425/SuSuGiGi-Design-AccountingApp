@@ -127,7 +127,7 @@ function ACEFZ_V0_Category() {
       <div style={{ padding: SPACING.lg }}>
         <ACEFZ_CatForm/>
         <EditorSwitchRow label="啟用類別" value={ACEFZ_CAT.enabled}/>
-        <EditorDestructiveTextButton label="刪除類別"/>
+        <DeleteButton label="刪除類別"/>
       </div>
     </ACEFZ_Shell>
   );
@@ -139,7 +139,7 @@ function ACEFZ_V0_Account() {
       <div style={{ padding: SPACING.lg }}>
         <ACEFZ_AccForm/>
         <EditorSwitchRow label="啟用帳戶" value={ACEFZ_ACC.enabled}/>
-        <EditorDestructiveTextButton label="刪除帳戶"/>
+        <DeleteButton label="刪除帳戶"/>
       </div>
     </ACEFZ_Shell>
   );

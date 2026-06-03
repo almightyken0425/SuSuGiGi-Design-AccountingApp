@@ -3,7 +3,7 @@
 //
 // Modal screen。跨帳戶 / 跨幣別轉帳。
 // 內容順序：EditorDateContainer → [RecurringOptions?]
-//          → AmountGroupBox → PickerGroupBox → EditorNoteField → [EditorDeleteButton?]
+//          → AmountGroupBox → PickerGroupBox → EditorNoteField → [DeleteButton?]
 //          → SCROLL_SPACER → CalculatorKeypad(absolute)
 //
 // Variants（對齊 impl 進入點狀態 route.params.id / recurringRule / 兩 account currency）：
@@ -76,7 +76,7 @@ function TransferEditorScreen({ variant = 'default' }) {
 
         <EditorNoteField value={note} onChange={setNote}/>
 
-        {isEdit && <EditorDeleteButton label="刪除"/>}
+        {isEdit && <DeleteButton/>}
 
         <div style={{ height: T.SCROLL_SPACER_HEIGHT }}/>
       </div>

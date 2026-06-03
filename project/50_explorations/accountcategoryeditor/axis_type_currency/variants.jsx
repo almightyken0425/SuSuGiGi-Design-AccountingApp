@@ -309,7 +309,7 @@ function ACETC_V2_Category() {
             value="ph-bread"/>
         </div>
         <EditorSwitchRow label="啟用類別" value={true}/>
-        <EditorDestructiveTextButton label="刪除類別"/>
+        <DeleteButton label="刪除類別"/>
       </div>
     </ACETC_Shell>
   );
@@ -338,7 +338,7 @@ function ACETC_V2_Account() {
             value="ph-building"/>
         </div>
         <EditorSwitchRow label="啟用帳戶" value={true}/>
-        <EditorDestructiveTextButton label="刪除帳戶"/>
+        <DeleteButton label="刪除帳戶"/>
       </div>
     </ACETC_Shell>
   );

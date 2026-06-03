@@ -279,6 +279,17 @@ function ComponentsFormSection() {
         </DCArtboard>
       </DCFamily>
 
+      <DCFamily id="comp-form-delete" title="Delete Button" subtitle="跨 editor footer 共用的刪除鈕：surface 底紅字無框，文字一律「刪除」。對應 impl src/components/DeleteButton.tsx。Transaction / Transfer / Account / Category editor 編輯模式 footer 共用，由原 EditorDestructiveTextButton（白底）與 EditorDeleteButton（透明底）兩套收斂統一。">
+        <DCArtboard id="comp-delete-button" label="DeleteButton · surface 底紅字（footer 刪除鈕）" width={402} height={140}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>白底紅字、置中、無框。四個 editor screen 編輯模式底部共用，文字固定「刪除」，按下觸發各自的刪除 action。</CompLabel>
+            <div style={{ marginTop: SPACING.md }}>
+              <DeleteButton/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+      </DCFamily>
+
       <DCFamily id="comp-form-amount" title="Editor Inputs" subtitle="金額輸入欄三態：default / active（含 backspace icon）/ disabled。高度 80 為視覺校準。">
         <DCArtboard id="comp-amount-field" label="AmountField · default / active / disabled (live)" width={402} height={220}>
           <CompFrame style={{ padding: SPACING.lg }}>

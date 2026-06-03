@@ -9,8 +9,8 @@
 // 讓視覺風格延續。內部 AmountField / AccountSelector 拿掉自帶 border。
 // active 改用 amount 文字色（紫）；backspace 改由 CalculatorKeypad ⌫ 鍵承接（不再 inline icon）。
 //
-// 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField /
-//   EditorDeleteButton）住在 30_screens/shared/no2_editor_form_helpers.jsx。
+// 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField）住在
+//   30_screens/shared/no2_editor_form_helpers.jsx；刪除鈕改用共用元件 DeleteButton（20_components）。
 //
 // 消費 TRANSFER_EDITOR_SCREEN_TOKENS + atomic
 // + 20_components/（AmountField / AccountSelector / Glyph）。

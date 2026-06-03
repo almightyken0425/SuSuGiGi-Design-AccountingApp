@@ -2,8 +2,8 @@
 // AccountEditorScreen sub-sections · 私有 sub-section 元件 + 預設值
 //
 // 共用表單 helper（EditorFieldLabel / EditorTextInput / EditorPickerCollapsed /
-// EditorSwitchRow / EditorDestructiveTextButton）已 promote 到
-// `shared/no3_editor_field_helpers.jsx`，本檔僅放 AccountEditor 專屬資料。
+// EditorSwitchRow）已 promote 到 `shared/no3_editor_field_helpers.jsx`；刪除鈕改用
+// 共用元件 DeleteButton（20_components/components.jsx）。本檔僅放 AccountEditor 專屬資料。
 // ─────────────────────────────────────────────────────────────
 
 // 本 screen v1 無專屬 sub-section（form layout 全在 entry 內組合 shared helper），

@@ -30,9 +30,7 @@ const TRANSACTION_EDITOR_SCREEN_TOKENS = {
   // ── NoteField（備註輸入）
   NOTE_PADDING:                      SPACING.lg,
 
-  // ── DeleteButton（isEdit=true 時）
-  DELETE_BUTTON_PADDING:             SPACING.sm,
-  DELETE_BUTTON_TOP_MARGIN:          SPACING.lg,
+  // 刪除鈕改用共用元件 DeleteButton（20_components/components.jsx），間距由元件自帶，本 screen 不再 token 化。
 
   // ── ErrorBanner（impl Alert 的 inline 視覺對應）
   ERROR_BANNER_PADDING:              SPACING.md,

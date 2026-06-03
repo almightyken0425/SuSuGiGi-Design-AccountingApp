@@ -9,8 +9,8 @@
 ├── CLAUDE.md
 ├── shared/
 │   ├── no1_screen_layout.jsx           Spinner / ScreenScroll（design canvas 對應 RN 的 helper）
-│   ├── no2_editor_form_helpers.jsx     EditorErrorBanner / EditorDateContainer / EditorNoteField / EditorDeleteButton
-│   └── no3_editor_field_helpers.jsx    EditorFieldLabel / EditorTextInput / EditorPickerCollapsed / EditorSwitchRow / EditorDestructiveTextButton
+│   ├── no2_editor_form_helpers.jsx     EditorErrorBanner / EditorDateContainer / EditorNoteField
+│   └── no3_editor_field_helpers.jsx    EditorFieldLabel / EditorTextInput / EditorPickerCollapsed / EditorSwitchRow
 ├── no1_home_screen/                    HomeScreen（PeriodPage host + variant routing）
 ├── no2_home_filter_screen/             HomeFilterScreen（時間粒度/分組 + 帳戶多選）
 ├── no3_search_screen/                  SearchScreen（底部 BottomSearchBar + 結果列表）
@@ -82,9 +82,9 @@ Variant 不憑空設計，照 impl 該 screen 的實際 state 與 navigation par
 | 30_screens/shared/ | 跨 screen 共用 **但** 僅 design canvas 用（無 impl 對應），或 design canvas 環境限制無法各 screen 重複實作 | `30_screens/shared/noN_*.jsx` |
 | Inline | 單 screen 用 | 該 screen 子目錄內 `noN_subsections.jsx` 或 entry inline |
 
-**註 1：** 本目錄的 `shared/no2_editor_form_helpers.jsx`（TransactionEditor / TransferEditor 共用）與 `shared/no3_editor_field_helpers.jsx`（AccountEditor / CategoryEditor 共用）皆為「design canvas 環境限制」促升的例外。impl 端 Editor 類各自 inline 實作 DateContainer / NoteField / DeleteButton 與 FormFieldLabel / TextInput / PickerCollapsed，但 design canvas 採 global namespace 無法同名 sub-section 共存，故 promote 共用。視覺上仍與 impl 完全對齊。
+**註 1：** 本目錄的 `shared/no2_editor_form_helpers.jsx`（TransactionEditor / TransferEditor 共用）與 `shared/no3_editor_field_helpers.jsx`（AccountEditor / CategoryEditor 共用）皆為「design canvas 環境限制」促升的例外。impl 端 Editor 類各自 inline 實作 DateContainer / NoteField 與 FormFieldLabel / TextInput / PickerCollapsed，但 design canvas 採 global namespace 無法同名 sub-section 共存，故 promote 共用。視覺上仍與 impl 完全對齊。（刪除鈕原也分散在此二 helper，現已收斂為單一共用元件，見註 2。）
 
-**註 2：** 將來若 impl 重構抽出共用元件（如 EditorDateRow、EditorFormField），可改升入 `20_components/`。
+**註 2：** 將來若 impl 重構抽出共用元件（如 EditorDateRow、EditorFormField），可改升入 `20_components/`。刪除鈕即為此情境首例：四個 editor screen 的刪除鈕已收斂為單一共用元件 `DeleteButton`（impl `src/components/DeleteButton.tsx`、design `20_components/components.jsx`），符合「跨 screen 共用且 impl 端已有獨立元件」的 promote 條件，故從 `shared/no2`、`shared/no3` 兩 helper 移入 `20_components/`，並在 `components-showcase.jsx` 的 Form section 加 showcase。
 
 ## Router 註冊規則
 
