@@ -2,7 +2,7 @@
 // HomeFilterScreen sub-sections · 私有 sub-section 元件
 //
 // 鏡射 impl src/screens/Home/HomeFilterScreen.tsx 拆分：
-//   FilterTileRow / AccountSelectorCard / CurrencyGroupBlock
+//   FilterTileRow / AccountSelectorCard / AccountGrid
 //
 // 消費 HOME_FILTER_SCREEN_TOKENS + atomic + LIST_TOKENS。
 // ─────────────────────────────────────────────────────────────
@@ -102,8 +102,8 @@ function AccountSelectorCard({ account, selected, lastSelected, cardWidth, onPre
   );
 }
 
-// ─── CurrencyGroupBlock ─── 一個 currency group 的所有帳戶卡（flex-wrap）
-function CurrencyGroupBlock({ accounts, selectedAccountIds, cardWidth, onToggle }) {
+// ─── AccountGrid ─── 所有帳戶連續 2 欄排列（flex-wrap，不分群）
+function AccountGrid({ accounts, selectedAccountIds, cardWidth, onToggle }) {
   return (
     <div style={{
       display: 'flex', flexWrap: 'wrap',
@@ -128,5 +128,5 @@ function CurrencyGroupBlock({ accounts, selectedAccountIds, cardWidth, onToggle 
 
 Object.assign(window, {
   TIME_VALUES, GROUP_VALUES, TIME_LABELS, GROUP_LABELS,
-  FilterTileRow, AccountSelectorCard, CurrencyGroupBlock,
+  FilterTileRow, AccountSelectorCard, AccountGrid,
 });

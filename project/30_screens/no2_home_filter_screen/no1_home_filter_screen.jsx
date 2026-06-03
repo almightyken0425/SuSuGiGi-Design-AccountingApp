@@ -2,7 +2,7 @@
 // HomeFilterScreen · 對齊 impl src/screens/Home/HomeFilterScreen.tsx
 //
 // Modal screen。Tile row 切換時間粒度 / 分組方式，下方為跨幣別帳戶多選。
-// 每個 currency 自成 group（flex-wrap），同 group 內 card flex-grow 平均。
+// 帳戶不分群，全部依 ACCOUNTS 順序連續排成 2 欄 grid（flex-wrap），尾端落單卡靠左。
 // 最後一張被選中時 disable 該 card，避免清空選擇集合。
 //
 // Variants：
@@ -24,21 +24,8 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
     };
   });
 
-  // currency-grouped accounts，依照 ACCOUNTS 內出現順序
-  const groups = React.useMemo(() => {
-    if (noAccounts) return [];
-    const map = new Map();
-    const ordered = [];
-    for (const a of ACCOUNTS) {
-      if (!map.has(a.currency)) {
-        const list = [];
-        map.set(a.currency, list);
-        ordered.push({ currency: a.currency, accounts: list });
-      }
-      map.get(a.currency).push(a);
-    }
-    return ordered;
-  }, [noAccounts]);
+  // 不分群：所有帳戶依 ACCOUNTS 出現順序連續排列
+  const accounts = noAccounts ? [] : ACCOUNTS;
 
   // 2-up card width 算式：(canvas width - 兩側 padding - 中間 gap) / 2
   const cardWidth = (T.DESIGN_CANVAS_WIDTH - T.SCREEN_PADDING * 2 - T.ACCOUNT_CARD_INTRA_GAP) / 2;
@@ -51,16 +38,11 @@ function HomeFilterScreen({ filterState, setFilterState, variant = 'default' }) 
     }}>
       <FilterTileRow filterState={filterState} setFilterState={setFilterState}/>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: T.CURRENCY_GROUP_GAP }}>
-        {groups.map(g => (
-          <CurrencyGroupBlock
-            key={g.currency}
-            accounts={g.accounts}
-            selectedAccountIds={selectedAccountIds}
-            cardWidth={cardWidth}
-            onToggle={toggleAcc}/>
-        ))}
-      </div>
+      <AccountGrid
+        accounts={accounts}
+        selectedAccountIds={selectedAccountIds}
+        cardWidth={cardWidth}
+        onToggle={toggleAcc}/>
     </div>
   );
 }
