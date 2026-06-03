@@ -47,6 +47,13 @@ const SCREEN_META = {
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
     headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
   },
+  // ─── Home · Undo Bar ─── 刪除交易後返回首頁，全域 Undo Bar 覆蓋於 Footer 區
+  'home-undo': {
+    title: 'SuSuGiGi', present: 'push', hasFAB: true, undoBar: true, undoMessage: '已刪除交易',
+    render: (ctx) => <HomeScreen filterState={ctx.sharedFilter}/>,
+    headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
+    headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
+  },
   // ─── Filter ─── default / no-accounts
   filter: {
     title: '顯示設定', present: 'modal',
@@ -152,6 +159,12 @@ const SCREEN_META = {
   'account-list-empty': {
     title: '帳戶', present: 'push', headerLeftText: '設定',
     render: () => <AccountListScreen variant="empty"/>,
+    headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
+  },
+  // ─── Account List · Undo Bar ─── 刪除帳戶後返回列表，全域 Undo Bar 覆蓋（示意非首頁也會出現）
+  'account-list-undo': {
+    title: '帳戶', present: 'push', headerLeftText: '設定', undoBar: true, undoMessage: '已刪除帳戶',
+    render: () => <AccountListScreen/>,
     headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
   },
   // ─── Category List ─── default / empty
@@ -325,10 +338,11 @@ const SCREEN_GROUPS = [
   {
     id: 'home',
     title: 'Home · 記帳',
-    subtitle: '主畫面 PeriodPage（src/screens/Home/）。預設 + 空狀態（無交易紀錄時 donut 中央改顯示「尚無交易紀錄」）。',
+    subtitle: '主畫面 PeriodPage（src/screens/Home/）。預設 + 空狀態（無交易紀錄時 donut 中央改顯示「尚無交易紀錄」）。Undo Bar variant 示意刪除交易後全域復原列覆蓋於首頁底部。',
     screens: [
       { id: 'home',       label: 'Default · 有交易' },
       { id: 'home-empty', label: 'Empty · 尚無交易紀錄' },
+      { id: 'home-undo',  label: 'Undo Bar · 刪除交易後復原列' },
     ],
   },
   {
@@ -389,10 +403,11 @@ const SCREEN_GROUPS = [
   {
     id: 'account-list',
     title: 'Account List · 帳戶列表',
-    subtitle: '帳戶列表 + 拖拉排序（src/screens/Accounts/AccountListScreen.tsx）。Header 右側 [merge][+] 兩 pill：合併工具入口 + 新增帳戶入口。',
+    subtitle: '帳戶列表 + 拖拉排序（src/screens/Accounts/AccountListScreen.tsx）。Header 右側 [merge][+] 兩 pill：合併工具入口 + 新增帳戶入口。Undo Bar variant 示意刪除帳戶後全域復原列覆蓋於列表（非首頁畫面同樣出現）。',
     screens: [
       { id: 'account-list',       label: 'Default · 有帳戶' },
       { id: 'account-list-empty', label: 'Empty · 尚無帳戶' },
+      { id: 'account-list-undo',  label: 'Undo Bar · 刪除帳戶後復原列' },
     ],
   },
   {
@@ -609,12 +624,17 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
           {body}
         </div>
       </div>
-      {(PINNED_WITH_FAB.has(top) || meta.hasFAB) && (
+      {/* undoBar variant：示意刪除後全域 Undo Bar 覆蓋於當前畫面（mode="undo"）；
+          Undo Bar 不限首頁，回到的任何畫面都會出現，故與 hasFAB 解耦。
+          否則 Home 等 hasFAB 畫面顯示 actions FAB。 */}
+      {meta.undoBar ? (
+        <FloatingActionBar mode="undo" undoMessage={meta.undoMessage} remainingTime={4}/>
+      ) : (PINNED_WITH_FAB.has(top) || meta.hasFAB) ? (
         <FloatingActionBar mode="actions"
           onExpensePress={() => push('transaction-editor')}
           onTransferPress={() => push('transfer')}
           onIncomePress={() => push('transaction-editor-income')}/>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -722,6 +742,12 @@ const EXPLORATION_GROUPS = [
     id: 'mergeeditor', label: 'Merge Editor',
     topics: [
       { id: 'dual-picker-layout', label: 'Axis · Dual Picker Layout', render: () => <MergeDualPickerLayoutSection/> },
+    ],
+  },
+  {
+    id: 'undo-bar', label: 'Undo Bar',
+    topics: [
+      { id: 'segmented-pill', label: 'Axis · Segmented Pill', render: () => <UndoBarSegmentedPillSection/> },
     ],
   },
 ];

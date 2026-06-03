@@ -1079,12 +1079,11 @@ function FocusCard({ kind, amount, active, onPress, formatAmount }) {
 }
 
 // ─── FloatingActionBar ─── 對齊 src/components/FloatingActionBar.tsx
-// 208×72 glass pill, bottom SPACING.xl=24
-// actions: 3 buttons 56×56 with paddingHorizontal SPACING.sm=8
-// undo: timer circle 32×32 rgba(0,0,0,0.06) + 14px medium primary text;
-//       undo text base 16 medium centered;
-//       X icon FontAwesome "times" 24px primary.main
-function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, onIncomePress, onTransferPress, undoMessage, remainingTime = 5, onUndoClose }) {
+// actions: 208×72 glass pill, bottom SPACING.xl=24, 3 buttons 56×56, paddingHorizontal SPACING.sm=8
+// undo (V4 segmented pill): 外層 glass pill height 72（對齊 actions FAB）包兩個內 glass pill height 56 —
+//   復原段 [ring 倒數 28 外框 p500 + 完整訊息 base/ink，點擊 onUndoPress 復原]
+//   取消段 [X icon 24 p500，點擊 onUndoClose 關閉]；外寬 auto-fit、訊息不截斷
+function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, onIncomePress, onTransferPress, undoMessage, remainingTime = 5, onUndoClose, onUndoPress }) {
   return (
     <div style={{
       position: 'absolute',
@@ -1094,44 +1093,39 @@ function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, o
       opacity: visible ? 1 : 0, transform: `translateY(${visible ? 0 : 150}px)`,
       transition: 'opacity 200ms, transform 240ms cubic-bezier(0.2, 1.2, 0.4, 1)',
     }}>
-      <GlassView pill style={{
-        width: 208, height: 72,
-        pointerEvents: 'auto',
-      }}>
-        <div style={{
-          width: '100%', height: '100%',
-          display: 'flex', alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingLeft: SPACING.sm, paddingRight: SPACING.sm,
-        }}>
-          {mode === 'actions' ? (
-            <>
-              <button onClick={onExpensePress} style={fabBtn}><Glyph name="minus" size={ICON_SIZE.md} color={TOKENS.p500}/></button>
-              <button onClick={onTransferPress} style={fabBtn}><Glyph name="exchange" size={ICON_SIZE.md} color={TOKENS.p500} stroke={2.4}/></button>
-              <button onClick={onIncomePress} style={fabBtn}><Glyph name="plus" size={ICON_SIZE.md} color={TOKENS.p500}/></button>
-            </>
-          ) : (
-            <>
-              <div style={fabBtn}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: 16,
-                  background: 'rgba(0,0,0,0.06)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <span style={{ fontSize: 14, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink }}>{remainingTime}</span>
-                </div>
+      {mode === 'actions' ? (
+        <GlassView pill style={{ width: 208, height: 72, pointerEvents: 'auto' }}>
+          <div style={{
+            width: '100%', height: '100%',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            paddingLeft: SPACING.sm, paddingRight: SPACING.sm,
+          }}>
+            <button onClick={onExpensePress} style={fabBtn}><Glyph name="minus" size={ICON_SIZE.md} color={TOKENS.p500}/></button>
+            <button onClick={onTransferPress} style={fabBtn}><Glyph name="exchange" size={ICON_SIZE.md} color={TOKENS.p500} stroke={2.4}/></button>
+            <button onClick={onIncomePress} style={fabBtn}><Glyph name="plus" size={ICON_SIZE.md} color={TOKENS.p500}/></button>
+          </div>
+        </GlassView>
+      ) : (
+        <GlassView pill style={{ height: 72, display: 'flex', alignItems: 'center', gap: SPACING.xs, padding: SPACING.sm, pointerEvents: 'auto' }}>
+          <button onClick={onUndoPress} style={undoSegBtn}>
+            <GlassView pill style={{ height: 56, display: 'flex', alignItems: 'center', paddingLeft: SPACING.sm, paddingRight: SPACING.lg, gap: SPACING.sm }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: 14,
+                border: `1.5px solid ${TOKENS.p500}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <span style={{ fontSize: TYPOGRAPHY.size.sm, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.p500 }}>{remainingTime}</span>
               </div>
-              <span style={{
-                flex: 1, marginLeft: 8, marginRight: 8,
-                fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium,
-                color: TOKENS.ink, textAlign: 'center',
-                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-              }}>{undoMessage || '已刪除'}</span>
-              <button onClick={onUndoClose} style={fabBtn}><Glyph name="x" size={ICON_SIZE.md} color={TOKENS.p500} stroke={2.4}/></button>
-            </>
-          )}
-        </div>
-      </GlassView>
+              <span style={{ fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, whiteSpace: 'nowrap' }}>{undoMessage || '已刪除'}</span>
+            </GlassView>
+          </button>
+          <button onClick={onUndoClose} style={undoSegBtn}>
+            <GlassView pill style={{ width: 56, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Glyph name="x" size={ICON_SIZE.md} color={TOKENS.p500} stroke={2.4}/>
+            </GlassView>
+          </button>
+        </GlassView>
+      )}
     </div>
   );
 }
@@ -1140,6 +1134,10 @@ const fabBtn = {
   background: 'transparent', cursor: 'pointer',
   borderRadius: RADIUS.full,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
+};
+const undoSegBtn = {
+  border: 'none', background: 'transparent', padding: 0, cursor: 'pointer',
+  display: 'flex', alignItems: 'center',
 };
 
 // ─── BottomSearchBar ─── 對齊 src/components/BottomSearchBar.tsx
