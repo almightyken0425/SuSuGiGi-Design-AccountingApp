@@ -556,7 +556,7 @@ const SCREEN_GROUPS = [
   {
     id: 'merge-editor',
     title: 'Merge Editor · 合併',
-    subtitle: 'Modal save form。source → target 視覺化 + 警告 banner + 兩 selector。mode 由 navigation 決定（src/screens/Merge/MergeEditorScreen.tsx）。',
+    subtitle: 'Modal save form。source → target 視覺化 + 兩 selector。mode 由 navigation 決定（src/screens/Merge/MergeEditorScreen.tsx）。',
     screens: [
       { id: 'merge-account',  label: 'Account · 合併帳戶' },
       { id: 'merge-category', label: 'Category · 合併分類' },
