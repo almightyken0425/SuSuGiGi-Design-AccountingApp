@@ -60,19 +60,34 @@ function ImportStep0Template() {
           fontSize: T.SECTION_TITLE_FONT_SIZE,
           fontWeight: T.SECTION_TITLE_WEIGHT,
           color: TOKENS.ink, marginBottom: SPACING.sm,
-        }}>時區設定</div>
+        }}>來源時區</div>
         <div style={{
           fontSize: T.DESCRIPTION_FONT_SIZE,
           color: TOKENS.ink2, marginBottom: SPACING.md,
-        }}>匯入會用目前時區解讀檔案中的時間。確認時區與檔案來源一致。</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.sm, marginBottom: SPACING.sm }}>
-          <Glyph name="clock" size={ICON_SIZE.sm} color={TOKENS.ink2} stroke={2}/>
-          <span style={{ fontSize: TYPOGRAPHY.size.base, color: TOKENS.ink }}>Asia/Taipei</span>
+        }}>選擇匯入資料原本所在的時區，預設帶 app 偏好時區。日期時間依此時區解讀。</div>
+        {/* inline wheel picker（列 UTC 偏移量，避開 app 時區別名不在 IANA 清單時 wheel 誤選的問題）；當場選不跳第二畫面 */}
+        <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute', left: 0, right: 0, top: 72, height: 36,
+            borderTop: `1px solid ${TOKENS.divider.hairline}`,
+            borderBottom: `1px solid ${TOKENS.divider.hairline}`,
+            background: TOKENS.bg, borderRadius: RADIUS.sm,
+          }}/>
+          {[
+            { tz: 'UTC+10:00', opacity: 0.3 },
+            { tz: 'UTC+09:00', opacity: 0.55 },
+            { tz: 'UTC+08:00', opacity: 1, sel: true },
+            { tz: 'UTC+07:00', opacity: 0.55 },
+            { tz: 'UTC+06:00', opacity: 0.3 },
+          ].map((r, i) => (
+            <div key={i} style={{
+              position: 'relative', height: 36, lineHeight: '36px', textAlign: 'center',
+              fontSize: TYPOGRAPHY.size.base,
+              fontWeight: r.sel ? TYPOGRAPHY.weight.medium : TYPOGRAPHY.weight.regular,
+              color: TOKENS.ink, opacity: r.opacity,
+            }}>{r.tz}</div>
+          ))}
         </div>
-        <div style={{
-          fontSize: T.DESCRIPTION_FONT_SIZE,
-          color: TOKENS.p500, textDecoration: 'underline',
-        }}>到設定變更時區</div>
       </div>
 
       <div style={{
