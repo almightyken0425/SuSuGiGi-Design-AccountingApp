@@ -305,12 +305,16 @@ const SCREEN_META = {
   },
   // ─── Paywall ─── default (yearly) / monthly
   'paywall': {
-    title: '升級', present: 'modal',
+    title: '', present: 'modal',
     render: () => <PaywallScreen/>,
   },
   'paywall-monthly': {
-    title: '升級', present: 'modal',
+    title: '', present: 'modal',
     render: () => <PaywallScreen variant="monthly"/>,
+  },
+  'paywall-processing': {
+    title: '', present: 'modal',
+    render: () => <PaywallScreen variant="processing"/>,
   },
   // ─── Merge Editor ─── account / category
   'merge-account': {
@@ -562,10 +566,11 @@ const SCREEN_GROUPS = [
   {
     id: 'paywall',
     title: 'Paywall · 升級',
-    subtitle: 'Modal info。Title + 4 benefits + Yearly/Monthly 兩選項 + CTA + 還原 + 暫不升級（src/screens/Paywall/PaywallScreen.tsx）。',
+    subtitle: 'Modal info。無畫面標題 + 4 項 LEVEL_1 賣點 + Yearly/Monthly + CTA + 自動續訂揭露 + 使用條款/隱私連結 + 還原 + 暫不升級（src/screens/Paywall/PaywallScreen.tsx）。',
     screens: [
-      { id: 'paywall',         label: 'Default · 已選年費' },
-      { id: 'paywall-monthly', label: 'Monthly · 已選月費' },
+      { id: 'paywall',            label: 'Default · 已選年費' },
+      { id: 'paywall-monthly',    label: 'Monthly · 已選月費' },
+      { id: 'paywall-processing', label: 'Processing · 購買中' },
     ],
   },
   {
