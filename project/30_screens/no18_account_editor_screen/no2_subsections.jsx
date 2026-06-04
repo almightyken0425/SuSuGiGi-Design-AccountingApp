@@ -11,7 +11,6 @@
 // AccountBalanceSection）再加入此處。
 const ACCOUNT_EDITOR_NEW_DEFAULTS = {
   currency: 'TWD',
-  type:     '現金',
   iconId:   3,        // ph-wallet（與 impl 端 default iconId 對齊）
 };
 
