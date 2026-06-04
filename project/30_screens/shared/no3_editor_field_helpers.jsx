@@ -110,7 +110,7 @@ function EditorNameField({ value, placeholder, active }) {
 }
 
 // ─── EditorButtonGroup ─── chip 群組（5 選項以下常駐顯示）
-// V2 採用：帳戶類型 / Category 短選項清單採此 pattern。
+// 短選項清單（5 項以下）常駐顯示採此 pattern。
 function EditorButtonGroup({ options, selected }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: SPACING.sm }}>
@@ -134,7 +134,7 @@ function EditorButtonGroup({ options, selected }) {
 }
 
 // ─── EditorSearchableDropdownCollapsed ─── 可搜尋下拉的 collapsed 狀態
-// V2 採用：類型 / 幣別 / 標準對照三處統一採此 pattern。Canon 渲染 collapsed 狀態示意，
+// V2 採用：收支 / 幣別兩處統一採此 pattern。Canon 渲染 collapsed 狀態示意，
 // expanded 狀態（搜尋 input + 清單）見 20_components showcase。
 // disabled 為編輯模式鎖定態（幣別、Category 類型在 edit mode 為 disabled）。
 function EditorSearchableDropdownCollapsed({ value, placeholder, disabled }) {

@@ -6,7 +6,7 @@
 //   2. ListGroupCard 含列表（impl 用 AutoDragSortableView 拖拉，design canvas 視覺示意）
 //
 // 新增入口已上移至 navbar 右上 [merge][+]（見 90_workbench/app.jsx SCREEN_META）。
-// 點 [+] 進入 CategoryEditor，type 由 Editor 內 CategoryTypeSelector 預設 expense 決定。
+// 點 [+] 進入 CategoryEditor，type 由 Editor 內收支欄預設 expense 決定。
 //
 // Variants：
 //   default — 8 支出 + 2 收入（CATEGORIES fixture）

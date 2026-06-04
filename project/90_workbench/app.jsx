@@ -506,7 +506,7 @@ const SCREEN_GROUPS = [
   {
     id: 'account-editor',
     title: 'Account Editor · 帳戶編輯',
-    subtitle: '帳戶 4 欄表單（名稱/幣別/類型/圖示）。Edit mode 多顯示啟用 Switch + 刪除（src/screens/Accounts/AccountEditorScreen.tsx）。',
+    subtitle: '帳戶 3 欄表單（名稱/幣別/圖示）。Edit mode 多顯示啟用 Switch + 刪除（src/screens/Accounts/AccountEditorScreen.tsx）。',
     screens: [
       { id: 'account-editor',      label: 'New · 新增模式' },
       { id: 'account-editor-edit', label: 'Edit · 編輯模式（含刪除）' },
@@ -515,7 +515,7 @@ const SCREEN_GROUPS = [
   {
     id: 'category-editor',
     title: 'Category Editor · 分類編輯',
-    subtitle: '分類 3 欄表單（名稱/映射/圖示）。Type 由 navigation 決定不可切換（src/screens/Categories/CategoryEditorScreen.tsx）。',
+    subtitle: '分類 3 欄表單（名稱/收支/圖示）。收支由 navigation 決定不可切換（src/screens/Categories/CategoryEditorScreen.tsx）。',
     screens: [
       { id: 'category-editor',        label: 'New Expense · 新增支出' },
       { id: 'category-editor-income', label: 'New Income · 新增收入' },
