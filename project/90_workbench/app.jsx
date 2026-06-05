@@ -277,25 +277,21 @@ const SCREEN_META = {
     title: '設定匯率', present: 'modal', save: true,
     render: () => <CurrencyRateEditorScreen variant="update"/>,
   },
-  // ─── Import ─── 5 steps
-  'import-step-0': {
-    title: '模板與時區', present: 'modal',
-    render: () => <ImportScreen variant="step-0"/>,
-  },
+  // ─── Import ─── 4 steps（header 全 icon 導航，自繪於 ImportScreen，present 'none' 避免疊 ModalHeader）
   'import-step-1': {
-    title: '選擇檔案', present: 'modal',
+    title: '選擇檔案', present: 'none',
     render: () => <ImportScreen variant="step-1"/>,
   },
   'import-step-2': {
-    title: '欄位對應', present: 'modal',
+    title: '欄位對應', present: 'none',
     render: () => <ImportScreen variant="step-2"/>,
   },
   'import-step-3': {
-    title: '內容比對', present: 'modal',
+    title: '內容比對', present: 'none',
     render: () => <ImportScreen variant="step-3"/>,
   },
   'import-step-4': {
-    title: '預覽', present: 'modal',
+    title: '預覽匯入', present: 'none',
     render: () => <ImportScreen variant="step-4"/>,
   },
   // ─── Login ─── default
@@ -542,13 +538,12 @@ const SCREEN_GROUPS = [
   {
     id: 'import',
     title: 'Import · 匯入 Wizard',
-    subtitle: '5 步驟 wizard（模板說明 / 檔案選擇 / 欄位對應 / 內容比對 / 預覽）。底部 Back/Next bar（src/screens/Settings/ImportScreen.tsx）。',
+    subtitle: '4 步驟 wizard（選擇檔案 / 欄位對應 / 內容比對 / 預覽）。header 全 icon 導航，無置底列（src/screens/Settings/ImportScreen.tsx）。',
     screens: [
-      { id: 'import-step-0', label: 'Step 0 · 模板與時區' },
       { id: 'import-step-1', label: 'Step 1 · 選擇檔案' },
       { id: 'import-step-2', label: 'Step 2 · 欄位對應' },
       { id: 'import-step-3', label: 'Step 3 · 內容比對' },
-      { id: 'import-step-4', label: 'Step 4 · 預覽' },
+      { id: 'import-step-4', label: 'Step 4 · 預覽匯入' },
     ],
   },
   {

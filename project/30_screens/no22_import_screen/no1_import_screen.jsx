@@ -1,30 +1,32 @@
 // ─────────────────────────────────────────────────────────────
 // ImportScreen · 對齊 impl src/screens/Settings/ImportScreen.tsx
 //
-// Modal wizard，5 個 step。impl 端用 WizardStepContainer 包 children + 底部 footer。
-// design canvas 各 variant 直接 render 對應 step 的內容 + footer 靜態示意，
-// 不做 step navigation 互動。
+// Modal wizard，4 個 step。header 全 icon 導航承載前進/返回，無置底列。
+// 各 variant 自繪 ImportWizardHeader + 對應 step 內容；SCREEN_META 採 present 'none'
+// 讓 ScreenFrame 不再疊一層 ModalHeader。design canvas 靜態示意，不做 step navigation 互動。
 //
 // Variants：
-//   step-0 — 模板說明（時區 + 下載範本 + 欄位說明）
-//   step-1 — 檔案選擇（empty / with-file 用同 variant，design 端取 with-file 預覽）
-//   step-2 — 欄位對應（chip 選擇）
-//   step-3 — 內容比對（USE_EXISTING / CREATE / SKIP）
-//   step-4 — 預覽（統計卡 + ready 提示）
+//   step-1 — 選擇檔案（時區 wheel + 選檔 + 下載範本/說明）
+//   step-2 — 欄位對應（逐欄位收合選擇器 + 首筆預覽）
+//   step-3 — 內容比對（帳戶 / 支出類別 / 收入類別）
+//   step-4 — 預覽（匯入摘要資料列）
 // ─────────────────────────────────────────────────────────────
 
-function ImportScreen({ variant = 'step-0' }) {
-  const T = IMPORT_SCREEN_TOKENS;
+function ImportScreen({ variant = 'step-1' }) {
   const stepIndex =
-    variant === 'step-0' ? 0 :
     variant === 'step-1' ? 1 :
     variant === 'step-2' ? 2 :
     variant === 'step-3' ? 3 :
-    variant === 'step-4' ? 4 : 0;
+    variant === 'step-4' ? 4 : 1;
+
+  const headerCfg =
+    stepIndex === 1 ? { left: 'close', title: '選擇檔案', right: 'next' } :
+    stepIndex === 2 ? { left: 'back',  title: '欄位對應', right: 'next' } :
+    stepIndex === 3 ? { left: 'back',  title: '內容比對', right: 'next' } :
+                      { left: 'back',  title: '預覽匯入', right: 'submit' };
 
   const renderStep = () => {
     switch (stepIndex) {
-      case 0: return <ImportStep0Template/>;
       case 1: return <ImportStep1FileSelect withFile={true}/>;
       case 2: return <ImportStep2Mapping/>;
       case 3: return <ImportStep3Matching/>;
@@ -33,25 +35,10 @@ function ImportScreen({ variant = 'step-0' }) {
     }
   };
 
-  const nextLabel = stepIndex === 4 ? '開始匯入' : '下一步';
-
   return (
-    <div style={{
-      position: 'relative',
-      height: '100%',
-      background: TOKENS.bg,
-    }}>
-      <div style={{
-        paddingTop: T.SCREEN_PADDING,
-        paddingLeft: T.SCREEN_PADDING,
-        paddingRight: T.SCREEN_PADDING,
-        paddingBottom: T.FOOTER_BAR_HEIGHT + T.SCREEN_PADDING,
-        minHeight: '100%',
-        boxSizing: 'border-box',
-      }}>
-        {renderStep()}
-      </div>
-      <ImportWizardFooter hasBack={stepIndex > 0} nextLabel={nextLabel}/>
+    <div style={{ minHeight: '100%', background: TOKENS.bg }}>
+      <ImportWizardHeader {...headerCfg}/>
+      {renderStep()}
     </div>
   );
 }

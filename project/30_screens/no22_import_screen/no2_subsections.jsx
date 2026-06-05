@@ -1,77 +1,82 @@
 // ─────────────────────────────────────────────────────────────
-// ImportScreen sub-sections · 各 step 內容元件 + wizard footer
+// ImportScreen sub-sections · wizard header + 各 step 內容元件
 //
-// 鏡射 impl src/screens/Settings/ImportScreen.tsx 的 Step0 ~ Step4：
-//   ImportStep0Template / ImportStep1FileSelect / ImportStep2Mapping /
-//   ImportStep3Matching / ImportStep4Preview / ImportWizardFooter
+// 鏡射 impl src/screens/Settings/ImportScreen.tsx 的 4 步：
+//   ImportWizardHeader（全 icon 導航）/ ImportStep1FileSelect /
+//   ImportStep2Mapping / ImportStep3Matching / ImportStep4Preview
 //
+// header 全 icon：左 關閉(xmark) 或 返回(back chevron)，右 前進(chevron.right) 或 送出(checkmark)。
+// 無置底列。step 2 / 3 套 editor 欄位元件，step 4 套 DataListItem 資料列。
 // Mock 資料 inline，模擬 csv 解析後的內容。
 // ─────────────────────────────────────────────────────────────
 
-// ─── ImportWizardFooter ─── 底部 Back / Next bar
-function ImportWizardFooter({ hasBack, nextLabel = '下一步', disabled }) {
-  const T = IMPORT_SCREEN_TOKENS;
+// ─── ImportWizardHeader ─── 全 icon 導航列，視覺對齊 ModalHeader
+// left: 'close' | 'back'；right: 'next' | 'submit'。design canvas 靜態示意，pill 不接 onPress。
+function ImportWizardHeader({ left, title, right }) {
   return (
     <div style={{
-      position: 'absolute', left: 0, right: 0, bottom: 0,
-      height: T.FOOTER_BAR_HEIGHT,
-      display: 'flex', flexDirection: 'row',
-      borderTop: `1px solid ${TOKENS.divider.hairline}`,
-      background: TOKENS.surface,
+      paddingTop: 60, paddingBottom: 8, paddingLeft: 16, paddingRight: 16,
+      display: 'flex', alignItems: 'center',
+      background: 'transparent', position: 'relative', zIndex: 5,
     }}>
-      {hasBack && (
-        <div style={{
-          flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',
-          color: TOKENS.ink2,
-          fontSize: TYPOGRAPHY.size.base,
-          borderRight: `1px solid ${TOKENS.divider.hairline}`,
-        }}>上一步</div>
-      )}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', minHeight: 32 }}>
+        {left === 'close'
+          ? <HeaderButtonPill symbols={['xmark']} intent="dismiss"/>
+          : <MockBackButtonPill/>}
+      </div>
       <div style={{
-        flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',
-        color: disabled ? TOKENS.ink3 : TOKENS.p500,
-        fontSize: TYPOGRAPHY.size.base,
-        fontWeight: TYPOGRAPHY.weight.medium,
-      }}>{nextLabel}</div>
+        position: 'absolute', left: 0, right: 0, top: 60, height: 32,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <span style={{
+          fontSize: 17, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink,
+          whiteSpace: 'nowrap', maxWidth: '60%', overflow: 'hidden', textOverflow: 'ellipsis',
+        }}>{title}</span>
+      </div>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', minHeight: 32 }}>
+        {right === 'submit'
+          ? <HeaderButtonPill symbols={['checkmark']} intent="commit"/>
+          : <HeaderButtonPill symbols={['chevron.right']} intent="action"/>}
+      </div>
     </div>
   );
 }
 
-// ─── ImportStep0Template ─── 時區提示 + 模板下載 + 欄位說明
-function ImportStep0Template() {
-  const T = IMPORT_SCREEN_TOKENS;
-  const fields = [
-    { name: 'date',     required: true,  desc: '交易日期（YYYY-MM-DD HH:mm）' },
-    { name: 'amount',   required: true,  desc: '金額（正數，自動依分類判斷收支）' },
-    { name: 'category', required: true,  desc: '分類名稱（自動建立或比對既有）' },
-    { name: 'account',  required: true,  desc: '帳戶名稱' },
-    { name: 'currency', required: true,  desc: 'ISO 4217 三字元代碼' },
-    { name: 'note',     required: false, desc: '備註（可空）' },
-  ];
-
+// ─── ImportButton ─── 全寬按鈕，primary 為主操作藍底、secondary 為次操作描邊
+function ImportButton({ label, kind = 'primary' }) {
+  const primary = kind === 'primary';
   return (
-    <div>
-      <div style={{
-        background: TOKENS.surface,
-        padding: T.CARD_PADDING, borderRadius: T.CARD_RADIUS,
-        marginBottom: T.SECTION_GAP,
-      }}>
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: primary ? TOKENS.p500 : TOKENS.surface,
+      border: primary ? 'none' : `1px solid ${TOKENS.divider.hairline}`,
+      color: primary ? '#fff' : TOKENS.p500,
+      paddingTop: SPACING.md, paddingBottom: SPACING.md,
+      borderRadius: RADIUS.md,
+      fontWeight: TYPOGRAPHY.weight.medium,
+      fontSize: TYPOGRAPHY.size.base,
+    }}>{label}</div>
+  );
+}
+
+// ─── ImportStep1FileSelect ─── 來源時區 wheel + 選檔 + 下載範本 / 下載說明
+// 上半（時區 + 檔名 + 選擇檔案）一組，分隔線，下半（下載範本 + 下載說明）一組。
+function ImportStep1FileSelect({ withFile = true }) {
+  const T = IMPORT_SCREEN_TOKENS;
+  return (
+    <div style={{ padding: T.SCREEN_PADDING }}>
+      {/* 來源時區 wheel，常駐展開、當場選不跳第二畫面 */}
+      <div style={{ marginBottom: T.SECTION_GAP }}>
         <div style={{
-          fontSize: T.SECTION_TITLE_FONT_SIZE,
-          fontWeight: T.SECTION_TITLE_WEIGHT,
+          fontSize: T.SECTION_TITLE_FONT_SIZE, fontWeight: T.SECTION_TITLE_WEIGHT,
           color: TOKENS.ink, marginBottom: SPACING.sm,
         }}>來源時區</div>
-        <div style={{
-          fontSize: T.DESCRIPTION_FONT_SIZE,
-          color: TOKENS.ink2, marginBottom: SPACING.md,
-        }}>選擇匯入資料原本所在的時區，預設帶 app 偏好時區。日期時間依此時區解讀。</div>
-        {/* inline wheel picker（列 UTC 偏移量，避開 app 時區別名不在 IANA 清單時 wheel 誤選的問題）；當場選不跳第二畫面 */}
         <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
           <div style={{
             position: 'absolute', left: 0, right: 0, top: 72, height: 36,
             borderTop: `1px solid ${TOKENS.divider.hairline}`,
             borderBottom: `1px solid ${TOKENS.divider.hairline}`,
-            background: TOKENS.bg, borderRadius: RADIUS.sm,
           }}/>
           {[
             { tz: 'UTC+10:00', opacity: 0.3 },
@@ -90,248 +95,103 @@ function ImportStep0Template() {
         </div>
       </div>
 
-      <div style={{
-        background: TOKENS.surface,
-        padding: T.CARD_PADDING, borderRadius: T.CARD_RADIUS,
-        marginBottom: T.SECTION_GAP,
-      }}>
-        <div style={{
-          fontSize: T.SECTION_TITLE_FONT_SIZE,
-          fontWeight: T.SECTION_TITLE_WEIGHT,
-          color: TOKENS.ink, marginBottom: SPACING.sm,
-        }}>下載匯入範本</div>
-        <div style={{
-          fontSize: T.DESCRIPTION_FONT_SIZE,
-          color: TOKENS.ink2, marginBottom: SPACING.md,
-        }}>建議使用範本進行匯入；範本格式與下方欄位說明對應。</div>
-        <div style={{
-          display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-          background: TOKENS.p500,
-          padding: SPACING.md, borderRadius: RADIUS.md, gap: SPACING.sm,
-        }}>
-          <Glyph name="arrow-down" size={ICON_SIZE.sm} color="#fff" stroke={2.5}/>
-          <span style={{ color: '#fff', fontWeight: TYPOGRAPHY.weight.medium }}>下載範本</span>
-        </div>
-      </div>
-
-      <div style={{
-        background: TOKENS.surface,
-        padding: T.CARD_PADDING, borderRadius: T.CARD_RADIUS,
-      }}>
-        <div style={{
-          fontSize: T.SECTION_TITLE_FONT_SIZE,
-          fontWeight: T.SECTION_TITLE_WEIGHT,
-          color: TOKENS.ink, marginBottom: SPACING.md,
-        }}>欄位說明</div>
-        {fields.map((f, i) => (
-          <div key={f.name} style={{
-            paddingTop: i === 0 ? 0 : SPACING.md,
-            paddingBottom: SPACING.md,
-            borderBottom: i === fields.length - 1 ? undefined : `1px solid ${TOKENS.divider.hairline}`,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.xs }}>
-              <span style={{
-                fontFamily: 'ui-monospace, "SF Mono", monospace',
-                fontWeight: TYPOGRAPHY.weight.medium,
-                color: TOKENS.ink,
-              }}>{f.name}</span>
-              {f.required && <span style={{ color: TOKENS.error }}>*</span>}
-            </div>
-            <div style={{
-              fontSize: T.DESCRIPTION_FONT_SIZE,
-              color: TOKENS.ink2,
-              marginTop: SPACING['2xs'],
-            }}>{f.desc}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ─── ImportStep1FileSelect ─── 大 icon + 說明 + 選擇按鈕
-function ImportStep1FileSelect({ withFile }) {
-  return (
-    <div style={{
-      flex: 1, display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-      padding: SPACING['2xl'],
-    }}>
-      <Glyph name="database" size={64} color={TOKENS.ink2} stroke={1.5}/>
-      <div style={{
-        marginTop: SPACING.lg,
-        color: TOKENS.ink2,
-        fontSize: TYPOGRAPHY.size.base,
-        textAlign: 'center',
-      }}>檔案必須為 UTF-8 編碼的 .csv 格式</div>
+      {/* 檔名（選後才出現）+ 選擇檔案按鈕 */}
       {withFile && (
-        <div style={{ marginTop: SPACING['2xl'], textAlign: 'center' }}>
-          <div style={{ color: TOKENS.ink, fontWeight: TYPOGRAPHY.weight.medium }}>transactions_2026.csv</div>
-          <div style={{ color: TOKENS.ink2, fontSize: TYPOGRAPHY.size.sm }}>42.3 KB</div>
-        </div>
+        <div style={{
+          textAlign: 'center', color: TOKENS.ink,
+          fontWeight: TYPOGRAPHY.weight.medium, marginBottom: SPACING.md,
+        }}>transactions_2026.csv</div>
       )}
+      <ImportButton label="選擇檔案" kind="primary"/>
+
+      {/* 分隔線 */}
       <div style={{
-        marginTop: SPACING['2xl'],
-        background: TOKENS.p500,
-        paddingTop: SPACING.lg, paddingBottom: SPACING.lg,
-        paddingLeft: SPACING['2xl'], paddingRight: SPACING['2xl'],
-        borderRadius: RADIUS.md,
-        color: '#fff', fontWeight: TYPOGRAPHY.weight.medium,
-      }}>{withFile ? '重新選擇檔案' : '選擇檔案'}</div>
+        height: 1, background: TOKENS.divider.hairline,
+        marginTop: T.SECTION_GAP, marginBottom: T.SECTION_GAP,
+      }}/>
+
+      {/* 下載範本 + 下載說明 */}
+      <ImportButton label="下載範本" kind="secondary"/>
+      <div style={{ height: SPACING.sm }}/>
+      <ImportButton label="下載說明" kind="secondary"/>
     </div>
   );
 }
 
-// ─── ImportStep2Mapping ─── 欄位對應 chip 選擇
+// ─── ImportStep2Mapping ─── 逐欄位 EditorFieldLabel + 收合選擇器 + 首筆預覽
 function ImportStep2Mapping() {
   const T = IMPORT_SCREEN_TOKENS;
   const fields = [
-    { label: '日期', required: true,  selected: 'date',     options: ['date', 'created_at'] },
-    { label: '金額', required: true,  selected: 'amount',   options: ['amount', 'value'] },
-    { label: '分類', required: true,  selected: 'category', options: ['category', 'group'] },
-    { label: '帳戶', required: true,  selected: 'account',  options: ['account', 'wallet'] },
-    { label: '幣別', required: true,  selected: 'currency', options: ['currency', 'ccy'] },
-    { label: '備註', required: false, selected: 'note',     options: ['note', 'remark'] },
+    { label: '日期', required: true,  value: 'date' },
+    { label: '金額', required: true,  value: 'amount' },
+    { label: '分類', required: true,  value: 'category' },
+    { label: '帳戶', required: true,  value: 'account' },
+    { label: '幣別', required: true,  value: 'currency' },
+    { label: '備註', required: false, value: 'note' },
   ];
-
   return (
-    <div>
+    <div style={{ padding: T.SCREEN_PADDING }}>
       {fields.map(f => (
-        <div key={f.label} style={{ marginBottom: T.SECTION_GAP }}>
-          <div style={{ color: TOKENS.ink, fontWeight: TYPOGRAPHY.weight.medium, marginBottom: SPACING.sm }}>
-            {f.label} {f.required && <span style={{ color: TOKENS.error }}>*</span>}
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: T.CHIP_GAP }}>
-            {f.options.map(opt => {
-              const selected = opt === f.selected;
-              return (
-                <div key={opt} style={{
-                  paddingTop: T.CHIP_PADDING_V, paddingBottom: T.CHIP_PADDING_V,
-                  paddingLeft: T.CHIP_PADDING_H, paddingRight: T.CHIP_PADDING_H,
-                  borderWidth: 1, borderStyle: 'solid',
-                  borderColor: selected ? TOKENS.p500 : TOKENS.divider.hairline,
-                  background: selected ? TOKENS.p500 : 'transparent',
-                  color: selected ? '#fff' : TOKENS.ink2,
-                  borderRadius: T.CHIP_RADIUS,
-                  fontSize: TYPOGRAPHY.size.sm,
-                  fontWeight: selected ? TYPOGRAPHY.weight.medium : TYPOGRAPHY.weight.regular,
-                }}>{opt}</div>
-              );
-            })}
-          </div>
+        <div key={f.label} style={{ marginBottom: T.FIELD_GAP }}>
+          <EditorFieldLabel required={f.required}>{f.label}</EditorFieldLabel>
+          <EditorPickerCollapsed value={f.value}/>
         </div>
       ))}
     </div>
   );
 }
 
-// ─── ImportStep3Matching ─── 內容比對 items 列表
+// ─── ImportStep3Matching ─── 帳戶 / 支出類別 / 收入類別 三段，每項收合選擇器選沿用/新建/略過
 function ImportStep3Matching() {
   const T = IMPORT_SCREEN_TOKENS;
-  const accounts = [
-    { name: '玉山活儲',     existing: true,  action: 'USE_EXISTING' },
-    { name: 'USD 旅費',     existing: false, action: 'CREATE' },
-    { name: '聯邦現金',     existing: false, action: 'SKIP' },
-  ];
-  const categories = [
-    { name: '飲食', existing: true,  action: 'USE_EXISTING' },
-    { name: '訂閱', existing: false, action: 'CREATE' },
-  ];
-
-  const renderSection = (title, items) => (
-    <div style={{ marginBottom: T.SECTION_GAP }}>
-      <div style={{
-        fontSize: T.SECTION_TITLE_FONT_SIZE,
-        fontWeight: T.SECTION_TITLE_WEIGHT,
-        color: TOKENS.ink, marginBottom: SPACING.lg,
-      }}>{title}</div>
-      {items.map(item => (
-        <div key={item.name} style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          paddingTop: SPACING.md, paddingBottom: SPACING.md,
-          borderBottom: `1px solid ${TOKENS.divider.hairline}`,
-        }}>
-          <div>
-            <div style={{ color: TOKENS.ink, fontSize: TYPOGRAPHY.size.base }}>{item.name}</div>
-            {item.existing && (
-              <div style={{ color: TOKENS.success, fontSize: TYPOGRAPHY.size.xs }}>已存在</div>
-            )}
-          </div>
-          <div style={{ display: 'flex', gap: SPACING.xs }}>
-            {item.existing && (
-              <ImportActionChip label="沿用" active={item.action === 'USE_EXISTING'}/>
-            )}
-            <ImportActionChip label="新建" active={item.action === 'CREATE'}/>
-            <ImportActionChip label="略過" active={item.action === 'SKIP'}/>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  return (
-    <div>
-      {renderSection('帳戶比對', accounts)}
-      {renderSection('分類比對', categories)}
-    </div>
-  );
-}
-
-function ImportActionChip({ label, active }) {
-  return (
+  const SectionTitle = ({ children, first }) => (
     <div style={{
-      paddingTop: SPACING['2xs'] + 2, paddingBottom: SPACING['2xs'] + 2,
-      paddingLeft: SPACING.sm, paddingRight: SPACING.sm,
-      borderWidth: 1, borderStyle: 'solid',
-      borderColor: active ? TOKENS.p500 : TOKENS.divider.hairline,
-      background: active ? TOKENS.p500 : 'transparent',
-      color: active ? '#fff' : TOKENS.ink2,
-      borderRadius: RADIUS.sm,
-      fontSize: TYPOGRAPHY.size.sm,
-    }}>{label}</div>
+      fontSize: T.SECTION_TITLE_FONT_SIZE, fontWeight: T.SECTION_TITLE_WEIGHT,
+      color: TOKENS.ink, marginTop: first ? 0 : T.SECTION_GAP, marginBottom: SPACING.md,
+    }}>{children}</div>
+  );
+  const Item = ({ name, action }) => (
+    <div style={{ marginBottom: T.FIELD_GAP }}>
+      <EditorFieldLabel>{name}</EditorFieldLabel>
+      <EditorPickerCollapsed value={action}/>
+    </div>
+  );
+  return (
+    <div style={{ padding: T.SCREEN_PADDING }}>
+      <SectionTitle first>帳戶</SectionTitle>
+      <Item name="玉山活儲" action="沿用"/>
+      <Item name="USD 旅費" action="新建"/>
+
+      <SectionTitle>支出類別</SectionTitle>
+      <Item name="飲食" action="沿用"/>
+      <Item name="訂閱" action="新建"/>
+
+      <SectionTitle>收入類別</SectionTitle>
+      <Item name="薪資" action="沿用"/>
+      <Item name="獎金" action="新建"/>
+    </div>
   );
 }
 
-// ─── ImportStep4Preview ─── 統計卡片 + ready 提示
+// ─── ImportStep4Preview ─── 匯入摘要，分組卡資料列
 function ImportStep4Preview() {
+  const T = IMPORT_SCREEN_TOKENS;
   return (
-    <div style={{
-      flex: 1, padding: SPACING.xl,
-      display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-    }}>
-      <div style={{
-        background: TOKENS.surface,
-        padding: SPACING.xl, borderRadius: RADIUS.lg,
-        width: '100%', textAlign: 'center', marginBottom: SPACING.lg,
-      }}>
-        <div style={{ fontSize: TYPOGRAPHY.size.lg, color: TOKENS.ink, marginBottom: SPACING.md }}>共 124 筆紀錄</div>
-        <div style={{ fontSize: TYPOGRAPHY.size.lg, color: TOKENS.ink, marginBottom: SPACING.md }}>新增 1 個帳戶</div>
-        <div style={{ fontSize: TYPOGRAPHY.size.lg, color: TOKENS.ink, marginBottom: SPACING.md }}>新增 1 個分類</div>
-        <div style={{ fontSize: TYPOGRAPHY.size.lg, color: TOKENS.warning, marginBottom: SPACING.md }}>略過 8 筆紀錄</div>
-      </div>
-      <div style={{
-        display: 'flex', flexDirection: 'row', alignItems: 'center',
-        background: 'rgba(255,184,0,0.12)',
-        padding: SPACING.lg, borderRadius: RADIUS.md,
-        marginBottom: SPACING.xl, gap: SPACING.md,
-      }}>
-        <Glyph name="shield" size={ICON_SIZE.md} color={TOKENS.warning} stroke={2}/>
-        <div style={{ color: TOKENS.warning, fontSize: TYPOGRAPHY.size.sm, flex: 1 }}>
-          被略過的紀錄會直接跳過。確認後按「開始匯入」執行。
-        </div>
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.size.xl,
-        fontWeight: TYPOGRAPHY.weight.medium,
-        color: TOKENS.p500,
-      }}>準備好匯入</div>
+    <div style={{ padding: T.SCREEN_PADDING }}>
+      <ListSection title="匯入摘要">
+        <ListGroupCard>
+          <DataListItem title="共匯入" value="124"/>
+          <DataListItem title="新增帳戶" value="1"/>
+          <DataListItem title="新增類別" value="1"/>
+          <DataListItem title="略過重複" value="8"/>
+        </ListGroupCard>
+      </ListSection>
     </div>
   );
 }
 
 Object.assign(window, {
-  ImportWizardFooter, ImportActionChip,
-  ImportStep0Template, ImportStep1FileSelect, ImportStep2Mapping,
+  ImportWizardHeader, ImportButton,
+  ImportStep1FileSelect, ImportStep2Mapping,
   ImportStep3Matching, ImportStep4Preview,
 });

@@ -245,7 +245,7 @@ function ComponentsFormSection() {
         </DCArtboard>
       </DCFamily>
 
-      <DCFamily id="comp-form-editor-fields" title="Editor Form Fields (V2)" subtitle="AccountEditor / CategoryEditor 採 Form Structure V2 後共用的四個 form helper。實作位於 30_screens/shared/no3_editor_field_helpers.jsx，未來 impl 重構時可升入 20_components 正式元件。">
+      <DCFamily id="comp-form-editor-fields" title="Editor Form Fields (V2)" subtitle="AccountEditor / CategoryEditor / ImportWizard 共用的 form helper。實作位於 30_screens/shared/no3_editor_field_helpers.jsx，未來 impl 重構時可升入 20_components 正式元件。">
         <DCArtboard id="comp-editor-name-field" label="EditorNameField · 大字置中名稱輸入（default / filled / active）" width={402} height={320}>
           <CompFrame style={{ padding: SPACING.lg, display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
             <CompLabel>高 80、24px 字、中對齊。active 為紫色 border + bg 切換到 bg base，呈現「進入輸入狀態」。對應 impl src/components/EditorNameField 或於 screen 內 inline 實作。</CompLabel>
@@ -267,6 +267,27 @@ function ComponentsFormSection() {
             <EditorSearchableDropdownCollapsed value="TWD - New Taiwan Dollar"/>
             <EditorSearchableDropdownCollapsed value="TWD - New Taiwan Dollar" disabled/>
             <EditorSearchableDropdownCollapsed value="" placeholder="點擊選擇..."/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-editor-picker-collapsed" label="EditorPickerCollapsed · 無框收合選擇器（值 + chevron）" width={402} height={220}>
+          <CompFrame style={{ padding: SPACING.lg, display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
+            <CompLabel>無框 surface 列，左值右 chevron-down，點開展開選項清單。ImportWizard 欄位對應與內容比對採此 pattern。disabled 時無 chevron。</CompLabel>
+            <EditorPickerCollapsed value="date"/>
+            <EditorPickerCollapsed value="沿用"/>
+            <EditorPickerCollapsed value="鎖定值" disabled/>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-editor-field-label" label="EditorFieldLabel · 欄位小標 + 欄位列組合" width={402} height={260}>
+          <CompFrame style={{ padding: SPACING.lg, display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
+            <CompLabel>欄位上方小標，sm 字 ink2 色，required 加星號。與控制元件上下組成一個 form field。下例為 ImportWizard 欄位對應的列結構。</CompLabel>
+            <div>
+              <EditorFieldLabel required>日期</EditorFieldLabel>
+              <EditorPickerCollapsed value="date"/>
+            </div>
+            <div>
+              <EditorFieldLabel>備註</EditorFieldLabel>
+              <EditorPickerCollapsed value="note"/>
+            </div>
           </CompFrame>
         </DCArtboard>
         <DCArtboard id="comp-editor-inline-icon-grid" label="EditorInlineIconGrid · 4col 常駐圖示網格" width={402} height={360}>
