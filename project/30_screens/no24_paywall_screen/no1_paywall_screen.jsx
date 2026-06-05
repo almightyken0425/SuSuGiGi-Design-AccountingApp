@@ -11,6 +11,7 @@
 
 function PaywallScreen({ variant = 'default' }) {
   const T = PAYWALL_SCREEN_TOKENS;
+  const processing = variant === 'processing';
   const selectedId = variant === 'monthly' ? 'monthly' : 'yearly';
 
   return (
@@ -21,14 +22,6 @@ function PaywallScreen({ variant = 'default' }) {
       display: 'flex', flexDirection: 'column',
       justifyContent: 'center', alignItems: 'center',
     }}>
-      <div style={{
-        fontSize: T.TITLE_FONT_SIZE,
-        fontWeight: T.TITLE_WEIGHT,
-        color: TOKENS.ink,
-        textAlign: 'center',
-        marginBottom: T.TITLE_BOTTOM_MARGIN,
-      }}>升級 SuSuGiGi+</div>
-
       <PaywallBenefitList/>
 
       <div style={{ width: '100%', marginBottom: T.OPTIONS_BOTTOM_MARGIN }}>
@@ -39,24 +32,31 @@ function PaywallScreen({ variant = 'default' }) {
 
       <div style={{
         background: TOKENS.p500,
+        opacity: processing ? 0.6 : 1,
         padding: T.CTA_PADDING,
         borderRadius: T.CTA_RADIUS,
         width: T.CTA_WIDTH_PCT,
         display: 'flex', justifyContent: 'center', alignItems: 'center',
         marginBottom: T.CTA_BOTTOM_MARGIN,
       }}>
-        <span style={{
-          color: TOKENS.surface,
-          fontSize: T.CTA_FONT_SIZE,
-          fontWeight: TYPOGRAPHY.weight.medium,
-        }}>立即升級</span>
+        {processing
+          ? <Spinner size={ICON_SIZE.md} color={TOKENS.surface}/>
+          : <span style={{
+              color: TOKENS.surface,
+              fontSize: T.CTA_FONT_SIZE,
+              fontWeight: TYPOGRAPHY.weight.medium,
+            }}>立即升級</span>}
       </div>
+
+      <PaywallDisclosure/>
 
       <div style={{
         padding: T.AUX_BUTTON_PADDING,
         color: TOKENS.ink2,
         textDecoration: 'underline',
       }}>還原購買</div>
+
+      <PaywallLegalLinks/>
 
       <div style={{
         marginTop: SPACING.sm,
