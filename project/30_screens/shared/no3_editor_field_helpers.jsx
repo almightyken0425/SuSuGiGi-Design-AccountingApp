@@ -32,7 +32,6 @@ function EditorTextInput({ value, placeholder, disabled }) {
       background: TOKENS.surface,
       padding: SPACING.md,
       borderRadius: RADIUS.md,
-      borderWidth: 1, borderStyle: 'solid', borderColor: TOKENS.divider.hairline,
       fontSize: TYPOGRAPHY.size.base,
       color: disabled ? TOKENS.ink3 : (isEmpty ? TOKENS.ink3 : TOKENS.ink),
     }}>
@@ -93,11 +92,9 @@ function EditorNameField({ value, placeholder, active }) {
     <div style={{
       width: '100%', boxSizing: 'border-box',
       height: 80,
-      background: active ? TOKENS.bg : TOKENS.surface,
+      background: TOKENS.surface,
       padding: SPACING.md,
       borderRadius: RADIUS.md,
-      borderWidth: 1, borderStyle: 'solid',
-      borderColor: active ? TOKENS.p500 : TOKENS.divider.hairline,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       fontSize: TYPOGRAPHY.size['2xl'],
       fontWeight: TYPOGRAPHY.weight.medium,
@@ -122,7 +119,6 @@ function EditorButtonGroup({ options, selected }) {
             paddingLeft: SPACING.md, paddingRight: SPACING.md,
             borderRadius: RADIUS.md,
             background: active ? TOKENS.p500 : TOKENS.surface,
-            border: `1px solid ${active ? TOKENS.p500 : TOKENS.divider.hairline}`,
             color: active ? 'white' : TOKENS.ink2,
             fontSize: TYPOGRAPHY.size.base,
             fontWeight: active ? TYPOGRAPHY.weight.medium : 'normal',
@@ -146,8 +142,6 @@ function EditorSearchableDropdownCollapsed({ value, placeholder, disabled }) {
       background: TOKENS.surface,
       paddingLeft: SPACING.md, paddingRight: SPACING.md,
       borderRadius: RADIUS.md,
-      borderWidth: 1, borderStyle: 'solid',
-      borderColor: TOKENS.divider.hairline,
       minHeight: 44,
       opacity: disabled ? 0.5 : 1,
     }}>
