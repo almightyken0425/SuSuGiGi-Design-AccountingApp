@@ -2,8 +2,8 @@
 // DataManagementScreen · 對齊 impl src/screens/Settings/DataManagementScreen.tsx
 //
 // Push screen。3 個 ListSection：
-//   1. 匯入交易 / 轉帳 / 定期
-//   2. 匯出交易 / 轉帳 / 定期
+//   1. 匯入交易 / 轉帳
+//   2. 匯出交易 / 轉帳
 //   3. 重設資料庫（destructive）
 //
 // Variants：default only。
