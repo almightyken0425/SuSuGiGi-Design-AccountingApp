@@ -43,6 +43,12 @@ function PreferenceScreen() {
 
       <ListSection>
         <ListGroupCard>
+          <ListItem title="允許資料分析" trailing={<Switch value={v.analyticsConsent}/>}/>
+        </ListGroupCard>
+      </ListSection>
+
+      <ListSection>
+        <ListGroupCard>
           <ListItem title="登出" titleColor={TOKENS.error}/>
         </ListGroupCard>
       </ListSection>
