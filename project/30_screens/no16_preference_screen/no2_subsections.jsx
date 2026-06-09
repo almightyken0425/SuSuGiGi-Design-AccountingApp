@@ -10,6 +10,7 @@ const PREFERENCE_PREVIEW_VALUES = {
   baseCurrency: 'TWD',
   language:     '繁體中文',
   timeZone:     'Taipei',
+  analyticsConsent: true,
 };
 
 Object.assign(window, { PREFERENCE_PREVIEW_VALUES });
