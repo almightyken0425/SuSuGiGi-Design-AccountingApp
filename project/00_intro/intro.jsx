@@ -62,7 +62,7 @@ function IntroSection() {
             <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示。5 個 family（List / Form / Navigation / Chart / Input），每個 family 內元件與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS / CHIP_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS / HEADER_ICON_BUTTON_TOKENS / SWITCH_TOKENS / LIST_EMPTY_TRANSITION）緊鄰擺放"/>
             <AnatomyRow name="Brand" desc="品牌標識、商標相關工件"/>
 
-            <SectionLabel>Screens · 22 個畫面群組</SectionLabel>
+            <SectionLabel>Screens · 26 個畫面群組</SectionLabel>
             <AnatomyRow name="Home / Filter / Search" desc="主畫面 + 篩選 modal + 搜尋（4 狀態）"/>
             <AnatomyRow name="Transaction / Transfer" desc="記支出 / 收入 / 轉帳編輯器（含驗證錯誤狀態）"/>
             <AnatomyRow name="Login / Paywall" desc="登入（2 狀態）/ 訂閱頁（2 狀態）"/>
@@ -198,14 +198,16 @@ function IntroSection() {
 │   ├── no3_typography.jsx         TYPOGRAPHY / TYPE_STYLES / LINE_HEIGHT / LETTER_SPACING
 │   ├── no4_layout_tokens.jsx      SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET / ROW_HEIGHT
 │   ├── no5_platform_tokens.jsx    IOS_SYSTEM_COLOR / ACTION_ICON_MAP
-│   ├── no6_icon_library.jsx       97 phosphor SVG
+│   ├── no6_icon_library.jsx       205 phosphor SVG
 │   ├── component_tokens/          元件級 token（一元件一檔，引用 atomic 層）
-│   │   └── no1-no8                LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH_BAR /
-│   │                              HEADER_ICON_BUTTON / SWITCH / LIST_EMPTY_TRANSITION
+│   │   └── no1-no13               LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH_BAR /
+│   │                              HEADER_ICON_BUTTON / SWITCH / LIST_EMPTY_TRANSITION /
+│   │                              AMOUNT_FIELD / STATIC_WHEEL_PICKER / RECURRING_OPTIONS /
+│   │                              CONFIRM_DIALOG / CALENDAR_DIALOG
 │   └── visualizers/               Foundations TOC group 視覺化卡片
 │       ├── no0_shared_card_kit    共用 UI primitives
 │       ├── atomic/no1-no4         Type / Colors / Layout / Platform
-│       ├── component_tokens/no1-no8  與 component_tokens/ 一對一對應
+│       ├── component_tokens/no1-no13  與 component_tokens/ 一對一對應
 │       ├── brand/no1              UI Glyphs
 │       └── icon_library/no1       All Icons
 ├── 15_fixtures/                   Mock 資料 + canvas helpers（不對齊 spec / impl）
@@ -213,7 +215,7 @@ function IntroSection() {
 ├── 20_components/
 │   ├── components.jsx             元件實作
 │   └── components-showcase.jsx    Foundations · Components group 5 leaf 內容
-├── 30_screens/screens.jsx         22 個正式畫面群組
+├── 30_screens/screens.jsx         26 個正式畫面群組
 ├── 50_explorations/
 │   ├── axis_color_and_mood/
 │   ├── axis_surface_material/

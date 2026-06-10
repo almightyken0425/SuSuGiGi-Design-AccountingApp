@@ -43,7 +43,7 @@ function ComponentsListSection() {
 
       <DCArtboard id="comp-data-list-item" label="DataListItem · 資料數值列 (live)" width={402} height={500}>
         <CompFrame>
-          <CompLabel>用於 AccountList / CategoryList — 左 icon + title/subtitle + 右 value/valueSubtext</CompLabel>
+          <CompLabel>用於 ImportScreen step 4 匯入摘要 — 左 icon + title/subtitle + 右 value/valueSubtext</CompLabel>
           <div style={{ padding: SPACING.lg }}>
             <ListGroupCard>
               <DataListItem leftIcon={<Glyph name="bank-outline" size={ICON_SIZE.sm} color={TOKENS.ink} stroke={1.8}/>}
@@ -134,6 +134,18 @@ function ComponentsListSection() {
                 <ListItem title="管理帳戶" showChevron/>
               </ListGroupCard>
             </ListSection>
+          </div>
+        </CompFrame>
+      </DCArtboard>
+
+      <DCArtboard id="comp-icon-outline" label="IconOutline · section icon 容器 (live)" width={402} height={320}>
+        <CompFrame>
+          <CompLabel>用於 PeriodPage 交易區 section header — 32×32 icon 對齊容器（impl 預設無 border，保留 withBorder prop）</CompLabel>
+          <div style={{ padding: SPACING.lg, display: 'flex', gap: SPACING.xl, alignItems: 'center' }}>
+            <IconOutline glyph="food-outline"/>
+            <IconOutline glyph="wallet-outline"/>
+            <IconOutline glyph="bank-outline" color={TOKENS.ink}/>
+            <IconOutline glyph="credit-card-outline" withBorder/>
           </div>
         </CompFrame>
       </DCArtboard>

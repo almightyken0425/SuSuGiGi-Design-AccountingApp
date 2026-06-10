@@ -81,7 +81,7 @@ project/
 │   └── components-showcase.jsx    5 個家族 showcase（List / Form / Navigation / Chart / Input），
 │                                  每個 family 內元件與對應 token 表緊鄰擺放，
 │                                  由 FoundationsComponentsSection 串在 Foundations > Components 子項內
-├── 30_screens/screens.jsx         22 個正式畫面群組
+├── 30_screens/screens.jsx         26 個正式畫面群組
 ├── 50_explorations/
 │   ├── axis_color_and_mood/                Axis 1 · 配色與情緒
 │   ├── axis_surface_material/              Axis 2 · 質感與材質（Liquid Glass current direction）

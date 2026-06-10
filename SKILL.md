@@ -13,7 +13,7 @@ Key entry points:
 - `project/SuSuGiGi.html` — the design canvas; open in a browser to browse Intro / Foundations / Screens / Explorations (Foundations 內含 5 個 sub-item：Type / Colors / Tokens / Components / Brand。Tokens 收跨元件共用原語；元件專屬 token 表已下放至 Components 對應 family。每個 sub-item 內部用垂直 layout)
 - `project/10_foundations/cards/` — 2026-05-18 claude.ai/design 匯出的快照卡片（28 張，依 5 分類分子目錄），活在 Foundations tab 的 iframe artboard 內
 - `project/20_components/components.jsx` — `Glyph`, `ListItem`, `GroupCard`, `GlassView`, `DonutChart`, `FocusCard`, etc. (canonical visual implementations)
-- `project/30_screens/screens.jsx` — 22 production-mirrored screens with empty / loading / error variants
+- `project/30_screens/screens.jsx` — 26 production-mirrored screens with empty / loading / error variants
 - `project/90_workbench/ios-frame.jsx` — iOS 26 (Liquid Glass) device shell
 - `project/assets/logo.svg`, `project/assets/wordmark.svg` — brand marks
 
