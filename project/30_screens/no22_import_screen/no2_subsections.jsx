@@ -72,21 +72,21 @@ function ImportStep1FileSelect({ withFile = true }) {
           fontSize: T.SECTION_TITLE_FONT_SIZE, fontWeight: T.SECTION_TITLE_WEIGHT,
           color: TOKENS.ink, marginBottom: SPACING.sm,
         }}>來源時區</div>
-        <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
+        <div style={{ position: 'relative', height: T.TZ_WHEEL_HEIGHT, overflow: 'hidden' }}>
           <div style={{
-            position: 'absolute', left: 0, right: 0, top: 72, height: 36,
+            position: 'absolute', left: 0, right: 0, top: T.TZ_WHEEL_SELECTED_TOP, height: T.TZ_WHEEL_ROW_HEIGHT,
             borderTop: `1px solid ${TOKENS.divider.hairline}`,
             borderBottom: `1px solid ${TOKENS.divider.hairline}`,
           }}/>
           {[
-            { tz: 'UTC+10:00', opacity: 0.3 },
-            { tz: 'UTC+09:00', opacity: 0.55 },
+            { tz: 'UTC+10:00', opacity: T.TZ_WHEEL_OPACITY_FAR },
+            { tz: 'UTC+09:00', opacity: T.TZ_WHEEL_OPACITY_NEAR },
             { tz: 'UTC+08:00', opacity: 1, sel: true },
-            { tz: 'UTC+07:00', opacity: 0.55 },
-            { tz: 'UTC+06:00', opacity: 0.3 },
+            { tz: 'UTC+07:00', opacity: T.TZ_WHEEL_OPACITY_NEAR },
+            { tz: 'UTC+06:00', opacity: T.TZ_WHEEL_OPACITY_FAR },
           ].map((r, i) => (
             <div key={i} style={{
-              position: 'relative', height: 36, lineHeight: '36px', textAlign: 'center',
+              position: 'relative', height: T.TZ_WHEEL_ROW_HEIGHT, lineHeight: `${T.TZ_WHEEL_ROW_HEIGHT}px`, textAlign: 'center',
               fontSize: TYPOGRAPHY.size.base,
               fontWeight: r.sel ? TYPOGRAPHY.weight.medium : TYPOGRAPHY.weight.regular,
               color: TOKENS.ink, opacity: r.opacity,

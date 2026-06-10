@@ -78,3 +78,5 @@ const CALENDAR_DIALOG_TOKENS = {
   WHEEL_SEPARATOR_TEXT:         ':',                                           // (literal: 時分分隔符)
   WHEEL_GROUP_GAP:              SPACING.md,
 };
+
+Object.assign(window, { CALENDAR_DIALOG_TOKENS });

@@ -4,11 +4,15 @@
 // 頂部 4 個 tab：
 //   #intro / #foundations / #screens / #explorations
 //
-// Foundations 內含 3 個 group × 15 leaf sub-item（hash 三段式：#foundations/<group>/<topic>）：
-//   - Atomic            (4) — Type / Colors / Layout / Platform
-//   - Component Tokens  (8) — List / Transaction List / Form Picker / Chip / Search Bar /
-//                              Header Icon Button / Switch / List Empty Transition
-//   - Showcase          (3) — Components / Brand / Icon Library
+// Foundations 內含 5 個 group × 24 leaf sub-item（hash 三段式：#foundations/<group>/<topic>）：
+//   - Atomic            (4)  — Type / Colors / Layout / Platform
+//   - Component Tokens  (13) — List / Transaction List / Form Picker / Chip / Search Bar /
+//                              Header Icon Button / Switch / List Empty Transition /
+//                              Amount Field / Static Wheel Picker / Recurring Options /
+//                              Confirm Dialog / Calendar Dialog
+//   - Components        (5)  — List / Form / Navigation / Chart / Input
+//   - Brand             (1)  — UI Glyphs
+//   - Icon Library      (1)  — All Icons
 //
 // SCREEN_META 中央定義每個 screen 的：
 //   - title           NavBar 標題

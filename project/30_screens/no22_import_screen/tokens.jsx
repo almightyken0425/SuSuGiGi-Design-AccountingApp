@@ -16,6 +16,13 @@ const IMPORT_SCREEN_TOKENS = {
   SECTION_TITLE_FONT_SIZE:  TYPOGRAPHY.size.lg,
   SECTION_TITLE_WEIGHT:     TYPOGRAPHY.weight.medium,
   DESCRIPTION_FONT_SIZE:    TYPOGRAPHY.size.sm,
+
+  // ── 來源時區 wheel（5 行靜態 mock；非通用 StaticWheelPicker，行數／字級／漸層皆異，不共用其 token）
+  TZ_WHEEL_HEIGHT:          180,                  // (literal: 5 行 × TZ_WHEEL_ROW_HEIGHT 的容器固定高)
+  TZ_WHEEL_ROW_HEIGHT:      36,                   // (literal: 每行高＝時區文字行距)
+  TZ_WHEEL_SELECTED_TOP:    72,                   // (literal: 中央高亮列上緣＝2 行 × TZ_WHEEL_ROW_HEIGHT)
+  TZ_WHEEL_OPACITY_NEAR:    0.55,                 // (literal: 選中行上下鄰行淡化)
+  TZ_WHEEL_OPACITY_FAR:     0.3,                  // (literal: 再外一層更淡，模擬 wheel 透視)
 };
 
 Object.assign(window, { IMPORT_SCREEN_TOKENS });

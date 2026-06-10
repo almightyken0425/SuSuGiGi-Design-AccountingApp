@@ -141,6 +141,8 @@ const THEME_2 = {
 
 const THEMES = { theme1: THEME_1, theme2: THEME_2 };
 const DEFAULT_THEME_ID = 'theme1';
+// DEFAULT_THEME = THEMES[DEFAULT_THEME_ID] 的別名，鏡像 impl theme.ts 的向後相容 export。
+// canvas 固定 THEME_1 快照、不切 theme，故此值零消費，仍保留以對齊 impl export 清單。
 const DEFAULT_THEME = THEME_1;
 
 Object.assign(window, {

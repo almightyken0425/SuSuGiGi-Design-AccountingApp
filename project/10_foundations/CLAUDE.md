@@ -11,7 +11,7 @@
 ├── no3_typography.jsx           字體系統
 ├── no4_layout_tokens.jsx        間距 / 圓角 / 陰影 alias / 動畫 / icon 尺寸 / 觸控目標 / row 高度
 ├── no5_platform_tokens.jsx      平台特定固定值（iOS system color、ACTION_ICON_MAP）
-├── no6_icon_library.jsx         97 個 phosphor SVG IconDefinition
+├── no6_icon_library.jsx         205 個 phosphor SVG IconDefinition
 ├── component_tokens/            元件級 token（一元件一檔，引用 atomic 層）
 └── visualizers/                 canvas 視覺化卡片（對應 Foundations TOC 三 group）
 ```
@@ -40,7 +40,7 @@
 
 ## TOC 對應
 
-Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 group × 22 leaf：
+Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 group × 24 leaf：
 
 | Group | Leaf | 渲染檔案 |
 |---|---|---|
@@ -60,6 +60,7 @@ Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 g
 | Component Tokens | Static Wheel Picker | `visualizers/component_tokens/no10_static_wheel_picker_visualizer.jsx` |
 | Component Tokens | Recurring Options | `visualizers/component_tokens/no11_recurring_options_visualizer.jsx` |
 | Component Tokens | Confirm Dialog | `visualizers/component_tokens/no12_confirm_dialog_visualizer.jsx` |
+| Component Tokens | Calendar Dialog | `visualizers/component_tokens/no13_calendar_dialog_visualizer.jsx` |
 | Components | List | `20_components/components-showcase.jsx`（`ComponentsListSection`） |
 | Components | Form | `20_components/components-showcase.jsx`（`ComponentsFormSection`） |
 | Components | Navigation | `20_components/components-showcase.jsx`（`ComponentsNavigationSection`） |
