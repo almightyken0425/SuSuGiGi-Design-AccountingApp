@@ -2,18 +2,21 @@
 // TransferEditorScreen sub-sections · 私有 sub-section 元件
 //
 // 鏡射 impl src/screens/Transactions/TransferEditorScreen.tsx 拆分：
-//   AmountGroupBox / PickerGroupBox + 內 ExchangeArrow
+//   AmountGroupBox + 內 ExchangeArrow
 //
 // 改版：from / to 不再各自有獨立 box，外層一個 grouping box 包住整 row。
 // box 樣式（surface + solid grey border + md radius）對齊既有 V0 內元素 box，
 // 讓視覺風格延續。內部 AmountField / AccountSelector 拿掉自帶 border。
 // active 改用 amount 文字色（紫）；backspace 改由 CalculatorKeypad ⌫ 鍵承接（不再 inline icon）。
 //
+// picker 排原私有 PickerGroupBox 已促升為共用元件 DualPickerBox（20_components），
+// 本檔不再定義，screen 直接組 DualPickerBox + AccountSelector(noBorder)。
+//
 // 共用 form helper（EditorErrorBanner / EditorDateContainer / EditorNoteField）住在
 //   30_screens/shared/no2_editor_form_helpers.jsx；刪除鈕改用共用元件 DeleteButton（20_components）。
 //
 // 消費 TRANSFER_EDITOR_SCREEN_TOKENS + atomic
-// + 20_components/（AmountField / AccountSelector / Glyph）。
+// + 20_components/（AmountField / AccountSelector / DualPickerBox / Glyph）。
 // ─────────────────────────────────────────────────────────────
 
 // ─── ExchangeArrow ─── group box 內 from / to 中間的右向箭頭
@@ -62,31 +65,4 @@ function AmountGroupBox({ activeField, setActiveField, fromAmount, toAmount, fro
   );
 }
 
-// ─── PickerGroupBox ─── 外層 box 包 from AccountSelector + → + to AccountSelector
-// AccountSelector 傳 noBorder=true 拿掉自帶外框，由本 group box 統一表達 grouping
-// hasConflict=true 時 borderColor 轉 TOKENS.error，表達 from === to 的衝突狀態
-function PickerGroupBox({ fromAcc, toAcc, hasConflict = false }) {
-  const T = TRANSFER_EDITOR_SCREEN_TOKENS;
-  return (
-    <div style={{
-      background: TOKENS.surface,
-      borderRadius: RADIUS.md,
-      borderWidth: 1, borderStyle: 'solid',
-      borderColor: hasConflict ? TOKENS.error : TOKENS.border,
-      marginBottom: T.SECTION_GAP,
-      paddingLeft: SPACING.md, paddingRight: SPACING.md,
-      display: 'flex', flexDirection: 'row',
-      alignItems: 'center',
-    }}>
-      <div style={{ flex: 1, overflow: 'hidden' }}>
-        <AccountSelector account={fromAcc} noBorder/>
-      </div>
-      <ExchangeArrow/>
-      <div style={{ flex: 1, overflow: 'hidden' }}>
-        <AccountSelector account={toAcc} noBorder/>
-      </div>
-    </div>
-  );
-}
-
-Object.assign(window, { ExchangeArrow, AmountGroupBox, PickerGroupBox });
+Object.assign(window, { ExchangeArrow, AmountGroupBox });

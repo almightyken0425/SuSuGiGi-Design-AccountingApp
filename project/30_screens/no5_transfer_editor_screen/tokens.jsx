@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // TRANSFER_EDITOR_SCREEN_TOKENS · TransferEditorScreen 內部 composition 參數
 //
-// Modal screen，含 EditorDateContainer / AmountGroupBox / PickerGroupBox /
+// Modal screen，含 EditorDateContainer / AmountGroupBox / DualPickerBox（20_components）/
 // EditorNoteField / DeleteButton（20_components）+ CalculatorKeypad（absolute bottom）。
 // 大部分 form helper 從 30_screens/shared/no2_editor_form_helpers.jsx 共用。
-// 消費 atomic + 20_components/（AmountField / StaticWheelPicker / AccountSelector）。
+// 消費 atomic + 20_components/（AmountField / StaticWheelPicker / AccountSelector / DualPickerBox）。
 //
 // box 視覺（surface + solid grey border + md radius）直接使用 atomic SPACING / RADIUS / TOKENS，
 // 不另設 token；group box 與 V0 內元素 box 樣式一致。

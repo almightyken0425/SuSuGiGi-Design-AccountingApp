@@ -1403,6 +1403,36 @@ function CategorySelector({ category, mode = 'static', noBorder = false }) {
   );
 }
 
+// ─── DualPickerBox ─── 對齊 src/components/DualPickerBox.tsx
+// 包左右兩個 noBorder static picker + 中間 → 箭頭的橫向外框。
+// MergeEditor（來源 → 目標）與 TransferEditor（from → to 帳戶）共用同一視覺。
+// conflict=true（如 source === target / from === to）時外框轉 TOKENS.error。
+// style 讓 caller 疊外距（如 TransferEditor 的 marginBottom）。
+// Token 由 DUAL_PICKER_BOX_TOKENS 提供（no14）。
+function DualPickerBox({ left, right, conflict = false, style = {} }) {
+  const T = DUAL_PICKER_BOX_TOKENS;
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'row', alignItems: 'center',
+      background: TOKENS.surface,
+      borderRadius: T.RADIUS,
+      borderWidth: T.BORDER_WIDTH, borderStyle: 'solid',
+      borderColor: conflict ? TOKENS.error : TOKENS.border,
+      paddingLeft: T.PADDING_HORIZONTAL, paddingRight: T.PADDING_HORIZONTAL,
+      ...style,
+    }}>
+      <div style={{ flex: 1, overflow: 'hidden' }}>{left}</div>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        paddingLeft: T.ARROW_GAP, paddingRight: T.ARROW_GAP,
+      }}>
+        <Glyph name="arrow-right" size={ICON_SIZE.md} color={TOKENS.ink2}/>
+      </div>
+      <div style={{ flex: 1, overflow: 'hidden' }}>{right}</div>
+    </div>
+  );
+}
+
 // ─── DatePill ─── RecurringOptions「結束於」區段與兩顆 chip 同行的日期欄
 // 對齊 impl src/components/RecurringOptions.tsx：與「永不 / 特定日期」chip 並排展示。
 // active=false（永不選中時）pill 留在原位置淡出停用，opacity 漸變避免整列寬度跳動。
@@ -1818,7 +1848,7 @@ Object.assign(window, {
   MockBackButtonPill, MockNavBar, HeaderMockFrame,
   GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
-  AmountField, StaticWheelPicker, AccountSelector, CategorySelector, RecurringOptions,
+  AmountField, StaticWheelPicker, AccountSelector, CategorySelector, DualPickerBox, RecurringOptions,
   DatePill, ConfirmDialog, DeleteButton, CalendarDialog,
   iconBtn,
 });

@@ -3,7 +3,7 @@
 //
 // Modal screen。跨帳戶 / 跨幣別轉帳。
 // 內容順序：EditorDateContainer → [RecurringOptions?]
-//          → AmountGroupBox → PickerGroupBox → EditorNoteField → [DeleteButton?]
+//          → AmountGroupBox → DualPickerBox（20_components 共用）→ EditorNoteField → [DeleteButton?]
 //          → SCROLL_SPACER → CalculatorKeypad(absolute)
 //
 // Variants（對齊 impl 進入點狀態 route.params.id / recurringRule / 兩 account currency）：
@@ -19,7 +19,7 @@
 //                              CalculatorKeypad 滑下隱藏，系統 keyboard 上來（系統提供視覺，design canvas 留空）。
 //                              可疊加其他 variant（如 'edit-note-focused'）。
 //   account-conflict         — from === to（兩個 selector 暫時選到同一個帳戶）。
-//                              PickerGroupBox 外框轉 TOKENS.error 表達衝突；impl 端完成按鈕 disable。
+//                              DualPickerBox 外框轉 TOKENS.error 表達衝突；impl 端完成按鈕 disable。
 //
 // 不包含 edit-schedule-instance variant：impl `id + scheduleId + scheduleRecurrence` 觸發的差異
 // 在 save / delete 時跳 Alert.alert mode dialog（「本次 / 未來」）；RecurringOptions 本身渲染
@@ -72,7 +72,12 @@ function TransferEditorScreen({ variant = 'default' }) {
           toAcc={toAcc}
           isCrossCurrency={isCrossCurrency}/>
 
-        <PickerGroupBox fromAcc={fromAcc} toAcc={toAcc} hasConflict={fromAccount === toAccount}/>
+        {/* Picker 排 · 共用 DualPickerBox 包 from/to 兩個 AccountSelector(noBorder) + 中間 →（對齊 impl 用法，外距由 style 疊） */}
+        <DualPickerBox
+          conflict={fromAccount === toAccount}
+          style={{ marginBottom: T.SECTION_GAP }}
+          left={<AccountSelector account={fromAcc} noBorder/>}
+          right={<AccountSelector account={toAcc} noBorder/>}/>
 
         <EditorNoteField value={note} onChange={setNote}/>
 

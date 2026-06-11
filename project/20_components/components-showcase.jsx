@@ -226,7 +226,7 @@ function ComponentsListSection() {
 
 function ComponentsFormSection() {
   return (
-    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器、金額輸入、定期設定卡片。對應 token 表見 Foundations > Component Tokens > Form Picker / Chip / Switch。新升 5 個元件（AmountField / StaticWheelPicker / AccountSelector / CategorySelector / RecurringOptions）尚未建專屬 component_tokens 檔，為後續 follow-up。">
+    <DCSection id="comp-form" title="Components · Form" subtitle="Form 觸發器、金額輸入、定期設定卡片。對應 token 表見 Foundations > Component Tokens 各 leaf（Form Picker / Chip / Switch / Amount Field / Static Wheel Picker / Recurring Options / Dual Picker Box）。AccountSelector / CategorySelector 為 StaticWheelPicker 薄 wrapper，token 共用 Static Wheel Picker。">
       <DCFamily id="comp-form-pickers" title="Form Pickers" subtitle="impl AccountSelector / CategorySelector 在 TxEditor / TransferEditor 採 mode='static' 常駐顯示；design canvas 對應 StaticWheelPicker 視覺 stub。">
         <DCArtboard id="comp-static-wheel" label="StaticWheelPicker · 通用 wheel 視覺 stub (live)" width={402} height={180}>
           <CompFrame style={{ padding: SPACING.lg }}>
@@ -252,6 +252,19 @@ function ComponentsFormSection() {
             <div style={{ display: 'flex', flexDirection: 'row', gap: SPACING.lg, marginTop: SPACING.md }}>
               <CategorySelector category={CAT_BY_ID.food}/>
               <CategorySelector category={CAT_BY_ID.salary}/>
+            </div>
+          </CompFrame>
+        </DCArtboard>
+        <DCArtboard id="comp-dual-picker-box" label="DualPickerBox · default / conflict (live)" width={402} height={360}>
+          <CompFrame style={{ padding: SPACING.lg }}>
+            <CompLabel>外框包左右兩個 noBorder picker + 中間 → 箭頭；MergeEditor / TransferEditor 共用。conflict（左右選到同一項）外框轉 error。對應 token 表見 Foundations &gt; Component Tokens &gt; Dual Picker Box</CompLabel>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.md, marginTop: SPACING.md }}>
+              <DualPickerBox
+                left={<AccountSelector account={ACC_BY_ID.bank} noBorder/>}
+                right={<AccountSelector account={ACC_BY_ID.usd_cash} noBorder/>}/>
+              <DualPickerBox conflict
+                left={<AccountSelector account={ACC_BY_ID.bank} noBorder/>}
+                right={<AccountSelector account={ACC_BY_ID.bank} noBorder/>}/>
             </div>
           </CompFrame>
         </DCArtboard>
