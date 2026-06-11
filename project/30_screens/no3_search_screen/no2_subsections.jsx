@@ -14,7 +14,7 @@
 
 // ─── SearchResultRow ─── 單筆結果列
 // 左：category icon outline（金額為負 → error / 正 → success / 零 → ink）
-// 上列：category 名稱 / recurring chip / amount + 雙幣別換算
+// 上列：category 名稱 / recurring chip / amount
 // 下列：highlighted note + date
 function SearchResultRow({ tx, query }) {
   const cat = CAT_BY_ID[tx.cat];
@@ -62,19 +62,11 @@ function SearchResultRow({ tx, query }) {
                   color={TOKENS.ink3} stroke={2}/>
               </div>
             )}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-              <span style={{
-                fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
-                fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
-                color, fontVariantNumeric: 'tabular-nums',
-              }}>{fmt(tx.amount, tx.currency)}</span>
-              {tx.convertedAmount != null && (
-                <span style={{
-                  fontSize: TX_LIST_TOKENS.ROW_SECONDARY_SIZE,
-                  color: TOKENS.ink2, fontVariantNumeric: 'tabular-nums',
-                }}>≈ {fmt(tx.convertedAmount, 'TWD')}</span>
-              )}
-            </div>
+            <span style={{
+              fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
+              fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
+              color, fontVariantNumeric: 'tabular-nums',
+            }}>{fmt(tx.amount, tx.currency)}</span>
           </div>
         </div>
         <div style={{
