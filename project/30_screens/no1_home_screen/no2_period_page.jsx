@@ -16,6 +16,9 @@
 function PeriodPage({ filterState, variant = 'default', monthLabel = '2026年5月', offset = 0 }) {
   const [chartMode, setChartMode] = React.useState('expense');
   const groupMode = filterState.groupBy;
+  // collapsed 初始為空 Set，canvas 上所有分組全展開——僅為展示分組內列結構，
+  // 非預設行為定案。實際預設依 spec no2_home_screen「各分組預設為收合狀態」，
+  // impl PeriodDataStore 種 isCollapsed: true。
   const [collapsed, setCollapsed] = React.useState(() => new Set());
 
   const isEmpty = variant === 'empty';
