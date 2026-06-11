@@ -102,7 +102,7 @@ const SCREEN_META = {
   // ─── Transfer Editor ─── default / recurring / same-currency / same-currency-recurring
   //                         + edit / edit-recurring / edit-same-currency
   //                         + note-focused（備註聚焦，CalculatorKeypad 滑下隱藏）
-  //                         + account-conflict（from === to，PickerGroupBox 外框轉錯誤色）
+  //                         + account-conflict（from === to，DualPickerBox 外框轉錯誤色）
   // account-conflict 為唯一 error variant：impl 的 save disabled 條件已含 fromAccountId === toAccountId，
   // 衝突時完成按鈕灰、外框轉紅；其餘 error 情境（amountFrom 為空）由 save disabled 攔死，不需 variant。
   // edit-schedule-instance 不獨立列出：impl 的 mode dialog 差異需新 ConfirmDialog 元件，
@@ -387,7 +387,7 @@ const SCREEN_GROUPS = [
       { id: 'transfer-edit-recurring',          label: 'Edit + Recurring · 編輯 + 展開' },
       { id: 'transfer-edit-same-currency',      label: 'Edit + Same currency · 編輯 + 同幣別' },
       { id: 'transfer-note-focused',            label: 'Note focused · 備註聚焦，keypad 滑下' },
-      { id: 'transfer-account-conflict',        label: 'Account conflict · from === to，PickerGroupBox 外框轉紅' },
+      { id: 'transfer-account-conflict',        label: 'Account conflict · from === to，DualPickerBox 外框轉紅' },
     ],
   },
   {
@@ -641,7 +641,7 @@ const VIEW_TABS = [
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
-// Foundations groups — 5 group × 19 leaf sub-item。
+// Foundations groups — 5 group × 25 leaf sub-item。
 // hash 路徑：#foundations/<group>/<topic>。每個 topic 對應單一 Section component。
 const FOUNDATIONS_GROUPS = [
   {
@@ -669,6 +669,7 @@ const FOUNDATIONS_GROUPS = [
       { id: 'recurring-options',     label: 'Recurring Options',     render: () => <FoundationsCTRecurringOptionsSection/> },
       { id: 'confirm-dialog',        label: 'Confirm Dialog',        render: () => <FoundationsCTConfirmDialogSection/> },
       { id: 'calendar-dialog',       label: 'Calendar Dialog',       render: () => <FoundationsCTCalendarDialogSection/> },
+      { id: 'dual-picker-box',       label: 'Dual Picker Box',       render: () => <FoundationsCTDualPickerBoxSection/> },
     ],
   },
   {
