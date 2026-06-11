@@ -6,12 +6,16 @@
 //   2. Amount Inputs（1 X = N Y，rate = amountTo / amountFrom）
 //
 // Variants：
-//   add    — 新增模式，From 可選（USD），To 鎖 TWD（base），amountTo 為空待填
-//   update — 更新模式，From 與 To 都鎖（USD → TWD），amountTo 預填現有 rate 30.5240
+//   add            — 新增模式，From 可選（USD），To 鎖 TWD（base），amountTo 為空待填
+//   update         — 更新模式，From 與 To 都鎖（USD → TWD），amountTo 預填現有 rate 30.5240
+//   currency-modal — 幣別選擇 modal（add 模式點 From 開啟，RateCurrencySelectModal）
 // ─────────────────────────────────────────────────────────────
 
 function CurrencyRateEditorScreen({ variant = 'add' }) {
   const T = CURRENCY_RATE_EDITOR_SCREEN_TOKENS;
+  if (variant === 'currency-modal') {
+    return <RateCurrencySelectModal/>;
+  }
   const isUpdate = variant === 'update';
   const fromCode = 'USD';
   const toCode   = 'TWD';

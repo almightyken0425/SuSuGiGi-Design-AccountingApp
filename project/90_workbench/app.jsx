@@ -272,7 +272,7 @@ const SCREEN_META = {
     title: 'USD', present: 'modal', save: true,
     render: () => <CurrencyDetailConfigScreen/>,
   },
-  // ─── Currency Rate Editor ─── add / update
+  // ─── Currency Rate Editor ─── add / update / currency-modal
   'currency-rate-editor': {
     title: '設定匯率', present: 'modal', save: true,
     render: () => <CurrencyRateEditorScreen variant="add"/>,
@@ -280,6 +280,11 @@ const SCREEN_META = {
   'currency-rate-editor-update': {
     title: '設定匯率', present: 'modal', save: true,
     render: () => <CurrencyRateEditorScreen variant="update"/>,
+  },
+  // 幣別選擇 modal 自繪 header（圓形 close + title），present 'none' 避免疊 ModalHeader
+  'currency-rate-editor-modal': {
+    title: '選擇貨幣', present: 'none',
+    render: () => <CurrencyRateEditorScreen variant="currency-modal"/>,
   },
   // ─── Import ─── 4 steps（header 全 icon 導航，自繪於 ImportScreen，present 'none' 避免疊 ModalHeader）
   'import-step-1': {
@@ -524,10 +529,11 @@ const SCREEN_GROUPS = [
   {
     id: 'currency-rate-editor',
     title: 'Currency Rate Editor · 匯率編輯',
-    subtitle: '兩 surface card：幣別對 + 金額。To 永遠鎖為 base currency；Update mode 中 From 也鎖（src/screens/Settings/CurrencyRateEditorScreen.tsx）。',
+    subtitle: '兩 surface card：幣別對 + 金額。To 永遠鎖為 base currency；Update mode 中 From 也鎖；Add mode 點 From 開幣別選擇 modal（src/screens/Settings/CurrencyRateEditorScreen.tsx）。',
     screens: [
       { id: 'currency-rate-editor',        label: 'Add · 新增匯率' },
       { id: 'currency-rate-editor-update', label: 'Update · 更新匯率' },
+      { id: 'currency-rate-editor-modal',  label: 'Currency Modal · 幣別選擇' },
     ],
   },
   {
