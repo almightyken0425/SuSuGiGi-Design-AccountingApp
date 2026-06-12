@@ -52,24 +52,31 @@ function LoginGoogleButton({ loading }) {
         boxShadow: SHADOW_ELEVATION.level1,
         opacity: loading ? 0.6 : 1,
       }}>
-        <div style={{
-          width: T.BUTTON_ICON_SIZE, height: T.BUTTON_ICON_SIZE,
-          borderRadius: T.BUTTON_ICON_RADIUS,
-          background: TOKENS.surface,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          marginRight: SPACING.md,
-        }}>
-          <span style={{
-            fontSize: T.BUTTON_ICON_TEXT_SIZE,
-            fontWeight: TYPOGRAPHY.weight.medium,
-            color: TOKENS.p500,
-          }}>G</span>
-        </div>
-        <span style={{
-          color: TOKENS.surface,
-          fontSize: T.BUTTON_FONT_SIZE,
-          fontWeight: TYPOGRAPHY.weight.medium,
-        }}>使用 Google 登入</span>
+        {loading ? (
+          // loading 態（對齊 impl）：按鈕內以 spinner 取代 G icon + 文字，按鈕降透明度 disabled
+          <Spinner size={ICON_SIZE.md} color={TOKENS.surface}/>
+        ) : (
+          <>
+            <div style={{
+              width: T.BUTTON_ICON_SIZE, height: T.BUTTON_ICON_SIZE,
+              borderRadius: T.BUTTON_ICON_RADIUS,
+              background: TOKENS.surface,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              marginRight: SPACING.md,
+            }}>
+              <span style={{
+                fontSize: T.BUTTON_ICON_TEXT_SIZE,
+                fontWeight: TYPOGRAPHY.weight.medium,
+                color: TOKENS.p500,
+              }}>G</span>
+            </div>
+            <span style={{
+              color: TOKENS.surface,
+              fontSize: T.BUTTON_FONT_SIZE,
+              fontWeight: TYPOGRAPHY.weight.medium,
+            }}>使用 Google 登入</span>
+          </>
+        )}
       </div>
       <div style={{
         marginTop: T.DISCLAIMER_TOP_MARGIN,
