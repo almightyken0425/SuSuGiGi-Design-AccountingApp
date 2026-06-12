@@ -16,11 +16,15 @@
 // 左：category icon outline（金額為負 → error / 正 → success / 零 → ink）
 // 上列：category 名稱 / recurring chip / amount
 // 下列：highlighted note + date
+// 轉帳列（tx.type === 'transfer'，對齊 impl search）：左換 bank-transfer icon（p500）、
+// 上列標題固定「轉帳」；金額仍帶號、色由正負決定，note / date 下列不變。
 function SearchResultRow({ tx, query }) {
-  const cat = CAT_BY_ID[tx.cat];
+  const isTransfer = tx.type === 'transfer';
+  const cat = isTransfer ? null : CAT_BY_ID[tx.cat];
   const color = tx.amount < 0 ? TOKENS.error
               : tx.amount > 0 ? TOKENS.success
               : TOKENS.ink;
+  const title = isTransfer ? '轉帳' : cat.name;
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: SPACING.md,

@@ -7,9 +7,14 @@
 
 const baseAmount = (t) => t.convertedAmount ?? t.amount;
 
+// 轉帳（type: 'transfer'）非收支，一律排除於收支統計（totals / pie / category 分組）。
+// 唯 groupByDate 保留轉帳列以呈現「轉帳紀錄列」，但日小計仍排除轉帳。
+const isTransfer = (t) => t.type === 'transfer';
+
 function periodTotals(items) {
   let income = 0, expense = 0;
   for (const t of items) {
+    if (isTransfer(t)) continue;
     const a = baseAmount(t);
     if (a > 0) income += a; else expense += -a;
   }
@@ -24,12 +29,13 @@ function groupByDate(items) {
   }
   return Array.from(m.entries()).map(([title, data]) => ({
     id: 'date_' + title, title, data,
-    total: data.reduce((s, t) => s + baseAmount(t), 0),
+    // 日小計排除轉帳（轉帳非收支淨額），列仍保留於 data 顯示
+    total: data.reduce((s, t) => s + (isTransfer(t) ? 0 : baseAmount(t)), 0),
   }));
 }
 
 function groupByCategory(items, chartMode = 'expense') {
-  const filtered = items.filter(t => chartMode === 'expense' ? baseAmount(t) < 0 : baseAmount(t) > 0);
+  const filtered = items.filter(t => !isTransfer(t) && (chartMode === 'expense' ? baseAmount(t) < 0 : baseAmount(t) > 0));
   const m = new Map();
   for (const t of filtered) {
     if (!m.has(t.cat)) m.set(t.cat, []);
