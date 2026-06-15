@@ -38,10 +38,11 @@ const SHADOW = SHADOW_ELEVATION;
 // 動畫 duration 與 easing。對齊 HIG 的 standard / decelerate / accelerate / emphasized 範式。
 const MOTION = {
   duration: {
-    instant: 100,
-    fast:    200,
-    base:    300,
-    slow:    500,
+    instant:  100,
+    fast:     200,
+    fastPlus: 220, // fast + 20；供 END_DATE_PILL_FADE_DURATION 等單點校準 offset 使用
+    base:     300,
+    slow:     500,
   },
   easing: {
     standard:    'cubic-bezier(0.4, 0, 0.2, 1)',
