@@ -12,6 +12,7 @@ const LIST_TOKENS = {
   ITEM_GAP_HORIZONTAL:       SPACING.md,
   ITEM_TITLE_SIZE:           TYPE_STYLES.body.size,         // body 17
   ITEM_TITLE_WEIGHT:         TYPOGRAPHY.weight.light,
+  ITEM_TITLE_LETTER_SPACING: TYPE_STYLES.body.letterSpacing, // -0.41（list title 為 body 字級，字距比照 body）
   ICON_SIZE_SMALL:           ICON_SIZE.sm,
   ICON_SIZE_MEDIUM:          ICON_SIZE.md,
   ICON_SIZE_LARGE:           ICON_SIZE.xl,

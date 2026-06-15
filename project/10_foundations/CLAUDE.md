@@ -61,6 +61,8 @@ Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 g
 | Component Tokens | Recurring Options | `visualizers/component_tokens/no11_recurring_options_visualizer.jsx` |
 | Component Tokens | Confirm Dialog | `visualizers/component_tokens/no12_confirm_dialog_visualizer.jsx` |
 | Component Tokens | Calendar Dialog | `visualizers/component_tokens/no13_calendar_dialog_visualizer.jsx` |
+| Component Tokens | Dual Picker Box | `visualizers/component_tokens/no14_dual_picker_box_visualizer.jsx` |
+| Component Tokens | Editor Name Field | `visualizers/component_tokens/no15_editor_name_field_visualizer.jsx` |
 | Components | List | `20_components/components-showcase.jsx`（`ComponentsListSection`） |
 | Components | Form | `20_components/components-showcase.jsx`（`ComponentsFormSection`） |
 | Components | Navigation | `20_components/components-showcase.jsx`（`ComponentsNavigationSection`） |

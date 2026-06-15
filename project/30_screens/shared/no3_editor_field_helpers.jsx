@@ -88,16 +88,17 @@ function EditorSwitchRow({ label, value }) {
 // 對齊 TransactionEditor 的 AmountField 視覺語彙，讓 editor 入口的名稱欄成為視覺焦點。
 function EditorNameField({ value, placeholder, active }) {
   const isEmpty = !value;
+  const T = EDITOR_NAME_FIELD_TOKENS;
   return (
     <div style={{
       width: '100%', boxSizing: 'border-box',
-      height: 80,
+      height: T.HEIGHT,
       background: TOKENS.surface,
-      padding: SPACING.md,
-      borderRadius: RADIUS.md,
+      padding: T.PADDING,
+      borderRadius: T.RADIUS,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: TYPOGRAPHY.size['2xl'],
-      fontWeight: TYPOGRAPHY.weight.medium,
+      fontSize: T.FONT_SIZE,
+      fontWeight: T.FONT_WEIGHT,
       color: isEmpty ? TOKENS.ink3 : TOKENS.ink,
       textAlign: 'center',
     }}>

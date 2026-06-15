@@ -676,6 +676,7 @@ const FOUNDATIONS_GROUPS = [
       { id: 'confirm-dialog',        label: 'Confirm Dialog',        render: () => <FoundationsCTConfirmDialogSection/> },
       { id: 'calendar-dialog',       label: 'Calendar Dialog',       render: () => <FoundationsCTCalendarDialogSection/> },
       { id: 'dual-picker-box',       label: 'Dual Picker Box',       render: () => <FoundationsCTDualPickerBoxSection/> },
+      { id: 'editor-name-field',     label: 'Editor Name Field',     render: () => <FoundationsCTEditorNameFieldSection/> },
     ],
   },
   {
