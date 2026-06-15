@@ -46,7 +46,7 @@ const RECURRING_OPTIONS_TOKENS = {
   END_DATE_PILL_TEXT_SIZE:          TYPOGRAPHY.size.base,
   END_DATE_PILL_ICON_GAP:           SPACING.sm,
   END_DATE_PILL_DISABLED_OPACITY:   0.5,                                        // (literal: 永不時的淡出停用透明度，沿用 DISABLED_OPACITY 值)
-  END_DATE_PILL_FADE_DURATION:      MOTION.duration.fast + 20,                  // 220ms，對齊 ListEmptyTransition 慣例
+  END_DATE_PILL_FADE_DURATION:      MOTION.duration.fastPlus,                   // 220ms，對齊 ListEmptyTransition 慣例
 };
 
 Object.assign(window, { RECURRING_OPTIONS_TOKENS });

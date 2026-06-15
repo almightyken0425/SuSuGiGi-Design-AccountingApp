@@ -19,7 +19,7 @@ function EditorFieldLabel({ children, required }) {
       fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,
       marginBottom: SPACING.sm,
     }}>
-      {children}{required && ' *'}
+      {children}
     </div>
   );
 }

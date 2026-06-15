@@ -51,6 +51,11 @@ const LINE_HEIGHT = { tight: 1.2, base: 1.4, relaxed: 1.6 };
 // LETTER_SPACING 三檔（pt）供自由排版時引用；TYPE_STYLES 內已內建絕對 letterSpacing。
 const LETTER_SPACING = { tight: -0.4, normal: 0, wide: 0.3 };
 
+// 數字等寬字形 token。金額、日期等即時變動數字統一引用此值，
+// 避免逐處 hardcode 字面值造成遺漏（對應 impl fontVariant: ['tabular-nums']）。
+const NUMERIC_FONT_VARIANT = 'tabular-nums';
+
 Object.assign(window, {
   TYPOGRAPHY, TYPOGRAPHY_WEIGHT_ENABLED, TYPE_STYLES, LINE_HEIGHT, LETTER_SPACING,
+  NUMERIC_FONT_VARIANT,
 });

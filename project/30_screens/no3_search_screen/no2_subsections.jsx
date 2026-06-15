@@ -69,7 +69,7 @@ function SearchResultRow({ tx, query }) {
             <span style={{
               fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
               fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
-              color, fontVariantNumeric: 'tabular-nums',
+              color, fontVariantNumeric: NUMERIC_FONT_VARIANT,
             }}>{fmt(tx.amount, tx.currency)}</span>
           </div>
         </div>
@@ -85,7 +85,7 @@ function SearchResultRow({ tx, query }) {
           <span style={{
             flexShrink: 0,
             fontSize: TX_LIST_TOKENS.ROW_SECONDARY_SIZE, color: TOKENS.ink2,
-            fontVariantNumeric: 'tabular-nums',
+            fontVariantNumeric: NUMERIC_FONT_VARIANT,
           }}>{tx.date}</span>
         </div>
       </div>

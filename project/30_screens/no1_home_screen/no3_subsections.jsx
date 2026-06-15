@@ -38,12 +38,12 @@ function AmountCol({ recurring, amount, currency, convertedAmount }) {
           fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
           fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
           color: TOKENS.p900,
-          fontVariantNumeric: 'tabular-nums',
+          fontVariantNumeric: NUMERIC_FONT_VARIANT,
         }}>{fmt(amount, currency)}</span>
         {hasConverted && (
           <span style={{
             fontSize: TYPOGRAPHY.size.xs, color: TOKENS.ink2,
-            fontVariantNumeric: 'tabular-nums',
+            fontVariantNumeric: NUMERIC_FONT_VARIANT,
           }}>≈ {fmt(convertedAmount, 'TWD')}</span>
         )}
       </div>
@@ -64,7 +64,7 @@ function TxDateBadge({ date }) {
       <span style={{
         fontSize: TYPE_STYLES.caption1.size,
         fontWeight: TYPOGRAPHY.weight.medium,
-        color: TOKENS.ink2, fontVariantNumeric: 'tabular-nums',
+        color: TOKENS.ink2, fontVariantNumeric: NUMERIC_FONT_VARIANT,
       }}>{m}/{d}</span>
     </div>
   );
@@ -141,7 +141,7 @@ function TxSectionHeader({ collapsed, onClick, iconId, title, total }) {
       <span style={{
         fontSize: c ? TX_LIST_TOKENS.SECTION_HEADER_TOTAL_SIZE_COLLAPSED : TX_LIST_TOKENS.SECTION_HEADER_TOTAL_SIZE_EXPANDED,
         fontWeight: TX_LIST_TOKENS.SECTION_HEADER_TOTAL_WEIGHT,
-        color: TOKENS.ink, fontVariantNumeric: 'tabular-nums', transition: morph,
+        color: TOKENS.ink, fontVariantNumeric: NUMERIC_FONT_VARIANT, transition: morph,
       }}>{total}</span>
     </div>
   );
@@ -301,7 +301,7 @@ function DonutHero({ expenseData, incomeData, totals }) {
           }}>餘額</div>
           <div style={{
             fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
-            color: TOKENS.ink, fontVariantNumeric: 'tabular-nums', textAlign: 'center',
+            color: TOKENS.ink, fontVariantNumeric: NUMERIC_FONT_VARIANT, textAlign: 'center',
           }}>{fmt(totals.balance)}</div>
         </div>
       </DonutChart>
