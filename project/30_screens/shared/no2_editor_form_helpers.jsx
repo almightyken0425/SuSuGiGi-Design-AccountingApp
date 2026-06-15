@@ -37,27 +37,41 @@ function EditorErrorBanner({ title = '錯誤', message = '請輸入有效金額'
 // ─── EditorDateContainer ─── CalendarDialog 觸發 pill + recurring toggle button
 // 日期改用自研 CalendarDialog（Spec 模式代號 Calendar Dialog · Datetime）：單一 pill 點開月曆 dialog。
 // dialog 為 absolute 蓋滿最近 positioned 祖先（screen frame），浮在畫面上。
-function EditorDateContainer({ recurring, onToggleRecurring }) {
+//
+// Props:
+//   recurring  — 面板開關（對應 impl showRecurringOptions）；控制 RecurringOptions 是否顯示
+//   ruleSet    — 規則已設定（對應 impl recurringRule !== null）；控制 toggle 高亮視覺
+//               spec no5:49-53 / no6:49-53：「IF 此筆交易屬於某排程 → 啟用視覺狀態」
+//               高亮綁 ruleSet 而非 recurring，對齊 spec + impl（ISSUE-13）
+//   onToggleRecurring — 點 toggle 的 callback
+//
+// Layout: [spacer flex:1][CalendarDialog pill][rightZone flex:1 內 toggle 置中]
+//   對應 impl dateSpacer(flex:1) + CalendarDialog + dateRightZone(flex:1, center)
+//   pill 落畫面水平正中、toggle 落右半區中央（ISSUE-07）
+function EditorDateContainer({ recurring, ruleSet, onToggleRecurring }) {
   const T = TRANSACTION_EDITOR_SCREEN_TOKENS;
   return (
     <div style={{
-      display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+      display: 'flex', flexDirection: 'row', alignItems: 'center',
       marginBottom: T.SECTION_GAP,
     }}>
-      <div style={{ marginLeft: T.DATE_PILL_MARGIN_HORIZONTAL, marginRight: T.DATE_PILL_MARGIN_HORIZONTAL }}>
-        <CalendarDialog mode="datetime"/>
+      {/* dateSpacer — flex:1，對稱右側 rightZone，把 pill 推到水平正中 */}
+      <div style={{ flex: 1 }}/>
+      <CalendarDialog mode="datetime"/>
+      {/* dateRightZone — flex:1 內置中，toggle 落右半區 */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button onClick={onToggleRecurring} style={{
+          width: T.RECURRING_TOGGLE_FRAME, height: T.RECURRING_TOGGLE_FRAME,
+          borderRadius: T.RECURRING_TOGGLE_RADIUS,
+          background: TOKENS.surface,
+          borderWidth: 1, borderStyle: 'solid',
+          borderColor: ruleSet ? TOKENS.p500 : TOKENS.border,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', padding: 0,
+        }}>
+          <Glyph name="repeat" size={ICON_SIZE.md} color={ruleSet ? TOKENS.p500 : TOKENS.ink3} stroke={2}/>
+        </button>
       </div>
-      <button onClick={onToggleRecurring} style={{
-        width: T.RECURRING_TOGGLE_FRAME, height: T.RECURRING_TOGGLE_FRAME,
-        borderRadius: T.RECURRING_TOGGLE_RADIUS,
-        background: TOKENS.surface,
-        borderWidth: 1, borderStyle: 'solid',
-        borderColor: recurring ? TOKENS.p500 : TOKENS.border,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'pointer', padding: 0,
-      }}>
-        <Glyph name="repeat" size={ICON_SIZE.md} color={recurring ? TOKENS.p500 : TOKENS.ink3} stroke={2}/>
-      </button>
     </div>
   );
 }

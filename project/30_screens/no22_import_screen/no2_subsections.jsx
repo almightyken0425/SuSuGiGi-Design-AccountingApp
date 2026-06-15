@@ -50,7 +50,7 @@ function ImportButton({ label, kind = 'primary' }) {
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: primary ? TOKENS.p500 : TOKENS.surface,
-      border: primary ? 'none' : `1px solid ${TOKENS.divider.hairline}`,
+      border: primary ? 'none' : `1px solid ${TOKENS.hairline}`,
       color: primary ? '#fff' : TOKENS.p500,
       paddingTop: SPACING.md, paddingBottom: SPACING.md,
       borderRadius: RADIUS.md,
@@ -72,11 +72,15 @@ function ImportStep1FileSelect({ withFile = true }) {
           fontSize: T.SECTION_TITLE_FONT_SIZE, fontWeight: T.SECTION_TITLE_WEIGHT,
           color: TOKENS.ink, marginBottom: SPACING.sm,
         }}>來源時區</div>
+        <div style={{
+          fontSize: T.DESCRIPTION_FONT_SIZE, color: TOKENS.ink2,
+          marginBottom: SPACING.sm,
+        }}>匯入資料的日期時間，依下方選的來源時區解析</div>
         <div style={{ position: 'relative', height: T.TZ_WHEEL_HEIGHT, overflow: 'hidden' }}>
           <div style={{
             position: 'absolute', left: 0, right: 0, top: T.TZ_WHEEL_SELECTED_TOP, height: T.TZ_WHEEL_ROW_HEIGHT,
-            borderTop: `1px solid ${TOKENS.divider.hairline}`,
-            borderBottom: `1px solid ${TOKENS.divider.hairline}`,
+            borderTop: `1px solid ${TOKENS.hairline}`,
+            borderBottom: `1px solid ${TOKENS.hairline}`,
           }}/>
           {[
             { tz: 'UTC+10:00', opacity: T.TZ_WHEEL_OPACITY_FAR },
@@ -106,7 +110,7 @@ function ImportStep1FileSelect({ withFile = true }) {
 
       {/* 分隔線 */}
       <div style={{
-        height: 1, background: TOKENS.divider.hairline,
+        height: 1, background: TOKENS.hairline,
         marginTop: T.SECTION_GAP, marginBottom: T.SECTION_GAP,
       }}/>
 

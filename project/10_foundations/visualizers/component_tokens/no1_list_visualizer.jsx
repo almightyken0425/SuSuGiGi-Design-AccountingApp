@@ -188,7 +188,7 @@ function ListAnatomyCard() {
         <div style={{ marginBottom: 6 }}>· 有 icon vs 無 icon 的 row text baseline <strong>不對齊</strong>；需要對齊請統一帶/不帶 icon。</div>
         <div style={{ marginBottom: 6 }}>· Divider 對齊 row：有 icon 群組 inset {dividerInsetWith}（避開 icon 欄）、無 icon 群組 inset {dividerInsetNo}（齊行末 padding）。</div>
         <div style={{ marginBottom: 6 }}>· <code>GROUP_CARD_MARGIN_BOTTOM = {LIST_TOKENS.GROUP_CARD_MARGIN_BOTTOM}</code> 為刻意離開 SPACING 階梯的孤兒值（section 間呼吸距）。</div>
-        <div>· Divider 顏色由 <code>TOKENS.divider.hairline</code> 仲裁（不在 LIST_TOKENS）— 上方 live render 即此 token 的實際渲染。</div>
+        <div>· Divider 顏色由 <code>TOKENS.hairline</code> 仲裁（不在 LIST_TOKENS）— 上方 live render 即此 token 的實際渲染。</div>
       </div>
     </FoundCard>
   );

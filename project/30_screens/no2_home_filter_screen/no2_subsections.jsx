@@ -73,7 +73,7 @@ function AccountSelectorCard({ account, selected, lastSelected, cardWidth, onPre
         borderRadius: T.ACCOUNT_CARD_RADIUS,
         borderWidth: selected ? T.ACCOUNT_CARD_BORDER_WIDTH_SELECTED : T.ACCOUNT_CARD_BORDER_WIDTH_DEFAULT,
         borderStyle: 'solid',
-        borderColor: selected ? TOKENS.p500 : TOKENS.divider.hairline,
+        borderColor: selected ? TOKENS.p500 : TOKENS.hairline,
         background: TOKENS.surface,
         cursor: lastSelected ? 'not-allowed' : 'pointer',
         fontFamily: 'inherit',
@@ -83,7 +83,7 @@ function AccountSelectorCard({ account, selected, lastSelected, cardWidth, onPre
         borderRadius: T.ACCOUNT_CARD_ICON_RADIUS,
         background: selected ? TOKENS.p50 : TOKENS.surface,
         borderWidth: selected ? 0 : 1, borderStyle: 'solid',
-        borderColor: TOKENS.divider.hairline,
+        borderColor: TOKENS.hairline,
         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
       }}>
         <DynamicIconById iconId={account.iconId} size={T.ACCOUNT_CARD_ICON_SIZE} color={swatchIconColor}/>

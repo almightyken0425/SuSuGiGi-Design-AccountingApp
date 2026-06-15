@@ -34,8 +34,8 @@ function BaseCurrencySettingScreen({ variant = 'default', selectedId = 1 }) {
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {showEmpty ? (
           <div style={{
-            paddingTop: T.EMPTY_PADDING_TOP,
-            display: 'flex', justifyContent: 'center',
+            height: '100%',
+            display: 'flex', justifyContent: 'center', alignItems: 'center',
           }}>
             <ListEmptyState
               iconName="magnify"

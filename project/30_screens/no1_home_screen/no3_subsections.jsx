@@ -30,7 +30,7 @@ function AmountCol({ recurring, amount, currency, convertedAmount }) {
           background: TOKENS.bg,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <Glyph name="repeat" size={T.AMOUNT_COL_RECURRING_ICON_SIZE} color={TOKENS.ink3} stroke={2}/>
+          <Glyph name="repeat" size={T.AMOUNT_COL_RECURRING_ICON_SIZE} color={TOKENS.ink2} stroke={2}/>
         </div>
       )}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>

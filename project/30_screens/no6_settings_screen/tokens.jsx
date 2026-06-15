@@ -16,6 +16,11 @@ const SETTINGS_SCREEN_TOKENS = {
   ROW_ICON_COLOR_ACCENT:    TOKENS.p500,                                   // 對齊 impl theme.primary.main
   ROW_TITLE_COLOR_ACCENT:   TOKENS.p500,
   ROW_ICON_SIZE:            LIST_TOKENS.ICON_SIZE_SMALL,                   // 對齊 impl LIST_TOKENS.ICON_SIZE_SMALL
+
+  // ── Version footer（spec no8_settings_screen.md §版本資訊）
+  VERSION_TEXT_COLOR:       TOKENS.ink3,                                   // 對齊 impl styles.version.color = theme.state.disabled.fg
+  VERSION_TEXT_SIZE:        TYPOGRAPHY.size.xs,                            // 12pt，對齊 impl TYPOGRAPHY.size.xs；HIG caption1 層級
+  VERSION_MARGIN_VERTICAL:  SPACING['2xl'],                                // 對齊 impl marginTop/marginBottom = SPACING['2xl']
 };
 
 Object.assign(window, { SETTINGS_SCREEN_TOKENS });

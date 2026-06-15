@@ -49,7 +49,7 @@ function PaywallPlanOption({ option, selected }) {
       padding: T.OPTION_PADDING,
       borderRadius: T.OPTION_RADIUS,
       borderWidth: 1, borderStyle: 'solid',
-      borderColor: selected ? TOKENS.p500 : TOKENS.divider.hairline,
+      borderColor: selected ? TOKENS.p500 : TOKENS.hairline,
       background: selected ? 'rgba(67,35,160,0.06)' : TOKENS.surface,   // (literal: impl primary tint 透明覆層)
       marginBottom: T.OPTION_GAP,
     }}>

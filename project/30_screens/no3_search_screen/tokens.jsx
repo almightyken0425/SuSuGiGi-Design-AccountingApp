@@ -6,9 +6,6 @@
 // ─────────────────────────────────────────────────────────────
 
 const SEARCH_SCREEN_TOKENS = {
-  // ── Empty state（含 initial-prompt 與 no-results 兩種）
-  EMPTY_PADDING_TOP:        100,                                              // (literal: 為 modal header + 視覺呼吸預留 top 距離)
-
   // ── Result list
   RESULT_LIST_BOTTOM_GAP:   SPACING['3xl'],                                   // 40：BottomSearchBar 上額外 buffer
 

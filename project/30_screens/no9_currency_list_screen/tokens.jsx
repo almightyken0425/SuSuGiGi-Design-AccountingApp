@@ -10,7 +10,6 @@
 const CURRENCY_LIST_SCREEN_TOKENS = {
   LIST_MARGIN_HORIZONTAL:  SPACING.lg,
   LIST_BOTTOM_PADDING:     SPACING.xl,            // FlatList contentContainer paddingBottom
-  EMPTY_PADDING_TOP:       SPACING['5xl'],        // ListEmptyState 與 header 之間的呼吸距
 };
 
 Object.assign(window, { CURRENCY_LIST_SCREEN_TOKENS });

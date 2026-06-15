@@ -2,16 +2,17 @@
 // SettingsScreen · 對齊 impl src/screens/Settings/SettingsScreen.tsx
 //                  與 spec no4_product_specs/.../no2_screens/no8_settings_screen.md
 //
-// Push screen，三組 list section：
+// Push screen，三組 list section + 版本 footer：
 //   group 1：類別 / 帳戶 / 資料管理
 //   group 2：偏好設定
 //   group 3：升級至付費版（僅未訂閱時顯示）
+//   footer：版本號置中灰字（spec §版本資訊）
 //
 // 不含 impl 端的 Debug Tools section（dev 工具，spec 未定義為產品行為）。
 //
 // Variants：
-//   default     — 未訂閱，顯示三組
-//   subscribed  — 已訂閱，隱藏第三組「升級至付費版」
+//   default     — 未訂閱，顯示三組 + footer
+//   subscribed  — 已訂閱，隱藏第三組「升級至付費版」，footer 仍顯示
 // ─────────────────────────────────────────────────────────────
 
 function SettingsScreen({ variant = 'default' }) {
@@ -44,6 +45,8 @@ function SettingsScreen({ variant = 'default' }) {
           </ListGroupCard>
         </ListSection>
       )}
+
+      <SettingsVersionFooter/>
     </div>
   );
 }

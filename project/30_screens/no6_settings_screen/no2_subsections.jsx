@@ -21,4 +21,29 @@ function SettingsListRow({ iconName, title, accent = false, onPress }) {
   );
 }
 
-Object.assign(window, { SettingsListRow });
+// ─────────────────────────────────────────────────────────────
+// SettingsVersionFooter · 版本資訊 footer
+//
+// spec no8_settings_screen.md §版本資訊：「列表底部置中顯示目前 App 版本號」。
+// 字色 TOKENS.ink3（disabled fg）、字級 TYPOGRAPHY.size.xs（12pt / caption1 層）、
+// 上下留白 SPACING['2xl']。置中對齊。
+// versionLabel 由 caller 傳入，讓 canvas 維持 hardcode 展示字串，
+// 不在 design canvas 引入動態版本來源。
+// ─────────────────────────────────────────────────────────────
+
+function SettingsVersionFooter({ versionLabel = 'Version 0.1.0-alpha' }) {
+  const T = SETTINGS_SCREEN_TOKENS;
+  return (
+    <div style={{
+      marginTop:    T.VERSION_MARGIN_VERTICAL,
+      marginBottom: T.VERSION_MARGIN_VERTICAL,
+      textAlign:    'center',
+      color:        T.VERSION_TEXT_COLOR,
+      fontSize:     T.VERSION_TEXT_SIZE,
+    }}>
+      {versionLabel}
+    </div>
+  );
+}
+
+Object.assign(window, { SettingsListRow, SettingsVersionFooter });
