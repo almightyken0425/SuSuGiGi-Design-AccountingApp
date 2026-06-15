@@ -14,7 +14,6 @@ const AMOUNT_FIELD_TOKEN_DESC = {
   CURRENCY_MARGIN_TOP:    'currency 與 amount 垂直間距',
   BACKSPACE_ICON_SIZE:    '右側 backspace icon 大小',
   BACKSPACE_ICON_STROKE:  'backspace icon stroke 寬度（design canvas only）',
-  BACKSPACE_PADDING:      'backspace 點擊區 padding',
 };
 
 const AMOUNT_FIELD_TOKEN_SOURCE = {
@@ -29,7 +28,6 @@ const AMOUNT_FIELD_TOKEN_SOURCE = {
   CURRENCY_MARGIN_TOP:    'SPACING.xs',
   BACKSPACE_ICON_SIZE:    'ICON_SIZE.md',
   BACKSPACE_ICON_STROKE:  '1.6 (literal)',
-  BACKSPACE_PADDING:      'SPACING.sm',
 };
 
 function FoundationsCTAmountFieldSection() {

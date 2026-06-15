@@ -79,7 +79,6 @@ function RateCurrencySelectModal({ selectedId = 2 }) {
         display: 'flex', flexDirection: 'row', alignItems: 'center',
         justifyContent: 'space-between',
         padding: T.MODAL_HEADER_PADDING,
-        paddingTop: T.MODAL_HEADER_PADDING_TOP,
         background: TOKENS.surface,
         borderBottom: `1px solid ${TOKENS.border}`,
       }}>

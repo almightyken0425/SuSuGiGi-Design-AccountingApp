@@ -49,7 +49,7 @@ function LoginGoogleButton({ loading }) {
         paddingLeft: T.BUTTON_PADDING_H, paddingRight: T.BUTTON_PADDING_H,
         borderRadius: T.BUTTON_RADIUS,
         width: '100%', maxWidth: T.BUTTON_MAX_WIDTH,
-        boxShadow: SHADOW_ELEVATION.level1,
+        boxShadow: `0px ${SHADOW_ELEVATION.level1.offsetY}px ${SHADOW_ELEVATION.level1.blur}px rgba(0,0,0,${SHADOW_ELEVATION.level1.opacity})`,
         opacity: loading ? 0.6 : 1,
       }}>
         {loading ? (

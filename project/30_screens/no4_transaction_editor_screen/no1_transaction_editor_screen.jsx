@@ -14,7 +14,7 @@
 //                                   （對齊 impl src/screens/Transactions/showRecurringModeDialog.ts）
 //
 // impl 無 invalid-amount 的 inline error banner：金額輸入透過 CalculatorKeypad
-// （支援 0-9 / . / + - * / / =，由 impl `src/hooks/useCalculator.ts` 解析計算式），
+// （支援 0-9 / . / + - × ÷ =，由 impl `src/hooks/useCalculator.ts` 解析計算式），
 // save 守門靠 header checkmark `disabled: amount<=0 || !accountId || !categoryId`，
 // 即使按下 operator 也因 displayValue 仍存在而不會 disable。真實 error 場景
 // （save 失敗 / delete 失敗）走 Alert.alert runtime 彈窗，非 screen 視覺。

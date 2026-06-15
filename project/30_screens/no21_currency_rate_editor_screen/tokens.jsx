@@ -25,8 +25,7 @@ const CURRENCY_RATE_EDITOR_SCREEN_TOKENS = {
   AMOUNT_INPUT_FONT_SIZE:   TYPOGRAPHY.size.lg,
   AMOUNT_INPUT_PADDING_V:   SPACING.md,
   EQUALS_FONT_SIZE:         TYPOGRAPHY.size.xl,
-  MODAL_HEADER_PADDING:     SPACING.lg,           // 幣別選擇 modal header
-  MODAL_HEADER_PADDING_TOP: 60,                   // 清開 device frame status bar（同 ModalHeader 慣例）
+  MODAL_HEADER_PADDING:     SPACING.lg,           // 幣別選擇 modal header（pageSheet：均等四邊，無 status bar clearance）
   MODAL_CLOSE_SIZE:         41,                   // impl modalCloseButton 41×41 圓形
   MODAL_TITLE_FONT_SIZE:    TYPOGRAPHY.size.lg,
   MODAL_SEARCH_PADDING:     SPACING.md,           // 搜尋列內距

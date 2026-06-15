@@ -366,7 +366,7 @@ function ListSeparator({ insetLeft = 0, style = {} }) {
     <div style={{
       height: 1,
       marginLeft: insetLeft,
-      background: TOKENS.divider.hairline,
+      background: TOKENS.hairline,
       ...style,
     }}/>
   );
@@ -404,7 +404,7 @@ function ListItem({ leftIcon, title, titleColor, subtitle, value, showChevron, t
         paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         background: pressed && !disabled ? TOKENS.surface2 : TOKENS.surface,
-        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
+        borderTop: `0.5px solid ${TOKENS.hairline}`,
         cursor: onPress && !disabled ? 'pointer' : 'default',
         userSelect: 'none',
         ...style,
@@ -455,7 +455,7 @@ function DataListItem({ leftIcon, title, subtitle, value, valueColor, valueSubte
         paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         background: pressed && interactive ? TOKENS.surface2 : TOKENS.surface,
-        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
+        borderTop: `0.5px solid ${TOKENS.hairline}`,
         cursor: interactive ? 'pointer' : 'default',
         userSelect: 'none',
         ...style,
@@ -511,7 +511,7 @@ function SelectionListItem({ leftIcon, title, subtitle, selected, onPress, disab
         paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         background: pressed && !disabled ? TOKENS.surface2 : TOKENS.surface,
-        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
+        borderTop: `0.5px solid ${TOKENS.hairline}`,
         cursor: onPress && !disabled ? 'pointer' : 'default',
         userSelect: 'none', opacity: disabled ? 0.5 : 1, ...style,
       }}>
@@ -551,7 +551,7 @@ function ReorderableListItem({ leftIcon, title, subtitle, trailing, style = {} }
         paddingLeft: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         paddingRight: LIST_TOKENS.ITEM_PADDING_HORIZONTAL,
         background: pressed ? TOKENS.surface2 : TOKENS.surface,
-        borderTop: `0.5px solid ${TOKENS.divider.hairline}`,
+        borderTop: `0.5px solid ${TOKENS.hairline}`,
         cursor: 'pointer',
         userSelect: 'none', ...style,
       }}>
@@ -948,7 +948,7 @@ function HeaderMockFrame({ children, contentTail }) {
       <div style={{
         background: TOKENS.surface, borderRadius: RADIUS.lg,
         padding: `${SPACING.md}px ${SPACING.lg}px`,
-        border: `1px solid ${TOKENS.divider.hairline}`,
+        border: `1px solid ${TOKENS.hairline}`,
       }}>背景 content（用於展示 pill blur 穿透）</div>
     </div>
   );
@@ -957,7 +957,7 @@ function HeaderMockFrame({ children, contentTail }) {
       width: 402, height: 160,
       background: TOKENS.bg,
       borderRadius: RADIUS.lg,
-      border: `1px solid ${TOKENS.divider.hairline}`,
+      border: `1px solid ${TOKENS.hairline}`,
       overflow: 'hidden',
       position: 'relative',
     }}>
@@ -1187,9 +1187,9 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
 }
 
 // ─── CalculatorKeypad ─── 對齊 src/components/CalculatorKeypad.tsx
-// 4×4 grid: 1 2 3 + / 4 5 6 - / 7 8 9 * / . 0 = /
-// 字元用 ASCII 不用 Unicode（impl 用 +, -, *, /）
-// 左區 4 row × 3 col 數字；右側 operator column 5 鍵（⌫ + - * /），
+// 4×4 grid: 1 2 3 + / 4 5 6 - / 7 8 9 × / . 0 = /
+// impl 與 design 一致使用 Unicode ×、÷（運算判定見 impl useCalculator.ts 的 ['+', '-', '×', '÷']）
+// 左區 4 row × 3 col 數字；右側 operator column 5 鍵（⌫ + - × ÷），
 // operator 鍵均分左區 4 row 總高度，每鍵 ≈ 數字鍵 × 0.8（不對稱 grid）。
 // container: padding SPACING.sm, bg surface, borderTop 1px border.base
 // number key: flex 1 height 60 marginHorizontal SPACING.xs
@@ -1202,7 +1202,7 @@ function CalculatorKeypad({ onPress }) {
     ['.', '0', '='],
   ];
   // ⌫ 放 operator column 最上鍵，染紫色跟其他 operator 一致
-  const OPS = ['⌫', '+', '-', '*', '/'];
+  const OPS = ['⌫', '+', '-', '×', '÷'];
   const N_HEIGHT = 60;
   const ROW_GAP = SPACING.sm;
   const TOTAL_H = N_HEIGHT * NUMBER_ROWS.length + ROW_GAP * (NUMBER_ROWS.length - 1);
