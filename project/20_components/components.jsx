@@ -419,7 +419,7 @@ function ListItem({ leftIcon, title, titleColor, subtitle, value, showChevron, t
           fontSize: LIST_TOKENS.ITEM_TITLE_SIZE,
           fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT,
           color: resolvedTitleColor,
-          letterSpacing: -0.43,
+          letterSpacing: LIST_TOKENS.ITEM_TITLE_LETTER_SPACING,
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>{title}</div>
         {subtitle && (
@@ -470,7 +470,7 @@ function DataListItem({ leftIcon, title, subtitle, value, valueColor, valueSubte
           fontSize: LIST_TOKENS.ITEM_TITLE_SIZE,
           fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT,
           color: TOKENS.ink,
-          letterSpacing: -0.43,
+          letterSpacing: LIST_TOKENS.ITEM_TITLE_LETTER_SPACING,
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>{title}</div>
         {subtitle && (
@@ -522,7 +522,7 @@ function SelectionListItem({ leftIcon, title, subtitle, selected, onPress, disab
         <div style={{
           fontSize: LIST_TOKENS.ITEM_TITLE_SIZE,
           fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT,
-          color: disabled ? TOKENS.ink3 : TOKENS.ink, letterSpacing: -0.43,
+          color: disabled ? TOKENS.ink3 : TOKENS.ink, letterSpacing: LIST_TOKENS.ITEM_TITLE_LETTER_SPACING,
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>{title}</div>
         {subtitle && <div style={{ fontSize: 13, color: TOKENS.ink2, marginTop: 2 }}>{subtitle}</div>}
@@ -562,7 +562,7 @@ function ReorderableListItem({ leftIcon, title, subtitle, trailing, style = {} }
         <div style={{
           fontSize: LIST_TOKENS.ITEM_TITLE_SIZE,
           fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT,
-          color: TOKENS.ink, letterSpacing: -0.43,
+          color: TOKENS.ink, letterSpacing: LIST_TOKENS.ITEM_TITLE_LETTER_SPACING,
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>{title}</div>
         {subtitle && <div style={{ fontSize: 13, color: TOKENS.ink2, marginTop: 2 }}>{subtitle}</div>}
@@ -593,7 +593,7 @@ function SelectionGridItem({ title, selected, onPress, children, style = {} }) {
       <div style={{
         fontSize: LIST_TOKENS.ITEM_TITLE_SIZE,
         fontWeight: LIST_TOKENS.ITEM_TITLE_WEIGHT,
-        color: TOKENS.ink, letterSpacing: -0.43,
+        color: TOKENS.ink, letterSpacing: LIST_TOKENS.ITEM_TITLE_LETTER_SPACING,
       }}>{title}</div>
       {selected && (
         <div style={{ position: 'absolute', top: 8, right: 8 }}>
