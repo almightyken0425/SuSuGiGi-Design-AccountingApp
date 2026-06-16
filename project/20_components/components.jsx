@@ -358,20 +358,6 @@ function ListSectionTitle({ children }) {
   );
 }
 
-// ─── ListSeparator ─── 對齊 src/components/list/ListSeparator.tsx
-// 1px hairline，insetLeft 控制左邊縮排
-// （含 leftIcon 的 ListItem 之間用 LIST_TOKENS.DIVIDER_INSET_WITH_ICON，無 icon 用 0 或 DIVIDER_INSET_WITHOUT_ICON）
-function ListSeparator({ insetLeft = 0, style = {} }) {
-  return (
-    <div style={{
-      height: 1,
-      marginLeft: insetLeft,
-      background: TOKENS.hairline,
-      ...style,
-    }}/>
-  );
-}
-
 // ─── ListItem ─── 對齊 src/components/list/ListItem.tsx
 // 每個 row 都有 borderTop hairline，第一個被 GroupCard 的 overflow: hidden 切掉
 // 不需要 isLast prop
@@ -1840,7 +1826,7 @@ function CalendarDialog({ mode = 'datetime' }) {
 
 Object.assign(window, {
   Glyph, DynamicIconById, IconOutline,
-  ListGroupCard, GroupCard, ListSection, ListSeparator,
+  ListGroupCard, GroupCard, ListSection,
   ListItem, DataListItem, SelectionListItem, ReorderableListItem, SelectionGridItem,
   ListEmptyState, EmptyState, ListEmptyTransition,
   ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton, HeaderButtonPill,
