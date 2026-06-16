@@ -16,7 +16,7 @@
 
 function ComponentsListSection() {
   return (
-    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list row 元件家族。對應 token 表與 ListSeparator divider inset 規則見 Foundations > Component Tokens 對應 leaf（List / Transaction List / List Empty Transition）。">
+    <DCSection id="comp-list" title="Components · List" subtitle="iOS 風格 grouped list row 元件家族。對應 token 表與 divider inset 規則見 Foundations > Component Tokens 對應 leaf（List / Transaction List / List Empty Transition）。">
       <DCFamily id="comp-list-items" title="Item Variants" subtitle="row 級元件：標準 ListItem 多變體、選擇列、拖拉列。">
       <DCArtboard id="comp-listitem" label="ListItem · 變體 (live)" width={402} height={620}>
         <CompFrame>

@@ -164,7 +164,7 @@ function ListAnatomyCard() {
         </div>
       </div>
 
-      <SectionMini style={{ marginTop: 20 }}>Divider inset · 兩種規則（live <code style={{ fontSize: 'inherit' }}>&lt;ListSeparator&gt;</code>）</SectionMini>
+      <SectionMini style={{ marginTop: 20 }}>Divider inset · 兩種規則（live hairline）</SectionMini>
       <div style={{ width: ROW_W, margin: '0 auto' }}>
         {[
           { label: '有 icon 群組', inset: dividerInsetWith, expr: 'SPACING.lg + ICON_SIZE.sm + SPACING.md', name: 'DIVIDER_INSET_WITH_ICON' },
@@ -173,8 +173,8 @@ function ListAnatomyCard() {
           <div key={name} style={{ marginBottom: i === 0 ? 16 : 0 }}>
             {/* row above */}
             <div style={{ height: 8, background: TOKENS.surface2 }}/>
-            {/* the actual ListSeparator — divider colour 與 height 由元件決定 */}
-            <ListSeparator insetLeft={inset}/>
+            {/* live hairline（divider 已非獨立元件，對齊 impl borderTop hairline）— colour 由 TOKENS.hairline 仲裁、height 1px 為 hairline 厚度 literal */}
+            <div style={{ height: 1, marginLeft: inset, background: TOKENS.hairline }}/>
             {/* row below */}
             <div style={{ height: 8, background: TOKENS.surface2 }}/>
             <div style={{ fontSize: 9.5, color: TOKENS.ink3, marginTop: 8, lineHeight: 1.5 }}>
