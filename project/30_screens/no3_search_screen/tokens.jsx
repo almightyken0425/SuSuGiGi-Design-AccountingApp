@@ -7,7 +7,7 @@
 
 const SEARCH_SCREEN_TOKENS = {
   // ── Result list
-  RESULT_LIST_BOTTOM_GAP:   SPACING['3xl'],                                   // 40：BottomSearchBar 上額外 buffer
+  RESULT_LIST_BOTTOM_GAP:   SPACING['2xl'],                                   // 32：BottomSearchBar 上額外 buffer（對齊 impl scrollContent.paddingBottom）
 
   // ── Recurring chip（與 HomeScreen 共用視覺；尚未升 component_tokens）
   // V1 (List Treatment) 採納後，row 視覺改消費 TX_LIST_TOKENS；

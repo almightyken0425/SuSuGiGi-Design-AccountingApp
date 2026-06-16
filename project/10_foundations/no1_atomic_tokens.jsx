@@ -66,6 +66,7 @@ const THEME_1 = {
   text: {
     primary:   PALETTE.neutral[900],
     secondary: PALETTE.neutral[600],
+    tertiary:  PALETTE.neutral[400],                                      // 第三階文字，比 secondary 更淡；法定揭露等最低權重背景文字引用（值同 state.disabled.fg，語意為純文字非停用態）
     divisor:   PALETTE.neutral[300],
   },
   border: {
@@ -109,6 +110,7 @@ const THEME_2 = {
   text: {
     primary:   PALETTE.neutral[900],
     secondary: PALETTE.neutral[600],
+    tertiary:  PALETTE.neutral[400],                                      // 第三階文字，比 secondary 更淡；法定揭露等最低權重背景文字引用（值同 state.disabled.fg，語意為純文字非停用態）
     divisor:   PALETTE.neutral[300],
   },
   border: {

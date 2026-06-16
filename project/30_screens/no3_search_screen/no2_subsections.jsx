@@ -49,6 +49,7 @@ function SearchResultRow({ tx, query }) {
           marginBottom: SPACING['2xs'],
         }}>
           <span style={{
+            flex: 1, marginRight: SPACING.sm,
             fontSize: TX_LIST_TOKENS.ROW_NOTE_SIZE,
             color: TOKENS.ink,
             whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
