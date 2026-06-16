@@ -141,7 +141,7 @@ function EditorSearchableDropdownCollapsed({ value, placeholder, disabled }) {
       display: 'flex', flexDirection: 'row',
       justifyContent: 'space-between', alignItems: 'center',
       background: TOKENS.surface,
-      paddingLeft: SPACING.md, paddingRight: SPACING.md,
+      padding: SPACING.md,
       borderRadius: RADIUS.md,
       minHeight: 44,
       opacity: disabled ? 0.5 : 1,

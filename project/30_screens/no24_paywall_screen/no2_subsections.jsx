@@ -50,7 +50,7 @@ function PaywallPlanOption({ option, selected }) {
       borderRadius: T.OPTION_RADIUS,
       borderWidth: 1, borderStyle: 'solid',
       borderColor: selected ? TOKENS.p500 : TOKENS.hairline,
-      background: selected ? 'rgba(67,35,160,0.06)' : TOKENS.surface,   // (literal: impl primary tint 透明覆層)
+      background: selected ? THEME_1.state.selected.bg : TOKENS.surface,   // 對齊 impl theme.state.selected.bg（p50 純色）
       marginBottom: T.OPTION_GAP,
     }}>
       <div style={{ flex: 1 }}>

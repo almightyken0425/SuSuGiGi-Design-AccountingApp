@@ -1,11 +1,10 @@
 // ─────────────────────────────────────────────────────────────
 // ACCOUNT_LIST_SCREEN_TOKENS · AccountListScreen 內部 composition 參數
 //
-// Push screen，列出所有帳戶並提供新增入口。
-// impl src/screens/Accounts/AccountListScreen.tsx 採 ScrollView + 兩個 ListGroupCard：
-//   1. 帳戶列表（AutoDragSortableView 拖拉排序）
-//   2. 「新增帳戶」row（primary 色）
-// design canvas 對齊兩段 ListGroupCard 結構，但拖拉互動為視覺示意（無實際手勢）。
+// Push screen，列出所有帳戶；新增入口走 header 右側按鈕。
+// impl src/screens/Accounts/AccountListScreen.tsx 採 ScrollView + 單張 ListGroupCard：
+//   帳戶列表（AutoDragSortableView 拖拉排序），「新增帳戶」入口為 header right 按鈕、非列表 row。
+// design canvas 對齊單段 ListGroupCard 結構，但拖拉互動為視覺示意（無實際手勢）。
 //
 // 消費 atomic（SPACING）+ component_tokens（LIST_TOKENS.ITEM_MIN_HEIGHT）。
 // ─────────────────────────────────────────────────────────────

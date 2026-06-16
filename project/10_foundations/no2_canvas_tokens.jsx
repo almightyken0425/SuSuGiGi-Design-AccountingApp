@@ -12,6 +12,7 @@ const TOKENS = {
   surface2:  THEME_1.bg.surface_hover,
   ink:       THEME_1.text.primary,
   ink2:      THEME_1.text.secondary,
+  inkTertiary: THEME_1.text.tertiary,   // 第三階純文字（法定揭露等最低權重背景文字）；與 ink3（停用態前景）同值不同語意
   ink3:      THEME_1.state.disabled.fg,
   divider:   THEME_1.divider.base,
   border:    THEME_1.border.base,

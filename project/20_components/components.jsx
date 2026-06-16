@@ -1318,7 +1318,6 @@ function AmountField({ active, value, currency, disabled, onPress }) {
       height: T.HEIGHT,
       flex: 1,
       cursor: disabled ? 'default' : 'pointer',
-      opacity: disabled ? T.DISABLED_OPACITY : 1,
     }}>
       <div style={{
         fontSize: T.AMOUNT_SIZE, fontWeight: T.AMOUNT_WEIGHT,

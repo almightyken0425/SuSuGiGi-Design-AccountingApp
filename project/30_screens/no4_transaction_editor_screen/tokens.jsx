@@ -10,12 +10,9 @@ const TRANSACTION_EDITOR_SCREEN_TOKENS = {
   // ── 各 section 通用間距（mb）
   SECTION_GAP:                       SPACING.xl,
 
-  // ── DateContainer（日期 pill + recurring toggle）
-  DATE_PILL_RADIUS:                  RADIUS['2xl'],
-  DATE_PILL_PADDING_VERTICAL:        SPACING.sm,
-  DATE_PILL_PADDING_HORIZONTAL:      SPACING.lg,
-  DATE_PILL_MARGIN_HORIZONTAL:       SPACING.lg,
-  DATE_PILL_INNER_HEIGHT:            40,                                      // (literal: 對齊 impl TransactionEditorScreen.tsx 內 DateTimePicker style.height=40)
+  // ── DateContainer（CalendarDialog pill + recurring toggle）
+  // 日期 pill 改用自研 CalendarDialog（見 shared/no2_editor_form_helpers.jsx 的 EditorDateContainer），
+  // 原 DateTimePicker 對應的 DATE_PILL_* 已隨之移除；本 screen 僅保留 recurring toggle 視覺參數。
   RECURRING_TOGGLE_FRAME:            40,                                      // (literal: 40 圓形 toggle，比 HIT_TARGET.min=44 略小，對齊 impl recurringTrigger width/height)
   RECURRING_TOGGLE_RADIUS:           RADIUS['2xl'],                           // 20（= RECURRING_TOGGLE_FRAME / 2，對齊 impl borderRadius: RADIUS['2xl']）
 

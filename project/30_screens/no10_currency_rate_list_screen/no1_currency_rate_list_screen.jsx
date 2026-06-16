@@ -26,7 +26,7 @@ function CurrencyRateListScreen({ variant = 'default' }) {
             display: 'flex', justifyContent: 'center', alignItems: 'center',
           }}>
             <ListEmptyState
-              iconName="exchange"
+              iconName="magnify"
               title="尚無匯率設定"
               description="新增帳戶或交易時會自動建立常用匯率"/>
           </div>
