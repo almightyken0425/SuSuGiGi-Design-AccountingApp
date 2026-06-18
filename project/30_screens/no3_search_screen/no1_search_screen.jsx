@@ -62,7 +62,7 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
                 <div key={tx.id} style={{
                   borderTop: i === 0 ? 'none' : `0.5px solid ${TOKENS.hairline}`,
                 }}>
-                  <SearchResultRow tx={tx} query={q}/>
+                  <SearchResultRow tx={tx}/>
                 </div>
               ))}
             </ListGroupCard>
