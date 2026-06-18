@@ -2,7 +2,14 @@
 // CurrencyRateListScreen sub-sections · 私有 sub-section 元件 + design canvas mock
 //
 // impl 端從 currencyService 動態組裝 currency pairs，design canvas inline mock。
-// pair label 格式：「1 USD = 30.5000 TWD」對齊 impl renderItem 字串組裝。
+// pair label 格式：「1 主幣 = 倒數值 外幣」（主要貨幣在左），對齊 impl renderItem。
+// mock 的 rate 仍是「1 外幣 = rate 主幣」（外幣→主幣，與 getCurrencyPairs 同向）；
+// 顯示時取倒數 1/rate 得「1 主幣 = N 外幣」。
+//
+// 動態精度規則（formatExchangeRate，為 impl helper 的權威來源）：
+//   小數位 = clamp(3 - floor(log10(value)), 2, 8)
+//   → 保證至少 4 位有效數字、至少 2 位小數、上限 8 位小數防爆。
+//   value <= 0 或非有限值 → 顯示 '—'（擋 1/0 = Infinity）。
 // ─────────────────────────────────────────────────────────────
 
 const CURRENCY_RATE_MOCK = [
@@ -14,9 +21,16 @@ const CURRENCY_RATE_MOCK = [
   { id: 'krw-twd', fromCode: 'KRW', toCode: 'TWD', rate: 0.0222 },
 ];
 
-// ─── RateRow ─── 單筆匯率 row（title 含完整等式）
+// ─── formatExchangeRate ─── 動態精度：依數值大小推導小數位，保住有效數字（見檔頭規則）
+function formatExchangeRate(value) {
+  if (!isFinite(value) || value <= 0) { return '—'; }
+  const decimals = Math.min(8, Math.max(2, 3 - Math.floor(Math.log10(value))));
+  return value.toFixed(decimals);
+}
+
+// ─── RateRow ─── 單筆匯率 row（主幣在左，顯示「1 主幣 = N 外幣」）
 function RateRow({ pair, onPress }) {
-  const label = `1 ${pair.fromCode} = ${pair.rate.toFixed(4)} ${pair.toCode}`;
+  const label = `1 ${pair.toCode} = ${formatExchangeRate(1 / pair.rate)} ${pair.fromCode}`;
   return (
     <ListItem
       title={label}
@@ -25,4 +39,4 @@ function RateRow({ pair, onPress }) {
   );
 }
 
-Object.assign(window, { CURRENCY_RATE_MOCK, RateRow });
+Object.assign(window, { CURRENCY_RATE_MOCK, formatExchangeRate, RateRow });
