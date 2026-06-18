@@ -2,12 +2,13 @@
 // CategoryEditorScreen · 對齊 impl src/screens/Categories/CategoryEditorScreen.tsx
 //
 // Modal save form。本 canon 採 Form Structure V2 (Settings style) 定案：
-//   1. 大字置中 name field（取代普通 TextInput + 上方標籤）
+//   1. 大字置中 name field（未填顯示「名稱」提示文字）
 //   2. 收支欄走 searchable dropdown（取代雙按鈕橫排的 segmented control，
 //      原本 segmented 內塞 chevron-down 是視覺 bug，整片改為 dropdown 後消除）
 //   3. 圖示欄走 inline 4col grid 常駐（Icon Picker V1）
 //   4. Footer 走 Footer Zone V1（Switch card + surface 底紅字 delete）
 //
+// 三欄（名稱 / 收支 / 圖示）均移除 EditorFieldLabel 欄位標題；名稱欄改以 placeholder 提示。
 // 編輯模式 type selector 為 disabled，避免破壞已建立交易紀錄分類一致性。
 // 標準分類映射欄已移除：類別不再對應標準分類。
 //
@@ -35,17 +36,14 @@ function CategoryEditorScreen({ variant = 'new-expense' }) {
       background: TOKENS.bg, minHeight: '100%',
     }}>
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel>分類名稱</EditorFieldLabel>
-        <EditorNameField value={sample.name} placeholder="" active={!isEdit && !sample.name}/>
+        <EditorNameField value={sample.name} placeholder="名稱" active={!isEdit && !sample.name}/>
       </div>
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel>收支</EditorFieldLabel>
         <EditorSearchableDropdownCollapsed value={typeLabel} disabled={isEdit}/>
       </div>
 
       <div style={{ marginBottom: T.FIELD_GAP }}>
-        <EditorFieldLabel>圖示</EditorFieldLabel>
         <EditorInlineIconGrid icons={CATEGORY_ICON_IDS} selectedId={sample.iconId}/>
       </div>
 
