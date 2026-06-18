@@ -2,12 +2,12 @@
 // CurrencyRateEditorScreen · 對齊 impl src/screens/Settings/CurrencyRateEditorScreen.tsx
 //
 // Modal save form。兩 surface card：
-//   1. Currency Pair（From / To；To 永遠鎖為 base currency；Update mode 中 From 也鎖）
-//   2. Amount Inputs（1 X = N Y，rate = amountTo / amountFrom）
+//   1. Currency Pair（來源=主幣 base 永遠鎖 / 目標=外幣；Update mode 中目標外幣也鎖）
+//   2. Amount Inputs（1 主幣 = N 外幣，主要貨幣顯示在左）
 //
 // Variants：
-//   add            — 新增模式，From 可選（USD），To 鎖 TWD（base），amountTo 為空待填
-//   update         — 更新模式，From 與 To 都鎖（USD → TWD），amountTo 預填現有 rate 30.5240
+//   add            — 新增模式，來源鎖 TWD（base），目標可選外幣（USD），外幣金額待填
+//   update         — 更新模式，來源(TWD)與目標(USD)都鎖，外幣金額預填倒數值 ≈ 0.03276
 //   currency-modal — 幣別選擇 modal（add 模式點 From 開啟，RateCurrencySelectModal）
 // ─────────────────────────────────────────────────────────────
 
@@ -17,9 +17,10 @@ function CurrencyRateEditorScreen({ variant = 'add' }) {
     return <RateCurrencySelectModal/>;
   }
   const isUpdate = variant === 'update';
-  const fromCode = 'USD';
-  const toCode   = 'TWD';
-  const amountTo = isUpdate ? '30.5240' : '0';
+  const baseCode      = 'TWD';   // 主要貨幣（鎖定，顯示在左＝來源）
+  const foreignCode   = 'USD';   // 外幣（顯示在右＝目標；update 模式鎖定）
+  // update 預填「1 主幣 = N 外幣」：原 1 USD = 30.5240 TWD 的倒數 ≈ 0.03276
+  const foreignAmount = isUpdate ? '0.03276' : '0';
 
   return (
     <div style={{
@@ -39,14 +40,14 @@ function CurrencyRateEditorScreen({ variant = 'add' }) {
               fontSize: T.LABEL_FONT_SIZE, color: TOKENS.ink2,
               marginBottom: T.LABEL_BOTTOM_MARGIN,
             }}>來源幣別</div>
-            <RateCurrencyButton code={fromCode} disabled={isUpdate}/>
+            <RateCurrencyButton code={baseCode} disabled={true}/>
           </div>
           <div style={{ flex: 1 }}>
             <div style={{
               fontSize: T.LABEL_FONT_SIZE, color: TOKENS.ink2,
               marginBottom: T.LABEL_BOTTOM_MARGIN,
             }}>目標幣別</div>
-            <RateCurrencyButton code={toCode} disabled={true}/>
+            <RateCurrencyButton code={foreignCode} disabled={isUpdate}/>
           </div>
         </div>
       </div>
@@ -66,7 +67,7 @@ function CurrencyRateEditorScreen({ variant = 'add' }) {
               fontSize: T.LABEL_FONT_SIZE, color: TOKENS.ink2,
               marginBottom: T.LABEL_BOTTOM_MARGIN,
             }}>來源金額</div>
-            <RateAmountInput value="1" code={fromCode}/>
+            <RateAmountInput value="1" code={baseCode}/>
           </div>
           <RateEqualsSign/>
           <div style={{ flex: 1 }}>
@@ -74,7 +75,7 @@ function CurrencyRateEditorScreen({ variant = 'add' }) {
               fontSize: T.LABEL_FONT_SIZE, color: TOKENS.ink2,
               marginBottom: T.LABEL_BOTTOM_MARGIN,
             }}>目標金額</div>
-            <RateAmountInput value={amountTo} code={toCode}/>
+            <RateAmountInput value={foreignAmount} code={foreignCode}/>
           </div>
         </div>
       </div>
