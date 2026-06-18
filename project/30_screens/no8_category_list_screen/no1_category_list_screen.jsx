@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────
 // CategoryListScreen · 對齊 impl src/screens/Categories/CategoryListScreen.tsx
 //
-// Push screen。兩個 section（支出 / 收入），每 section 含：
-//   1. ListSection title="支出" / "收入"
+// Push screen。兩個 section（支出 / 收入，無標題），每 section 含：
+//   1. ListSection（無 title，純分組外殼，不顯示「支出」/「收入」字樣）
 //   2. ListGroupCard 含列表（impl 用 AutoDragSortableView 拖拉，design canvas 視覺示意）
 //
 // 新增入口已上移至 navbar 右上 [merge][+]（見 90_workbench/app.jsx SCREEN_META）。
@@ -28,13 +28,13 @@ function CategoryListScreen({ variant = 'default' }) {
       background: TOKENS.bg,
       minHeight: '100%',
     }}>
-      <ListSection title="支出">
+      <ListSection>
         <ListGroupCard>
           {expense.map(c => <CategoryReorderRow key={c.id} category={c}/>)}
         </ListGroupCard>
       </ListSection>
 
-      <ListSection title="收入">
+      <ListSection>
         <ListGroupCard>
           {income.map(c => <CategoryReorderRow key={c.id} category={c}/>)}
         </ListGroupCard>
