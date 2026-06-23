@@ -12,9 +12,10 @@
 
 const CATEGORY_EDITOR_SAMPLES = {
   // edit preview：「飲食」expense（iconId 13 ph-coffee）
+  // 圖示預設不分型：新增支出/收入的預設圖示同為 category 清單第一個（iconId 12 ph-bread）
   edit:        { name: '飲食',    type: 'expense', iconId: 13 },
   newExpense:  { name: '',        type: 'expense', iconId: 12 }, // ph-bread
-  newIncome:   { name: '',        type: 'income',  iconId: 55 }, // (literal: impl default income icon)
+  newIncome:   { name: '',        type: 'income',  iconId: 12 }, // ph-bread（與 expense 同源，不分型）
 };
 
 Object.assign(window, { CATEGORY_EDITOR_SAMPLES });
