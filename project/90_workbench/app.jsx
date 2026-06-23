@@ -712,6 +712,7 @@ const EXPLORATION_GROUPS = [
       { id: 'surface-material', label: 'Axis 2 · Surface & Material',          render: () => <SurfaceMaterialSection/> },
       { id: 'iconography',      label: 'Axis 3 · Iconography & Embellishment', render: () => <IconographySection/> },
       { id: 'personality',      label: 'Axis 4 · Personality (packaged)',      render: () => <PersonalityPackagedSection/> },
+      { id: 'donut-focus',      label: 'Donut · Focus Indicator',             render: () => <DonutFocusIndicatorSection/> },
     ],
   },
   {
