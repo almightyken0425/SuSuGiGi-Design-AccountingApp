@@ -298,10 +298,6 @@ function DonutHero({ expenseData, incomeData, totals, chartMode }) {
       <DonutChart slices={slices} focusedSide={chartMode}>
         <div style={{ textAlign: 'center', width: T.DONUT_CENTER_TEXT_WIDTH }}>
           <div style={{
-            fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,
-            marginBottom: SPACING.xs,
-          }}>餘額</div>
-          <div style={{
             fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
             color: TOKENS.ink, fontVariantNumeric: NUMERIC_FONT_VARIANT, textAlign: 'center',
           }}>{fmt(totals.balance)}</div>
