@@ -9,9 +9,6 @@
 
 const PAYWALL_BENEFITS = [
   '帳戶與類別無上限',
-  '外幣帳戶與匯率',
-  '定期交易排程',
-  '多裝置同步',
 ];
 
 const PAYWALL_OPTIONS = [

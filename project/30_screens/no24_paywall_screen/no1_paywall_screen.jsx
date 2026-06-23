@@ -2,7 +2,7 @@
 // PaywallScreen · 對齊 impl src/screens/Paywall/PaywallScreen.tsx
 //
 // Modal info screen（headerLeft 為 close button，無 save）。
-// 結構：Title / 4 個 benefits 點列 / Yearly + Monthly 選項 / CTA / Restore link / Close link。
+// 結構：Title / 1 個 benefit 點列 / Yearly + Monthly 選項 / CTA / Restore link / Close link。
 //
 // Variants：
 //   default  — 已選年費（impl 端 yearly default selected）
