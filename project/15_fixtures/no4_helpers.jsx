@@ -125,10 +125,11 @@ function incomePieData(items) {
 }
 
 function fmt(n, code = 'TWD') {
+  // 負值統一採「符號後負號」（NT$-500），對齊 impl formatCurrencyValue 全 app 一致約定。
   const sign = n < 0 ? '-' : '';
   const abs = Math.abs(n);
   const symbol = code === 'TWD' ? 'NT$' : code === 'USD' ? 'US$' : code === 'JPY' ? '¥' : code;
-  return sign + symbol + abs.toLocaleString('en-US');
+  return symbol + sign + abs.toLocaleString('en-US');
 }
 
 Object.assign(window, {
