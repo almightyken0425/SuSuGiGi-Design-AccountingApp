@@ -46,7 +46,7 @@ function PeriodPage({ filterState, variant = 'default', monthLabel = '2026å¹´5æœ
         paddingBottom: HOME_SCREEN_TOKENS.PAGE_HEADER_PADDING_BOTTOM,
       }}>
         <PeriodSwitcher label={monthLabel}/>
-        <DonutHero expenseData={expensePie} incomeData={incomePie} totals={totals}/>
+        <DonutHero expenseData={expensePie} incomeData={incomePie} totals={totals} chartMode={chartMode}/>
         <FocusRow totals={totals} chartMode={chartMode} onChartModeChange={setChartMode}/>
       </div>
       <TxSectionList sections={sections} collapsed={collapsed} onToggle={toggle} mode={groupMode}/>

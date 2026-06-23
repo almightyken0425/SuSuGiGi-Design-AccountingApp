@@ -595,7 +595,7 @@ function ComponentsNavigationSection() {
 
 function ComponentsChartSection() {
   return (
-    <DCSection id="comp-chart" title="Components · Chart" subtitle="DonutChart 是 Home 中央視覺核心。SIZE 260, OUTER 100, INNER 76, CORNER 6, PAD_ANGLE 1deg。FocusCard 切換 expense / income 模式。">
+    <DCSection id="comp-chart" title="Components · Chart" subtitle="DonutChart 是 Home 中央視覺核心。SIZE 260, OUTER 100, INNER 76, CORNER 6, PAD_ANGLE 1deg。聚焦側弧 outer+2 / inner−2 加粗作焦點指示。FocusCard 切換 expense / income 模式。">
       <DCFamily id="comp-chart-family" title="Home Chart Surfaces" subtitle="Home 中央的視覺資產：甜甜圈圖 + expense/income focus 對照。">
         <DCArtboard id="comp-donut" label="DonutChart (live)" width={402} height={360}>
           <CompFrame style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 32 }}>

@@ -256,9 +256,11 @@ function PeriodSwitcher({ label }) {
 //   - 收入弧：從 12 點往右 (CW)，金額大者鄰近交會點
 //   - 支出弧：從 12 點往左 (CCW)，金額大者鄰近交會點
 //   - 兩弧在底部某點交會，比例 = expenseTotal : incomeTotal
-function DonutHero({ expenseData, incomeData, totals }) {
+function DonutHero({ expenseData, incomeData, totals, chartMode }) {
   const T = HOME_SCREEN_TOKENS;
   const TAU = 2 * Math.PI;
+  // 單側資料的 12 點開口由 DonutChart 的 pad 產生（單片占滿整圈時頭尾各內縮 pad/2，
+  // 留下與一般 slice 交接一致的縫），此處資料層不另保留寬縫。
   const expenseTotal = expenseData.reduce((s, x) => s + x.value, 0);
   const incomeTotal = incomeData.reduce((s, x) => s + x.value, 0);
   const totalAll = expenseTotal + incomeTotal;
@@ -293,7 +295,7 @@ function DonutHero({ expenseData, incomeData, totals }) {
       display: 'flex', justifyContent: 'center',
       marginBottom: T.DONUT_BOTTOM_GAP,
     }}>
-      <DonutChart slices={slices}>
+      <DonutChart slices={slices} focusedSide={chartMode}>
         <div style={{ textAlign: 'center', width: T.DONUT_CENTER_TEXT_WIDTH }}>
           <div style={{
             fontSize: TYPOGRAPHY.size.sm, color: TOKENS.ink2,

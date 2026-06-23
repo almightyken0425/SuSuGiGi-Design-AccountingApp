@@ -956,6 +956,8 @@ function HeaderMockFrame({ children, contentTail }) {
 
 // ─── DonutChart ─── 對齊 src/components/DonutChart.tsx
 // SIZE 260, OUTER 100 INNER 76 thickness 24, CORNER 6, PAD_ANGLE 1deg
+// focusedSide（'expense'|'income'|null）：聚焦側弧 outer +focusRadiusDelta /
+//   inner −focusRadiusDelta（預設 2）加粗，作為焦點指示。失焦側維持原半徑。
 //
 // 兩種輸入接口：
 //   slices (new, 雙向)：[{ startAngle, endAngle, color, key }]
@@ -965,16 +967,15 @@ function HeaderMockFrame({ children, contentTail }) {
 //   data (legacy, 單向)：[{ key, value, color }]
 //     - 由 DonutChart 內部從 0 順時針累加
 //     - 探索 sub-page 仍用此接口
-function DonutChart({ data, slices, size = 260, outerRadius = 100, innerRadius = 76, cornerRadius = 6, padAngleDeg = 1, children }) {
+function DonutChart({ data, slices, size = 260, outerRadius = 100, innerRadius = 76, cornerRadius = 6, padAngleDeg = 1, focusedSide = null, focusRadiusDelta = 2, children }) {
   const cx = size / 2, cy = size / 2;
   const padAngleRad = (padAngleDeg * Math.PI) / 180;
 
   // SVG arc path with 12 點 = 0、CW 為正
   const polar = (r, a) => [cx + r * Math.sin(a), cy - r * Math.cos(a)];
 
-  function arcPath(startAngle, endAngle) {
+  function arcPath(startAngle, endAngle, ro, ri) {
     if (endAngle <= startAngle) return '';
-    const ro = outerRadius, ri = innerRadius;
     const a0 = startAngle, a1 = endAngle;
     const [x0, y0] = polar(ro, a0);
     const [x1, y1] = polar(ro, a1);
@@ -993,6 +994,7 @@ function DonutChart({ data, slices, size = 260, outerRadius = 100, innerRadius =
       end: s.endAngle - padAngleRad / 2,
       color: s.color,
       key: s.key,
+      side: s.startAngle < 0 ? 'expense' : 'income',
     })).filter(s => s.end - s.start > 0);
   } else if (data && data.length > 0) {
     // legacy 接口：從 0 順時針累加
@@ -1020,9 +1022,14 @@ function DonutChart({ data, slices, size = 260, outerRadius = 100, innerRadius =
   return (
     <div style={{ position: 'relative', width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ position: 'absolute', inset: 0 }}>
-        {renderableSlices.map((s, i) => (
-          <path key={s.key + '_' + i} d={arcPath(s.start, s.end)} fill={s.color} stroke={s.color} strokeWidth={cornerRadius * 0.6} strokeLinejoin="round"/>
-        ))}
+        {renderableSlices.map((s, i) => {
+          const lifted = focusedSide && s.side === focusedSide;
+          const ro = outerRadius + (lifted ? focusRadiusDelta : 0);
+          const ri = innerRadius - (lifted ? focusRadiusDelta : 0);
+          return (
+            <path key={s.key + '_' + i} d={arcPath(s.start, s.end, ro, ri)} fill={s.color} stroke={s.color} strokeWidth={cornerRadius * 0.6} strokeLinejoin="round"/>
+          );
+        })}
       </svg>
       <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
     </div>
