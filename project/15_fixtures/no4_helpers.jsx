@@ -132,7 +132,18 @@ function fmt(n, code = 'TWD') {
   return symbol + sign + abs.toLocaleString('en-US');
 }
 
+// 把 fmt 產出的單行字串拆成幣別段與數字段，供首頁 donut 中央垂直堆疊用（幣別在上、數字在下）。
+// 對齊 impl src/utils/formatters.ts splitCurrencyParts：符號恆前置，負號緊鄰首位數字之前（NT$-500）。
+// 以 \p{Nd} 命中第一個十進位數字，數字段自該位起算；前一字元為負號則一併納入，使號隨值走。
+function splitCurrencyParts(formatted) {
+  const match = formatted.match(/\p{Nd}/u);
+  if (!match) { return { symbol: '', number: formatted }; }
+  let cut = match.index;
+  if (cut > 0 && formatted[cut - 1] === '-') { cut -= 1; }
+  return { symbol: formatted.slice(0, cut).trimEnd(), number: formatted.slice(cut) };
+}
+
 Object.assign(window, {
-  baseAmount, periodTotals, groupByDate, groupByCategory, pieData, fmt,
+  baseAmount, periodTotals, groupByDate, groupByCategory, pieData, fmt, splitCurrencyParts,
   expensePieData, incomePieData,
 });

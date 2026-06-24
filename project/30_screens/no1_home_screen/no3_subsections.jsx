@@ -34,12 +34,12 @@ function AmountCol({ recurring, amount, currency, convertedAmount }) {
         </div>
       )}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        <span style={{
+        <InlineAmount value={fmt(amount, currency)} numberStyle={{
           fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
           fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
           color: TOKENS.p900,
           fontVariantNumeric: NUMERIC_FONT_VARIANT,
-        }}>{fmt(amount, currency)}</span>
+        }}/>
         {hasConverted && (
           <span style={{
             fontSize: TYPOGRAPHY.size.xs, color: TOKENS.ink2,
@@ -104,6 +104,8 @@ function TxSectionHeader({ collapsed, onClick, iconId, title, total }) {
   const T = HOME_SCREEN_TOKENS;
   const c = collapsed;
   const morph = `all ${TX_LIST_TOKENS.MORPH_DURATION_MS}ms ${MOTION.easing.standard}`;
+  // 小計拆幣別段/數字段，幣別段隨收合縮 xs↔2xs（小幣別大數值橫排，對齊 impl TxSectionCard）
+  const { symbol: totalSymbol, number: totalNumber } = splitCurrencyParts(total);
   return (
     <div onClick={onClick} style={{
       cursor: 'pointer',
@@ -142,7 +144,10 @@ function TxSectionHeader({ collapsed, onClick, iconId, title, total }) {
         fontSize: c ? TX_LIST_TOKENS.SECTION_HEADER_TOTAL_SIZE_COLLAPSED : TX_LIST_TOKENS.SECTION_HEADER_TOTAL_SIZE_EXPANDED,
         fontWeight: TX_LIST_TOKENS.SECTION_HEADER_TOTAL_WEIGHT,
         color: TOKENS.ink, fontVariantNumeric: NUMERIC_FONT_VARIANT, transition: morph,
-      }}>{total}</span>
+      }}>
+        {totalSymbol ? <span style={{ fontSize: c ? TX_LIST_TOKENS.SECTION_HEADER_TOTAL_CURRENCY_SIZE_COLLAPSED : TX_LIST_TOKENS.SECTION_HEADER_TOTAL_CURRENCY_SIZE_EXPANDED, transition: morph }}>{totalSymbol}</span> : null}
+        {totalNumber}
+      </span>
     </div>
   );
 }
@@ -290,6 +295,9 @@ function DonutHero({ expenseData, incomeData, totals, chartMode }) {
     slices = [...expenseSlices, ...incomeSlices];
   }
 
+  // 中央餘額垂直堆疊：數值留 xl(20)、幣別在上縮到 xs(12)、同色。
+  const { symbol: balanceSymbol, number: balanceNumber } = splitCurrencyParts(fmt(totals.balance));
+
   return (
     <div style={{
       display: 'flex', justifyContent: 'center',
@@ -298,9 +306,13 @@ function DonutHero({ expenseData, incomeData, totals, chartMode }) {
       <DonutChart slices={slices} focusedSide={chartMode}>
         <div style={{ textAlign: 'center', width: T.DONUT_CENTER_TEXT_WIDTH }}>
           <div style={{
+            fontSize: TYPOGRAPHY.size.xs, fontWeight: TYPOGRAPHY.weight.medium,
+            color: TOKENS.ink, textAlign: 'center',
+          }}>{balanceSymbol}</div>
+          <div style={{
             fontSize: TYPOGRAPHY.size.xl, fontWeight: TYPOGRAPHY.weight.medium,
             color: TOKENS.ink, fontVariantNumeric: NUMERIC_FONT_VARIANT, textAlign: 'center',
-          }}>{fmt(totals.balance)}</div>
+          }}>{balanceNumber}</div>
         </div>
       </DonutChart>
     </div>

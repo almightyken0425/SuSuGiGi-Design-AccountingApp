@@ -29,15 +29,32 @@ function SearchResultRow({ tx }) {
   const toAcc   = isTransfer ? ACC_BY_ID[tx.toAcc]   : null;
   const crossCurrency = isTransfer && fromAcc.currency !== toAcc.currency;
 
-  // 金額文字：交易依正負決定號別、轉帳不帶號；跨幣別轉帳併排兩端
-  let amountText;
+  // 金額：交易依正負決定號別、轉帳不帶號；跨幣別轉帳併排兩端。全採「小幣別大數值」橫排：
+  // 單一金額走 InlineAmount；跨幣別轉帳兩端各自拆幣別段、共用父 span 串接箭頭。
+  const amountNumberStyle = {
+    fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
+    fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
+    color: TOKENS.p900, fontVariantNumeric: NUMERIC_FONT_VARIANT,
+  };
+  const amountCurrencyStyle = { fontSize: TYPOGRAPHY.size.xs };
+  let amountNode;
   if (isTransfer) {
     const fromText = fmtSearchAmount(Math.abs(tx.amount), fromAcc.currency, 'neutral');
-    amountText = crossCurrency
-      ? `${fromText} → ${fmtSearchAmount(tx.toAmount, toAcc.currency, 'neutral')}`
-      : fromText;
+    if (crossCurrency) {
+      const from = splitCurrencyParts(fromText);
+      const to = splitCurrencyParts(fmtSearchAmount(tx.toAmount, toAcc.currency, 'neutral'));
+      amountNode = (
+        <span style={amountNumberStyle}>
+          <span style={amountCurrencyStyle}>{from.symbol}</span>{from.number}
+          {' → '}
+          <span style={amountCurrencyStyle}>{to.symbol}</span>{to.number}
+        </span>
+      );
+    } else {
+      amountNode = <InlineAmount value={fromText} numberStyle={amountNumberStyle}/>;
+    }
   } else {
-    amountText = fmtSearchAmount(tx.amount, tx.currency, tx.amount < 0 ? 'expense' : 'income');
+    amountNode = <InlineAmount value={fmtSearchAmount(tx.amount, tx.currency, tx.amount < 0 ? 'expense' : 'income')} numberStyle={amountNumberStyle}/>;
   }
 
   const titleAccountStyle = {
@@ -101,11 +118,7 @@ function SearchResultRow({ tx }) {
                   color={TOKENS.ink3} stroke={2}/>
               </div>
             )}
-            <span style={{
-              fontSize: TX_LIST_TOKENS.ROW_AMOUNT_SIZE,
-              fontWeight: TX_LIST_TOKENS.ROW_AMOUNT_WEIGHT,
-              color: TOKENS.p900, fontVariantNumeric: NUMERIC_FONT_VARIANT,
-            }}>{amountText}</span>
+            {amountNode}
           </div>
         </div>
         <div style={{
