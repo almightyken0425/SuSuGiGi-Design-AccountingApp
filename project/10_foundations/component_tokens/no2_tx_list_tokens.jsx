@@ -14,8 +14,11 @@ const TX_LIST_TOKENS = {
   SECTION_HEADER_PADDING_H:             SPACING.lg,
   SECTION_HEADER_TITLE_SIZE_COLLAPSED:  TYPE_STYLES.body.size,         // 17
   SECTION_HEADER_TITLE_SIZE_EXPANDED:   TYPOGRAPHY.size.sm,            // 14
-  SECTION_HEADER_TOTAL_SIZE_COLLAPSED:  TYPE_STYLES.subheadline.size,  // 15
-  SECTION_HEADER_TOTAL_SIZE_EXPANDED:   TYPE_STYLES.footnote.size,     // 13
+  SECTION_HEADER_TOTAL_SIZE_COLLAPSED:  TYPOGRAPHY.size.base,          // 16
+  SECTION_HEADER_TOTAL_SIZE_EXPANDED:   TYPOGRAPHY.size.sm,            // 14
+  // 小計幣別段（小幣別大數值橫排）：隨收合在 xs(12)↔2xs(10) 補間，恆比同態數值小一階
+  SECTION_HEADER_TOTAL_CURRENCY_SIZE_COLLAPSED: TYPOGRAPHY.size.xs,    // 12
+  SECTION_HEADER_TOTAL_CURRENCY_SIZE_EXPANDED:  TYPOGRAPHY.size['2xs'], // 10
   SECTION_HEADER_TITLE_WEIGHT:          TYPOGRAPHY.weight.medium,
   SECTION_HEADER_TOTAL_WEIGHT:          TYPOGRAPHY.weight.medium,
   ICON_OUTLINE_BORDER_WIDTH:            1,                             // (literal: StyleSheet.hairlineWidth；canvas 為 React Web 無法 resolve)

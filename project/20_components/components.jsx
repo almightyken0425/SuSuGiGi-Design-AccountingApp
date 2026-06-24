@@ -1040,6 +1040,19 @@ function DonutChart({ data, slices, size = 260, outerRadius = 100, innerRadius =
 // padding 12 12, radius lg=12, border 1.5px (transparent inactive)
 // inactive: bg surface_hover, swatchBg surface, color text.secondary
 // active:   bg surface, swatchBg primary[100], color text.primary
+// ─── InlineAmount ─── 橫排「小幣別、大數值」金額（對齊 impl src/components/InlineAmount.tsx）。
+// 吃已格式化字串（含幣別符號），splitCurrencyParts 拆後幣別段縮 xs、繼承色；數字段沿用 numberStyle。
+// 直排焦點版（donut / 編輯器）走各自結構，不經本元件。
+function InlineAmount({ value, numberStyle = {}, currencyStyle = {} }) {
+  const { symbol, number } = splitCurrencyParts(value);
+  return (
+    <span style={numberStyle}>
+      {symbol ? <span style={{ fontSize: TYPOGRAPHY.size.xs, ...currencyStyle }}>{symbol}</span> : null}
+      {number}
+    </span>
+  );
+}
+
 function FocusCard({ kind, amount, active, onPress, formatAmount }) {
   const iconName = kind === 'expense' ? 'minus' : 'plus';
   return (
@@ -1061,12 +1074,14 @@ function FocusCard({ kind, amount, active, onPress, formatAmount }) {
       }}>
         <Glyph name={iconName} size={14} color={active ? TOKENS.p500 : TOKENS.ink2}/>
       </div>
-      <span style={{
-        flex: 1, textAlign: 'right',
-        fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium,
-        color: active ? TOKENS.ink : TOKENS.ink2,
-        fontVariantNumeric: 'tabular-nums',
-      }}>{formatAmount ? formatAmount(amount) : fmt(amount)}</span>
+      <InlineAmount
+        value={formatAmount ? formatAmount(amount) : fmt(amount)}
+        numberStyle={{
+          flex: 1, textAlign: 'right',
+          fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium,
+          color: active ? TOKENS.ink : TOKENS.ink2,
+          fontVariantNumeric: 'tabular-nums',
+        }}/>
     </button>
   );
 }
@@ -1838,7 +1853,7 @@ Object.assign(window, {
   ListEmptyState, EmptyState, ListEmptyTransition,
   ModalCloseButton, HeaderCheckmarkButton, HeaderIconButton, HeaderButtonPill,
   MockBackButtonPill, MockNavBar, HeaderMockFrame,
-  GlassView, DonutChart, FocusCard, FloatingActionBar, fabBtn,
+  GlassView, DonutChart, FocusCard, InlineAmount, FloatingActionBar, fabBtn,
   BottomSearchBar, Switch, CalculatorKeypad,
   AmountField, StaticWheelPicker, AccountSelector, CategorySelector, DualPickerBox, RecurringOptions,
   DatePill, ConfirmDialog, DeleteButton, CalendarDialog,
