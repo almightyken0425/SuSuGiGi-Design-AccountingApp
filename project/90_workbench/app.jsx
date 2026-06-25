@@ -40,20 +40,20 @@ const SCREEN_META = {
   // headerRight 兩 symbol 共用 shared background pill；
   // 對齊 impl 端 unstable_headerRightItems = [search, spacing:0, settings] 的 iOS 26 渲染結果。
   home: {
-    title: 'SuSuGiGi', present: 'push', hasFAB: true,
+    title: '$wish', present: 'push', hasFAB: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter}/>,
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
     headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
   },
   'home-empty': {
-    title: 'SuSuGiGi', present: 'push', hasFAB: true,
+    title: '$wish', present: 'push', hasFAB: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter} variant="empty"/>,
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
     headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
   },
   // ─── Home · Undo Bar ─── 刪除交易後返回首頁，全域 Undo Bar 覆蓋於 Footer 區
   'home-undo': {
-    title: 'SuSuGiGi', present: 'push', hasFAB: true, undoBar: true, undoMessage: '已刪除交易',
+    title: '$wish', present: 'push', hasFAB: true, undoBar: true, undoMessage: '已刪除交易',
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter}/>,
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
     headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,

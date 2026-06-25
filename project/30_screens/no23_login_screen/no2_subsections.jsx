@@ -20,7 +20,7 @@ function LoginBranding() {
         fontWeight: T.APP_NAME_WEIGHT,
         color: TOKENS.p500,
         marginBottom: T.APP_NAME_BOTTOM_MARGIN,
-      }}>SuSuGiGi</div>
+      }}>$wish</div>
       <div style={{
         fontSize: T.TAGLINE_FONT_SIZE,
         color: TOKENS.ink2,
@@ -100,7 +100,7 @@ function LoginFooter() {
       <span style={{
         fontSize: T.FOOTER_FONT_SIZE,
         color: TOKENS.ink2,
-      }}>© 2026 SuSuGiGi. All rights reserved.</span>
+      }}>© 2026 $wish. All rights reserved.</span>
     </div>
   );
 }

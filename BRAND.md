@@ -1,8 +1,9 @@
-# SuSuGiGi · Brand bible
+# $wish · Brand bible
 
-本檔由 claude.ai/design 在 2026-05-18 整理產出，描述 SuSuGiGi 的品牌政策（語氣、視覺基礎、icon 風格）。**Token 數字的權威來源仍是 `project/10_foundations/data.jsx`**，本檔只描述「為什麼這樣設計」與「用在哪」。
+本檔由 claude.ai/design 在 2026-05-18 整理產出，描述 $wish 的品牌政策（語氣、視覺基礎、icon 風格）。**Token 數字的權威來源仍是 `project/10_foundations/data.jsx`**，本檔只描述「為什麼這樣設計」與「用在哪」。
 
-品牌名稱 **SuSuGiGi**（「簌簌計計」）來自疊字擬聲，暗示「每筆交易快速、輕巧、習慣性地被記下」這個小動作。產品是一個單人記帳工具，記下支出、收入、轉帳；依類別或日期分組；用一張 donut chart + focus row 一頁回顧每個月。
+<!-- TODO：本段品牌字源屬舊名「簌簌計計」（疊字擬聲），$wish 的字義與語氣定位待補後改寫本段。 -->
+品牌名稱 **$wish**（「簌簌計計」）來自疊字擬聲，暗示「每筆交易快速、輕巧、習慣性地被記下」這個小動作。產品是一個單人記帳工具，記下支出、收入、轉帳；依類別或日期分組；用一張 donut chart + focus row 一頁回顧每個月。
 
 ---
 
