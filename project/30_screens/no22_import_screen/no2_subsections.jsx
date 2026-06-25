@@ -163,8 +163,8 @@ function ImportStep3Matching() {
   return (
     <div style={{ padding: T.SCREEN_PADDING }}>
       <SectionTitle first>帳戶</SectionTitle>
-      <Item name="玉山活儲" action="沿用"/>
-      <Item name="USD 旅費" action="新建"/>
+      <Item name="玉山活儲 (TWD)" action="沿用"/>
+      <Item name="USD 旅費 (USD)" action="新建"/>
 
       <SectionTitle>支出類別</SectionTitle>
       <Item name="飲食" action="沿用"/>
