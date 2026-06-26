@@ -10,7 +10,7 @@
 
 const CATEGORY_LIST_SCREEN_TOKENS = {
   // ── Screen container
-  SCREEN_PADDING_TOP:        SPACING.md,    // impl: headerInset + SPACING.md
+  SCREEN_PADDING_TOP:        LIST_TOKENS.HEADER_BREATHING,    // impl: headerInset + LIST_TOKENS.HEADER_BREATHING（原 SPACING.md=12 統一為 16）
   SCREEN_PADDING_HORIZONTAL: SPACING.lg,
   SCREEN_PADDING_BOTTOM:     SPACING['5xl'], // FAB / bottom safe area 預留
 

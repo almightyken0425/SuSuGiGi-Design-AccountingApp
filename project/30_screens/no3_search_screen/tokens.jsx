@@ -7,6 +7,7 @@
 
 const SEARCH_SCREEN_TOKENS = {
   // ── Result list
+  SCREEN_PADDING_TOP:       LIST_TOKENS.HEADER_BREATHING,                     // 16：header 下呼吸（對齊 impl scrollContent.paddingTop）
   RESULT_LIST_BOTTOM_GAP:   SPACING['2xl'],                                   // 32：BottomSearchBar 上額外 buffer（對齊 impl scrollContent.paddingBottom）
 
   // ── Recurring chip（與 HomeScreen 共用視覺；尚未升 component_tokens）

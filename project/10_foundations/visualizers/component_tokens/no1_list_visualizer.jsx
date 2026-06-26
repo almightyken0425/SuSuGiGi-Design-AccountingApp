@@ -40,6 +40,7 @@ const LIST_TOKEN_DESC = {
   EMPTY_STATE_ICON_GAP:          '空狀態 icon → 主標的垂直 gap',
   EMPTY_STATE_TEXT_GAP:          '空狀態主標 → 描述的垂直 gap',
   EMPTY_STATE_PADDING_HORIZONTAL: '空狀態左右邊距',
+  HEADER_BREATHING:              'list/selection 畫面 header 下呼吸（疊在系統 inset 之上，跨 list 畫面統一）',
 };
 
 const LIST_TOKEN_SOURCE = {
@@ -78,6 +79,7 @@ const LIST_TOKEN_SOURCE = {
   EMPTY_STATE_ICON_GAP:             'SPACING.md',
   EMPTY_STATE_TEXT_GAP:             'SPACING.sm',
   EMPTY_STATE_PADDING_HORIZONTAL:   'SPACING.xl',
+  HEADER_BREATHING:                 'SPACING.lg',
 };
 
 function ListAnatomyCard() {

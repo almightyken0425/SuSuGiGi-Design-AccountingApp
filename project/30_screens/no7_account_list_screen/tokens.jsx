@@ -11,7 +11,7 @@
 
 const ACCOUNT_LIST_SCREEN_TOKENS = {
   // ── Screen container
-  SCREEN_PADDING_TOP:        SPACING.lg,    // impl: headerInset + SPACING.lg，design canvas 無 inset 概念
+  SCREEN_PADDING_TOP:        LIST_TOKENS.HEADER_BREATHING,    // impl: headerInset + LIST_TOKENS.HEADER_BREATHING，design canvas 無 inset 概念
   SCREEN_PADDING_HORIZONTAL: SPACING.lg,
   SCREEN_PADDING_BOTTOM:     SPACING['5xl'], // FAB / bottom safe area 預留
 
