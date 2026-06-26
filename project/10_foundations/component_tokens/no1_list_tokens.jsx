@@ -41,6 +41,7 @@ const LIST_TOKENS = {
   EMPTY_STATE_ICON_GAP:      SPACING.md,
   EMPTY_STATE_TEXT_GAP:      SPACING.sm,
   EMPTY_STATE_PADDING_HORIZONTAL: SPACING.xl,
+  HEADER_BREATHING:          SPACING.lg,                    // list/selection 畫面 header 下呼吸（impl: 系統 header inset 之上 +16）
 };
 
 Object.assign(window, { LIST_TOKENS });

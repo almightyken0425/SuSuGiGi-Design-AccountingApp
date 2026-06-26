@@ -53,7 +53,7 @@ function SearchScreen({ initialQuery = '', variant = 'default' }) {
           </div>
         ) : (
           <div style={{
-            paddingTop: SPACING.md,
+            paddingTop: T.SCREEN_PADDING_TOP,
             paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
             paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + T.RESULT_LIST_BOTTOM_GAP,
           }}>

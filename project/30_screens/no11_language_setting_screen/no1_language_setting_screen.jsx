@@ -47,6 +47,7 @@ function LanguageSettingScreen({ variant = 'default', selectedValue = 'zh-Hant' 
           <div style={{
             marginLeft: T.LIST_MARGIN_HORIZONTAL,
             marginRight: T.LIST_MARGIN_HORIZONTAL,
+            paddingTop: T.SCREEN_PADDING_TOP,
             paddingBottom: BOTTOM_SEARCH_BAR_TOTAL_HEIGHT + T.LIST_BOTTOM_PADDING,
           }}>
             <ListGroupCard>

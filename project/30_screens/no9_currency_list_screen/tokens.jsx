@@ -8,6 +8,7 @@
 // ─────────────────────────────────────────────────────────────
 
 const CURRENCY_LIST_SCREEN_TOKENS = {
+  SCREEN_PADDING_TOP:      LIST_TOKENS.HEADER_BREATHING,  // impl: 系統 inset 之上 +16（GroupedListCard topSpacing）
   LIST_MARGIN_HORIZONTAL:  SPACING.lg,
   LIST_BOTTOM_PADDING:     SPACING.xl,            // FlatList contentContainer paddingBottom
 };
