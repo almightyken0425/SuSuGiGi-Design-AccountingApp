@@ -1,32 +1,58 @@
 // ─────────────────────────────────────────────────────────────
 // PAYWALL_SCREEN_TOKENS · PaywallScreen 內部 composition 參數
 //
-// Modal info screen。Title、benefits 點列、yearly / monthly 兩選項、CTA、restore、close。
+// Modal info screen（headerLeft close button、無 save）。
+// 結構：Hero 漸層卡 / 2 欄 benefit 功能卡 / 月費·年費 segmented + 大字價格 /
+//       CTA「立即升級」/ restore link / legal links。
 // impl src/screens/Paywall/PaywallScreen.tsx 結構鏡射。
 // ─────────────────────────────────────────────────────────────
 
 const PAYWALL_SCREEN_TOKENS = {
-  SCREEN_PADDING:           SPACING.xl,
-  BENEFIT_FONT_SIZE:        TYPOGRAPHY.size.lg,
-  BENEFIT_GAP:              SPACING.lg,
-  BENEFITS_BOTTOM_MARGIN:   SPACING.xl,
-  OPTIONS_BOTTOM_MARGIN:    SPACING.xl,
-  OPTION_PADDING:           SPACING.lg,
-  OPTION_RADIUS:            RADIUS.lg,
-  OPTION_GAP:               SPACING.md,
-  OPTION_TITLE_FONT_SIZE:   TYPOGRAPHY.size.base,
-  OPTION_PRICE_FONT_SIZE:   TYPOGRAPHY.size.sm,
-  RADIO_SIZE:               20,                       // (literal: impl radio diameter 20)
-  RADIO_BORDER_WIDTH:       2,                        // (literal: radio border 2px)
-  CTA_PADDING:              SPACING.lg,
-  CTA_RADIUS:               RADIUS['2xl'],
-  CTA_WIDTH_PCT:            '90%',
-  CTA_FONT_SIZE:            TYPOGRAPHY.size.lg,
-  CTA_BOTTOM_MARGIN:        SPACING.lg,
-  AUX_BUTTON_PADDING:       SPACING.sm,
-  DISCLOSURE_FONT_SIZE:     TYPOGRAPHY.size.xs,
-  DISCLOSURE_BOTTOM_MARGIN: SPACING.md,
-  LEGAL_FONT_SIZE:          TYPOGRAPHY.size.xs,
+  // 螢幕容器
+  SCREEN_GAP:             SPACING.xl,         // 區塊間距 24
+  SCREEN_PADDING_X:       SPACING.lg,         // 左右 16
+  SCREEN_PADDING_TOP:     SPACING['3xl'],     // 頂 40（header 下呼吸）
+  SCREEN_PADDING_BOTTOM:  SPACING.xl,         // 底 24
+
+  // Hero 漸層卡
+  HERO_RADIUS:            26,                 // (literal: hero 大圓角，超出 RADIUS 階梯最大 20)
+  HERO_PADDING_Y:         SPACING['4xl'],     // 48 上下
+  HERO_PADDING_X:         SPACING.xl,         // 24 左右
+  HERO_TITLE_SIZE:        TYPE_STYLES.largeTitle.size,  // 34 行銷大標
+
+  // Benefit grid（2 欄功能卡）
+  GRID_GAP:               SPACING.md,         // 卡間距 12
+  CARD_RADIUS:            RADIUS.xl,           // 16
+  CARD_PADDING:           SPACING.xl,         // 24
+  CHIP_SIZE:              56,                 // (literal: icon chip 56x56)
+  CHIP_RADIUS:            RADIUS.lg,           // 12
+  CHIP_ICON_SIZE:         ICON_SIZE.lg,        // 32
+  CHIP_BOTTOM_MARGIN:     SPACING.lg,         // chip 與標題間距 16
+  CARD_TITLE_SIZE:        TYPOGRAPHY.size.base, // 16
+  CARD_SUB_SIZE:          TYPOGRAPHY.size.xs,  // 12
+  CARD_SUB_TOP_MARGIN:    SPACING.xs,          // 4
+
+  // Plan card（segmented + 價格）
+  PLAN_RADIUS:            RADIUS['2xl'],       // 20
+  PLAN_PADDING:           SPACING.xl,          // 24
+  SEG_RADIUS:             RADIUS.lg,           // 12
+  SEG_INNER_RADIUS:       RADIUS.md,           // 8
+  SEG_PADDING:            SPACING.md,          // 12
+  SEG_FONT_SIZE:          TYPOGRAPHY.size.sm,  // 14
+  SEG_BOTTOM_MARGIN:      SPACING.xl,          // segmented 與價格間距 24
+  PRICE_SIZE:             40,                 // (literal: 價格行銷強調，超出 HIG body 階梯)
+  PRICE_SUFFIX_SIZE:      TYPOGRAPHY.size.lg,  // 18
+  PRICE_HINT_SIZE:        TYPOGRAPHY.size.sm,  // 14
+  PRICE_HINT_TOP_MARGIN:  SPACING.md,          // 12
+
+  // Footer / CTA
+  CTA_HEIGHT:             58,                 // (literal: CTA 固定高 58)
+  CTA_RADIUS:             RADIUS.xl,           // 16
+  CTA_FONT_SIZE:          TYPOGRAPHY.size.base, // 16
+  FOOTER_GAP:             SPACING.lg,          // CTA 與 link 間距 16
+  RESTORE_SIZE:           TYPOGRAPHY.size.sm,  // 14
+  LEGAL_SIZE:             TYPOGRAPHY.size.xs,  // 12
+  LEGAL_TOP_MARGIN:       SPACING.md,          // 12
 };
 
 Object.assign(window, { PAYWALL_SCREEN_TOKENS });
