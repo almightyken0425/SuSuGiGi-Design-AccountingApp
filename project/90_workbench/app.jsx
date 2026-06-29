@@ -486,7 +486,7 @@ const SCREEN_GROUPS = [
   {
     id: 'preference',
     title: 'Preference · 偏好設定',
-    subtitle: '4 section hub（主題/啟動 · 幣別 · 語言/時區 · 登出）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/PreferenceScreen.tsx）。',
+    subtitle: 'section hub（啟動 · 幣別 · 語言/時區 · 資料分析 · 登出）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/PreferenceScreen.tsx）。主題切換為內部功能，不在此偏好流程。',
     screens: [
       { id: 'preference', label: 'Default · 偏好設定主頁' },
     ],
