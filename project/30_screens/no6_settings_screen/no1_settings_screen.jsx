@@ -23,6 +23,8 @@ function SettingsScreen({ variant = 'default' }) {
       padding: T.SCREEN_PADDING,
       background: TOKENS.bg,
       minHeight: '100%',
+      display: 'flex',
+      flexDirection: 'column',
     }}>
       <ListSection>
         <ListGroupCard>
