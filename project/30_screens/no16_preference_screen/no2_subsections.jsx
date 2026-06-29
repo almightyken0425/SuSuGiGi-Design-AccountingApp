@@ -5,7 +5,6 @@
 // ─────────────────────────────────────────────────────────────
 
 const PREFERENCE_PREVIEW_VALUES = {
-  theme:        '經典紫',
   launchMode:   '首頁',
   baseCurrency: 'TWD',
   language:     '繁體中文',

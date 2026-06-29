@@ -1,11 +1,14 @@
 // ─────────────────────────────────────────────────────────────
 // PreferenceScreen · 對齊 impl src/screens/Settings/PreferenceScreen.tsx
 //
-// Push screen（從 Settings 主入口進入）。4 個 ListSection（無 title）：
-//   1. 主題 + 啟動模式（value + chevron）
+// Push screen（從 Settings 主入口進入）。ListSection（無 title）：
+//   1. 啟動模式（value + chevron）
 //   2. 基礎幣別 + 幣別設定 + 匯率管理
 //   3. 語言 + 時區（value + chevron）
-//   4. 登出（destructive，紅色文字）
+//   4. 允許資料分析（switch）
+//   5. 登出（destructive，紅色文字）
+//
+// 主題切換為內部功能，不在此使用者偏好流程，故不列主題入口。
 //
 // Variants：default only。
 // ─────────────────────────────────────────────────────────────
@@ -21,7 +24,6 @@ function PreferenceScreen() {
     }}>
       <ListSection>
         <ListGroupCard>
-          <ListItem title="主題"     value={v.theme}      showChevron/>
           <ListItem title="啟動模式" value={v.launchMode} showChevron/>
         </ListGroupCard>
       </ListSection>
