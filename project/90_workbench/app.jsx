@@ -308,19 +308,6 @@ const SCREEN_META = {
     title: '登入', present: 'none',
     render: () => <LoginScreen/>,
   },
-  // ─── Launch ─── base / to-login / to-home（啟動轉場）
-  'launch': {
-    title: '啟動', present: 'none',
-    render: () => <LaunchScreen variant="base"/>,
-  },
-  'launch-to-login': {
-    title: '啟動 → 登入', present: 'none',
-    render: () => <LaunchScreen variant="to-login"/>,
-  },
-  'launch-to-home': {
-    title: '啟動 → 首頁', present: 'none',
-    render: () => <LaunchScreen variant="to-home"/>,
-  },
   // ─── Paywall ─── default (yearly) / monthly
   'paywall': {
     title: '', present: 'modal',
@@ -566,16 +553,6 @@ const SCREEN_GROUPS = [
     subtitle: '全螢幕登入頁。Branding + Google SSO 按鈕 + disclaimer + footer（src/screens/Auth/LoginScreen.tsx）。',
     screens: [
       { id: 'login', label: 'Default · 登入入口' },
-    ],
-  },
-  {
-    id: 'launch',
-    title: 'Launch · 啟動',
-    subtitle: '啟動轉場。基礎態只有 $wish（對齊 login branding、無 logo）；等登入狀態回來分岔——A 未登入元素淡入成 login、B 已登入 $wish 淡出 home 淡入。原生 storyboard 靜態 + JS overlay 接手（src/components/LaunchSplash.tsx）。',
-    screens: [
-      { id: 'launch', label: 'Base · 基礎態（只 $wish）' },
-      { id: 'launch-to-login', label: 'A · → Login 元素淡入' },
-      { id: 'launch-to-home', label: 'B · → Home 淡入' },
     ],
   },
   {
