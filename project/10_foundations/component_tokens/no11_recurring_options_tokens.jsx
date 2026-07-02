@@ -47,6 +47,13 @@ const RECURRING_OPTIONS_TOKENS = {
   END_DATE_PILL_ICON_GAP:           SPACING.sm,
   END_DATE_PILL_DISABLED_OPACITY:   0.5,                                        // (literal: 永不時的淡出停用透明度，沿用 DISABLED_OPACITY 值)
   END_DATE_PILL_FADE_DURATION:      MOTION.duration.fastPlus,                   // 220ms，對齊 ListEmptyTransition 慣例
+
+  // ── 展開 / 收合動畫（高度撐開）
+  // 面板由所在畫面的定期觸發鈕展開或收合，內容高度 0 ↔ 自然高度過渡。
+  // 高度撐開比 END_DATE_PILL 的 crossfade 份量重，用 base(300ms) 較從容；
+  // easing 走 standard，展開與收合對稱進出。impl 端由通用 AnimatedCollapse 消費同源 MOTION 值。
+  EXPAND_DURATION:                  MOTION.duration.base,                       // 300ms
+  EXPAND_EASING:                    MOTION.easing.standard,                     // cubic-bezier(0.4, 0, 0.2, 1)
 };
 
 Object.assign(window, { RECURRING_OPTIONS_TOKENS });
