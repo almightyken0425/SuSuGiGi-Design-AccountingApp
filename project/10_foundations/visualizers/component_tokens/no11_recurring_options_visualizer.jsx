@@ -30,6 +30,8 @@ const RECURRING_OPTIONS_TOKEN_DESC = {
   END_DATE_PILL_ICON_GAP:            '日期 pill 圖示與文字間距',
   END_DATE_PILL_DISABLED_OPACITY:    '永不選中時日期 pill 的淡出停用透明度',
   END_DATE_PILL_FADE_DURATION:       '日期 pill opacity 切換的 transition 時間（220ms）',
+  EXPAND_DURATION:                   '面板展開 / 收合的高度撐開 transition 時間（300ms）',
+  EXPAND_EASING:                     '高度撐開的 easing 曲線（展開收合對稱進出）',
 };
 
 const RECURRING_OPTIONS_TOKEN_SOURCE = {
@@ -60,6 +62,8 @@ const RECURRING_OPTIONS_TOKEN_SOURCE = {
   END_DATE_PILL_ICON_GAP:            'SPACING.sm',
   END_DATE_PILL_DISABLED_OPACITY:    '0.5 (literal)',
   END_DATE_PILL_FADE_DURATION:       'MOTION.duration.fast + 20',
+  EXPAND_DURATION:                   'MOTION.duration.base',
+  EXPAND_EASING:                     'MOTION.easing.standard',
 };
 
 function FoundationsCTRecurringOptionsSection() {
