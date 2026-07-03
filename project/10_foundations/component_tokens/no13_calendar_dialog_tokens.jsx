@@ -47,10 +47,21 @@ const CALENDAR_DIALOG_TOKENS = {
   MIDDLE_AREA_HEIGHT:           288,                                           // (literal: 星期列 + 6 列日格的總高；月格 3 列撐同高)
   GRID_COL_GAP:                 SPACING.xs,
 
-  // ── 中段翻頁互動（design 仲裁，無 token 值）
-  // 月份／年份採縱向單頁 native snap 分頁：日模式上下滑切月、月模式上下滑切年，放手吸附整頁、後一個月在下方。
-  // impl 端為 vertical FlatList pagingEnabled（沿用 home screen period paging 的 FlatList 分頁機制、方向改縱向）；
-  // 為 native 慣性吸附、非 token 計時，故此處只記決議、不出 duration／easing token。canvas 無法 mock swipe。
+  // ── 中段翻頁互動與動畫
+  // 翻頁吸附本身：月份／年份採縱向單頁 native snap 分頁（日模式上下滑切月、月模式上下滑切年，放手吸附整頁、
+  // 後一個月在下方）。impl 端為 vertical FlatList pagingEnabled（沿用 home screen period paging 機制、方向改縱向）；
+  // 為 native 慣性吸附，吸附計時本身不出 token。
+  // 標題更新（header pulse）：翻頁每跨一個月／年，標題列即時更新（不再等捲動停止），換值時標題做一次垂直位移淡入脈衝、
+  // 方向順捲動；快滑連續跨頁時只換值、停頓才 settle 一次脈衝。
+  // 日↔月切換（Zoom）：點標題列切子模式時，離場視圖縮放淡出、進場視圖從縮放淡入（拉遠／拉近語意）。
+  // canvas 無法 mock swipe；header pulse 於 canvas 用「模擬翻頁」按鈕示範，Zoom 於 canvas 點標題列示範。
+  VIEW_SWITCH_DURATION:         MOTION.duration.fast,                          // 日↔月切換進出場時長（200）
+  VIEW_SWITCH_EASING:           MOTION.easing.emphasized,                      // 日↔月切換緩動（強調曲線）
+  VIEW_SWITCH_ENTER_SCALE:      0.92,                                          // (literal: 進場視圖起始縮放，放大回 1)
+  VIEW_SWITCH_EXIT_SCALE:       1.06,                                          // (literal: 離場視圖終點縮放，自 1 放大並淡出)
+  HEADER_PULSE_DURATION:        MOTION.duration.instant,                       // 標題逐頁換值脈衝時長（100）
+  HEADER_PULSE_EASING:          MOTION.easing.decelerate,                      // 標題脈衝緩動（減速落定）
+  HEADER_PULSE_TRANSLATE:       8,                                             // (literal: 逐頁換值標題垂直位移 px，方向順捲動)
 
   // ── Day Grid 日格（7 欄 × 6 列；選中圓固定尺寸置中於 cell，不隨 row 高變）
   DAY_CELL_TEXT_SIZE:           TYPOGRAPHY.size.base,
