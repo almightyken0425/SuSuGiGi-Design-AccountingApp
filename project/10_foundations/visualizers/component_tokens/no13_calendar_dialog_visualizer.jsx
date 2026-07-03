@@ -42,6 +42,13 @@ const CALENDAR_DIALOG_TOKEN_DESC = {
   WHEEL_DIM_OPACITY:          '滾輪非選中行淡化',
   WHEEL_SEPARATOR_TEXT:       '時分分隔符',
   WHEEL_GROUP_GAP:            '時/分兩滾輪組間距',
+  VIEW_SWITCH_DURATION:       '日↔月切換進出場時長',
+  VIEW_SWITCH_EASING:         '日↔月切換緩動曲線',
+  VIEW_SWITCH_ENTER_SCALE:    '進場視圖起始縮放',
+  VIEW_SWITCH_EXIT_SCALE:     '離場視圖終點縮放',
+  HEADER_PULSE_DURATION:      '標題逐頁換值脈衝時長',
+  HEADER_PULSE_EASING:        '標題脈衝緩動曲線',
+  HEADER_PULSE_TRANSLATE:     '標題逐頁換值垂直位移',
 };
 
 const CALENDAR_DIALOG_TOKEN_SOURCE = {
@@ -84,6 +91,13 @@ const CALENDAR_DIALOG_TOKEN_SOURCE = {
   WHEEL_DIM_OPACITY:          '0.3 (literal: 非選中淡化)',
   WHEEL_SEPARATOR_TEXT:       "':' (literal: 時分分隔符)",
   WHEEL_GROUP_GAP:            'SPACING.md',
+  VIEW_SWITCH_DURATION:       'MOTION.duration.fast (200)',
+  VIEW_SWITCH_EASING:         'MOTION.easing.emphasized',
+  VIEW_SWITCH_ENTER_SCALE:    '0.92 (literal: 進場起始縮放)',
+  VIEW_SWITCH_EXIT_SCALE:     '1.06 (literal: 離場終點縮放)',
+  HEADER_PULSE_DURATION:      'MOTION.duration.instant (100)',
+  HEADER_PULSE_EASING:        'MOTION.easing.decelerate',
+  HEADER_PULSE_TRANSLATE:     '8 (literal: 逐頁換值垂直位移 px)',
 };
 
 function FoundationsCTCalendarDialogSection() {

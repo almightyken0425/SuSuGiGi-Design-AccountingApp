@@ -1709,6 +1709,31 @@ function CalendarDialog({ mode = 'datetime' }) {
   const [day, setDay] = useState(30);
   const [hh] = useState(12);
   const [mm] = useState(47);
+  // canvas 動畫示範 state（impl 走 reanimated；此處用 transform + transition 鏡射體感）
+  const [gridAnim, setGridAnim] = useState({ scale: 1, opacity: 1 });   // 日↔月 Zoom 進場
+  const [headerAnim, setHeaderAnim] = useState({ ty: 0, opacity: 1 });  // 標題逐頁換值脈衝
+
+  // 雙 rAF：先套起始 transform、下一幀過渡回定位，讓 CSS transition 有起點可補間。
+  const settleNext = (setter, settled) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => setter(settled)));
+  };
+  // 點標題列：切日↔月子模式，進場視圖 Zoom（切月自大縮入＝拉遠、切日自小放大＝拉近）。
+  const toggleView = () => {
+    const next = view === 'day' ? 'month' : 'day';
+    setView(next);
+    setGridAnim({ scale: next === 'month' ? C.VIEW_SWITCH_EXIT_SCALE : C.VIEW_SWITCH_ENTER_SCALE, opacity: 0 });
+    settleNext(setGridAnim, { scale: 1, opacity: 1 });
+  };
+  // canvas 示範：模擬翻一頁（impl 為真實 swipe）。標題即時換值 + 脈衝。
+  const stepPage = () => {
+    if (view === 'day') {
+      if (month === 11) { setYear(year + 1); setMonth(0); } else { setMonth(month + 1); }
+    } else {
+      setYear(year + 1);
+    }
+    setHeaderAnim({ ty: C.HEADER_PULSE_TRANSLATE, opacity: 0.25 });
+    settleNext(setHeaderAnim, { ty: 0, opacity: 1 });
+  };
 
   const p2 = (n) => String(n).padStart(2, '0');
   const pillText = mode === 'datetime'
@@ -1797,19 +1822,27 @@ function CalendarDialog({ mode = 'datetime' }) {
       <div onClick={(e) => e.stopPropagation()} style={{
         width: C.CARD_WIDTH, background: TOKENS.surface, borderRadius: C.CARD_RADIUS, padding: C.CARD_PADDING,
       }}>
-        <button onClick={() => setView(view === 'day' ? 'month' : 'day')} style={{
+        <button onClick={toggleView} style={{
           width: '100%', height: C.HEADER_HEIGHT,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit',
           marginBottom: C.HEADER_BOTTOM_MARGIN, padding: 0,
         }}>
-          <span style={{ fontSize: C.HEADER_TEXT_SIZE, fontWeight: C.HEADER_TEXT_WEIGHT, color: TOKENS.ink }}>
+          <span style={{
+            display: 'inline-block', fontSize: C.HEADER_TEXT_SIZE, fontWeight: C.HEADER_TEXT_WEIGHT, color: TOKENS.ink,
+            transform: `translateY(${headerAnim.ty}px)`, opacity: headerAnim.opacity,
+            transition: `transform ${C.HEADER_PULSE_DURATION}ms ${C.HEADER_PULSE_EASING}, opacity ${C.HEADER_PULSE_DURATION}ms ${C.HEADER_PULSE_EASING}`,
+          }}>
             {view === 'day' ? `${year}/${month + 1}` : `${year}`}
           </span>
         </button>
 
         {view === 'day' && (
-          <div style={{ height: C.MIDDLE_AREA_HEIGHT, display: 'flex', flexDirection: 'column' }}>
+          <div style={{
+            height: C.MIDDLE_AREA_HEIGHT, display: 'flex', flexDirection: 'column',
+            transform: `scale(${gridAnim.scale})`, opacity: gridAnim.opacity, transformOrigin: 'center center',
+            transition: `transform ${C.VIEW_SWITCH_DURATION}ms ${C.VIEW_SWITCH_EASING}, opacity ${C.VIEW_SWITCH_DURATION}ms ${C.VIEW_SWITCH_EASING}`,
+          }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', marginBottom: C.WEEKDAY_ROW_BOTTOM_MARGIN }}>
               {CAL_DOW.map((w, i) => (
                 <div key={i} style={{ textAlign: 'center', fontSize: C.WEEKDAY_TEXT_SIZE, fontWeight: C.WEEKDAY_TEXT_WEIGHT, color: TOKENS.ink2 }}>{w}</div>
@@ -1822,7 +1855,11 @@ function CalendarDialog({ mode = 'datetime' }) {
         )}
 
         {view === 'month' && (
-          <div style={{ height: C.MIDDLE_AREA_HEIGHT, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gridTemplateRows: 'repeat(3, 1fr)', columnGap: C.GRID_COL_GAP, justifyItems: 'center' }}>
+          <div style={{
+            height: C.MIDDLE_AREA_HEIGHT, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gridTemplateRows: 'repeat(3, 1fr)', columnGap: C.GRID_COL_GAP, justifyItems: 'center',
+            transform: `scale(${gridAnim.scale})`, opacity: gridAnim.opacity, transformOrigin: 'center center',
+            transition: `transform ${C.VIEW_SWITCH_DURATION}ms ${C.VIEW_SWITCH_EASING}, opacity ${C.VIEW_SWITCH_DURATION}ms ${C.VIEW_SWITCH_EASING}`,
+          }}>
             {CAL_MONTHS.map(monthCell)}
           </div>
         )}
@@ -1834,6 +1871,14 @@ function CalendarDialog({ mode = 'datetime' }) {
             {wheelCol(mm)}
           </div>
         )}
+        <button onClick={stepPage} style={{
+          width: '100%', marginTop: C.WHEEL_TOP_MARGIN, padding: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit',
+          fontSize: C.WEEKDAY_TEXT_SIZE, color: TOKENS.ink2,
+        }}>
+          canvas 示範 · 模擬翻頁 ↓（看標題逐頁脈衝）
+        </button>
       </div>
     </div>
   ) : null;
