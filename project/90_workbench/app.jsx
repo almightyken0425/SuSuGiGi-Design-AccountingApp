@@ -750,6 +750,14 @@ const EXPLORATION_GROUPS = [
       { id: 'segmented-pill', label: 'Axis · Segmented Pill', render: () => <UndoBarSegmentedPillSection/> },
     ],
   },
+  {
+    id: 'app-icon', label: 'App Icon',
+    topics: [
+      { id: 'calligraphy',  label: 'Axis 1 · 書法飛白 (v1)',   render: () => <AppIconCalligraphySection/> },
+      { id: 'speed-forms',  label: 'Axis 2 · 非書法速度 (v2)', render: () => <AppIconSpeedFormsSection/> },
+      { id: 'six-forms',    label: 'Axis 3 · 六形態 (v3)',      render: () => <AppIconSixFormsSection/> },
+    ],
+  },
 ];
 
 // 找 Foundations group / topic 的 helper。沒命中時回 fallback（atomic/type）。
