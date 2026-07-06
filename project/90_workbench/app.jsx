@@ -756,6 +756,8 @@ const EXPLORATION_GROUPS = [
       { id: 'calligraphy',  label: 'Axis 1 · 書法飛白 (v1)',   render: () => <AppIconCalligraphySection/> },
       { id: 'speed-forms',  label: 'Axis 2 · 非書法速度 (v2)', render: () => <AppIconSpeedFormsSection/> },
       { id: 'six-forms',    label: 'Axis 3 · 六形態 (v3)',      render: () => <AppIconSixFormsSection/> },
+      { id: 'broadscan',    label: 'Axis 4 · 命名廣掃 135 案',  render: () => <AppIconBroadscanSection/> },
+      { id: 'factorial',    label: 'Axis 5 · 因子實驗 K/L/N',   render: () => <AppIconFactorialSection/> },
     ],
   },
 ];
