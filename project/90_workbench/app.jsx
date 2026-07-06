@@ -758,6 +758,7 @@ const EXPLORATION_GROUPS = [
       { id: 'six-forms',    label: 'Axis 3 · 六形態 (v3)',      render: () => <AppIconSixFormsSection/> },
       { id: 'broadscan',    label: 'Axis 4 · 命名廣掃 135 案',  render: () => <AppIconBroadscanSection/> },
       { id: 'factorial',    label: 'Axis 5 · 因子實驗 K/L/N',   render: () => <AppIconFactorialSection/> },
+      { id: 'glide-refinement', label: 'Axis 6 · 深化場 Glide+K15',     render: () => <AppIconGlideRefinementSection/> },
     ],
   },
 ];
