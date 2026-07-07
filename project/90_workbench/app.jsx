@@ -693,6 +693,7 @@ const FOUNDATIONS_GROUPS = [
     id: 'brand', label: 'Brand',
     topics: [
       { id: 'ui-glyphs', label: 'UI Glyphs', render: () => <FoundationsBrandUIGlyphsSection/> },
+      { id: 'brand-logo', label: 'Brand Logo · 無底三線', render: () => <FoundationsBrandLogoSection/> },
     ],
   },
   {
