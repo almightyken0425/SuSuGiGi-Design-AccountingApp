@@ -5,7 +5,7 @@
 //   LoginBranding / LoginGoogleButton / LoginFooter
 // ─────────────────────────────────────────────────────────────
 
-// ─── LoginBranding ─── App 名稱 + tagline（flex 2 區域置中）
+// ─── LoginBranding ─── 品牌標誌 $wish（flex 2 區域置中）
 function LoginBranding() {
   const T = LOGIN_SCREEN_TOKENS;
   return (
@@ -19,18 +19,12 @@ function LoginBranding() {
         fontSize: T.APP_NAME_FONT_SIZE,
         fontWeight: T.APP_NAME_WEIGHT,
         color: TOKENS.p500,
-        marginBottom: T.APP_NAME_BOTTOM_MARGIN,
       }}>$wish</div>
-      <div style={{
-        fontSize: T.TAGLINE_FONT_SIZE,
-        color: TOKENS.ink2,
-        textAlign: 'center',
-      }}>輕巧、簡單的個人記帳</div>
     </div>
   );
 }
 
-// ─── LoginGoogleButton ─── primary 色登入按鈕（含 'G' icon + disclaimer）
+// ─── LoginGoogleButton ─── primary 色登入按鈕（含 'G' icon）
 function LoginGoogleButton({ loading }) {
   const T = LOGIN_SCREEN_TOKENS;
   return (
@@ -78,25 +72,34 @@ function LoginGoogleButton({ loading }) {
           </>
         )}
       </div>
-      <div style={{
-        marginTop: T.DISCLAIMER_TOP_MARGIN,
-        fontSize: T.DISCLAIMER_FONT_SIZE,
-        color: TOKENS.ink2,
-        textAlign: 'center',
-        paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
-      }}>登入即代表您同意我們的服務條款與隱私權政策</div>
     </div>
   );
 }
 
-// ─── LoginFooter ─── 版權字
+// ─── LoginFooter ─── 條款說明句 + 法律連結 + 版權（column）
 function LoginFooter() {
   const T = LOGIN_SCREEN_TOKENS;
   return (
     <div style={{
       paddingBottom: T.FOOTER_PADDING_BOTTOM,
-      display: 'flex', justifyContent: 'center',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', gap: T.FOOTER_GAP,
     }}>
+      <div style={{
+        fontSize: T.DISCLAIMER_FONT_SIZE,
+        color: TOKENS.ink2,
+        textAlign: 'center',
+        paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
+      }}>登入即表示您同意我們的使用條款與隱私政策</div>
+      {/* legal 連結 ─ 對齊 paywall PaywallBottomLinks：underline、· 分隔、inkTertiary */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: SPACING.sm,
+        fontSize: T.LEGAL_SIZE, color: TOKENS.inkTertiary,
+      }}>
+        <span style={{ textDecoration: 'underline' }}>使用條款</span>
+        <span>·</span>
+        <span style={{ textDecoration: 'underline' }}>隱私政策</span>
+      </div>
       <span style={{
         fontSize: T.FOOTER_FONT_SIZE,
         color: TOKENS.ink2,
