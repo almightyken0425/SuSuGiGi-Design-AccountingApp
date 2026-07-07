@@ -261,20 +261,30 @@ function PeriodSwitcher({ label }) {
 //   - 收入弧：從 12 點往右 (CW)，金額大者鄰近交會點
 //   - 支出弧：從 12 點往左 (CCW)，金額大者鄰近交會點
 //   - 兩弧在底部某點交會，比例 = expenseTotal : incomeTotal
+//
+// slice 顯示門檻（對齊 impl DonutChart computeBidirectionalSliceInfo）：
+// 以原始總額為分母，占比 < DONUT_MIN_SLICE_ANGLE_DEG/360 的 slice 整片拔除，
+// 其餘 slice 以剩餘總額重新正規化鋪滿整圈。只判一輪、不回鍋。
 function DonutHero({ expenseData, incomeData, totals, chartMode }) {
   const T = HOME_SCREEN_TOKENS;
   const TAU = 2 * Math.PI;
   // 單側資料的 12 點開口由 DonutChart 的 pad 產生（單片占滿整圈時頭尾各內縮 pad/2，
   // 留下與一般 slice 交接一致的縫），此處資料層不另保留寬縫。
-  const expenseTotal = expenseData.reduce((s, x) => s + x.value, 0);
-  const incomeTotal = incomeData.reduce((s, x) => s + x.value, 0);
+  const minShare = T.DONUT_MIN_SLICE_ANGLE_DEG / 360;
+  const rawTotal = expenseData.reduce((s, x) => s + x.value, 0)
+    + incomeData.reduce((s, x) => s + x.value, 0);
+  const keptExpense = rawTotal > 0 ? expenseData.filter(x => x.value / rawTotal >= minShare) : [];
+  const keptIncome = rawTotal > 0 ? incomeData.filter(x => x.value / rawTotal >= minShare) : [];
+
+  const expenseTotal = keptExpense.reduce((s, x) => s + x.value, 0);
+  const incomeTotal = keptIncome.reduce((s, x) => s + x.value, 0);
   const totalAll = expenseTotal + incomeTotal;
 
   let slices = [];
   if (totalAll > 0) {
     const rExpense = expenseTotal / totalAll;
     // 收入側：reverse 後正向累加，從 0 走到 +TAU × rIncome
-    const incomeReversed = [...incomeData].reverse();
+    const incomeReversed = [...keptIncome].reverse();
     let accIncome = 0;
     const incomeSlices = incomeReversed.map(d => {
       const sweep = (d.value / totalAll) * TAU;
@@ -285,7 +295,7 @@ function DonutHero({ expenseData, incomeData, totals, chartMode }) {
     });
     // 支出側：不 reverse，正向累加，最後整體平移 -TAU × rExpense
     let accExpense = 0;
-    const expenseSlices = expenseData.map(d => {
+    const expenseSlices = keptExpense.map(d => {
       const sweep = (d.value / totalAll) * TAU;
       const start = accExpense - TAU * rExpense;
       const end = accExpense + sweep - TAU * rExpense;

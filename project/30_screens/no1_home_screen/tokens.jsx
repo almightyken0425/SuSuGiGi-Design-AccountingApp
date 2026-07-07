@@ -25,6 +25,7 @@ const HOME_SCREEN_TOKENS = {
   // ── DonutHero（圓餅圖 + 中央文字區）
   DONUT_BOTTOM_GAP:                      SPACING.md,
   DONUT_CENTER_TEXT_WIDTH:               100,                                   // (literal: 配合 DonutChart inner radius 76 的中央可用寬度)
+  DONUT_MIN_SLICE_ANGLE_DEG:             10,                                    // (literal: slice 顯示門檻；角度占比低於此值拔除後重新正規化，對齊 impl DonutChart MIN_SLICE_ANGLE_DEG)
 
   // ── FocusRow（expense / income 切換的兩張 FocusCard）
   FOCUS_ROW_GAP:                         SPACING.md,
