@@ -2,8 +2,7 @@
 
 本檔由 claude.ai/design 在 2026-05-18 整理產出，描述 $wish 的品牌政策（語氣、視覺基礎、icon 風格）。**Token 數字的權威來源仍是 `project/10_foundations/data.jsx`**，本檔只描述「為什麼這樣設計」與「用在哪」。
 
-<!-- TODO：本段品牌字源屬舊名「簌簌計計」（疊字擬聲），$wish 的字義與語氣定位待補後改寫本段。 -->
-品牌名稱 **$wish**（「簌簌計計」）來自疊字擬聲，暗示「每筆交易快速、輕巧、習慣性地被記下」這個小動作。產品是一個單人記帳工具，記下支出、收入、轉帳；依類別或日期分組；用一張 donut chart + focus row 一頁回顧每個月。
+品牌名稱 **$wish** 是 swish 與 $ 的雙關：swish 是物體快速掠過的聲音，籃球空心入網也叫 swish，兼有快與準兩層語感。中文名「速速記記」直指本意——最快記完一筆帳，底層訴求是摩擦力最小、表象是速度。產品是一個單人記帳工具，記下支出、收入、轉帳；依類別或日期分組；用一張 donut chart + focus row 一頁回顧每個月。
 
 ---
 
@@ -170,3 +169,15 @@ box-shadow:      0 4px 12px rgba(0,0,0,0.10);
 **Emoji。** 從不使用。
 
 **Unicode 當 icon。** 有限：`$` `€` `£` `¥` 在 currency glyph（`currency-usd` 等）用文字渲染，因為小尺寸下比 stylized SVG 還清楚。Nav-back 的 chevron 是 SVG，從不用 `‹` 或 `←`。
+
+---
+
+## App icon
+
+**定案 G4 · 2026-07-07。** 三條微弧、純條內漸層（尾淡頭實）、走勢 30°、淺底 `#F2F2F7`、紫 `#4323A0`。形的語意：速度的殘影，swish 的視覺化——三道剛掠過的痕，尾端還在消散。無字母、無符號、無物件。
+
+**單一版本政策。** 不做 dark / tinted / clear 專屬變體，橘 `#F24F13` 不進 icon；系統外觀模式交由平台自動處理。理由：icon 與 app 內裝同屬 quiet register，變體會稀釋識別。
+
+**權威來源。** 幾何常數在 `project/10_foundations/visualizers/brand/no2_app_icon.jsx`（`APP_ICON_G4`），0..100 座標、勿目測改值。跟進端：impl 的 iOS `AppIcon.appiconset/icon-1024.png` 與 Android `mipmap-*`＋adaptive（`drawable/ic_launcher_foreground.xml`、背景 `#F2F2F7`）。
+
+**演進紀錄。** 探索與收斂全程在 design canvas Explorations > App Icon（Axis 1 書法飛白 → Axis 4 命名廣掃 135 案 → Axis 5 因子實驗 → Axis 6 深化場、角度掃描定 30°）。
