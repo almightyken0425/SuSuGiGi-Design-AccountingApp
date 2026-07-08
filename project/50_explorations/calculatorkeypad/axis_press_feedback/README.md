@@ -65,6 +65,9 @@
 `Resolved · 2026-07-08`
 
 - 定案 P1 品牌色輕染
+- 按下時數字鍵玻璃白邊隨磚面一併蓋掉
+    - 按下不留白圈
+    - 放開隨 PRESS_RELEASE_MS 淡回
 - 已落地元件 token 表與元件定義
     - token 表位於 Foundations 的 Component Tokens 分頁
     - 元件定義同步吃 token 與按壓回饋
@@ -75,3 +78,4 @@
 
 - 2026-07-08 · 初版：並列 P0 至 P5 六 variant、留 open question
 - 2026-07-08 · 定案：P1 品牌色輕染、落地 KEYPAD_TOKENS 與元件定義
+- 2026-07-08 · refine：按下白邊一併蓋掉不留白圈、放開淡回
