@@ -643,7 +643,9 @@ function ComponentsInputSection() {
         </DCArtboard>
         <DCArtboard id="comp-keypad" label="CalculatorKeypad · 1-2-3-+ / 4-5-6-− / 7-8-9-× / .-0-=-÷ (live)" width={402} height={320}>
           <CompFrame style={{ padding: 0 }}>
-            <CalculatorKeypad onPress={()=>{}}/>
+            <div style={{ background: TOKENS.surface, borderTop: `1px solid ${TOKENS.border}`, paddingTop: KEYPAD_TOKENS.DOCK_PADDING_TOP }}>
+              <CalculatorKeypad onPress={()=>{}}/>
+            </div>
           </CompFrame>
         </DCArtboard>
         <DCArtboard id="comp-glass" label="GlassView · pill (live)" width={402} height={140}>

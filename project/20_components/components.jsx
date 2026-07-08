@@ -1199,7 +1199,9 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
 // impl 與 design 一致使用 Unicode ×、÷（運算判定見 impl useCalculator.ts 的 ['+', '-', '×', '÷']）
 // 左區 4 row × 3 col 數字；右側 operator column 5 鍵（⌫ + - × ÷），
 // operator 鍵均分左區 4 row 總高度，每鍵 ≈ 數字鍵 × 0.8（不對稱 grid）。
-// container: padding CONTAINER_PADDING, bg surface, borderTop 1px border.base
+// container 只排格盤：padding 左右下 CONTAINER_PADDING、上 0。
+// 底、分隔線、上緣呼吸（DOCK_PADDING_TOP）由外層 dock 承載（screen 的 keypad
+// 容器 / impl AnimatedKeypad），鍵盤自己不畫底與線——單一擁有者，避免雙層冗餘。
 // 視覺參數由 KEYPAD_TOKENS 提供（Foundations > Component Tokens > Keypad）。
 // 按壓回饋為 Press Feedback 軸 P1 定案：按下磚面染色（數字 p50 / op p100 實色）、
 // 按下即時、放開 PRESS_RELEASE_MS 回復；impl 端 press 色由 theme 動態接
@@ -1245,9 +1247,10 @@ function CalculatorKeypad({ onPress }) {
 
   return (
     <div style={{
-      padding: T.CONTAINER_PADDING,
-      background: TOKENS.surface,
-      borderTop: `1px solid ${TOKENS.border}`,
+      paddingTop: 0,
+      paddingLeft: T.CONTAINER_PADDING,
+      paddingRight: T.CONTAINER_PADDING,
+      paddingBottom: T.CONTAINER_PADDING,
       display: 'flex', flexDirection: 'row',
     }}>
       {/* 數字區 · flex 3 */}
