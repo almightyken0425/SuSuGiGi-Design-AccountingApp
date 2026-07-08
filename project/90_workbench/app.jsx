@@ -719,6 +719,12 @@ const EXPLORATION_GROUPS = [
     ],
   },
   {
+    id: 'homefilterscreen', label: 'Home Filter Screen',
+    topics: [
+      { id: 'layout-restructure', label: 'Axis · Layout Restructure', render: () => <HomeFilterLayoutSection/> },
+    ],
+  },
+  {
     id: 'searchscreen', label: 'Search Screen',
     topics: [
       { id: 'list-treatment', label: 'Axis · List Treatment', render: () => <SearchListTreatmentSection/> },
