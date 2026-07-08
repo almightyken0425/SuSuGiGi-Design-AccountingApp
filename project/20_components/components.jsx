@@ -1206,6 +1206,9 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
 // 按壓回饋為 Press Feedback 軸 P1 定案：按下磚面染色（數字 p50 / op p100 實色）、
 // 按下即時、放開 PRESS_RELEASE_MS 回復；impl 端 press 色由 theme 動態接
 // primary[50] / primary[100]。
+// 按下時數字鍵玻璃白邊隨磚面一併染透明（蓋掉、不留白圈）、放開隨
+// PRESS_RELEASE_MS 淡回；impl 對應：白邊改由獨立 border ring overlay 畫、
+// opacity 與 press tint 反向連動。
 function CalculatorKeypad({ onPress }) {
   const T = KEYPAD_TOKENS;
   const NUMBER_ROWS = [
@@ -1228,9 +1231,10 @@ function CalculatorKeypad({ onPress }) {
     backdropFilter: 'blur(28px) saturate(180%)',
     WebkitBackdropFilter: 'blur(28px) saturate(180%)',
     // 玻璃 highlight 白邊只留數字鍵；op 鍵淡紫底上白邊過搶、拔掉（impl 對應 GlassView border={false}）
-    border: isOp ? 'none' : `1px solid ${GLASS.border}`,
+    // 按下時白邊染透明、磚面染色鋪到外緣（background painted under border-box），放開淡回
+    border: isOp ? 'none' : `1px solid ${pressed ? 'transparent' : GLASS.border}`,
     boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
-    transition: pressed ? 'none' : `background ${T.PRESS_RELEASE_MS}ms`,
+    transition: pressed ? 'none' : `background ${T.PRESS_RELEASE_MS}ms, border-color ${T.PRESS_RELEASE_MS}ms`,
   });
   const keyLabel = (isOp) => ({
     position: 'relative', zIndex: 1,
