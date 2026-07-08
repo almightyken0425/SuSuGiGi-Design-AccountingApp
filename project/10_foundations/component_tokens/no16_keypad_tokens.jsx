@@ -2,7 +2,7 @@
 // KEYPAD_TOKENS · CalculatorKeypad 四則運算鍵盤
 //
 // Key Visual 軸定案鍵面留用 V0 玻璃磚；Press Feedback 軸定案 P1 品牌色輕染。
-// 鍵面玻璃參數沿用 GLASS；press 色為 canvas 快照值，
+// 鍵面玻璃參數沿用 GLASS；dock 視覺單一擁有者為外層殼；press 色為 canvas 快照值，
 // impl 端由 theme 動態接 primary[50] / primary[100]。
 // ─────────────────────────────────────────────────────────────
 
@@ -20,6 +20,10 @@ const KEYPAD_TOKENS = {
 
   // ── 鍵面染色
   OP_TINT:             `${TOKENS.p100}80`,  // operator 鍵玻璃染色（8-bit hex alpha 50%）
+
+  // ── dock（外層殼承載：screen keypad 容器 / impl AnimatedKeypad）
+  // 鍵盤自己不畫底與線；surface 底、borderTop、上緣呼吸、底部 safe padding 全由 dock 畫。
+  DOCK_PADDING_TOP:    SPACING.lg,           // dock 上緣呼吸（分隔線到第一排鍵）
 
   // ── 按壓回饋（Press Feedback 軸 P1 定案）
   PRESS_TINT_NUMBER:   TOKENS.p50,          // 按下數字鍵磚面染色

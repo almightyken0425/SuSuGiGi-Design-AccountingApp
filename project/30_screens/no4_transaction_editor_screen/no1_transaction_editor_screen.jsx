@@ -78,6 +78,7 @@ function TransactionEditorScreen({
           position: 'absolute', bottom: 0, left: 0, right: 0,
           background: TOKENS.surface,
           borderTop: `1px solid ${TOKENS.border}`,
+          paddingTop: KEYPAD_TOKENS.DOCK_PADDING_TOP,
           paddingBottom: T.KEYPAD_BOTTOM_PADDING,
         }}>
           <CalculatorKeypad onPress={(k) => {
