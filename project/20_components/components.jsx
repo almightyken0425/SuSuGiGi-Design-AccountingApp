@@ -1700,14 +1700,15 @@ function RecurringOptions({
 // 即看即試：自包 state。mode='datetime' 含時間滾輪、mode='date' 純日期無滾輪。
 // 月曆計算為純 JS（給定 year/month 推星期與天數），初始值固定 2026/5/30 12:47 對齊 spec 範例。
 // 月曆格（design 仲裁）：僅鋪當月日期、相鄰月位置留白不顯示（iOS 月曆慣例）；固定 6 列框架，
-//   列數不足的月份尾列留白，dialog 高度恆定不跳。星期列標籤與週起始日依使用者語系
-//   （CLDR 慣例：zh-Hant／en／ja 等週日起、zh-Hans／de／fr 等週一起）；canvas 以 zh-Hant 週日起示範。
+//   列數不足的月份尾列留白，dialog 高度恆定不跳。星期列標籤語言依使用者語系；週起始日依
+//   weekStart 偏好——auto 跟隨語系慣例（CLDR：zh-Hant／en／ja 等週日起、zh-Hans／de／fr 等週一起）、
+//   或固定週日／週一；canvas 以 zh-Hant 週日起示範。
 // dialog 用 absolute 蓋滿 artboard frame（沿用 ConfirmDialog 慣例，frame 需 relative）。
 // 翻頁互動（design 仲裁）：月份／年份採縱向單頁 native snap 分頁——日模式上下滑切月、月模式上下滑切年，
 //   放手吸附整頁、後一個月在下方。impl 端為 vertical FlatList pagingEnabled，沿用 home screen
 //   period paging 的 FlatList 分頁機制、方向改縱向；canvas 無法 mock 真實 swipe，僅鏡射單月結構。
 //   本決議同步記於 no13_calendar_dialog_tokens.jsx。
-const CAL_DOW = ['日','一','二','三','四','五','六'];   // canvas 示範用 zh-Hant 標籤（週日起）
+const CAL_DOW = ['日','一','二','三','四','五','六'];   // canvas 示範值：zh-Hant、週日起；實際順序依 weekStart 偏好，非規則
 const CAL_MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 
 // 月曆 grid：offset 個留白 + 當月日期，補滿 42 格（尾端留白）。null = 留白格。

@@ -20,7 +20,7 @@ const CALENDAR_DIALOG_TOKEN_DESC = {
   HEADER_TEXT_WEIGHT:         '標題列字重',
   HEADER_HEIGHT:              '標題列高度（可點切換日/月模式）',
   HEADER_BOTTOM_MARGIN:       '標題列與中段間距',
-  WEEKDAY_TEXT_SIZE:          '星期列字級（標籤依語系）',
+  WEEKDAY_TEXT_SIZE:          '星期列字級（標籤依語系、順序依 weekStart 偏好）',
   WEEKDAY_TEXT_WEIGHT:        '星期列字重',
   WEEKDAY_ROW_BOTTOM_MARGIN:  '星期列與日格間距（canvas mock）',
   WEEKDAY_ROW_HEIGHT:         '星期列固定行高（impl）',

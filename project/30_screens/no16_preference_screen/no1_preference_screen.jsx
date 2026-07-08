@@ -4,7 +4,7 @@
 // Push screen（從 Settings 主入口進入）。ListSection（無 title）：
 //   1. 啟動模式（value + chevron）
 //   2. 基礎幣別 + 幣別設定 + 匯率管理
-//   3. 語言 + 時區（value + chevron）
+//   3. 語言 + 時區 + 週起始日（value + chevron）
 //   4. 允許資料分析（switch）
 //   5. 登出（destructive，紅色文字）
 //
@@ -40,6 +40,7 @@ function PreferenceScreen() {
         <ListGroupCard>
           <ListItem title="語言" value={v.language} showChevron/>
           <ListItem title="時區" value={v.timeZone} showChevron/>
+          <ListItem title="週起始日" value={v.weekStart} showChevron/>
         </ListGroupCard>
       </ListSection>
 

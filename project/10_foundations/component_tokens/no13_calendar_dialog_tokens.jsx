@@ -35,7 +35,7 @@ const CALENDAR_DIALOG_TOKENS = {
   HEADER_BOTTOM_MARGIN:         SPACING.sm,
   // 標題列文字置中，無 chevron icon
 
-  // ── Weekday Row 星期列（標籤與週起始日依使用者語系；zh-Hant 為日一二三四五六、週日起）
+  // ── Weekday Row 星期列（標籤語言依使用者語系；週起始日依 weekStart 偏好：auto 跟隨語系慣例、或固定週日／週一）
   WEEKDAY_TEXT_SIZE:            TYPOGRAPHY.size.xs,
   WEEKDAY_TEXT_WEIGHT:          TYPOGRAPHY.weight.medium,
   WEEKDAY_ROW_BOTTOM_MARGIN:    SPACING.xs,                                    // (canvas mock 用：星期列 text + 下間距版)

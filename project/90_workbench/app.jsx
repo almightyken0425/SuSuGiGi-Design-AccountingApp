@@ -235,6 +235,11 @@ const SCREEN_META = {
     title: '啟動模式', present: 'modal', save: true,
     render: () => <LaunchModeSettingScreen/>,
   },
+  // ─── Week Start Setting ─── default
+  'week-start-setting': {
+    title: '週起始日', present: 'modal', save: true,
+    render: () => <WeekStartSettingScreen/>,
+  },
   // ─── Preference ─── default
   'preference': {
     title: '偏好設定', present: 'push', headerLeftText: '設定',
@@ -484,9 +489,17 @@ const SCREEN_GROUPS = [
     ],
   },
   {
+    id: 'week-start-setting',
+    title: 'Week Start Setting · 週起始日',
+    subtitle: '3 選 1 SelectionListItem（跟隨語系/週日/週一，src/screens/Settings/WeekStartSettingScreen.tsx）。Modal save form。',
+    screens: [
+      { id: 'week-start-setting', label: 'Default · 已選跟隨語系' },
+    ],
+  },
+  {
     id: 'preference',
     title: 'Preference · 偏好設定',
-    subtitle: 'section hub（啟動 · 幣別 · 語言/時區 · 資料分析 · 登出）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/PreferenceScreen.tsx）。主題切換為內部功能，不在此偏好流程。',
+    subtitle: 'section hub（啟動 · 幣別 · 語言/時區/週起始日 · 資料分析 · 登出）。每 row value + chevron 鏡射 impl context 值（src/screens/Settings/PreferenceScreen.tsx）。主題切換為內部功能，不在此偏好流程。',
     screens: [
       { id: 'preference', label: 'Default · 偏好設定主頁' },
     ],
