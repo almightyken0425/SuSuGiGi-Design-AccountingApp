@@ -677,6 +677,7 @@ const FOUNDATIONS_GROUPS = [
       { id: 'calendar-dialog',       label: 'Calendar Dialog',       render: () => <FoundationsCTCalendarDialogSection/> },
       { id: 'dual-picker-box',       label: 'Dual Picker Box',       render: () => <FoundationsCTDualPickerBoxSection/> },
       { id: 'editor-name-field',     label: 'Editor Name Field',     render: () => <FoundationsCTEditorNameFieldSection/> },
+      { id: 'keypad',                label: 'Keypad',                render: () => <FoundationsCTKeypadSection/> },
     ],
   },
   {
@@ -738,6 +739,13 @@ const EXPLORATION_GROUPS = [
     id: 'transfereditor', label: 'Transfer Editor',
     topics: [
       { id: 'box-framing', label: 'Axis · Box Framing', render: () => <TransferBoxFramingSection/> },
+    ],
+  },
+  {
+    id: 'calculatorkeypad', label: 'Calculator Keypad',
+    topics: [
+      { id: 'key-visual', label: 'Axis · Key Visual & Dock', render: () => <KeypadKeyVisualSection/> },
+      { id: 'press-feedback', label: 'Axis · Press Feedback', render: () => <KeypadPressFeedbackSection/> },
     ],
   },
   {

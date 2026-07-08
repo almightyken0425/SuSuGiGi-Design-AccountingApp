@@ -625,7 +625,7 @@ function ComponentsChartSection() {
 
 function ComponentsInputSection() {
   return (
-    <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色。對應 SWITCH_TOKENS 表見 Foundations > Component Tokens > Switch。">
+    <DCSection id="comp-input" title="Components · Input" subtitle="Switch / CalculatorKeypad / GlassView。CalculatorKeypad 是完整四則運算鍵盤，operator 用 primary[100]*0.5 玻璃染色，按壓回饋走 P1 品牌色輕染（KEYPAD_TOKENS 表見 Foundations > Component Tokens > Keypad）。對應 SWITCH_TOKENS 表見 Foundations > Component Tokens > Switch。">
       <DCFamily id="comp-input-family" title="Input Surfaces" subtitle="iOS 風格輸入相關元件：Switch、Calculator、Glass pill。">
         <DCArtboard id="comp-switch" label="Switch · active 走主題色 (live)" width={402} height={200}>
           <CompFrame style={{ padding: SPACING.xl }}>

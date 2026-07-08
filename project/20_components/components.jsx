@@ -1199,10 +1199,13 @@ function BottomSearchBar({ value, onChangeText, placeholder = '搜尋...', autoF
 // impl 與 design 一致使用 Unicode ×、÷（運算判定見 impl useCalculator.ts 的 ['+', '-', '×', '÷']）
 // 左區 4 row × 3 col 數字；右側 operator column 5 鍵（⌫ + - × ÷），
 // operator 鍵均分左區 4 row 總高度，每鍵 ≈ 數字鍵 × 0.8（不對稱 grid）。
-// container: padding SPACING.sm, bg surface, borderTop 1px border.base
-// number key: flex 1 height 60 marginHorizontal SPACING.xs
-// operator keys: GlassView with primary[100]*0.5 tint
+// container: padding CONTAINER_PADDING, bg surface, borderTop 1px border.base
+// 視覺參數由 KEYPAD_TOKENS 提供（Foundations > Component Tokens > Keypad）。
+// 按壓回饋為 Press Feedback 軸 P1 定案：按下磚面染色（數字 p50 / op p100 實色）、
+// 按下即時、放開 PRESS_RELEASE_MS 回復；impl 端 press 色由 theme 動態接
+// primary[50] / primary[100]。
 function CalculatorKeypad({ onPress }) {
+  const T = KEYPAD_TOKENS;
   const NUMBER_ROWS = [
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -1211,29 +1214,38 @@ function CalculatorKeypad({ onPress }) {
   ];
   // ⌫ 放 operator column 最上鍵，染紫色跟其他 operator 一致
   const OPS = ['⌫', '+', '-', '×', '÷'];
-  const N_HEIGHT = 60;
-  const ROW_GAP = SPACING.sm;
-  const TOTAL_H = N_HEIGHT * NUMBER_ROWS.length + ROW_GAP * (NUMBER_ROWS.length - 1);
+  const TOTAL_H = T.NUM_KEY_HEIGHT * NUMBER_ROWS.length + T.ROW_GAP * (NUMBER_ROWS.length - 1);
+  const [pressedKey, setPressedKey] = React.useState(null);
 
-  const keyVisual = (isOp) => ({
+  const keyVisual = (isOp, pressed) => ({
     position: 'absolute', inset: 0,
-    borderRadius: RADIUS.md,
-    background: isOp ? `${TOKENS.p100}80` : GLASS.tint,
+    borderRadius: T.KEY_RADIUS,
+    background: pressed
+      ? (isOp ? T.PRESS_TINT_OP : T.PRESS_TINT_NUMBER)
+      : (isOp ? T.OP_TINT : GLASS.tint),
     backdropFilter: 'blur(28px) saturate(180%)',
     WebkitBackdropFilter: 'blur(28px) saturate(180%)',
     border: `1px solid ${GLASS.border}`,
     boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
+    transition: pressed ? 'none' : `background ${T.PRESS_RELEASE_MS}ms`,
   });
   const keyLabel = (isOp) => ({
     position: 'relative', zIndex: 1,
-    fontSize: TYPOGRAPHY.size.xl,
-    fontWeight: TYPOGRAPHY.weight.medium,
+    fontSize: T.KEY_FONT_SIZE,
+    fontWeight: T.KEY_FONT_WEIGHT,
     color: isOp ? TOKENS.p500 : TOKENS.ink,
+  });
+  const pressHandlers = (key) => ({
+    onMouseDown: () => setPressedKey(key),
+    onMouseUp: () => setPressedKey(null),
+    onMouseLeave: () => setPressedKey(null),
+    onTouchStart: () => setPressedKey(key),
+    onTouchEnd: () => setPressedKey(null),
   });
 
   return (
     <div style={{
-      padding: SPACING.sm,
+      padding: T.CONTAINER_PADDING,
       background: TOKENS.surface,
       borderTop: `1px solid ${TOKENS.border}`,
       display: 'flex', flexDirection: 'row',
@@ -1243,17 +1255,17 @@ function CalculatorKeypad({ onPress }) {
         {NUMBER_ROWS.map((row, ri) => (
           <div key={ri} style={{
             display: 'flex', flexDirection: 'row',
-            marginBottom: ri === NUMBER_ROWS.length - 1 ? 0 : ROW_GAP,
+            marginBottom: ri === NUMBER_ROWS.length - 1 ? 0 : T.ROW_GAP,
           }}>
             {row.map(k => (
-              <button key={k} onClick={() => onPress && onPress(k)} style={{
-                flex: 1, height: N_HEIGHT,
-                marginLeft: SPACING.xs, marginRight: SPACING.xs,
+              <button key={k} onClick={() => onPress && onPress(k)} {...pressHandlers(k)} style={{
+                flex: 1, height: T.NUM_KEY_HEIGHT,
+                marginLeft: T.COL_GAP, marginRight: T.COL_GAP,
                 border: 'none', position: 'relative', overflow: 'hidden',
-                borderRadius: RADIUS.md, cursor: 'pointer', fontFamily: 'inherit',
+                borderRadius: T.KEY_RADIUS, cursor: 'pointer', fontFamily: 'inherit',
                 background: 'transparent', padding: 0,
               }}>
-                <div style={keyVisual(false)}/>
+                <div style={keyVisual(false, pressedKey === k)}/>
                 <span style={keyLabel(false)}>{k}</span>
               </button>
             ))}
@@ -1262,20 +1274,20 @@ function CalculatorKeypad({ onPress }) {
       </div>
       {/* operator column · flex 1 · 5 鍵均分 TOTAL_H */}
       <div style={{
-        flex: 1, marginLeft: SPACING.xs, marginRight: SPACING.xs,
+        flex: 1, marginLeft: T.COL_GAP, marginRight: T.COL_GAP,
         height: TOTAL_H,
         display: 'flex', flexDirection: 'column',
       }}>
         {OPS.map((op, oi) => (
-          <button key={op} onClick={() => onPress && onPress(op)} style={{
+          <button key={op} onClick={() => onPress && onPress(op)} {...pressHandlers(op)} style={{
             flex: 1, width: '100%',
-            marginTop: oi === 0 ? 0 : ROW_GAP / 2,
-            marginBottom: oi === OPS.length - 1 ? 0 : ROW_GAP / 2,
+            marginTop: oi === 0 ? 0 : T.ROW_GAP / 2,
+            marginBottom: oi === OPS.length - 1 ? 0 : T.ROW_GAP / 2,
             border: 'none', position: 'relative', overflow: 'hidden',
-            borderRadius: RADIUS.md, cursor: 'pointer', fontFamily: 'inherit',
+            borderRadius: T.KEY_RADIUS, cursor: 'pointer', fontFamily: 'inherit',
             background: 'transparent', padding: 0,
           }}>
-            <div style={keyVisual(true)}/>
+            <div style={keyVisual(true, pressedKey === op)}/>
             <span style={keyLabel(true)}>{op}</span>
           </button>
         ))}
