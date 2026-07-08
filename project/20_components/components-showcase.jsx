@@ -555,7 +555,7 @@ function ComponentsNavigationSection() {
         </DCArtboard>
         <DCArtboard id="comp-fab-undo" label="FloatingActionBar · undo (live)" width={402} height={160}>
           <CompFrame style={{ position: 'relative', height: 160, background: TOKENS.bg }}>
-            <FloatingActionBar mode="undo" undoMessage="已刪除交易" remainingTime={4}/>
+            <FloatingActionBar mode="undo" remainingTime={4}/>
           </CompFrame>
         </DCArtboard>
         <DCArtboard id="comp-search-pill" label="BottomSearchBar · GlassView pill (live)" width={402} height={140}>

@@ -53,7 +53,7 @@ const SCREEN_META = {
   },
   // ─── Home · Undo Bar ─── 刪除交易後返回首頁，全域 Undo Bar 覆蓋於 Footer 區
   'home-undo': {
-    title: '$wish', present: 'push', hasFAB: true, undoBar: true, undoMessage: '已刪除交易',
+    title: '$wish', present: 'push', hasFAB: true, undoBar: true,
     render: (ctx) => <HomeScreen filterState={ctx.sharedFilter}/>,
     headerLeft: (ctx) => <HeaderButtonPill symbols={['line.3.horizontal.decrease']} intent="action" onPress={() => ctx.push('filter')}/>,
     headerRight: (ctx) => <HeaderButtonPill symbols={['magnifyingglass', 'gearshape']} intent="action" onPress={() => ctx.push('search')}/>,
@@ -167,7 +167,7 @@ const SCREEN_META = {
   },
   // ─── Account List · Undo Bar ─── 刪除帳戶後返回列表，全域 Undo Bar 覆蓋（示意非首頁也會出現）
   'account-list-undo': {
-    title: '帳戶', present: 'push', headerLeftText: '設定', undoBar: true, undoMessage: '已刪除帳戶',
+    title: '帳戶', present: 'push', headerLeftText: '設定', undoBar: true,
     render: () => <AccountListScreen/>,
     headerRight: () => <HeaderButtonPill symbols={['arrow.triangle.merge', 'plus']} intent="action"/>,
   },
@@ -625,7 +625,7 @@ function ScreenFrame({ pinned, sharedFilter, setSharedFilter }) {
           Undo Bar 不限首頁，回到的任何畫面都會出現，故與 hasFAB 解耦。
           否則 Home 等 hasFAB 畫面顯示 actions FAB。 */}
       {meta.undoBar ? (
-        <FloatingActionBar mode="undo" undoMessage={meta.undoMessage} remainingTime={4}/>
+        <FloatingActionBar mode="undo" remainingTime={4}/>
       ) : (PINNED_WITH_FAB.has(top) || meta.hasFAB) ? (
         <FloatingActionBar mode="actions"
           onExpensePress={() => push('transaction-editor')}

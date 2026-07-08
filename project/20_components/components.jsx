@@ -1089,9 +1089,9 @@ function FocusCard({ kind, amount, active, onPress, formatAmount }) {
 // ─── FloatingActionBar ─── 對齊 src/components/FloatingActionBar.tsx
 // actions: 208×72 glass pill, bottom SPACING.xl=24, 3 buttons 56×56, paddingHorizontal SPACING.sm=8
 // undo (V4 segmented pill): 外層 glass pill height 72（對齊 actions FAB）包兩個內 glass pill height 56 —
-//   復原段 [ring 倒數 28 外框 p500 + 完整訊息 base/ink，點擊 onUndoPress 復原]
-//   取消段 [X icon 24 p500，點擊 onUndoClose 關閉]；外寬 auto-fit、訊息不截斷
-function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, onIncomePress, onTransferPress, undoMessage, remainingTime = 5, onUndoClose, onUndoPress }) {
+//   復原段 [ring 倒數 28 外框 p500 + 固定標籤「復原」base/ink，點擊 onUndoPress 復原]
+//   取消段 [X icon 24 p500，點擊 onUndoClose 關閉]；外寬 auto-fit、標籤不隨操作類型變動
+function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, onIncomePress, onTransferPress, remainingTime = 5, onUndoClose, onUndoPress }) {
   return (
     <div style={{
       position: 'absolute',
@@ -1124,7 +1124,7 @@ function FloatingActionBar({ mode = 'actions', visible = true, onExpensePress, o
               }}>
                 <span style={{ fontSize: TYPOGRAPHY.size.sm, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.p500 }}>{remainingTime}</span>
               </div>
-              <span style={{ fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, whiteSpace: 'nowrap' }}>{undoMessage || '已刪除'}</span>
+              <span style={{ fontSize: TYPOGRAPHY.size.base, fontWeight: TYPOGRAPHY.weight.medium, color: TOKENS.ink, whiteSpace: 'nowrap' }}>復原</span>
             </GlassView>
           </button>
           <button onClick={onUndoClose} style={undoSegBtn}>
