@@ -1227,7 +1227,8 @@ function CalculatorKeypad({ onPress }) {
       : (isOp ? T.OP_TINT : GLASS.tint),
     backdropFilter: 'blur(28px) saturate(180%)',
     WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-    border: `1px solid ${GLASS.border}`,
+    // 玻璃 highlight 白邊只留數字鍵；op 鍵淡紫底上白邊過搶、拔掉（impl 對應 GlassView border={false}）
+    border: isOp ? 'none' : `1px solid ${GLASS.border}`,
     boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
     transition: pressed ? 'none' : `background ${T.PRESS_RELEASE_MS}ms`,
   });
