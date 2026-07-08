@@ -1699,23 +1699,25 @@ function RecurringOptions({
 // 對齊 Spec date_picker_policy.md：單一觸發 pill → 置中 dialog，日/月雙子模式可切換。
 // 即看即試：自包 state。mode='datetime' 含時間滾輪、mode='date' 純日期無滾輪。
 // 月曆計算為純 JS（給定 year/month 推星期與天數），初始值固定 2026/5/30 12:47 對齊 spec 範例。
+// 月曆格（design 仲裁）：僅鋪當月日期、相鄰月位置留白不顯示（iOS 月曆慣例）；固定 6 列框架，
+//   列數不足的月份尾列留白，dialog 高度恆定不跳。星期列標籤與週起始日依使用者語系
+//   （CLDR 慣例：zh-Hant／en／ja 等週日起、zh-Hans／de／fr 等週一起）；canvas 以 zh-Hant 週日起示範。
 // dialog 用 absolute 蓋滿 artboard frame（沿用 ConfirmDialog 慣例，frame 需 relative）。
 // 翻頁互動（design 仲裁）：月份／年份採縱向單頁 native snap 分頁——日模式上下滑切月、月模式上下滑切年，
 //   放手吸附整頁、後一個月在下方。impl 端為 vertical FlatList pagingEnabled，沿用 home screen
 //   period paging 的 FlatList 分頁機制、方向改縱向；canvas 無法 mock 真實 swipe，僅鏡射單月結構。
 //   本決議同步記於 no13_calendar_dialog_tokens.jsx。
-const CAL_DOW = ['日','一','二','三','四','五','六'];
+const CAL_DOW = ['日','一','二','三','四','五','六'];   // canvas 示範用 zh-Hant 標籤（週日起）
 const CAL_MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 
-function calMonthGrid(year, month) {
-  const firstDow = new Date(year, month, 1).getDay();
+// 月曆 grid：offset 個留白 + 當月日期，補滿 42 格（尾端留白）。null = 留白格。
+function calMonthGrid(year, month, weekStart = 0) {
+  const offset = (new Date(year, month, 1).getDay() - weekStart + 7) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const prevDays = new Date(year, month, 0).getDate();
   const cells = [];
-  for (let i = 0; i < firstDow; i++) cells.push({ d: prevDays - firstDow + 1 + i, outside: true });
-  for (let d = 1; d <= daysInMonth; d++) cells.push({ d, outside: false });
-  let nx = 1;
-  while (cells.length < 42) cells.push({ d: nx++, outside: true });
+  for (let i = 0; i < offset; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  while (cells.length < 42) cells.push(null);
   return cells;
 }
 
@@ -1774,14 +1776,15 @@ function CalendarDialog({ mode = 'datetime' }) {
     </button>
   );
 
-  const dayCell = (cell, i) => {
-    const selected = !cell.outside && cell.d === day;
+  // 留白格（null）：不畫按鈕、不可點，只佔位維持 6 列框架。
+  const dayCell = (d, i) => {
+    if (d === null) return <div key={i}/>;
+    const selected = d === day;
     return (
-      <button key={i} onClick={() => { if (!cell.outside) setDay(cell.d); }} style={{
+      <button key={i} onClick={() => setDay(d)} style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         border: 'none', background: 'transparent', padding: 0,
-        cursor: cell.outside ? 'default' : 'pointer', fontFamily: 'inherit',
-        opacity: cell.outside ? C.DAY_OUTSIDE_MONTH_OPACITY : 1,
+        cursor: 'pointer', fontFamily: 'inherit',
       }}>
         <span style={{
           width: C.DAY_SELECTED_SIZE, height: C.DAY_SELECTED_SIZE,
@@ -1791,7 +1794,7 @@ function CalendarDialog({ mode = 'datetime' }) {
           fontSize: C.DAY_CELL_TEXT_SIZE,
           fontWeight: selected ? C.SELECTED_TEXT_WEIGHT : TYPOGRAPHY.weight.regular,
           color: selected ? TOKENS.surface : TOKENS.ink,
-        }}>{cell.d}</span>
+        }}>{d}</span>
       </button>
     );
   };

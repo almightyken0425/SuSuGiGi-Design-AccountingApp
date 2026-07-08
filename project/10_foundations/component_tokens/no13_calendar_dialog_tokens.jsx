@@ -35,7 +35,7 @@ const CALENDAR_DIALOG_TOKENS = {
   HEADER_BOTTOM_MARGIN:         SPACING.sm,
   // 標題列文字置中，無 chevron icon
 
-  // ── Weekday Row 星期列（日一二三四五六）
+  // ── Weekday Row 星期列（標籤與週起始日依使用者語系；zh-Hant 為日一二三四五六、週日起）
   WEEKDAY_TEXT_SIZE:            TYPOGRAPHY.size.xs,
   WEEKDAY_TEXT_WEIGHT:          TYPOGRAPHY.weight.medium,
   WEEKDAY_ROW_BOTTOM_MARGIN:    SPACING.xs,                                    // (canvas mock 用：星期列 text + 下間距版)
@@ -63,11 +63,11 @@ const CALENDAR_DIALOG_TOKENS = {
   HEADER_PULSE_EASING:          MOTION.easing.decelerate,                      // 標題脈衝緩動（減速落定）
   HEADER_PULSE_TRANSLATE:       8,                                             // (literal: 逐頁換值標題垂直位移 px，方向順捲動)
 
-  // ── Day Grid 日格（7 欄 × 6 列；選中圓固定尺寸置中於 cell，不隨 row 高變）
+  // ── Day Grid 日格（7 欄 × 6 列；僅鋪當月日期、相鄰月位置留白不顯示——iOS 月曆慣例；
+  //    列數不足的月份尾列留白，6 列框架恆定；選中圓固定尺寸置中於 cell，不隨 row 高變）
   DAY_CELL_TEXT_SIZE:           TYPOGRAPHY.size.base,
   DAY_SELECTED_SIZE:            36,                                            // (literal: 選中圓固定徑，置中於 1fr row)
   DAY_SELECTED_RADIUS:          RADIUS.full,
-  DAY_OUTSIDE_MONTH_OPACITY:    0.3,                                           // (literal: 跨月補格淡化，iOS 月曆慣例)
 
   // ── Month Grid 月格（4 欄 × 3 列；選中 pill 固定高置中於較高的 row）
   MONTH_CELL_TEXT_SIZE:         TYPOGRAPHY.size.base,
@@ -85,7 +85,7 @@ const CALENDAR_DIALOG_TOKENS = {
   WHEEL_ROW_HEIGHT:             32,                                            // (literal: 每行高＝數字間距；WHEEL_VISIBLE_ROWS 行總高 96)
   WHEEL_VISIBLE_ROWS:           3,                                             // (literal: 中央選中 + 上下各一淡化行)
   WHEEL_COLUMN_WIDTH:           72,                                            // (literal: 時/分各一欄固定寬)
-  WHEEL_DIM_OPACITY:            0.3,                                           // (literal: 非選中行淡化，與 DAY_OUTSIDE_MONTH_OPACITY 同階)
+  WHEEL_DIM_OPACITY:            0.3,                                           // (literal: 非選中行淡化)
   WHEEL_SEPARATOR_TEXT:         ':',                                           // (literal: 時分分隔符)
   WHEEL_GROUP_GAP:              SPACING.md,
 };
