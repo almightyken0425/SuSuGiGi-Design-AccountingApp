@@ -178,6 +178,8 @@ box-shadow:      0 4px 12px rgba(0,0,0,0.10);
 
 **單一版本政策。** 不做 dark / tinted / clear 專屬變體，橘 `#F24F13` 不進 icon；系統外觀模式交由平台自動處理。理由：icon 與 app 內裝同屬 quiet register，變體會稀釋識別。
 
-**權威來源。** 幾何常數在 `project/10_foundations/visualizers/brand/no2_app_icon.jsx`（`APP_ICON_G4`），0..100 座標、勿目測改值。跟進端：impl 的 iOS `AppIcon.appiconset/icon-1024.png` 與 Android `mipmap-*`＋adaptive（`drawable/ic_launcher_foreground.xml`、背景 `#F2F2F7`）。
+**iOS 26 呈現政策。** iOS 26 以 Liquid Glass 管線重繪所有桌面 icon。只提供 flat PNG 時，系統自動生成玻璃效果，筆畫邊緣出現非設計本意的高光邊框。定案處置：impl 增設 Icon Composer 分層檔，筆畫層全部壓平——specular 關、shadow 無、translucency 關、layer glass 關——讓 iOS 26 預設外觀貼齊 flat 設計稿。dark / tinted 外觀仍交系統由分層自動生成，維持單一版本政策。
+
+**權威來源。** 幾何常數在 `project/10_foundations/visualizers/brand/no2_app_icon.jsx`（`APP_ICON_G4`），0..100 座標、勿目測改值。跟進端：impl 的 iOS `AppIcon.icon`（Icon Composer 分層檔，承載 iOS 26 呈現）與 `AppIcon.appiconset/icon-1024.png`（iOS 18 及以下 fallback），以及 Android `mipmap-*`＋adaptive（`drawable/ic_launcher_foreground.xml`、背景 `#F2F2F7`）。
 
 **演進紀錄。** 探索與收斂全程在 design canvas Explorations > App Icon（Axis 1 書法飛白 → Axis 4 命名廣掃 135 案 → Axis 5 因子實驗 → Axis 6 深化場、角度掃描定 30°）。
