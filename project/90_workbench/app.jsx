@@ -734,7 +734,7 @@ const EXPLORATION_GROUPS = [
   {
     id: 'homefilterscreen', label: 'Home Filter Screen',
     topics: [
-      { id: 'layout-restructure', label: 'Axis · Layout Restructure', render: () => <HomeFilterLayoutSection/> },
+      { id: 'control-design', label: 'Axis · Control Design', render: () => <HomeFilterControlSection/> },
     ],
   },
   {
