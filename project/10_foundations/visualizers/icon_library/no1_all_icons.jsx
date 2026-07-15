@@ -1,13 +1,13 @@
 // ─────────────────────────────────────────────────────────────
-// Foundations > Icon Library > All Icons · 109 個 phosphor SVG + 幣別符號 icon 預覽
+// Foundations > Icon Library > All Icons · phosphor SVG icon 池預覽
 //
-// account tag（id 1-11 原帳戶圖示 + 98-109 幣別線稿）+ category tag（id 12-97）。
+// account tag 40 個（id 1-11 + ambulance/planet 共用 + 策展 16 + 幣別線稿 11）；
+// category tag 88 個（id 12-97 + baby + beer-stein）。
+// 法幣 typeset 符號 106 筆已於 2026-07 整批移除；舊資料由 impl 開機自癒。
 // 對齊 impl assets/definitions/IconDefinition.json。
 //
-// 「幣別符號 icon」為提案中的新 icon 類型：用 Currency.json 的 symbol 排版成 icon，
-// 覆蓋 Phosphor 線稿以外的全部幣別。資料來自 no0_currency_symbols.jsx。
-// 字型用 -apple-system（近 iOS 系統字型），最終以模擬器為準。
-// 預覽聚焦「挑粗細」：把 typeset 符號的字重調到貼近 Phosphor 線稿的視覺重量。
+// CurrencySymbolIcon / 挑粗細 / 覆蓋牆為 2026-06 幣別符號提案的歷史工件，
+// 池策展後 picker 已不含 typeset 符號，卡片保留備查、不掛 TOC。
 // ─────────────────────────────────────────────────────────────
 
 function IconWallCard({ icons }) {
@@ -139,15 +139,13 @@ function FoundationsIconLibraryAllIconsSection() {
     <DCSection
       id="found-icon-library-all"
       title="Icon Library · All Icons"
-      subtitle="205 筆 icon。account（id 1-11 帳戶 + 98-99 BTC/ETH 線稿 + 100-205 法幣符號）= 119；category（12-97）= 86。對齊 impl IconDefinition.json。"
+      subtitle="126 筆 icon、全部 phosphor svg。account = 40（原 11 + ambulance/planet 共用 + 策展 16 + 幣別線稿 11）；category = 88（12-97 + baby + beer-stein）。法幣 typeset 符號 106 筆已移除。對齊 impl IconDefinition.json。"
     >
-      <DCFamily id="icon-account-family" title="Account Tag" subtitle="帳戶選擇器用的 icon（flat、共 119）：原 11 帳戶 + BTC/ETH 線稿（98-99）+ 106 法幣符號（100-205，typeset 字重 400）。">
-        <DCArtboard id="icon-account" label="IconDefinition · account tag (live, 119)" width={520} height={2960}>
+      <DCFamily id="icon-walls-family" title="Account × Category" subtitle="左：帳戶池 40（原 11 + ambulance/planet 共用 + 策展 16 + 幣別線稿 11）。右：類別池 88（id 12-97 + baby、beer-stein）。高度自撐、不內捲。">
+        <DCArtboard id="icon-account" label="IconDefinition · account tag (live, 40)" width={520} height="auto">
           <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('account'))}/>
         </DCArtboard>
-      </DCFamily>
-      <DCFamily id="icon-category-family" title="Category Tag" subtitle="類別選擇器用的 icon（id 12-97，共 86 個）。">
-        <DCArtboard id="icon-category" label="IconDefinition · category tag (live)" width={520} height={760}>
+        <DCArtboard id="icon-category" label="IconDefinition · category tag (live, 88)" width={520} height="auto">
           <IconWallCard icons={ICON_LIBRARY.filter(i => i.tags.includes('category'))}/>
         </DCArtboard>
       </DCFamily>
