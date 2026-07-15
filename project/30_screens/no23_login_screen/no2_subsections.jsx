@@ -24,7 +24,7 @@ function LoginBranding() {
   );
 }
 
-// ─── LoginGoogleButton ─── primary 色登入按鈕（含 'G' icon）
+// ─── LoginGoogleButton ─── primary 色圓形登入鈕（僅白圓 'G' icon，無文字）
 function LoginGoogleButton({ loading }) {
   const T = LOGIN_SCREEN_TOKENS;
   return (
@@ -36,47 +36,39 @@ function LoginGoogleButton({ loading }) {
       paddingRight: T.LOGIN_CONTAINER_PADDING_H,
     }}>
       <div style={{
-        display: 'flex', flexDirection: 'row',
+        display: 'flex',
         alignItems: 'center', justifyContent: 'center',
         background: TOKENS.p500,
-        paddingTop: T.BUTTON_PADDING_V, paddingBottom: T.BUTTON_PADDING_V,
-        paddingLeft: T.BUTTON_PADDING_H, paddingRight: T.BUTTON_PADDING_H,
-        borderRadius: T.BUTTON_RADIUS,
-        width: '100%', maxWidth: T.BUTTON_MAX_WIDTH,
+        width: T.BUTTON_DIAMETER, height: T.BUTTON_DIAMETER,
+        borderRadius: '50%',
         boxShadow: `0px ${SHADOW_ELEVATION.level1.offsetY}px ${SHADOW_ELEVATION.level1.blur}px rgba(0,0,0,${SHADOW_ELEVATION.level1.opacity})`,
         opacity: loading ? 0.6 : 1,
       }}>
         {loading ? (
-          // loading 態（對齊 impl）：按鈕內以 spinner 取代 G icon + 文字，按鈕降透明度 disabled
+          // loading 態（對齊 impl）：圓鈕內以 spinner 取代白圓 G icon，按鈕降透明度 disabled
           <Spinner size={ICON_SIZE.md} color={TOKENS.surface}/>
         ) : (
-          <>
-            <div style={{
-              width: T.BUTTON_ICON_SIZE, height: T.BUTTON_ICON_SIZE,
-              borderRadius: T.BUTTON_ICON_RADIUS,
-              background: TOKENS.surface,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              marginRight: SPACING.md,
-            }}>
-              <span style={{
-                fontSize: T.BUTTON_ICON_TEXT_SIZE,
-                fontWeight: TYPOGRAPHY.weight.medium,
-                color: TOKENS.p500,
-              }}>G</span>
-            </div>
+          <div style={{
+            width: T.BUTTON_ICON_SIZE, height: T.BUTTON_ICON_SIZE,
+            borderRadius: T.BUTTON_ICON_RADIUS,
+            background: TOKENS.surface,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
             <span style={{
-              color: TOKENS.surface,
-              fontSize: T.BUTTON_FONT_SIZE,
+              fontSize: T.BUTTON_ICON_TEXT_SIZE,
               fontWeight: TYPOGRAPHY.weight.medium,
-            }}>使用 Google 登入</span>
-          </>
+              color: TOKENS.p500,
+            }}>G</span>
+          </div>
         )}
       </div>
     </div>
   );
 }
 
-// ─── LoginFooter ─── 條款說明句 + 法律連結 + 版權（column）
+// ─── LoginFooter ─── 條款引導句 + 法律連結 + 版權（column）
+// 引導句與連結列上下相連成完整語意：「登入即表示您同意」→「使用條款 · 隱私政策」。
+// 連結列本身就是條款語意的後半，不另重複全句。
 function LoginFooter() {
   const T = LOGIN_SCREEN_TOKENS;
   return (
@@ -90,7 +82,7 @@ function LoginFooter() {
         color: TOKENS.ink2,
         textAlign: 'center',
         paddingLeft: SPACING.lg, paddingRight: SPACING.lg,
-      }}>登入即表示您同意我們的使用條款與隱私政策</div>
+      }}>登入即表示您同意</div>
       {/* legal 連結 ─ 對齊 paywall PaywallBottomLinks：underline、· 分隔、inkTertiary */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: SPACING.sm,
