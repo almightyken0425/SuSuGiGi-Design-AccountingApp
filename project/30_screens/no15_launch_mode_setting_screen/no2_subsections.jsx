@@ -6,9 +6,9 @@
 
 const LAUNCH_MODE_OPTIONS = [
   { value: 'home',     label: '首頁' },
-  { value: 'expense',  label: '新增支出' },
-  { value: 'income',   label: '新增收入' },
-  { value: 'transfer', label: '新增轉帳' },
+  { value: 'expense',  label: '支出' },
+  { value: 'income',   label: '收入' },
+  { value: 'transfer', label: '轉帳' },
 ];
 
 Object.assign(window, { LAUNCH_MODE_OPTIONS });
