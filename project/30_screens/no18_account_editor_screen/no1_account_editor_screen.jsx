@@ -19,7 +19,8 @@
 //   edit — 編輯模式，預填 '玉山活儲'；幣別為 disabled 樣式；含啟用 Switch 與刪除按鈕
 // ─────────────────────────────────────────────────────────────
 
-const ACCOUNT_ICON_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+// 帳戶池前 12 個（live 推導自 ICON_LIBRARY，artboard 僅預覽子集；完整池見 Icon Library）
+const ACCOUNT_ICON_IDS = ICON_LIBRARY.filter(i => i.tags.includes('account')).slice(0, 12).map(i => i.id);
 
 function AccountEditorScreen({ variant = 'new' }) {
   const T = ACCOUNT_EDITOR_SCREEN_TOKENS;

@@ -20,7 +20,8 @@
 //   edit        — 編輯模式，預填「飲食」；收支欄鎖死 disabled；含啟用 Switch 與刪除按鈕
 // ─────────────────────────────────────────────────────────────
 
-const CATEGORY_ICON_IDS = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+// 類別池前 12 個（live 推導自 ICON_LIBRARY，artboard 僅預覽子集；完整池見 Icon Library）
+const CATEGORY_ICON_IDS = ICON_LIBRARY.filter(i => i.tags.includes('category')).slice(0, 12).map(i => i.id);
 
 function CategoryEditorScreen({ variant = 'new-expense' }) {
   const T = CATEGORY_EDITOR_SCREEN_TOKENS;
