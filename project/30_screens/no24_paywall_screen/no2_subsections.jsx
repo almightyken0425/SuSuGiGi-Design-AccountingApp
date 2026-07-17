@@ -2,7 +2,8 @@
 // PaywallScreen sub-sections · 私有 sub-section 元件 + design canvas 預覽資料
 //
 // 鏡射 impl src/screens/Paywall/PaywallScreen.tsx：
-//   PaywallHero / PaywallBenefitGrid / PaywallPlanCard / PaywallFooter
+//   PaywallHero / PaywallBenefitGrid / PaywallPlanCard / PaywallCta /
+//   PaywallRenewalNote / PaywallBottomLinks
 //
 // impl 端從 react-native-iap 取 IAP products，design canvas inline mock 月費 / 年費。
 // 圖示沿用既有 glyph registry：類別 tag-outline、帳戶 bank-outline、hero sparkle star-outline。
@@ -15,17 +16,24 @@ const PAYWALL_FEATURES = [
 ];
 
 // 方案 mock：impl 端價格由 IAP 在地化字串提供，每月均價 = 年費 ÷ 12 經 formatCurrencyValue 推導。
+// disclosure 為自動續訂揭露動態句（期長＋每期價格，App Review 要求進 binary），跟著選中方案切換；
+// 收款與取消方式為靜態句，兩方案共用、獨立於方案表。
 const PAYWALL_PLANS = {
-  yearly:  { price: 'NT$480', suffix: '/ 年', save: '省 33%', hint: '約 NT$40／月，可隨時取消' },
-  monthly: { price: 'NT$60',  suffix: '/ 月', save: null,     hint: '可隨時取消' },
+  yearly:  { price: 'NT$480', suffix: '/ 年', save: '省 33%', hint: '約 NT$40／月，可隨時取消',
+             disclosure: '年費訂閱每年 NT$480 自動續訂，直到取消。' },
+  monthly: { price: 'NT$60',  suffix: '/ 月', save: null,     hint: '可隨時取消',
+             disclosure: '月費訂閱每月 NT$60 自動續訂，直到取消。' },
 };
+const PAYWALL_DISCLOSURE_PAYMENT = '款項向 Apple 帳戶收取，可隨時於 App Store 取消。';
 
 // ─── PaywallHero ─── 漸層強調卡（sparkle + 大標）
+// 頁面唯一 flex 彈性區：吸收剩餘高度、內容多時自動縮，保底 HERO_MIN_HEIGHT。
 function PaywallHero() {
   const T = PAYWALL_SCREEN_TOKENS;
   return (
     <div style={{
       flex: 1,
+      minHeight: T.HERO_MIN_HEIGHT,
       position: 'relative', overflow: 'hidden',
       borderRadius: T.HERO_RADIUS,
       paddingTop: T.HERO_PADDING_Y, paddingBottom: T.HERO_PADDING_Y,
@@ -82,17 +90,17 @@ function PaywallFeatureCard({ feature }) {
   );
 }
 
-// ─── PaywallBenefitGrid ─── 2 欄功能卡
+// ─── PaywallBenefitGrid ─── 2 欄功能卡；自然高（內容決定），不參與頁面剩餘高度分配
 function PaywallBenefitGrid() {
   const T = PAYWALL_SCREEN_TOKENS;
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'row', gap: T.GRID_GAP }}>
+    <div style={{ display: 'flex', flexDirection: 'row', gap: T.GRID_GAP }}>
       {PAYWALL_FEATURES.map(f => <PaywallFeatureCard key={f.id} feature={f}/>)}
     </div>
   );
 }
 
-// ─── PaywallPlanCard ─── segmented（月費/年費）+ 大字價格 + 每月均價 hint
+// ─── PaywallPlanCard ─── segmented（月費/年費）+ 大字價格 + 每月均價 hint；自然高同 grid
 function PaywallPlanCard({ selectedId = 'yearly' }) {
   const T = PAYWALL_SCREEN_TOKENS;
   const plan = PAYWALL_PLANS[selectedId];
@@ -118,7 +126,6 @@ function PaywallPlanCard({ selectedId = 'yearly' }) {
   };
   return (
     <div style={{
-      flex: 1,
       display: 'flex', flexDirection: 'column', justifyContent: 'center',
       background: TOKENS.surface,
       borderRadius: T.PLAN_RADIUS,
@@ -168,6 +175,24 @@ function PaywallCta({ processing = false }) {
   );
 }
 
+// ─── PaywallRenewalNote ─── 自動續訂揭露 fine-print；緊接 CTA 下方、鋪在 restore link 之上。
+// 兩段結構：動態句（跟方案）在上、靜態句（收款＋取消）在下，各自獨立折行。
+function PaywallRenewalNote({ selectedId = 'yearly' }) {
+  const T = PAYWALL_SCREEN_TOKENS;
+  const line = {
+    fontSize: T.DISCLOSURE_SIZE,
+    lineHeight: T.DISCLOSURE_LINE_HEIGHT,
+    color: TOKENS.inkTertiary,
+    textAlign: 'center',
+  };
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: T.DISCLOSURE_LINE_GAP }}>
+      <div style={line}>{PAYWALL_PLANS[selectedId].disclosure}</div>
+      <div style={line}>{PAYWALL_DISCLOSURE_PAYMENT}</div>
+    </div>
+  );
+}
+
 // ─── PaywallBottomLinks ─── restore + legal fine-print；marginTop:auto 沉底
 function PaywallBottomLinks() {
   const T = PAYWALL_SCREEN_TOKENS;
@@ -183,4 +208,4 @@ function PaywallBottomLinks() {
   );
 }
 
-Object.assign(window, { PAYWALL_FEATURES, PAYWALL_PLANS, PaywallHero, PaywallFeatureCard, PaywallBenefitGrid, PaywallPlanCard, PaywallCta, PaywallBottomLinks });
+Object.assign(window, { PAYWALL_FEATURES, PAYWALL_PLANS, PAYWALL_DISCLOSURE_PAYMENT, PaywallHero, PaywallFeatureCard, PaywallBenefitGrid, PaywallPlanCard, PaywallCta, PaywallRenewalNote, PaywallBottomLinks });
