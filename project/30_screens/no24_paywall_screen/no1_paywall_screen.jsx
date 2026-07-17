@@ -3,7 +3,7 @@
 //
 // Modal info screen（headerLeft 為 close button，無 save）。
 // 結構：Hero 漸層卡 / 2 欄 benefit 功能卡 / 月費·年費 segmented + 大字價格 /
-//       CTA「立即升級」/ restore link / legal links。
+//       CTA「立即升級」/ 自動續訂揭露 fine-print / restore link / legal links。
 // 漸層 p500→p700、icon chip p50、success badge 全走 token，相容雙主題。
 //
 // Variants：
@@ -18,24 +18,32 @@ function PaywallScreen({ variant = 'default' }) {
   const selectedId = variant === 'monthly' ? 'monthly' : 'yearly';
 
   return (
+    // 單頁優先、溢出退捲動（鏡射 impl ScrollView + minHeight 可視高）：
+    // 內容塞得下時撐滿一頁、hero 吸收剩餘高度；長語系塞不下時整頁可捲、條款連結不被裁。
     <div style={{
       position: 'relative',
       height: '100%',
-      display: 'flex', flexDirection: 'column',
-      gap: T.SCREEN_GAP,
+      overflowY: 'auto',
       background: TOKENS.bg,
-      paddingTop: T.SCREEN_PADDING_TOP,
-      paddingBottom: T.SCREEN_PADDING_BOTTOM,
-      paddingLeft: T.SCREEN_PADDING_X,
-      paddingRight: T.SCREEN_PADDING_X,
-      boxSizing: 'border-box',
     }}>
+      <div style={{
+        minHeight: '100%',
+        display: 'flex', flexDirection: 'column',
+        gap: T.SCREEN_GAP,
+        paddingTop: T.SCREEN_PADDING_TOP,
+        paddingBottom: T.SCREEN_PADDING_BOTTOM,
+        paddingLeft: T.SCREEN_PADDING_X,
+        paddingRight: T.SCREEN_PADDING_X,
+        boxSizing: 'border-box',
+      }}>
       <PaywallHero/>
       <PaywallBenefitGrid/>
       <PaywallPlanCard selectedId={selectedId}/>
       <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.md }}>
         <PaywallCta processing={processing}/>
+        <PaywallRenewalNote selectedId={selectedId}/>
         <PaywallBottomLinks/>
+      </div>
       </div>
     </div>
   );
