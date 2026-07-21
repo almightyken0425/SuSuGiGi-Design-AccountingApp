@@ -27,7 +27,7 @@ function IntroSection() {
               <li><b>設計基礎</b> — token、icon、element 等可重用樣本（以 Apple HIG / iOS Dynamic Type 為錨點）</li>
               <li><b>探索素材</b> — 多版本提案的並陳空間（不刪歷史）</li>
             </ol>
-            <p>這份檔案位於 SuSuGiGi 產品的 <code>no3_product_designs/no2_accounting_app/</code>，是該 module 的 <b>Module Design git</b>。它與 Module Spec git、Module Impl git 並列為三件套，並擔任 <b>設計標準的仲裁端</b>：所有 token / 元件 / 畫面的決議寫在這裡，spec 與 impl 跟著對齊。</p>
+            <p>這份檔案位於 SuSuGiGi 產品的 <code>no4_product_designs/no2_accounting_app/</code>，是該 module 的 <b>Module Design git</b>。它與 Module Spec git、Module Impl git 並列為三件套，並擔任 <b>設計標準的仲裁端</b>：所有 token / 元件 / 畫面的決議寫在這裡，spec 與 impl 跟著對齊。</p>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
@@ -103,7 +103,7 @@ function IntroSection() {
             <FlowRow
               source="觸發：Spec 邏輯需要新狀態（例如新增 loading 變體）"
               arbitrate="Design 仲裁：在 30_screens/screens.jsx 對應 ScreenComponent 加新 variant，並於 90_workbench/app.jsx 的 SCREEN_META + SCREEN_GROUPS 補入口"
-              follow="跟進：spec 在 no4_product_specs/.../no2_screens/ 對應 md 補狀態；impl 跟著加 variant 實作"/>
+              follow="跟進：spec 在 no3_product_specs/.../no2_screens/ 對應 md 補狀態；impl 跟著加 variant 實作"/>
             <FlowRow
               source="觸發：impl 新增整個畫面"
               arbitrate="Design 仲裁：30_screens/screens.jsx 加 ScreenComponent、SCREEN_META 加 meta、SCREEN_GROUPS 加群組"
@@ -238,7 +238,7 @@ function IntroSection() {
       </DCArtboard>
 
       {/* 9. Design 是仲裁端 ───────────────────────────────────── */}
-      <DCArtboard id="design-as-arbiter" label="Design 在四層中的角色" width={520} height={720}>
+      <DCArtboard id="design-as-arbiter" label="Design 在多層 git 中的角色" width={520} height={720}>
         <IntroCard>
           <IntroTag>仲裁模型</IntroTag>
           <IntroTitle>Design 是設計標準的仲裁端</IntroTitle>
@@ -257,8 +257,8 @@ function IntroSection() {
             </ul>
             <p style={{ marginTop: 12 }}><b>下游跟隨：</b></p>
             <ul>
-              <li><b>impl repo：</b><code>no6_product_development/no2_accounting_app/</code> 跟著 <code>src/constants/theme.ts</code> / <code>src/components/</code> / <code>src/screens/</code> 對齊</li>
-              <li><b>spec repo：</b><code>no4_product_specs/no2_accounting_app/</code> 跟著 <code>no2_screens/</code> 與引用元件的規格對齊</li>
+              <li><b>impl repo：</b><code>no5_product_development/no2_accounting_app/</code> 跟著 <code>src/constants/theme.ts</code> / <code>src/components/</code> / <code>src/screens/</code> 對齊</li>
+              <li><b>spec repo：</b><code>no3_product_specs/no2_accounting_app/</code> 跟著 <code>no2_screens/</code> 與引用元件的規格對齊</li>
             </ul>
             <hr style={{ border: 'none', borderTop: `1px dashed ${TOKENS.divider}`, margin: '16px 0' }}/>
             <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6 }}>

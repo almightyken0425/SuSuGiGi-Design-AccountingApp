@@ -19,7 +19,7 @@ Key entry points:
 
 When creating visual artifacts (slides, mocks, throwaway prototypes, etc), copy `project/assets/` into your output folder and read token values from `project/10_foundations/data.jsx` (do NOT manually re-type them — risk of drift).
 
-When working on production code (the real impl at `no6_product_development/no2_accounting_app/`), the impl's `src/constants/theme.ts` is the source of truth. This design canvas mirrors it.
+When working on production code (the real impl at `no5_product_development/no2_accounting_app/`), the impl's `src/constants/theme.ts` is the source of truth. This design canvas mirrors it.
 
 If the user invokes this skill without any other guidance, ask them what they want to build or design (mobile screen mock? marketing one-pager? slide deck for an internal review?), and act as an expert designer who outputs HTML artifacts **or** production code, depending on the need.
 
