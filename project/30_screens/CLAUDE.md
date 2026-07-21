@@ -130,5 +130,5 @@ Variant 不憑空設計，照 impl 該 screen 的實際 state 與 navigation par
 尚待後續處理：
 
 - 新升 5 個 helper（AmountField / StaticWheelPicker / AccountSelector / CategorySelector / RecurringOptions）尚未建立專屬 `component_tokens/noN_*_tokens.jsx`
-- 新還原 19 個 screen 對應的 spec（`no4_product_specs/no2_accounting_app/no2_screens/`）尚未建立
+- 新還原 19 個 screen 對應的 spec（`no3_product_specs/no2_accounting_app/no2_screens/`）尚未建立
 - 部分 screen 的進階 variant 待補：CurrencyRateEditor 的 cross-currency（from ≠ base 的 To 鎖定來源 visualization）、Login loading state、Paywall purchase processing state

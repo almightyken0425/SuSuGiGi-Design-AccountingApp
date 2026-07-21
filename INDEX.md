@@ -44,9 +44,9 @@ Components 不是頂層 tab，已併入 Foundations 作為 sub-item。
 
 ---
 
-## Design 是仲裁端：四層 git 的關係
+## Design 是仲裁端：多層 git 的關係
 
-本 repo 在 SuSuGiGi 四層 git 中擔任**設計標準的仲裁端**：
+本 repo 在 SuSuGiGi 多層 git 中擔任**設計標準的仲裁端**：
 
 - **觸發點可雙向：** impl 開發中發現某個字太小、Design 探索想換配色、Spec 邏輯需要新狀態，任一端都可發起變動訊號
 - **決議寫進本 repo：**
@@ -54,8 +54,8 @@ Components 不是頂層 tab，已併入 Foundations 作為 sub-item。
     - 元件寫在 `project/20_components/components.jsx`
     - 畫面寫在 `project/30_screens/screens.jsx`
 - **下游跟隨對齊：**
-    - **impl repo：** `no6_product_development/no2_accounting_app/` 跟著 `src/constants/theme.ts` / `src/components/` / `src/screens/` 對齊
-    - **spec repo：** `no4_product_specs/no2_accounting_app/` 跟著 `no2_screens/` 與引用元件的規格對齊
+    - **impl repo：** `no5_product_development/no2_accounting_app/` 跟著 `src/constants/theme.ts` / `src/components/` / `src/screens/` 對齊
+    - **spec repo：** `no3_product_specs/no2_accounting_app/` 跟著 `no2_screens/` 與引用元件的規格對齊
 
 data model 與 logic 的仲裁端是 Spec git（不經 design）。跨層同步矩陣以 `~/.claude/skills/decision_framework_router/products_registry.md` 的 sub_mapping 為權威來源。
 

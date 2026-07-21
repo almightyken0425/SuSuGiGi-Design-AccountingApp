@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // CALENDAR_DIALOG_TOKENS · 自研日期選擇器（Spec 模式代號 Calendar Dialog）
 //
-// 對齊 Spec：no4_product_specs/no2_accounting_app/no2_screens/shared_ui_policies/date_picker_policy.md
+// 對齊 Spec：no3_product_specs/no2_accounting_app/no2_screens/shared_ui_policies/date_picker_policy.md
 // 觸發器單一 pill → 點開置中 dialog，dialog 兩子模式（日選擇 / 月選擇）可切換。
 // 日選擇：標題列(YYYY/MM) + 星期列 + 月曆格；月選擇：標題列(YYYY) + 12 月格。
 // 時間滾輪固定底部（僅 Datetime 模式）。Date-only 模式無時間滾輪。

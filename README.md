@@ -1,15 +1,15 @@
 # SuSuGiGi · Accounting App · Module Design git
 
-本 repo 是 SuSuGiGi 產品 `no2_accounting_app` module 的 **Module Design git**，承載該 module 的設計工件、視覺原型與 design canvas。在四層 git 中擔任設計標準的仲裁端。
+本 repo 是 SuSuGiGi 產品 `no2_accounting_app` module 的 **Module Design git**，承載該 module 的設計工件、視覺原型與 design canvas。在多層 git 中擔任設計標準的仲裁端。
 
 ## 角色
 
-四層 git 中的設計層：
+多層 git 中的設計層：
 
 - **Product git**：上一層，承載提案 / 需求 / Product Map / Roadmap
 - **Module Design git**：即本 repo，承載 design canvas、視覺工件、設計標準權威
-- **Module Spec git**：對側，承載行為規格（`no4_product_specs/no2_accounting_app/`）
-- **Module Impl git**：對側，承載實作（`no6_product_development/no2_accounting_app/`）
+- **Module Spec git**：對側，承載行為規格（`no3_product_specs/no2_accounting_app/`）
+- **Module Impl git**：對側，承載實作（`no5_product_development/no2_accounting_app/`）
 
 ## 入口
 

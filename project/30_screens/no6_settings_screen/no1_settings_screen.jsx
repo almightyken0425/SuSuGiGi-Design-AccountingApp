@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────
 // SettingsScreen · 對齊 impl src/screens/Settings/SettingsScreen.tsx
-//                  與 spec no4_product_specs/.../no2_screens/no8_settings_screen.md
+//                  與 spec no3_product_specs/.../no2_screens/no8_settings_screen.md
 //
 // Push screen，三組 list section + 版本 footer：
 //   group 1：類別 / 帳戶 / 資料管理

@@ -2,19 +2,19 @@
 
 本 repo 為 SuSuGiGi 產品的 **Module Design git**，module_id 為 `no2_accounting_app`，承載 accounting app 的設計工件與 design canvas（React HTML workbench）。
 
-## 四層 git 配對
+## 多層 git 配對
 
 - **頂層 Product git：**
     - 位於 `../../`
-    - 管理決策框架的上游四層
+    - 管理決策框架的上游各層
 - **本 Module Design git：**
     - 即本 repo
-    - 位於 Product git 的 `no3_product_designs/no2_accounting_app/`
+    - 位於 Product git 的 `no4_product_designs/no2_accounting_app/`
 - **對側 Module Spec git：**
-    - 位於 Product git 的 `no4_product_specs/no2_accounting_app/`
+    - 位於 Product git 的 `no3_product_specs/no2_accounting_app/`
     - 承載 Model / View / Logic 三層行為規格
 - **對側 Module Impl git：**
-    - 位於 Product git 的 `no6_product_development/no2_accounting_app/`
+    - 位於 Product git 的 `no5_product_development/no2_accounting_app/`
     - React Native CLI 記帳 App
 
 完整路徑與配對表由 `decision_framework_router` skill 的 `products_registry.md` 維護。
@@ -60,7 +60,7 @@
 
 ## Design git 作為設計標準仲裁端
 
-本 repo 在 SuSuGiGi 四層 git 中擔任 **設計標準的仲裁端**。意思是：
+本 repo 在 SuSuGiGi 多層 git 中擔任 **設計標準的仲裁端**。意思是：
 
 - **觸發點可來自任一端：** impl 開發中發現某個字太小、Design 探索想換配色、Spec 邏輯需要新狀態——任一端都可以發起變動訊號
 - **決議寫進本 repo：** 所有 token / 元件 / 畫面的最終決議寫在本 Design git，spec 與 impl 跟隨對齊
