@@ -1324,7 +1324,7 @@ function Switch({ value, onChange, trackColorOn = TOKENS.p500 }) {
   );
 }
 
-// 通用 iconBtn 樣式（被 screens.jsx 引用過）
+// 通用 iconBtn 樣式（被 30_screens/ 各 screen 檔引用）
 const iconBtn = {
   width: 36, height: 36, border: 'none', background: 'transparent',
   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',

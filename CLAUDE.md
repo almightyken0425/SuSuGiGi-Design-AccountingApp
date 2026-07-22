@@ -28,21 +28,11 @@
 入口：`project/SuSuGiGi.html`，由 `90_workbench/app.jsx` 作 router，含 **4 個頂層 tab**：
 
 - **Intro** — 本 repo 的使用說明書
-- **Foundations** — 設計標準視覺化，含 5 個 sub-item：
-    - **Type** — TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY / LINE_HEIGHT / LETTER_SPACING
-    - **Colors** — PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status
-    - **Tokens** — 跨元件共用原語：SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET
-    - **Components** — 由 `components-showcase.jsx` 引用 `20_components/components.jsx` 的元件展示。5 個 family（List / Form / Navigation / Chart / Input），每個 family 內元件 showcase 與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）緊鄰擺放
-    - **Brand** — 品牌標識相關工件
-- **Screens** — 26 個畫面群組（含 default / empty / loading / error 邊界狀態變體）
-- **Explorations** — 5 個多版本提案主題：
-    - **Axis 1 · Color & Mood**（Open question · 2026-05-16）
-    - **Axis 2 · Surface & Material**（Liquid Glass 為 current direction，4 變體比較·2026-05-15）
-    - **Axis 3 · Iconography & Embellishment**（Open question · 2026-05-16）
-    - **Axis 4 · Personality (packaged)**（Open question · 2026-05-16）
-    - **Transaction Editor**（P1/P2/P7/P8/P9 標 [Current]·2026-05-18）
+- **Foundations** — 設計標準視覺化，5 個 group：Atomic / Component Tokens / Components / Brand / Icon Library。group 與 leaf 清單以 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 為唯一真相，本檔不重複列表
+- **Screens** — 26 個 screen，`30_screens/` 內每 screen 一個 `noN_<name>_screen/` 子目錄；default / empty / loading / error 等邊界狀態以 variant 在 entry 內 switch
+- **Explorations** — 多版本提案主題；主題與軸清單以 `90_workbench/app.jsx` 的 `EXPLORATION_GROUPS` 為準，決策狀態標註在各 artboard label
 
-注意：**Components 不是頂層 tab**，已併入 Foundations 作為 sub-item。`20_components/` 目錄仍存在，承載元件實作與 showcase 程式碼。
+注意：**Components 不是頂層 tab**，已併入 Foundations 作為 group。`20_components/` 目錄仍存在，承載元件實作與 showcase 程式碼。
 
 詳細結構說明見 `project/SuSuGiGi.html` 的 Intro 分頁。
 

@@ -55,12 +55,12 @@ function IntroSection() {
           <IntroTag>分頁解剖</IntroTag>
           <IntroTitle>每個分頁底下還有什麼</IntroTitle>
           <IntroBody>
-            <SectionLabel>Foundations · 5 個 sub-item</SectionLabel>
-            <AnatomyRow name="Type" desc="TYPE_STYLES（11 種 HIG style）/ TYPOGRAPHY.size / TYPOGRAPHY.weight / LINE_HEIGHT / LETTER_SPACING"/>
-            <AnatomyRow name="Colors" desc="PALETTE / THEMES（經典紫 + 海洋藍）/ Surfaces & Status / Text ink"/>
-            <AnatomyRow name="Tokens" desc="跨元件共用原語：SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET"/>
-            <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示。5 個 family（List / Form / Navigation / Chart / Input），每個 family 內元件與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS / CHIP_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS / HEADER_ICON_BUTTON_TOKENS / SWITCH_TOKENS / LIST_EMPTY_TRANSITION）緊鄰擺放"/>
-            <AnatomyRow name="Brand" desc="品牌標識、商標相關工件"/>
+            <SectionLabel>Foundations · 5 個 group（清單以 app.jsx 的 FOUNDATIONS_GROUPS 為準）</SectionLabel>
+            <AnatomyRow name="Atomic" desc="Type / Colors / Layout / Platform——字體、色彩主題、間距圓角動畫、平台固定值"/>
+            <AnatomyRow name="Component Tokens" desc="元件級 token，一元件一檔（10_foundations/component_tokens/），與 visualizers 一對一"/>
+            <AnatomyRow name="Components" desc="由 components-showcase.jsx 引用 20_components/components.jsx 的元件展示。5 個 family（List / Form / Navigation / Chart / Input），每個 family 內元件與對應 token 表緊鄰擺放"/>
+            <AnatomyRow name="Brand" desc="品牌資產：UI glyphs / app icon / logo"/>
+            <AnatomyRow name="Icon Library" desc="phosphor icon 全集檢索"/>
 
             <SectionLabel>Screens · 26 個畫面群組</SectionLabel>
             <AnatomyRow name="Home / Filter / Search" desc="主畫面 + 篩選 modal + 搜尋（4 狀態）"/>
@@ -72,12 +72,9 @@ function IntroSection() {
             <AnatomyRow name="Base Currency / Currency List / Rate List" desc="貨幣與匯率管理"/>
             <AnatomyRow name="Data Management / Debug" desc="資料管理 + 除錯資訊"/>
 
-            <SectionLabel>Explorations · 5 主題的當前狀態</SectionLabel>
-            <AnatomyRow name="Axis 1 · Color & Mood" desc="V1-V6 mono+accent 方向。Open question · 2026-05-16"/>
-            <AnatomyRow name="Axis 2 · Surface & Material" desc="Liquid Glass 為 current direction，4 個變體比較。Open question (variant) · 2026-05-15"/>
-            <AnatomyRow name="Axis 3 · Iconography & Embellishment" desc="7 種 icon 表達形式。Open question · 2026-05-16"/>
-            <AnatomyRow name="Axis 4 · Personality (packaged)" desc="10 種 packaged style。Open question · 2026-05-16"/>
-            <AnatomyRow name="Transaction Editor" desc="P1/P2/P7/P8/P9 標 [Current] · 2026-05-18；P10 Explored；P3-P6 已拒留作素材"/>
+            <SectionLabel>Explorations · 多版本提案主題</SectionLabel>
+            <AnatomyRow name="主題清單" desc="以 90_workbench/app.jsx 的 EXPLORATION_GROUPS 與 50_explorations/ 磁碟目錄為準"/>
+            <AnatomyRow name="決策狀態" desc="[Current] / Open question / Explored / Superseded 標在各 artboard label，口味換了改狀態不刪歷史"/>
           </IntroBody>
         </IntroCard>
       </DCArtboard>
@@ -102,11 +99,11 @@ function IntroSection() {
               follow="跟進：impl 同步 src/constants/theme.ts；元件視覺 src/components/**"/>
             <FlowRow
               source="觸發：Spec 邏輯需要新狀態（例如新增 loading 變體）"
-              arbitrate="Design 仲裁：在 30_screens/screens.jsx 對應 ScreenComponent 加新 variant，並於 90_workbench/app.jsx 的 SCREEN_META + SCREEN_GROUPS 補入口"
+              arbitrate="Design 仲裁：在 30_screens/ 對應 screen 子目錄的 entry 加新 variant 分支，並於 90_workbench/app.jsx 的 SCREEN_META + SCREEN_GROUPS 補入口"
               follow="跟進：spec 在 no3_product_specs/.../no2_screens/ 對應 md 補狀態；impl 跟著加 variant 實作"/>
             <FlowRow
               source="觸發：impl 新增整個畫面"
-              arbitrate="Design 仲裁：30_screens/screens.jsx 加 ScreenComponent、SCREEN_META 加 meta、SCREEN_GROUPS 加群組"
+              arbitrate="Design 仲裁：30_screens/ 新增 noN_<name>_screen/ 子目錄（tokens + subsections + entry）、SuSuGiGi.html 加載入、SCREEN_META 加 meta、SCREEN_GROUPS 加群組"
               follow="跟進：spec 新增 noN_<name>_screen.md；impl 完成 src/screens/<Name>/"/>
             <FlowRow
               source="觸發：想新增可重用元件"
@@ -114,7 +111,7 @@ function IntroSection() {
               follow="跟進：impl 同步 src/components/**；spec 在引用該元件的 screen 規格更新"/>
             <FlowRow
               source="觸發：某個設計問題想試多種做法"
-              arbitrate="Design 仲裁：複製任一現有主題目錄（如 axis_color_and_mood），重命名 slug，敘述寫在 variants.jsx 的 IntroBlock；在 90_workbench/app.jsx 的 EXPLORATION_TOPICS 接 router"
+              arbitrate="Design 仲裁：複製任一現有主題目錄，重命名 slug，敘述寫在 variants.jsx 的 IntroBlock；在 90_workbench/app.jsx 的 EXPLORATION_GROUPS 接 router"
               follow="跟進：Explorations 完全隔離，不牽動 spec 與 impl"/>
             <FlowRow
               source="觸發：某個提案要被淘汰"
@@ -198,30 +195,18 @@ function IntroSection() {
 │   ├── no3_typography.jsx         TYPOGRAPHY / TYPE_STYLES / LINE_HEIGHT / LETTER_SPACING
 │   ├── no4_layout_tokens.jsx      SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET / ROW_HEIGHT
 │   ├── no5_platform_tokens.jsx    IOS_SYSTEM_COLOR / ACTION_ICON_MAP
-│   ├── no6_icon_library.jsx       205 phosphor SVG
-│   ├── component_tokens/          元件級 token（一元件一檔，引用 atomic 層）
-│   │   └── no1-no13               LIST / TX_LIST / FORM_PICKER / CHIP / SEARCH_BAR /
-│   │                              HEADER_ICON_BUTTON / SWITCH / LIST_EMPTY_TRANSITION /
-│   │                              AMOUNT_FIELD / STATIC_WHEEL_PICKER / RECURRING_OPTIONS /
-│   │                              CONFIRM_DIALOG / CALENDAR_DIALOG
+│   ├── no6_icon_library.jsx       phosphor SVG 全集
+│   ├── component_tokens/          元件級 token（一元件一檔，引用 atomic 層；清單以磁碟為準）
 │   └── visualizers/               Foundations TOC group 視覺化卡片
 │       ├── no0_shared_card_kit    共用 UI primitives
-│       ├── atomic/no1-no4         Type / Colors / Layout / Platform
-│       ├── component_tokens/no1-no13  與 component_tokens/ 一對一對應
-│       ├── brand/no1              UI Glyphs
-│       └── icon_library/no1       All Icons
+│       └── atomic/ component_tokens/ brand/ icon_library/  對應 TOC 同名 group，一 leaf 一檔
 ├── 15_fixtures/                   Mock 資料 + canvas helpers（不對齊 spec / impl）
 │   └── no1-no4                    categories / accounts / transactions / helpers
 ├── 20_components/
 │   ├── components.jsx             元件實作
-│   └── components-showcase.jsx    Foundations · Components group 5 leaf 內容
-├── 30_screens/screens.jsx         26 個正式畫面群組
-├── 50_explorations/
-│   ├── axis_color_and_mood/
-│   ├── axis_surface_material/
-│   ├── axis_iconography_embellishment/
-│   ├── axis_personality_packaged/
-│   └── transaction_editor/
+│   └── components-showcase.jsx    Foundations · Components group 的 Section 內容
+├── 30_screens/                    26 個 noN_<name>_screen/ 子目錄 + shared/
+├── 50_explorations/               各主題子目錄（清單以磁碟與 app.jsx 的 EXPLORATION_GROUPS 為準）
 ├── 90_workbench/
 │   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame + SideTOC（三層）
 │   ├── design-canvas.jsx          DesignCanvas / DCSection / DCArtboard
@@ -231,7 +216,7 @@ function IntroSection() {
               數字前綴 <code>00 / 10 / 20 / 30 / 50 / 90 / 99</code> 保證檔案系統內的顯示順序與概念順序一致。新增分頁挑空著的 10 倍數段落即可（40 / 60 / 70 / 80 目前空著）。
             </p>
             <p style={{ fontSize: 13, color: TOKENS.ink2, lineHeight: 1.6, marginTop: 8 }}>
-              新增 exploration 主題時，<b>複製任一現有主題目錄</b>（例如 axis_color_and_mood）為範本，重命名 slug，敘述寫在 variants.jsx 的 IntroBlock，不需要 README.md。
+              新增 exploration 主題時，<b>複製任一現有主題目錄</b>為範本，重命名 slug，敘述寫在 variants.jsx 的 IntroBlock，不需要 README.md。
             </p>
           </IntroBody>
         </IntroCard>
@@ -253,7 +238,7 @@ function IntroSection() {
             <ul>
               <li>token 的最終值寫在 <code>10_foundations/</code>（atomic 層 noN_*.jsx 與 component_tokens/）</li>
               <li>元件的最終形狀寫在 <code>20_components/components.jsx</code></li>
-              <li>畫面的最終樣貌寫在 <code>30_screens/screens.jsx</code></li>
+              <li>畫面的最終樣貌寫在 <code>30_screens/</code> 各 screen 子目錄</li>
             </ul>
             <p style={{ marginTop: 12 }}><b>下游跟隨：</b></p>
             <ul>
