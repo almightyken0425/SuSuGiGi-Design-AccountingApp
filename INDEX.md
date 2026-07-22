@@ -15,11 +15,11 @@
 | Tab | 它回答什麼問題 | 目錄 |
 |---|---|---|
 | Intro        | 「這份檔案是什麼？怎麼用？」 | `project/00_intro/` |
-| Foundations  | 「設計標準的零件——字、顏色、跨元件原語、元件 + 對應 token、品牌資產」。**5 個 sub-item**：Type / Colors / Tokens / Components / Brand，全部用垂直 layout 一路往下讀。Tokens 收 SPACING / RADIUS / SHADOW / MOTION / ICON_SIZE / HIT_TARGET 共用原語。Components sub-item 內分 List / Form / Navigation / Chart / Input 五個 family 區塊垂直堆，每個 family 內元件 showcase 與對應 token 表（LIST_TOKENS / FORM_PICKER_TOKENS 等）緊鄰擺放。 | `project/10_foundations/` + `project/20_components/components-showcase.jsx` |
+| Foundations  | 「設計標準的零件——字、顏色、跨元件原語、元件 + 對應 token、品牌資產」。**5 個 group**：Atomic / Component Tokens / Components / Brand / Icon Library；group 與 leaf 清單以 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 為唯一真相。Components group 內分 List / Form / Navigation / Chart / Input 五個 family，每個 family 內元件 showcase 與對應 token 表緊鄰擺放。 | `project/10_foundations/` + `project/20_components/components-showcase.jsx` |
 | Screens      | 「每個畫面長什麼樣？空 / 載入 / 錯誤狀態？想鳥瞰用畫布縮放。」 | `project/30_screens/` |
 | Explorations | 「這個設計問題我想了好幾種做法」（並陳） | `project/50_explorations/` |
 
-Components 不是頂層 tab，已併入 Foundations 作為 sub-item。
+Components 不是頂層 tab，已併入 Foundations 作為 group。
 
 ### Tab 之間的分工
 
@@ -50,9 +50,9 @@ Components 不是頂層 tab，已併入 Foundations 作為 sub-item。
 
 - **觸發點可雙向：** impl 開發中發現某個字太小、Design 探索想換配色、Spec 邏輯需要新狀態，任一端都可發起變動訊號
 - **決議寫進本 repo：**
-    - token 寫在 `project/10_foundations/data.jsx`（以 Apple HIG / iOS Dynamic Type 為錨點）
+    - token 寫在 `project/10_foundations/`（atomic 層 noN_*.jsx 與 `component_tokens/`，以 Apple HIG / iOS Dynamic Type 為錨點）
     - 元件寫在 `project/20_components/components.jsx`
-    - 畫面寫在 `project/30_screens/screens.jsx`
+    - 畫面寫在 `project/30_screens/` 各 `noN_<name>_screen/` 子目錄
 - **下游跟隨對齊：**
     - **impl repo：** `no5_product_development/no2_accounting_app/` 跟著 `src/constants/theme.ts` / `src/components/` / `src/screens/` 對齊
     - **spec repo：** `no3_product_specs/no2_accounting_app/` 跟著 `no2_screens/` 與引用元件的規格對齊
@@ -68,26 +68,17 @@ project/
 ├── SuSuGiGi.html                  主入口
 ├── 00_intro/intro.jsx             Intro 分頁
 ├── 10_foundations/
-│   ├── data.jsx                   PALETTE / THEMES / TYPE_STYLES / TYPOGRAPHY /
-│   │                              LINE_HEIGHT / LETTER_SPACING / SPACING /
-│   │                              RADIUS / SHADOW / MOTION /
-│   │                              LIST_TOKENS / TX_LIST_TOKENS / SEARCH_BAR_TOKENS
-│   └── foundations.jsx            5 個 Section（Type / Colors / Tokens / Brand 直接定義；
-│                                  Components 由 components-showcase.jsx 提供 FoundationsComponentsSection。
-│                                  元件 token 表 helper（TokenTableCard / ListAnatomyCard /
-│                                  FormPickerAnatomyCard）也定義於此，供 components-showcase 引用）
+│   ├── no1-no6 atomic 檔          色彩 / canvas 快照 / 字體 / layout / 平台 / icon 集
+│   ├── component_tokens/          元件級 token（一元件一檔）
+│   └── visualizers/               Foundations 各 group 的視覺化 Section
+├── 15_fixtures/                   Mock 資料 + canvas helpers（不對齊 spec / impl）
 ├── 20_components/
 │   ├── components.jsx             元件實作（被 showcase 與 screens 共用）
 │   └── components-showcase.jsx    5 個家族 showcase（List / Form / Navigation / Chart / Input），
 │                                  每個 family 內元件與對應 token 表緊鄰擺放，
 │                                  由 FoundationsComponentsSection 串在 Foundations > Components 子項內
-├── 30_screens/screens.jsx         26 個正式畫面群組
-├── 50_explorations/
-│   ├── axis_color_and_mood/                Axis 1 · 配色與情緒
-│   ├── axis_surface_material/              Axis 2 · 質感與材質（Liquid Glass current direction）
-│   ├── axis_iconography_embellishment/     Axis 3 · Icon 風格與裝飾
-│   ├── axis_personality_packaged/          Axis 4 · 整體性格 packaged
-│   └── transaction_editor/                 Transaction Editor 提案探索（P1/P2/P7/P8/P9 [Current]）
+├── 30_screens/                    26 個 noN_<name>_screen/ 子目錄 + shared/
+├── 50_explorations/               各主題子目錄（清單以磁碟與 app.jsx 的 EXPLORATION_GROUPS 為準）
 ├── 90_workbench/
 │   ├── app.jsx                    ViewTabs router + SCREEN_META + ScreenFrame
 │   ├── design-canvas.jsx          DesignCanvas / DCSection / DCArtboard
@@ -106,7 +97,7 @@ project/
 
 ### 新增一個正式畫面
 
-1. 在 `30_screens/screens.jsx` 加新 ScreenComponent
+1. 在 `30_screens/` 新增 `noN_<name>_screen/` 子目錄（`tokens.jsx` + `noN_subsections.jsx` + entry `noN_<name>_screen.jsx`），並在 `SuSuGiGi.html` 加 script 載入
 2. 在 `90_workbench/app.jsx` 的 `SCREEN_META` 加 meta，並在 `SCREEN_GROUPS` 加群組
 3. 仲裁完成後，spec 在 `no2_screens/noN_<name>_screen.md` 補規格，impl 在 `src/screens/<Name>/` 跟進實作
 
@@ -118,16 +109,16 @@ project/
 
 ### 新增一個探索主題
 
-1. **複製任一現有主題目錄**（如 `axis_color_and_mood/`），重命名為新主題 slug
+1. **複製任一現有主題目錄**，重命名為新主題 slug
 2. 敘述寫在 `variants.jsx` 頂部的 IntroBlock 元件（無需 README.md）
-3. 在 `90_workbench/app.jsx` 的 `EXPLORATION_TOPICS` 接 router
+3. 在 `90_workbench/app.jsx` 的 `EXPLORATION_GROUPS` 接 router
 4. 在 `SuSuGiGi.html` 加新 script 載入
 
 Explorations 為純設計探索，**完全隔離不牽動 spec 與 impl**。
 
 ### 在現有畫面加邊界狀態（empty / loading / error）
 
-1. 在 `30_screens/screens.jsx` 加新元件 variant（如 `variant="empty"`）
+1. 在 `30_screens/` 對應 screen 子目錄的 entry 內 variant switch 加新分支（如 `variant="empty"`）
 2. 在 `90_workbench/app.jsx` 的 `SCREEN_META` 加對應 id，並在 `SCREEN_GROUPS` 該群組加一筆
 3. 仲裁完成後，spec 補狀態描述、impl 跟進實作
 
@@ -154,4 +145,4 @@ Explorations 為純設計探索，**完全隔離不牽動 spec 與 impl**。
 - `#filter` / `#tx-list` / `#recurring` / `#row-height` → `#screens`
 - `#design_system` → `#foundations`
 - `#components` → `#foundations/components`
-- `#foundations/spacing` → `#foundations/tokens`（sub-item 重命名）
+- `#foundations/tokens` / `#foundations/spacing` → `#foundations/atomic/layout`（group 化重排）

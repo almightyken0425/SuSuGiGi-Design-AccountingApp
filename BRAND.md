@@ -1,6 +1,6 @@
 # $wish · Brand bible
 
-本檔由 claude.ai/design 在 2026-05-18 整理產出，描述 $wish 的品牌政策（語氣、視覺基礎、icon 風格）。**Token 數字的權威來源仍是 `project/10_foundations/data.jsx`**，本檔只描述「為什麼這樣設計」與「用在哪」。
+本檔由 claude.ai/design 在 2026-05-18 整理產出，描述 $wish 的品牌政策（語氣、視覺基礎、icon 風格）。**Token 數字的權威來源是 `project/10_foundations/` 的 atomic 檔（no1-no6）與 `component_tokens/`**，本檔只描述「為什麼這樣設計」與「用在哪」。
 
 品牌名稱 **$wish** 是 swish 與 $ 的雙關：swish 是物體快速掠過的聲音，籃球空心入網也叫 swish，兼有快與準兩層語感。中文名「速速記記」直指本意——最快記完一筆帳，底層訴求是摩擦力最小、表象是速度。產品是一個單人記帳工具，記下支出、收入、轉帳；依類別或日期分組；用一張 donut chart + focus row 一頁回顧每個月。
 
@@ -29,7 +29,7 @@
 
 **人稱。** 中性 / 非人稱。字串不寫「你的帳戶」——只寫「帳戶」。也不用「我」。
 
-**幣別格式。** `fmt(n, code)` from `data.jsx`：
+**幣別格式。** `fmt(n, code)` from `project/15_fixtures/no4_helpers.jsx`：
 
 ```
 NT$1,200   ← TWD（預設）

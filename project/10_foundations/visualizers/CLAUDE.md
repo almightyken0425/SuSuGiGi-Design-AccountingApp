@@ -4,36 +4,10 @@ Foundations canvas 視覺化卡片。每個 leaf sub-item 一個 visualizer Sect
 
 ## 分層
 
-```
-visualizers/
-├── no0_shared_card_kit.jsx                 共用 UI primitives（FoundCard / FoundLabel / Swatch / SectionMini / AnatomyRuler / TokenTableCard）
-├── atomic/                                  對應 Foundations > Atomic group
-│   ├── no1_type_visualizer.jsx              FoundationsAtomicTypeSection
-│   ├── no2_colors_visualizer.jsx            FoundationsAtomicColorsSection
-│   ├── no3_layout_visualizer.jsx            FoundationsAtomicLayoutSection
-│   └── no4_platform_visualizer.jsx          FoundationsAtomicPlatformSection
-├── component_tokens/                        對應 Foundations > Component Tokens group
-│   ├── no1_list_visualizer.jsx              FoundationsCTListSection
-│   ├── no2_tx_list_visualizer.jsx           FoundationsCTTxListSection
-│   ├── no3_form_picker_visualizer.jsx       FoundationsCTFormPickerSection
-│   ├── no4_chip_visualizer.jsx              FoundationsCTChipSection
-│   ├── no5_search_bar_visualizer.jsx        FoundationsCTSearchBarSection
-│   ├── no6_header_icon_button_visualizer.jsx FoundationsCTHeaderIconButtonSection
-│   ├── no7_switch_visualizer.jsx            FoundationsCTSwitchSection
-│   ├── no8_list_empty_transition_visualizer.jsx FoundationsCTListEmptyTransitionSection
-│   ├── no9_amount_field_visualizer.jsx      FoundationsCTAmountFieldSection
-│   ├── no10_static_wheel_picker_visualizer.jsx FoundationsCTStaticWheelPickerSection
-│   ├── no11_recurring_options_visualizer.jsx FoundationsCTRecurringOptionsSection
-│   └── no12_confirm_dialog_visualizer.jsx   FoundationsCTConfirmDialogSection
-├── brand/                                   對應 Foundations > Brand group
-│   └── no1_ui_glyphs.jsx                    FoundationsBrandUIGlyphsSection
-└── icon_library/                            對應 Foundations > Icon Library group
-    └── no1_all_icons.jsx                    FoundationsIconLibraryAllIconsSection
-
-# Foundations > Components group 5 leaf 由 20_components/components-showcase.jsx 提供
-# （ComponentsListSection / ComponentsFormSection / ComponentsNavigationSection /
-#  ComponentsChartSection / ComponentsInputSection）
-```
+- `no0_shared_card_kit.jsx` — 共用 UI primitives（FoundCard / FoundLabel / Swatch / SectionMini / AnatomyRuler / TokenTableCard），必須最先載
+- 子目錄 `atomic/`、`component_tokens/`、`brand/`、`icon_library/` 對應 Foundations TOC 同名 group。一 leaf 一檔；`no0_` 前綴為子目錄內支援檔，不對應 leaf。檔案清單以磁碟目錄為準，group 與 leaf 清單以 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 為唯一真相
+- `component_tokens/` 內每檔與 `10_foundations/component_tokens/` 同編號檔一對一對應
+- Foundations > Components group 的 Section 由 `20_components/components-showcase.jsx` 提供，不在本目錄
 
 ## Section 命名規範
 

@@ -29,4 +29,4 @@
 
 ## 載入順序
 
-必須在 `20_components/components.jsx`、`30_screens/screens.jsx`、`50_explorations/*` 之前載入（這些消費端讀 fixtures）。
+必須在 `20_components/components.jsx`、`30_screens/` 各 screen 子目錄、`50_explorations/*` 之前載入（這些消費端讀 fixtures）。

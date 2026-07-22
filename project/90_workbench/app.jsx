@@ -4,15 +4,8 @@
 // 頂部 4 個 tab：
 //   #intro / #foundations / #screens / #explorations
 //
-// Foundations 內含 5 個 group × 24 leaf sub-item（hash 三段式：#foundations/<group>/<topic>）：
-//   - Atomic            (4)  — Type / Colors / Layout / Platform
-//   - Component Tokens  (13) — List / Transaction List / Form Picker / Chip / Search Bar /
-//                              Header Icon Button / Switch / List Empty Transition /
-//                              Amount Field / Static Wheel Picker / Recurring Options /
-//                              Confirm Dialog / Calendar Dialog
-//   - Components        (5)  — List / Form / Navigation / Chart / Input
-//   - Brand             (1)  — UI Glyphs
-//   - Icon Library      (1)  — All Icons
+// Foundations 分 group（hash 三段式：#foundations/<group>/<topic>）：
+//   group 與各 group 的 leaf 清單以下方 FOUNDATIONS_GROUPS 常數為唯一真相，本註解不列舉。
 //
 // SCREEN_META 中央定義每個 screen 的：
 //   - title           NavBar 標題
@@ -22,7 +15,7 @@
 //   - hasFAB          是否顯示 FloatingActionBar
 //   - render          (ctx) => screen body JSX，ctx 提供 push / pop / sharedFilter 等
 //
-// SCREEN_LIST 是 Screens tab 要顯示的 pinned id 順序。
+// SCREEN_GROUPS 是 Screens tab 要顯示的群組與順序。
 // 想要鳥瞰全貌：用畫布的縮放（trackpad 二指捏合 / Ctrl+滾輪）拉遠即可。
 // ─────────────────────────────────────────────────────────────
 
@@ -30,11 +23,8 @@ function PushHeader({ title, leadingText, leadingAction, trailing }) {
   return <NavHeader title={title} leadingText={leadingText} leadingAction={leadingAction} trailing={trailing}/>;
 }
 
-// SCREEN_META — 本目錄 v1 已含 6 個重做完成的 screen（Home / HomeFilter /
-// Search / TxEditor / TransferEditor / Settings）。
-// 其餘 16 個（Preference / Login / Paywall / Accounts / Categories / Theme /
-// Language / Timezone / LaunchMode / BaseCurrency / CurrencyList / RateList /
-// DataMgmt / Debug 等）已於本次重構移除，待逐步 follow 30_screens/ 新前例重做後再補回。
+// SCREEN_META — 全部 screen 的 meta 與 variant 入口；screen 清單以本常數與
+// SCREEN_GROUPS 為準，實體檔在 30_screens/ 各 noN_<name>_screen/ 子目錄。
 const SCREEN_META = {
   // ─── Home ─── default / empty
   // headerRight 兩 symbol 共用 shared background pill；
@@ -660,7 +650,7 @@ const VIEW_TABS = [
 ];
 const VALID_VIEWS = VIEW_TABS.map(t => t.id);
 
-// Foundations groups — 5 group × 25 leaf sub-item。
+// Foundations groups — Foundations TOC 單一真相，group / leaf 清單以本常數為準。
 // hash 路徑：#foundations/<group>/<topic>。每個 topic 對應單一 Section component。
 const FOUNDATIONS_GROUPS = [
   {

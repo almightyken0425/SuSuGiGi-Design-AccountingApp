@@ -11,9 +11,9 @@
 ├── no3_typography.jsx           字體系統
 ├── no4_layout_tokens.jsx        間距 / 圓角 / 陰影 alias / 動畫 / icon 尺寸 / 觸控目標 / row 高度
 ├── no5_platform_tokens.jsx      平台特定固定值（iOS system color、ACTION_ICON_MAP）
-├── no6_icon_library.jsx         205 個 phosphor SVG IconDefinition
+├── no6_icon_library.jsx         phosphor SVG IconDefinition 集
 ├── component_tokens/            元件級 token（一元件一檔，引用 atomic 層）
-└── visualizers/                 canvas 視覺化卡片（對應 Foundations TOC 三 group）
+└── visualizers/                 canvas 視覺化卡片（對應 Foundations TOC 各 group）
 ```
 
 ## 修改流程
@@ -40,36 +40,7 @@
 
 ## TOC 對應
 
-Foundations TOC 由 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 驅動，5 group × 24 leaf：
-
-| Group | Leaf | 渲染檔案 |
-|---|---|---|
-| Atomic | Type | `visualizers/atomic/no1_type_visualizer.jsx` |
-| Atomic | Colors | `visualizers/atomic/no2_colors_visualizer.jsx` |
-| Atomic | Layout | `visualizers/atomic/no3_layout_visualizer.jsx` |
-| Atomic | Platform | `visualizers/atomic/no4_platform_visualizer.jsx` |
-| Component Tokens | List | `visualizers/component_tokens/no1_list_visualizer.jsx` |
-| Component Tokens | Transaction List | `visualizers/component_tokens/no2_tx_list_visualizer.jsx` |
-| Component Tokens | Form Picker | `visualizers/component_tokens/no3_form_picker_visualizer.jsx` |
-| Component Tokens | Chip | `visualizers/component_tokens/no4_chip_visualizer.jsx` |
-| Component Tokens | Search Bar | `visualizers/component_tokens/no5_search_bar_visualizer.jsx` |
-| Component Tokens | Header Icon Button | `visualizers/component_tokens/no6_header_icon_button_visualizer.jsx` |
-| Component Tokens | Switch | `visualizers/component_tokens/no7_switch_visualizer.jsx` |
-| Component Tokens | List Empty Transition | `visualizers/component_tokens/no8_list_empty_transition_visualizer.jsx` |
-| Component Tokens | Amount Field | `visualizers/component_tokens/no9_amount_field_visualizer.jsx` |
-| Component Tokens | Static Wheel Picker | `visualizers/component_tokens/no10_static_wheel_picker_visualizer.jsx` |
-| Component Tokens | Recurring Options | `visualizers/component_tokens/no11_recurring_options_visualizer.jsx` |
-| Component Tokens | Confirm Dialog | `visualizers/component_tokens/no12_confirm_dialog_visualizer.jsx` |
-| Component Tokens | Calendar Dialog | `visualizers/component_tokens/no13_calendar_dialog_visualizer.jsx` |
-| Component Tokens | Dual Picker Box | `visualizers/component_tokens/no14_dual_picker_box_visualizer.jsx` |
-| Component Tokens | Editor Name Field | `visualizers/component_tokens/no15_editor_name_field_visualizer.jsx` |
-| Components | List | `20_components/components-showcase.jsx`（`ComponentsListSection`） |
-| Components | Form | `20_components/components-showcase.jsx`（`ComponentsFormSection`） |
-| Components | Navigation | `20_components/components-showcase.jsx`（`ComponentsNavigationSection`） |
-| Components | Chart | `20_components/components-showcase.jsx`（`ComponentsChartSection`） |
-| Components | Input | `20_components/components-showcase.jsx`（`ComponentsInputSection`） |
-| Brand | UI Glyphs | `visualizers/brand/no1_ui_glyphs.jsx` |
-| Icon Library | All Icons | `visualizers/icon_library/no1_all_icons.jsx` |
+Foundations TOC 的 group 與 leaf 清單以 `90_workbench/app.jsx` 的 `FOUNDATIONS_GROUPS` 為唯一真相，本檔不重複列表。每個 leaf 對應單一 Section component：Atomic / Component Tokens / Brand / Icon Library 的 Section 位於 `visualizers/` 同名子目錄，Components group 的 Section 位於 `20_components/components-showcase.jsx`。Section 命名規範見 `visualizers/CLAUDE.md`。
 
 ## 載入順序
 

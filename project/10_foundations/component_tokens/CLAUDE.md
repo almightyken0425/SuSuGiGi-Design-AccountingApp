@@ -17,5 +17,5 @@
 ## 載入順序限制
 
 - 必須在 atomic 層（no1–no6）之後載入
-- 必須在 `20_components/components.jsx` 與 `30_screens/screens.jsx` 之前載入（後兩者消費這些 token）
+- 必須在 `20_components/components.jsx` 與 `30_screens/` 各 screen 子目錄之前載入（後兩者消費這些 token）
 - 內部彼此無依賴（除 `SWITCH_TOKENS` 依賴 `TOKENS` 與 `IOS_SYSTEM_COLOR`，已在 atomic 層滿足）

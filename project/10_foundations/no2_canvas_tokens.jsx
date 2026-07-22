@@ -2,7 +2,7 @@
 // Canvas tokens · 設計稿渲染用快照
 //
 // 攤平 THEME_1 為 TOKENS 物件，僅供 design canvas（components.jsx /
-// screens.jsx / visualizers）即時讀色，**Impl 端動態 theme 系統不消費**。
+// 30_screens/ 各 screen 檔 / visualizers）即時讀色，**Impl 端動態 theme 系統不消費**。
 // 維護時不視為 Impl 對齊缺口。
 // ─────────────────────────────────────────────────────────────
 
